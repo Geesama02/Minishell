@@ -16,6 +16,5 @@ int main()
             tokens++;
         }
     }
-
     return 0;
 }
