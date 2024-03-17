@@ -14,10 +14,25 @@ typedef struct s_token_tree
     struct s_token_tree *right;
 } t_token_tree;
 
+typedef enum e_token_type
+{
+    CMD,
+    ARG,
+    PIPE,
+    INPUT_REDIRECTION,
+    OUTPUT_REDIRECTION,
+} t_token_type;
+
+typedef struct s_token_list
+{
+    char *token;
+    t_token_type type;
+} t_token_list;
+
 typedef struct s_pipe_list
 {
     int id;
-    char **tokens;
+    t_token_list *tokens;
     struct s_pipe_list *next;
 } t_pipe_list;
 
