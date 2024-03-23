@@ -97,7 +97,6 @@ char	**ft_split(char const *s, char c)
 	l = 0;
 	if (!s)
 		return (NULL);
-	printf("count_words: %d\n", count_words(s, c));
 	str = (char **)malloc((count_words(s, c) + 1) * sizeof(char *));
 	if (!str)
 		return (NULL);
@@ -105,7 +104,6 @@ char	**ft_split(char const *s, char c)
 	{
 		n = 0;
 		skip_c(s, c, &i);
-		printf("count_word: %d\n", count_word(s, c, i));
 		str[l] = (char *)malloc(count_word(s, c, i) + 1);
 		if (!str[l])
 			return (sec_alloc(str, l));

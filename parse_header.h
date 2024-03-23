@@ -21,6 +21,13 @@ typedef enum e_token_type
     PIPE,
     INPUT_REDIRECTION,
     OUTPUT_REDIRECTION,
+    APPEND_REDIRECTION,
+    OUT_FILE,
+    IN_FILE,
+    APPEND_FILE,
+    STR,
+    HEREDOC,
+    DELIMETER,
 } t_token_type;
 
 typedef struct s_token_list

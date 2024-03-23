@@ -12,6 +12,78 @@ int len(char **s)
 
 }
 
+void set_type(t_token_list *tokens, char **token, int *i)
+{
+    if (ft_strcmp(token[*i], "<") == 0)
+    {
+        tokens[*i].type = INPUT_REDIRECTION;
+        if (token[*i + 1])
+        {
+            tokens[*i + 1].type = IN_FILE;
+            *i += 1;
+        }
+    }
+    else if (ft_strcmp(token[*i], ">") == 0)
+    {
+        tokens[*i].type = OUTPUT_REDIRECTION;
+        if (token[*i + 1])
+        {
+            tokens[*i + 1].type = OUT_FILE;
+            *i += 1;
+        }
+    }
+    else if (ft_strcmp(token[*i], ">>") == 0)
+    {
+        tokens[*i].type = APPEND_REDIRECTION;
+        if (token[*i + 1])
+        {
+            tokens[*i + 1].type = APPEND_FILE;
+            *i += 1;
+        }
+    }
+    else if (ft_strcmp(token[*i], "<<") == 0)
+    {
+        tokens[*i].type = HEREDOC;
+        if (token[*i + 1])
+        {
+            tokens[*i + 1].type = DELIMETER;
+            *i += 1;
+        }
+    }
+    else
+        tokens[*i].type = ARG;
+}
+
+char *check_type(t_token_list *tokens)
+{
+    if (tokens->type == CMD)
+        return ("CMD");
+    else if (tokens->type == ARG)
+        return ("ARG");
+    else if (tokens->type == PIPE)
+        return ("PIPE");
+    else if (tokens->type == INPUT_REDIRECTION)
+        return ("INPUT_REDIRECTION");
+    else if (tokens->type == OUTPUT_REDIRECTION)
+        return ("OUTPUT_REDIRECTION");
+    else if (tokens->type == APPEND_REDIRECTION)
+        return ("APPEND_REDIRECTION");
+    else if (tokens->type == OUT_FILE)
+        return ("OUT_FILE");
+    else if (tokens->type == IN_FILE)
+        return ("IN_FILE");
+    else if (tokens->type == APPEND_FILE)
+        return ("APPEND_FILE");
+    else if (tokens->type == STR)
+        return ("STR");
+    else if (tokens->type == HEREDOC)
+        return ("HEREDOC");
+    else if (tokens->type == DELIMETER)
+        return ("DELIMETER");
+    return (NULL);
+}
+
+
 t_pipe_list *split_pipe(char *input)
 {
     int i = 0;
@@ -34,7 +106,11 @@ t_pipe_list *split_pipe(char *input)
     while(tokens[i])
     {
         new_pipe->tokens[i].token = tokens[i];
-        printf("token ====> %s\n", new_pipe->tokens[i].token);
+        if (i == 0)
+            new_pipe->tokens[i].type = CMD;
+        else
+            set_type(new_pipe->tokens, tokens, &i);
+
         i++;
     }
     new_pipe->tokens[i].token = NULL;
@@ -54,7 +130,10 @@ t_pipe_list *split_pipe(char *input)
         while (tokens[j])
         {
             new_pipe->tokens[j].token = tokens[j];
-            printf("token ====> %s\n", new_pipe->tokens[j].token);
+            if (j == 0)
+                new_pipe->tokens[j].type = CMD;
+            else
+                set_type(new_pipe->tokens, tokens, &j);
             j++;
         }
         new_pipe->tokens[j].token = NULL;
@@ -69,7 +148,9 @@ t_pipe_list *split_pipe(char *input)
         printf("Pipe: %d\n", pipe_list->id);
         while(pipe_list->tokens[i].token)
         {
-            printf("%s\n", pipe_list->tokens[i].token);
+            printf("token ====> %s\n", new_pipe->tokens[i].token);
+            printf("type ====> %s\n", check_type(new_pipe->tokens + i));
+            printf("========================\n");
             i++;
         }
         pipe_list = pipe_list->next;
