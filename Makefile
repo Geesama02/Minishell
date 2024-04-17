@@ -10,7 +10,7 @@ ${NAME} : ${OBJS}
 	${CC} ${CFLAGS} ${OBJS} -lreadline -o ${NAME}
 
 %.o: %.c parse_header.h
-	${CC} ${CFLAGS} -lreadline -c -o $@ $<
+	${CC} ${CFLAGS} -c -o $@ $<
 
 clean : 
 	rm -rf ${OBJS} ${BOBJS}

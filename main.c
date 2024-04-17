@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
+/*   Updated: 2024/04/17 14:51:01 by oait-laa         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parse_header.h"
 
 int len(char **s)
@@ -12,6 +24,19 @@ int len(char **s)
 
 }
 
+int ft_strlen(char *str)
+{
+	int i = 0;
+	while(str[i])
+		i++;
+	return (i);
+}
+
+void write_error(char *str)
+{
+	write(2, str, ft_strlen(str));
+}
+
 void set_type(t_token_list *tokens, char **token, int *i)
 {
     if (ft_strcmp(token[*i], "<") == 0)
@@ -19,6 +44,7 @@ void set_type(t_token_list *tokens, char **token, int *i)
         tokens[*i].type = INPUT_REDIRECTION;
         if (token[*i + 1])
         {
+			tokens[*i + 1].token = token[*i + 1];
             tokens[*i + 1].type = IN_FILE;
             *i += 1;
         }
@@ -28,6 +54,7 @@ void set_type(t_token_list *tokens, char **token, int *i)
         tokens[*i].type = OUTPUT_REDIRECTION;
         if (token[*i + 1])
         {
+			tokens[*i + 1].token = token[*i + 1];
             tokens[*i + 1].type = OUT_FILE;
             *i += 1;
         }
@@ -37,6 +64,7 @@ void set_type(t_token_list *tokens, char **token, int *i)
         tokens[*i].type = APPEND_REDIRECTION;
         if (token[*i + 1])
         {
+			tokens[*i + 1].token = token[*i + 1];
             tokens[*i + 1].type = APPEND_FILE;
             *i += 1;
         }
@@ -46,6 +74,7 @@ void set_type(t_token_list *tokens, char **token, int *i)
         tokens[*i].type = HEREDOC;
         if (token[*i + 1])
         {
+			tokens[*i + 1].token = token[*i + 1];
             tokens[*i + 1].type = DELIMETER;
             *i += 1;
         }
@@ -83,6 +112,24 @@ char *check_type(t_token_list *tokens)
     return (NULL);
 }
 
+int	check_cmd(char *str)
+{
+	if (ft_strcmp(str, "echo") == 0)
+		return (1);
+	else if (ft_strcmp(str, "cd") == 0)
+		return (1);
+	else if (ft_strcmp(str, "pwd") == 0)
+		return (1);
+	else if (ft_strcmp(str, "export") == 0)
+		return (1);
+	else if (ft_strcmp(str, "unset") == 0)
+		return (1);
+	else if (ft_strcmp(str, "env") == 0)
+		return (1);
+	else if (ft_strcmp(str, "exit") == 0)
+		return (1);
+	return (0);
+}
 
 t_pipe_list *split_pipe(char *input)
 {
@@ -95,22 +142,33 @@ t_pipe_list *split_pipe(char *input)
     char **pipe = ft_split(input, '|');
     while (pipe[i])
     {
-        printf("token ==> %s\n", pipe[i]);
+        printf("Pipe token ==> %s\n", pipe[i]);
         i++;
     }
     i = 0;
     t_pipe_list *new_pipe = malloc(sizeof(t_pipe_list));
     new_pipe->id = i;
     tokens = ft_split(*pipe, ' ');
+	while(tokens[j])
+	{
+		printf("B token ==> %s\n", tokens[j]);
+		j++;
+	}
+	j = 0;
     new_pipe->tokens = malloc(sizeof(t_token_list) * len(tokens) + 1);
     while(tokens[i])
     {
         new_pipe->tokens[i].token = tokens[i];
-        if (i == 0)
+        if (i == 0 && check_cmd(tokens[i]) == 1)
             new_pipe->tokens[i].type = CMD;
-        else
+        else if (i != 0)
             set_type(new_pipe->tokens, tokens, &i);
-
+		else
+		{
+			write_error("Command not found\n");
+			return (NULL);
+		}
+		printf("P token ==> %s\n", new_pipe->tokens[i].token);
         i++;
     }
     new_pipe->tokens[i].token = NULL;
@@ -126,6 +184,12 @@ t_pipe_list *split_pipe(char *input)
         new_pipe = new_pipe->next;
         new_pipe->id = i;
         tokens = ft_split(*pipe, ' ');
+		while(tokens[j])
+		{
+			printf("B token ==> %s\n", tokens[j]);
+			j++;
+		}
+		j = 0;
         new_pipe->tokens = malloc(sizeof(t_token_list) * len(tokens) + 1);
         while (tokens[j])
         {
@@ -172,6 +236,8 @@ int main()
             continue;
         add_history(input);
         pipe_list = split_pipe(input);
+		if (pipe_list == NULL)
+			continue;
         // char **tokens = ft_split(input, '|');
         // char **tokens;
 
