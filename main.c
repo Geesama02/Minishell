@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/17 14:51:01 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/04/18 11:59:41 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void write_error(char *str)
 	write(2, str, ft_strlen(str));
 }
 
-void set_type(t_token_list *tokens, char **token, int *i)
+int set_type(t_token_list *tokens, char **token, int *i)
 {
     if (ft_strcmp(token[*i], "<") == 0)
     {
@@ -48,6 +48,11 @@ void set_type(t_token_list *tokens, char **token, int *i)
             tokens[*i + 1].type = IN_FILE;
             *i += 1;
         }
+		else
+		{
+			write_error("File is missing\n");
+			return (1);
+		}
     }
     else if (ft_strcmp(token[*i], ">") == 0)
     {
@@ -58,7 +63,14 @@ void set_type(t_token_list *tokens, char **token, int *i)
             tokens[*i + 1].type = OUT_FILE;
             *i += 1;
         }
-    }
+		else
+		{
+			write_error("File is missing\n");
+			return (1);
+		}
+	}
+	else if (ft_strcmp(token[*i], "|") == 0)
+		tokens[*i].type = PIPE;
     else if (ft_strcmp(token[*i], ">>") == 0)
     {
         tokens[*i].type = APPEND_REDIRECTION;
@@ -68,6 +80,11 @@ void set_type(t_token_list *tokens, char **token, int *i)
             tokens[*i + 1].type = APPEND_FILE;
             *i += 1;
         }
+		else
+		{
+			write_error("File is missing\n");
+			return (1);
+		}
     }
     else if (ft_strcmp(token[*i], "<<") == 0)
     {
@@ -81,6 +98,7 @@ void set_type(t_token_list *tokens, char **token, int *i)
     }
     else
         tokens[*i].type = ARG;
+	return (0);
 }
 
 char *check_type(t_token_list *tokens)
@@ -162,15 +180,18 @@ t_pipe_list *split_pipe(char *input)
         if (i == 0 && check_cmd(tokens[i]) == 1)
             new_pipe->tokens[i].type = CMD;
         else if (i != 0)
-            set_type(new_pipe->tokens, tokens, &i);
+		{
+            if (set_type(new_pipe->tokens, tokens, &i) == 1)
+				return (NULL);
+		}
 		else
 		{
 			write_error("Command not found\n");
 			return (NULL);
 		}
-		printf("P token ==> %s\n", new_pipe->tokens[i].token);
         i++;
     }
+	free(tokens);
     new_pipe->tokens[i].token = NULL;
     i = 0;
     new_pipe->next = NULL;
@@ -180,6 +201,7 @@ t_pipe_list *split_pipe(char *input)
     i++;
     while(*pipe)
     {
+		printf("here\n");
         new_pipe->next = malloc(sizeof(t_pipe_list));
         new_pipe = new_pipe->next;
         new_pipe->id = i;
@@ -194,12 +216,22 @@ t_pipe_list *split_pipe(char *input)
         while (tokens[j])
         {
             new_pipe->tokens[j].token = tokens[j];
-            if (j == 0)
-                new_pipe->tokens[j].type = CMD;
-            else
-                set_type(new_pipe->tokens, tokens, &j);
-            j++;
+			printf("inside token ==> %s\n", new_pipe->tokens[j].token);
+			if (j == 0 && check_cmd(tokens[j]) == 1)
+				new_pipe->tokens[j].type = CMD;
+			else if (j != 0)
+			{
+				if (set_type(new_pipe->tokens, tokens, &j) == 1)
+					return (NULL);
+			}
+			else
+			{
+				write_error("Command not found\n");
+				return (NULL);
+			}
+			j++;
         }
+		free(tokens);
         new_pipe->tokens[j].token = NULL;
         j = 0;
         new_pipe->next = NULL;
@@ -212,8 +244,8 @@ t_pipe_list *split_pipe(char *input)
         printf("Pipe: %d\n", pipe_list->id);
         while(pipe_list->tokens[i].token)
         {
-            printf("token ====> %s\n", new_pipe->tokens[i].token);
-            printf("type ====> %s\n", check_type(new_pipe->tokens + i));
+            printf("token ====> %s\n", pipe_list->tokens[i].token);
+            printf("type ====> %s\n", check_type(pipe_list->tokens + i));
             printf("========================\n");
             i++;
         }
