@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/17 14:51:11 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:30:15 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,7 @@ typedef struct s_pipe_list
 
 char	**ft_split(char const *s, char c);
 int	ft_strcmp(const char *s1, const char *s2);
+int ft_strlen(char *str);
+char	*ft_strjoin(char  *s1, char  *s2);
 
 #endif

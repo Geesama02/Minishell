@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/18 11:59:41 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/04/18 18:21:59 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,18 @@ int	check_cmd(char *str)
 	return (0);
 }
 
+void swap_tospace(char *input)
+{
+	int i = 0;
+
+	while (input[i])
+	{
+		if (input[i] == '\t' || input[i] == '\n')
+			input[i] = ' ';
+		i++;
+	}
+}
+
 t_pipe_list *split_pipe(char *input)
 {
     int i = 0;
@@ -166,6 +178,7 @@ t_pipe_list *split_pipe(char *input)
     i = 0;
     t_pipe_list *new_pipe = malloc(sizeof(t_pipe_list));
     new_pipe->id = i;
+	swap_tospace(*pipe);
     tokens = ft_split(*pipe, ' ');
 	while(tokens[j])
 	{
@@ -205,6 +218,7 @@ t_pipe_list *split_pipe(char *input)
         new_pipe->next = malloc(sizeof(t_pipe_list));
         new_pipe = new_pipe->next;
         new_pipe->id = i;
+		swap_tospace(*pipe);
         tokens = ft_split(*pipe, ' ');
 		while(tokens[j])
 		{
@@ -256,6 +270,53 @@ t_pipe_list *split_pipe(char *input)
     return (head);
 }
 
+int check_ending_pipe(char *input, int len)
+{
+	while (len > 0)
+	{
+		if (input[len] == '|')
+			return (1);
+		else if (input[len] == ' ')
+			len--;
+		else
+			return (0);
+	}
+	return (0);
+}
+
+int continue_pipe(char **input)
+{
+    char *tmp;
+    char *old_input;
+
+    while (1) {
+        tmp = readline("Pipe>");
+        if (tmp == NULL)
+            return (0);
+        if (tmp[0] == '\0')
+		{
+            free(tmp);
+            old_input = *input;
+            *input = ft_strjoin(old_input, "\n");
+            free(old_input);
+			continue;
+        }
+		else if (ft_strcmp(tmp, "exit") == 0)
+		{
+            free(tmp);
+			free(*input);
+            return (0);
+        }
+		else
+		{
+            old_input = *input;
+            *input = ft_strjoin(old_input, tmp);
+            free(old_input);
+            return (1);
+        }
+    }
+}
+
 int main()
 {
     t_pipe_list *pipe_list;
@@ -266,6 +327,10 @@ int main()
             break;
         if (input[0] == '\0')
             continue;
+		if (check_ending_pipe(input, ft_strlen(input) - 1) == 1)
+		{
+			continue_pipe(&input);
+		}
         add_history(input);
         pipe_list = split_pipe(input);
 		if (pipe_list == NULL)
