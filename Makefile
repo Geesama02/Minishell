@@ -1,7 +1,7 @@
 CFLAGS = -Wall -Wextra -Werror
 CC = cc
 NAME = main
-SRC = main.c ft_split.c ft_strcmp.c ft_strjoin.c
+SRC = main.c ft_split.c ft_strcmp.c ft_strjoin.c fill_token.c
 OBJS = ${SRC:.c=.o}
 
 all : ${NAME}

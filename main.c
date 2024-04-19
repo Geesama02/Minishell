@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/18 18:21:59 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:23:32 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,106 +149,26 @@ int	check_cmd(char *str)
 	return (0);
 }
 
-void swap_tospace(char *input)
-{
-	int i = 0;
 
-	while (input[i])
-	{
-		if (input[i] == '\t' || input[i] == '\n')
-			input[i] = ' ';
-		i++;
-	}
-}
 
 t_pipe_list *split_pipe(char *input)
 {
     int i = 0;
-    int j = 0;
-    char **tokens;
     t_pipe_list *pipe_list = NULL;
     t_pipe_list *head = NULL;
     printf("input ==> %s\n", input);
     char **pipe = ft_split(input, '|');
-    while (pipe[i])
-    {
-        printf("Pipe token ==> %s\n", pipe[i]);
-        i++;
-    }
-    i = 0;
     t_pipe_list *new_pipe = malloc(sizeof(t_pipe_list));
-    new_pipe->id = i;
-	swap_tospace(*pipe);
-    tokens = ft_split(*pipe, ' ');
-	while(tokens[j])
-	{
-		printf("B token ==> %s\n", tokens[j]);
-		j++;
-	}
-	j = 0;
-    new_pipe->tokens = malloc(sizeof(t_token_list) * len(tokens) + 1);
-    while(tokens[i])
-    {
-        new_pipe->tokens[i].token = tokens[i];
-        if (i == 0 && check_cmd(tokens[i]) == 1)
-            new_pipe->tokens[i].type = CMD;
-        else if (i != 0)
-		{
-            if (set_type(new_pipe->tokens, tokens, &i) == 1)
-				return (NULL);
-		}
-		else
-		{
-			write_error("Command not found\n");
-			return (NULL);
-		}
-        i++;
-    }
-	free(tokens);
-    new_pipe->tokens[i].token = NULL;
-    i = 0;
-    new_pipe->next = NULL;
+	if (!fill_token(*pipe, i, new_pipe))
+		return (NULL);
     pipe_list = new_pipe;
     head = new_pipe;
     pipe++;
     i++;
     while(*pipe)
     {
-		printf("here\n");
-        new_pipe->next = malloc(sizeof(t_pipe_list));
-        new_pipe = new_pipe->next;
-        new_pipe->id = i;
-		swap_tospace(*pipe);
-        tokens = ft_split(*pipe, ' ');
-		while(tokens[j])
-		{
-			printf("B token ==> %s\n", tokens[j]);
-			j++;
-		}
-		j = 0;
-        new_pipe->tokens = malloc(sizeof(t_token_list) * len(tokens) + 1);
-        while (tokens[j])
-        {
-            new_pipe->tokens[j].token = tokens[j];
-			printf("inside token ==> %s\n", new_pipe->tokens[j].token);
-			if (j == 0 && check_cmd(tokens[j]) == 1)
-				new_pipe->tokens[j].type = CMD;
-			else if (j != 0)
-			{
-				if (set_type(new_pipe->tokens, tokens, &j) == 1)
-					return (NULL);
-			}
-			else
-			{
-				write_error("Command not found\n");
-				return (NULL);
-			}
-			j++;
-        }
-		free(tokens);
-        new_pipe->tokens[j].token = NULL;
-        j = 0;
-        new_pipe->next = NULL;
+        if (!fill_token(*pipe, i, new_pipe))
+			return (NULL);
         pipe++;
         i++;
     }
