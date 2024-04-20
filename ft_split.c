@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:51:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/19 16:44:54 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/04/20 11:38:26 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ static int	count_words(char const *s, char c)
 
 	i = 0;
 	count = 0;
-	if (c != s[i] && s[i] && !is_inside_quotes(s, i, '\'') && !is_inside_quotes(s, i, '\"'))
+	// if (c != s[i] && s[i] && !is_inside_quotes(s, i, '\'') && !is_inside_quotes(s, i, '\"'))
+	// 	count++;
+	if (c != s[i] && s[i])
 		count++;
 	while (s[i])
 	{

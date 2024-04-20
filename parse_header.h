@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/19 10:59:00 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/04/20 14:55:50 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int len(char **s);
 int set_type(t_token_list *tokens, char **token, int *i);
 int ft_strlen(char *str);
 void write_error(char *str);
+char	*ft_strtrim(char const *s1, char const *set);
 int	check_cmd(char *str);
 
 #endif
