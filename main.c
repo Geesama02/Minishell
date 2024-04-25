@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/19 16:23:32 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/04/25 10:35:56 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ t_pipe_list *split_pipe(char *input)
     int i = 0;
     t_pipe_list *pipe_list = NULL;
     t_pipe_list *head = NULL;
-    printf("input ==> %s\n", input);
+    // printf("input ==> %s\n", input);
     char **pipe = ft_split(input, '|');
     t_pipe_list *new_pipe = malloc(sizeof(t_pipe_list));
 	if (!fill_token(*pipe, i, new_pipe))
@@ -175,18 +175,18 @@ t_pipe_list *split_pipe(char *input)
     i = 0;
     while(pipe_list)
     {
-        printf("Pipe: %d\n", pipe_list->id);
+        // printf("Pipe: %d\n", pipe_list->id);
         while(pipe_list->tokens[i].token)
         {
-            printf("token ====> %s\n", pipe_list->tokens[i].token);
-            printf("type ====> %s\n", check_type(pipe_list->tokens + i));
-            printf("========================\n");
+            // printf("========================\n");
+            // printf("token ====> %s\n", pipe_list->tokens[i].token);
+            // printf("type ====> %s\n", check_type(pipe_list->tokens + i));
+            // printf("========================\n");
             i++;
         }
         pipe_list = pipe_list->next;
         i = 0;
     }
-
     return (head);
 }
 
@@ -248,9 +248,7 @@ int main()
         if (input[0] == '\0')
             continue;
 		if (check_ending_pipe(input, ft_strlen(input) - 1) == 1)
-		{
 			continue_pipe(&input);
-		}
         add_history(input);
         pipe_list = split_pipe(input);
 		if (pipe_list == NULL)
