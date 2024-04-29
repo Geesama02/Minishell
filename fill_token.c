@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 10:20:06 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/25 11:31:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/04/29 18:12:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int unclosed_quotes(char *str, char c)
 	return (1);
 }
 
-int has_quotes(char *str, char c)
+int	has_quotes(char *str, char c)
 {
 	int i = 0;
 
@@ -53,7 +53,7 @@ int has_quotes(char *str, char c)
 	return (1);
 }
 
-char *remove__quotes(char *str)
+char	*remove__quotes(char *str)
 {
 	char *tmp;
 
@@ -97,7 +97,7 @@ int fill_token(char *pipe, int i, t_pipe_list *new_pipe)
 	swap_tospace(pipe);
 	tokens = ft_split(pipe, ' ');
 	// printf("tokens len ==> %d\n", len(tokens));
-	new_pipe->tokens = malloc(sizeof(t_token_list) * len(tokens) + 1);
+	new_pipe->tokens = malloc(sizeof(t_token_list) * (len(tokens) + 1));
 	while (tokens[j])
 	{
 		new_pipe->tokens[j].token = remove__quotes(tokens[j]);
@@ -111,6 +111,10 @@ int fill_token(char *pipe, int i, t_pipe_list *new_pipe)
 				cd_command(remove__quotes(tokens[j + 1]));
 			if (ft_strcmp(new_pipe->tokens[j].token, "pwd")  == 0)
 				pwd_command();
+			if (ft_strcmp(new_pipe->tokens[j].token, "echo")  == 0)
+				echo_command(remove__quotes(tokens[j + 1]));
+			if (ft_strcmp(new_pipe->tokens[j].token, "export")  == 0)
+				export_command(remove__quotes(tokens[j + 1]));
 		}
 		else if (j != 0)
 		{

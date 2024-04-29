@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/25 10:35:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:35:37 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ int len(char **s)
 
 }
 
-int ft_strlen(char *str)
-{
-	int i = 0;
-	while(str[i])
-		i++;
-	return (i);
-}
+// int ft_strlen(char *str)
+// {
+// 	int i = 0;
+// 	while(str[i])
+// 		i++;
+// 	return (i);
+// }
 
 void write_error(char *str)
 {
@@ -165,7 +165,7 @@ t_pipe_list *split_pipe(char *input)
     head = new_pipe;
     pipe++;
     i++;
-    while(*pipe)
+    while (*pipe)
     {
         if (!fill_token(*pipe, i, new_pipe))
 			return (NULL);
@@ -173,7 +173,7 @@ t_pipe_list *split_pipe(char *input)
         i++;
     }
     i = 0;
-    while(pipe_list)
+    while (pipe_list)
     {
         // printf("Pipe: %d\n", pipe_list->id);
         while(pipe_list->tokens[i].token)

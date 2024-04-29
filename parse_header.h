@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/25 10:30:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/04/29 18:13:11 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,20 @@ typedef struct s_pipe_list
 } t_pipe_list;
 
 
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t	ft_strlen(const char *s);
 char	**ft_split(char const *s, char c);
 int		ft_strcmp(const char *s1, const char *s2);
-int		ft_strlen(char *str);
 char	*ft_strjoin(char  *s1, char  *s2);
 int		fill_token(char *pipe, int i, t_pipe_list *new_pipe);
 int		len(char **s);
 int		set_type(t_token_list *tokens, char **token, int *i);
-int		ft_strlen(char *str);
 void	write_error(char *str);
 char	*ft_strtrim(char const *s1, char const *set);
 int		check_cmd(char *str);
 void	cd_command(char *path);
 void	pwd_command();
+void	echo_command(char *string);
+void    export_command(char *string);
 
 #endif
