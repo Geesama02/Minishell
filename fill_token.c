@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 10:20:06 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/04 16:10:24 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:12:17 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,11 @@ char	*remove__quotes(char *str)
 	return (str);
 }
 
-int fill_token(char *pipe_c, int i, t_pipe_list *new_pipe)
+int fill_token(char *pipe_c, int i, t_pipe_list *new_pipe,
+			t_env_vars **env_vars)
 {
 	int			j = 0;
 	char		**tokens;
-	t_env_vars	**env_variables = NULL;
-	// static int	env_i;
 	int			env_c;
 
 	env_c = 0;
@@ -99,17 +98,14 @@ int fill_token(char *pipe_c, int i, t_pipe_list *new_pipe)
 		new_pipe = new_pipe->next;
 		new_pipe->id = i;
 	}
-	// printf("pipe ==> %s\n", pipe);
 	swap_tospace(pipe_c);
 	tokens = ft_split(pipe_c, ' ');
-	// printf("tokens len ==> %d\n", len(tokens));
 	new_pipe->tokens = malloc(sizeof(t_token_list) * (len(tokens) + 1));
 	while (tokens[j])
 	{
 		new_pipe->tokens[j].token = remove__quotes(tokens[j]);
 		if (!new_pipe->tokens[j].token)
 			return (0);
-		// printf("inside token ==> %s\n", new_pipe->tokens[j].token);
 		if (j == 0 && check_cmd(new_pipe->tokens[j].token) == 1)
 		{
 			new_pipe->tokens[j].type = CMD;
@@ -120,32 +116,12 @@ int fill_token(char *pipe_c, int i, t_pipe_list *new_pipe)
 			if (ft_strcmp(new_pipe->tokens[j].token, "echo")  == 0)
 			{
 				if (ft_strchr(remove__quotes(tokens[j + 1]), '$'))
-				{
-					int	i = 0;
-					char *env_n = ft_strtrim(remove__quotes(tokens[j + 1]), "$");
-					while (ft_strcmp(env_variables[i]->env_name, env_n))
-						i++;
-					printf("%s\n", env_variables[i]->env_val);
-				}
+					print_env_variable(j, tokens, env_vars);
 				else
 					echo_command(remove__quotes(tokens[j + 1]));
 			}
 			if (ft_strcmp(new_pipe->tokens[j].token, "export")  == 0)
-			{
-				while (remove__quotes(tokens[j + 1]))
-				{
-					if (ft_strchr(remove__quotes(tokens[j + 1]), '='))
-					{
-						env_c++;
-						j++;
-					}
-					else
-						break;
-				}
-				env_variables = malloc((sizeof(t_env_vars *) * env_c) + 1);
-				while (env_c-- > 0)
-					export_command(new_pipe, j, env_variables, tokens[j + 1]);
-			}
+				export_command(j, tokens, env_vars, new_pipe);
 		}
 		else if (j != 0)
 		{

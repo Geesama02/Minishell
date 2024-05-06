@@ -1,15 +1,17 @@
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 CC = cc
 NAME = main
-SRC = main.c ft_split.c ft_strcmp.c ft_strjoin.c fill_token.c ft_strtrim.c \
-builtins.c
+SRC = main.c ft_split.c ft_strcmp.c ft_strjoin.c fill_token.c ft_strtrim.c builtins.c \
+	execution.c expanding.c
 OBJS = ${SRC:.c=.o}
+# LIBFT_SRCS = ./libft/*.c
+# LIBFT_OBJS = ${LIBFT_SRCS:.c=.o}
 LIBFT = ./libft/libft.a
 
 all : ${NAME}
 
 ${LIBFT} :
-	cd ./libft && make
+	cd ./libft && make 
 
 ${NAME} : ${OBJS} ${LIBFT}
 	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -lreadline -o ${NAME}

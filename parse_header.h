@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/04 16:11:57 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:07:56 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct	s_pipe_list
 {
 	int					id;
 	t_token_list		*tokens;
+	t_env_vars			**env_variables;
 	struct s_pipe_list	*next;
 }				t_pipe_list;
 
@@ -72,7 +73,8 @@ char	**ft_split(char const *s, char c);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char  *s1, char  *s2);
-int		fill_token(char *pipe_c, int i, t_pipe_list *new_pipe);
+int		fill_token(char *pipe_c, int i, t_pipe_list *new_pipe,
+			t_env_vars **env_vars);
 int		len(char **s);
 int		set_type(t_token_list *tokens, char **token, int *i);
 void	write_error(char *str);
@@ -81,7 +83,9 @@ int		check_cmd(char *str);
 void	cd_command(char *path);
 void	pwd_command();
 void	echo_command(char *string);
-void    export_command(t_pipe_list *new_pipe, int nb_env_vars,
-			t_env_vars **env_variables, char *token);
+void    export_command(int j, char **tokens,
+			t_env_vars **env_variables, t_pipe_list *new_pipe);
+char	*remove__quotes(char *str);
+void    print_env_variable(int j, char **tokens, t_env_vars **env_vars);
 
 #endif

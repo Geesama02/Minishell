@@ -29,16 +29,38 @@ void    echo_command(char *string)
     printf("%s", string);
 }
 
-void    export_command(t_pipe_list *new_pipe, int index, t_env_vars **env_vars,
-    char *token)
+void    export_command(int j, char **tokens,
+    t_env_vars **env_vars, t_pipe_list *new_pipe)
 {
+    int         env_c;
+    int         r_j;
     char        **cmds;
-    static int  env_i;
+    int         env_i;
 
-    cmds = ft_split(token, '=');
-    new_pipe->tokens[index].token = NULL;
-    new_pipe->tokens[index].type = ENV_VAR;
-    env_vars[env_i]->env_name = ft_strdup(cmds[0]);
-    env_vars[env_i]->env_val = ft_strdup(cmds[1]);
-    env_i++;
+    env_c = 0;
+    env_i = 0;
+    r_j = j;
+    while (remove__quotes(tokens[j + 1]))
+    {
+        if (ft_strchr(remove__quotes(tokens[j + 1]), '='))
+        {
+            env_c++;
+            j++;
+        }
+        else
+            break;
+    }
+    j = r_j;
+    new_pipe->tokens[j].token = "export";
+    new_pipe->tokens[j].type = ENV_VAR;
+    *env_vars = malloc((sizeof(t_env_vars) * env_c) + 1);
+    while (env_c-- > 0)
+    {
+        cmds = ft_split(tokens[j + 1], '=');
+        env_vars[env_i]->env_name = ft_strdup(cmds[0]);
+        env_vars[env_i]->env_val = ft_strdup(cmds[1]);
+        env_i++;
+        j++;
+    }
+    
 }

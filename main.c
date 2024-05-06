@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/03 15:42:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:21:14 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,15 +151,15 @@ int	check_cmd(char *str)
 
 
 
-t_pipe_list *split_pipe(char *input)
+t_pipe_list *split_pipe(char *input, t_env_vars **env_variables)
 {
     int i = 0;
     t_pipe_list *pipe_list = NULL;
     t_pipe_list *head = NULL;
-    // printf("input ==> %s\n", input);
+
     char **pipe = ft_split(input, '|');
     t_pipe_list *new_pipe = malloc(sizeof(t_pipe_list));
-	if (!fill_token(*pipe, i, new_pipe))
+	if (!fill_token(*pipe, i, new_pipe, env_variables))
 		return (NULL);
     pipe_list = new_pipe;
     head = new_pipe;
@@ -167,25 +167,10 @@ t_pipe_list *split_pipe(char *input)
     i++;
     while (*pipe)
     {
-        if (!fill_token(*pipe, i, new_pipe))
+        if (!fill_token(*pipe, i, new_pipe, env_variables))
 			return (NULL);
         pipe++;
         i++;
-    }
-    i = 0;
-    while (pipe_list)
-    {
-        // printf("Pipe: %d\n", pipe_list->id);
-        while(pipe_list->tokens[i].token)
-        {
-            // printf("========================\n");
-            // printf("token ====> %s\n", pipe_list->tokens[i].token);
-            // printf("type ====> %s\n", check_type(pipe_list->tokens + i));
-            // printf("========================\n");
-            i++;
-        }
-        pipe_list = pipe_list->next;
-        i = 0;
     }
     return (head);
 }
@@ -240,6 +225,7 @@ int continue_pipe(char **input)
 int main()
 {
     t_pipe_list *pipe_list;
+    t_env_vars  *env_variables = NULL;
 
     while(1)
     {
@@ -251,7 +237,7 @@ int main()
 		if (check_ending_pipe(input, ft_strlen(input) - 1) == 1)
 			continue_pipe(&input);
         add_history(input);
-        pipe_list = split_pipe(input);
+        pipe_list = split_pipe(input, &env_variables);
 		if (pipe_list == NULL)
 			continue;
         // char **tokens = ft_split(input, '|');
