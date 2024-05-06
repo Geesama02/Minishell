@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 10:20:06 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/29 18:12:59 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/04 16:10:24 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void swap_tospace(char *input)
 	}
 }
 
-int unclosed_quotes(char *str, char c)
+int	unclosed_quotes(char *str, char c)
 {
 	int i = 0;
 	int count = 0;
@@ -57,6 +57,8 @@ char	*remove__quotes(char *str)
 {
 	char *tmp;
 
+	if (!str)
+		return (NULL);
 	if (unclosed_quotes(str, '\"') == 1 || unclosed_quotes(str, '\'') == 1)
 	{
 		write_error("Error: quotes not closed\n");
@@ -77,11 +79,15 @@ char	*remove__quotes(char *str)
 	return (str);
 }
 
-int fill_token(char *pipe, int i, t_pipe_list *new_pipe)
+int fill_token(char *pipe_c, int i, t_pipe_list *new_pipe)
 {
-	int j = 0;
-	char **tokens;
+	int			j = 0;
+	char		**tokens;
+	t_env_vars	**env_variables = NULL;
+	// static int	env_i;
+	int			env_c;
 
+	env_c = 0;
 	if (i == 0)
 	{
 		new_pipe->id = i;
@@ -94,8 +100,8 @@ int fill_token(char *pipe, int i, t_pipe_list *new_pipe)
 		new_pipe->id = i;
 	}
 	// printf("pipe ==> %s\n", pipe);
-	swap_tospace(pipe);
-	tokens = ft_split(pipe, ' ');
+	swap_tospace(pipe_c);
+	tokens = ft_split(pipe_c, ' ');
 	// printf("tokens len ==> %d\n", len(tokens));
 	new_pipe->tokens = malloc(sizeof(t_token_list) * (len(tokens) + 1));
 	while (tokens[j])
@@ -112,9 +118,34 @@ int fill_token(char *pipe, int i, t_pipe_list *new_pipe)
 			if (ft_strcmp(new_pipe->tokens[j].token, "pwd")  == 0)
 				pwd_command();
 			if (ft_strcmp(new_pipe->tokens[j].token, "echo")  == 0)
-				echo_command(remove__quotes(tokens[j + 1]));
+			{
+				if (ft_strchr(remove__quotes(tokens[j + 1]), '$'))
+				{
+					int	i = 0;
+					char *env_n = ft_strtrim(remove__quotes(tokens[j + 1]), "$");
+					while (ft_strcmp(env_variables[i]->env_name, env_n))
+						i++;
+					printf("%s\n", env_variables[i]->env_val);
+				}
+				else
+					echo_command(remove__quotes(tokens[j + 1]));
+			}
 			if (ft_strcmp(new_pipe->tokens[j].token, "export")  == 0)
-				export_command(remove__quotes(tokens[j + 1]));
+			{
+				while (remove__quotes(tokens[j + 1]))
+				{
+					if (ft_strchr(remove__quotes(tokens[j + 1]), '='))
+					{
+						env_c++;
+						j++;
+					}
+					else
+						break;
+				}
+				env_variables = malloc((sizeof(t_env_vars *) * env_c) + 1);
+				while (env_c-- > 0)
+					export_command(new_pipe, j, env_variables, tokens[j + 1]);
+			}
 		}
 		else if (j != 0)
 		{

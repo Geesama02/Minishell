@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/29 15:35:37 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:42:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int len(char **s)
 {
     int i = 0;
-    while(*s)
+    while (*s)
     {
         i++;
         s++;
@@ -240,6 +240,7 @@ int continue_pipe(char **input)
 int main()
 {
     t_pipe_list *pipe_list;
+
     while(1)
     {
         char *input = readline("Minishell $> ");

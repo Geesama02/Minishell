@@ -29,23 +29,16 @@ void    echo_command(char *string)
     printf("%s", string);
 }
 
-void    export_command(char *string)
+void    export_command(t_pipe_list *new_pipe, int index, t_env_vars **env_vars,
+    char *token)
 {
-    char    **cmds;
-    int     fd[2];
-    char    buffer[64];
+    char        **cmds;
+    static int  env_i;
 
-    cmds = ft_split(string, '=');
-    if (!cmds[1])
-    {
-        write(2, "you need to specify the varname!!\n", 35);
-    }
-    else
-    {
-        pipe(fd);
-        write(fd[1], cmds[1], ft_strlen(cmds[1]));
-        close(fd[1]);
-        read(fd[0], buffer, sizeof(buffer));
-        close(fd[0]);
-    }
+    cmds = ft_split(token, '=');
+    new_pipe->tokens[index].token = NULL;
+    new_pipe->tokens[index].type = ENV_VAR;
+    env_vars[env_i]->env_name = ft_strdup(cmds[0]);
+    env_vars[env_i]->env_val = ft_strdup(cmds[1]);
+    env_i++;
 }
