@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/08 11:02:36 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/08 11:19:44 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef enum e_token_type
 	STR,
 	HEREDOC,
 	DELIMETER,
+	ENV_VAR,
 } t_token_type;
 
 typedef enum e_t_type
@@ -49,9 +50,6 @@ typedef enum e_t_type
 	PARETHESIS_C,
 	CMD_T
 } t_t_type;
-
-
-
 
 typedef struct s_token_array
 {
@@ -65,7 +63,12 @@ typedef struct s_stack
 	int head;
 } t_stack;
 
-typedef struct s_token_list
+typedef struct	s_env_vars {
+	char *env_name;
+	char *env_val;
+}				t_env_vars;
+
+typedef struct	s_token_list
 {
 	char *token;
 	t_token_type type;
@@ -79,32 +82,34 @@ typedef struct s_token_tree
 	struct s_token_tree *right;
 } t_token_tree;
 
-typedef struct s_pipe_list
+typedef struct	s_pipe_list
 {
-	int id;
-	t_token_list *tokens;
-	struct s_pipe_list *next;
-} t_pipe_list;
+	int					id;
+	t_token_list		*tokens;
+	t_env_vars			**env_variables;
+	struct s_pipe_list	*next;
+}				t_pipe_list;
 
 
+char	*ft_strdup(const char *s1);
+char	*ft_strtrim(char const *s1, char const *set);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t	ft_strlen(const char *s);
 char	**ft_split(char const *s, char c);
 int		ft_strcmp(const char *s1, const char *s2);
-int		ft_strlen(char *str);
+char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char  *s1, char  *s2);
-t_token_tree	*fill_token(char *pipe, int i, t_pipe_list *new_pipe);
+int		fill_token(char *pipe_c, int i, t_pipe_list *new_pipe,
+			t_env_vars **env_vars);
 int		len(char **s);
 int		set_type(t_token_list *tokens, char **token, int *i);
-int		ft_strlen(char *str);
 void	write_error(char *str);
 char	*ft_strtrim(char const *s1, char const *set);
 int		check_cmd(char *str);
 void	cd_command(char *path);
-void	pwd_command();
-void print_tree(t_token_tree *root, int level);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*ft_strdup(const char *s1);
+char	*remove__quotes(char *str);
+void 	print_tree(t_token_tree *root, int level);
 t_token_tree *create_node(char *token, t_t_type type);
-// char *check_type(t_token_list *tokens);
-// t_token_tree *fill_ast(t_token_tree **root, t_token_list *tokens);
+void	pwd_command();
 
 #endif

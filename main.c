@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/08 10:59:53 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/08 11:09:16 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int len(char **s)
 {
     int i = 0;
-    while(*s)
+    while (*s)
     {
         i++;
         s++;
@@ -24,13 +24,13 @@ int len(char **s)
 
 }
 
-int ft_strlen(char *str)
-{
-	int i = 0;
-	while(str[i])
-		i++;
-	return (i);
-}
+// int ft_strlen(char *str)
+// {
+// 	int i = 0;
+// 	while(str[i])
+// 		i++;
+// 	return (i);
+// }
 
 void write_error(char *str)
 {
