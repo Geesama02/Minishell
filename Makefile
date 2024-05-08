@@ -1,8 +1,8 @@
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 CC = cc
 NAME = main
 SRC = main.c ft_split.c ft_strcmp.c ft_strjoin.c fill_token.c ft_strtrim.c \
-builtins.c
+builtins.c create_ast.c ft_strncmp.c ft_strdup.c
 OBJS = ${SRC:.c=.o}
 
 all : ${NAME}
