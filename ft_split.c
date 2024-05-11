@@ -6,13 +6,13 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:51:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/04/20 11:38:26 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/10 11:06:24 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_header.h"
 
-static int	is_inside_quotes(char const *s, int i, char c)
+static int	check_inside_quotes(char const *s, int i, char c)
 {
 	int	inside;
 
@@ -33,7 +33,7 @@ static int	count_words(char const *s, char c)
 
 	i = 0;
 	count = 0;
-	// if (c != s[i] && s[i] && !is_inside_quotes(s, i, '\'') && !is_inside_quotes(s, i, '\"'))
+	// if (c != s[i] && s[i] && !check_inside_quotes(s, i, '\'') && !check_inside_quotes(s, i, '\"'))
 	// 	count++;
 	if (c != s[i] && s[i])
 		count++;
@@ -44,11 +44,11 @@ static int	count_words(char const *s, char c)
 		// 	printf("s[i]: %d|\n", s[i] == c);
 		// 	printf("s[i + 1]: %d|\n", s[i + 1] != c);
 		// 	printf("s[i + 1]: %d|\n", s[i + 1] == 0);
-		// 	printf("is_inside_quotes: %d\n", !is_inside_quotes(s, i, '\''));
-		// 	printf("is_inside_quotes: %d\n", !is_inside_quotes(s, i, '\"'));
-		// 	printf("cond: %d\n", s[i] == c && s[i + 1] && s[i + 1] != c && !is_inside_quotes(s, i, '\'') && !is_inside_quotes(s, i, '\"'));
+		// 	printf("check_inside_quotes: %d\n", !check_inside_quotes(s, i, '\''));
+		// 	printf("check_inside_quotes: %d\n", !check_inside_quotes(s, i, '\"'));
+		// 	printf("cond: %d\n", s[i] == c && s[i + 1] && s[i + 1] != c && !check_inside_quotes(s, i, '\'') && !check_inside_quotes(s, i, '\"'));
 		// }
-		if (s[i] == c && s[i + 1] && s[i + 1] != c && !is_inside_quotes(s, i, '\'') && !is_inside_quotes(s, i, '\"'))
+		if (s[i] == c && s[i + 1] && s[i + 1] != c && !check_inside_quotes(s, i, '\'') && !check_inside_quotes(s, i, '\"'))
 		{
 			count++;
 		}
@@ -62,8 +62,8 @@ static int	count_word(char const *s, char c, int i)
 	int	len;
 
 	len = 0;
-	while (s[i] && (s[i] != c || (s[i] == c && is_inside_quotes(s, i, '\"'))
-			|| (s[i] == c && is_inside_quotes(s, i, '\''))))
+	while (s[i] && (s[i] != c || (s[i] == c && check_inside_quotes(s, i, '\"'))
+			|| (s[i] == c && check_inside_quotes(s, i, '\''))))
 	{
 		len++;
 		i++;
@@ -84,7 +84,7 @@ static void	*sec_alloc(char **bigstr, int l)
 
 static void	skip_c(char const *s, char c, int *i)
 {
-	while (s[*i] == c && s[*i] && !is_inside_quotes(s, *i, '\'') && !is_inside_quotes(s, *i, '\"'))
+	while (s[*i] == c && s[*i] && !check_inside_quotes(s, *i, '\'') && !check_inside_quotes(s, *i, '\"'))
 		(*i)++;
 }
 
@@ -109,8 +109,8 @@ char	**ft_split(char const *s, char c)
 		str[l] = (char *)malloc(count_word(s, c, i) + 1);
 		if (!str[l])
 			return (sec_alloc(str, l));
-		while (s[i] && (s[i] != c || (s[i] == c && is_inside_quotes(s, i, '\"'))
-				|| (s[i] == c && is_inside_quotes(s, i, '\''))))
+		while (s[i] && (s[i] != c || (s[i] == c && check_inside_quotes(s, i, '\"'))
+				|| (s[i] == c && check_inside_quotes(s, i, '\''))))
 			str[l][n++] = s[i++];
 		str[l++][n] = '\0';
 	}

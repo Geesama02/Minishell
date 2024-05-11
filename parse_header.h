@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/08 11:19:44 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/11 14:11:34 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,18 @@ void	cd_command(char *path);
 char	*remove__quotes(char *str);
 void 	print_tree(t_token_tree *root, int level);
 t_token_tree *create_node(char *token, t_t_type type);
+t_token_array *tokenizer(char *input);
+void	*free_alloc(char **bigstr, int l);
+int	is_inside_quotes(char const *s, int i);
 void	pwd_command();
+int is_op(char *input);
+int count_token_len(char *input);
+char *get_token(char **input, int num, char *str);
+int 	count_cmds(char *input);
+int	handle_tokens(char **input, char *input_cpy, char **holder, int i);
+int	handle_cmd(char **input, char *input_cpy, char **holder, int i);
+t_stack shunting_yard(t_token_array *tokens);
+int	count_array(t_token_array *tokens);
+t_token_tree	*build_tree(t_stack *stack);
 
 #endif
