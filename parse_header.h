@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/11 14:11:34 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:29:24 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_stack
 typedef struct	s_env_vars {
 	char *env_name;
 	char *env_val;
+	struct s_env_vars *next;
 }				t_env_vars;
 
 typedef struct	s_token_list
@@ -106,22 +107,27 @@ int		set_type(t_token_list *tokens, char **token, int *i);
 void	write_error(char *str);
 char	*ft_strtrim(char const *s1, char const *set);
 int		check_cmd(char *str);
-void	cd_command(char *path);
+int		cd_command(char *path);
 char	*remove__quotes(char *str);
 void 	print_tree(t_token_tree *root, int level);
 t_token_tree *create_node(char *token, t_t_type type);
 t_token_array *tokenizer(char *input);
 void	*free_alloc(char **bigstr, int l);
-int	is_inside_quotes(char const *s, int i);
-void	pwd_command();
-int is_op(char *input);
-int count_token_len(char *input);
-char *get_token(char **input, int num, char *str);
+int		is_inside_quotes(char const *s, int i);
+int		pwd_command();
+int		echo_command(char *string);
+t_env_vars	*export_command(char **tokens);
+int		is_op(char *input);
+int		count_token_len(char *input);
+char	*get_token(char **input, int num, char *str);
 int 	count_cmds(char *input);
-int	handle_tokens(char **input, char *input_cpy, char **holder, int i);
-int	handle_cmd(char **input, char *input_cpy, char **holder, int i);
-t_stack shunting_yard(t_token_array *tokens);
-int	count_array(t_token_array *tokens);
+int		handle_tokens(char **input, char *input_cpy, char **holder, int i);
+int		handle_cmd(char **input, char *input_cpy, char **holder, int i);
+t_stack	shunting_yard(t_token_array *tokens);
+int		count_array(t_token_array *tokens);
 t_token_tree	*build_tree(t_stack *stack);
+void    executing(t_token_tree *ex_tree);
+int		count_env_vars(char **tokens);
+void    print_env_variable(char *env_name, t_env_vars *head);
 
 #endif

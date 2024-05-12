@@ -1,66 +1,76 @@
 #include "parse_header.h"
 
-void    cd_command(char *path)
+int cd_command(char *path)
 {
     if (!path)
         chdir("~");
     if (chdir(path) != 0)
     {
         write(2, "chdir() failed!!\n", 18);
-        return ;
+        return (-1);
     }
+    return (0);
 }
 
-void    pwd_command()
+int pwd_command()
 {
     char buff[PATH_MAX];
 
     if (!getcwd(buff, sizeof(buff)))
     {
         write(2, "getcwd() failed!!\n", 19);
-        return ;
+        return (-1);
     }
     else
         printf("%s\n", buff);
+    return (0);
 }
 
-void    echo_command(char *string)
+int echo_command(char *string)
 {
-    printf("%s", string);
-}
-
-void    export_command(int j, char **tokens,
-    t_env_vars **env_vars, t_pipe_list *new_pipe)
-{
-    int         env_c;
-    int         r_j;
-    char        **cmds;
-    int         env_i;
-
-    env_c = 0;
-    env_i = 0;
-    r_j = j;
-    while (remove__quotes(tokens[j + 1]))
+    while (*string)
     {
-        if (ft_strchr(remove__quotes(tokens[j + 1]), '='))
+        if (write(1, &*string, 1) == -1)
+            return (-1);
+        string++;
+    }
+    return (0);
+}
+
+t_env_vars  *export_command(char **tokens)
+{
+    t_env_vars  *env_vars;
+    t_env_vars  *prev;
+    t_env_vars  *head;
+    int         nbr_envs;
+    int         i;
+    char        **cmds;
+
+    i = 1;
+    env_vars = NULL;
+    prev = NULL;
+    nbr_envs = count_env_vars(tokens);
+    while (i <= nbr_envs)
+    {
+        if (ft_strchr(tokens[i], '='))
         {
-            env_c++;
-            j++;
+            cmds = ft_split(tokens[i], '=');
+            env_vars = malloc(sizeof(t_env_vars));
+            env_vars->env_name = cmds[0];
+            env_vars->env_val = cmds[1];
+            if (i == 1)
+                head = env_vars;
+            prev = env_vars;
+            if (i == nbr_envs)
+                env_vars->next = NULL;
+            else
+                prev->next = env_vars;
+            i++;
         }
         else
-            break;
+            printf("export: `%s' : not a valid identifier", tokens[i]);
+        i++;
     }
-    j = r_j;
-    new_pipe->tokens[j].token = "export";
-    new_pipe->tokens[j].type = ENV_VAR;
-    *env_vars = malloc((sizeof(t_env_vars) * env_c) + 1);
-    while (env_c-- > 0)
-    {
-        cmds = ft_split(tokens[j + 1], '=');
-        env_vars[env_i]->env_name = ft_strdup(cmds[0]);
-        env_vars[env_i]->env_val = ft_strdup(cmds[1]);
-        env_i++;
-        j++;
-    }
-    
+    // printf("head -> %s\n", head->env_name);
+    return (head);
 }

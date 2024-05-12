@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/11 14:44:34 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:49:19 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_token_tree	*build_tree(t_stack *stack)
 	stack_tree = malloc(sizeof(t_token_tree *) * stack->head);
 	i = 0;
 	tree_offset = 0;
-	while(stack->token[i].token)
+	while (stack->token[i].token)
 	{
 		if (stack->token[i].type == CMD_T)
 		{
@@ -48,6 +48,5 @@ t_token_tree	*build_tree(t_stack *stack)
 			handle_non_cmd(stack, stack_tree, &tree_offset, i);
 		i++;
 	}
-
 	return (stack_tree[0]);
 }
