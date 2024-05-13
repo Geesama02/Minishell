@@ -7,9 +7,9 @@ void    print_env_variable(char *env_name, t_env_vars *head)
 
     i = 0;
     env_n = ft_strtrim(env_name, "$");
-    while (head && ft_strcmp(head->env_name, env_n))
+    while (head && head->env_name && ft_strcmp(head->env_name, env_n))
         head = head->next;
-    if (head)
+    if (head && head->env_name)
         printf("%s\n", head->env_val);
     else
         printf("\n");

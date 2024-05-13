@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/12 15:29:24 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:05:03 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,6 @@ t_token_tree	*build_tree(t_stack *stack);
 void    executing(t_token_tree *ex_tree);
 int		count_env_vars(char **tokens);
 void    print_env_variable(char *env_name, t_env_vars *head);
+void    unset_command(t_env_vars **head, char *cmd);
 
 #endif

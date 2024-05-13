@@ -71,3 +71,30 @@ t_env_vars  *export_command(char **tokens)
     }
     return (head);
 }
+
+void    unset_command(t_env_vars **head, char *cmd)
+{
+    t_env_vars *tmp;
+
+    tmp = *head;
+    if (tmp && !ft_strcmp(tmp->env_name, cmd))
+    {    
+        tmp->env_name = NULL;
+        tmp->env_val = NULL;
+        if (tmp->next)
+            *head = tmp->next;
+        else
+            *head = NULL;
+        free(tmp);
+    }
+    else
+    {
+        while (tmp && tmp->next && ft_strcmp(tmp->next->env_name, cmd))
+            tmp = tmp->next;
+        if (tmp && tmp->next && tmp->next->next)
+            tmp->next = tmp->next->next;
+        else
+            tmp->next = NULL;
+        free(tmp->next);
+    }
+}

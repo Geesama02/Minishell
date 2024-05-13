@@ -40,6 +40,8 @@ int executing_command(t_token_tree *tree)
     }
     else if (!ft_strcmp(cmds[0], "export"))
         head = export_command(cmds);
+    else if (!ft_strcmp(cmds[0], "unset"))
+        unset_command(&head, cmds[1]);
     return (0);
 }
 
