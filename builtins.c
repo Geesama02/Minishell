@@ -60,17 +60,14 @@ t_env_vars  *export_command(char **tokens)
             env_vars->env_val = cmds[1];
             if (i == 1)
                 head = env_vars;
-            prev = env_vars;
-            if (i == nbr_envs)
-                env_vars->next = NULL;
-            else
+            env_vars->next = NULL;
+            if (i != 1)
                 prev->next = env_vars;
-            i++;
+            prev = env_vars;
         }
         else
             printf("export: `%s' : not a valid identifier", tokens[i]);
         i++;
     }
-    // printf("head -> %s\n", head->env_name);
     return (head);
 }
