@@ -39,9 +39,11 @@ int executing_command(t_token_tree *tree)
         }
     }
     else if (!ft_strcmp(cmds[0], "export"))
-        head = export_command(cmds);
+        head = export_command(cmds, head);
     else if (!ft_strcmp(cmds[0], "unset"))
         unset_command(&head, cmds[1]);
+    else if (!ft_strcmp(cmds[0], "env"))
+        env_command(cmds[1], head);
     return (0);
 }
 

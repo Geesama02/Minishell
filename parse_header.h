@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/13 15:05:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:02:14 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	*free_alloc(char **bigstr, int l);
 int		is_inside_quotes(char const *s, int i);
 int		pwd_command();
 int		echo_command(char *string);
-t_env_vars	*export_command(char **tokens);
+t_env_vars  *export_command(char **tokens, t_env_vars *head);
 int		is_op(char *input);
 int		count_token_len(char *input);
 char	*get_token(char **input, int num, char *str);
@@ -130,5 +130,6 @@ void    executing(t_token_tree *ex_tree);
 int		count_env_vars(char **tokens);
 void    print_env_variable(char *env_name, t_env_vars *head);
 void    unset_command(t_env_vars **head, char *cmd);
+void    env_command(char *env_name, t_env_vars *env_vars);
 
 #endif
