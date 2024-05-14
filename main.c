@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/12 16:13:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/14 12:33:45 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,13 +119,16 @@ void	*free_alloc(char **bigstr, int l)
 	return (NULL);
 }
 
-int main()
+int main(int argc, char **argv, char **envp)
 {
 	t_token_array *token_array;
 	t_stack postfix_stack;
 	t_token_tree *ast_tree;
+
     while(1)
     {
+		(void)argc;
+		(void)argv;
         char *input = readline("Minishell $> ");
         if (input == NULL)
             break;
@@ -148,7 +151,7 @@ int main()
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
-		executing(ast_tree);
+		executing(ast_tree, envp);
 		// print_tree(ast_tree, 0);
     }
     return (0);

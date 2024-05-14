@@ -10,7 +10,13 @@ void    print_env_variable(char *env_name, t_env_vars *head)
     while (head && head->env_name && ft_strcmp(head->env_name, env_n))
         head = head->next;
     if (head && head->env_name)
-        printf("%s\n", head->env_val);
+    {    
+        printf("%s", head->env_val);
+        if (head->next)
+            printf(" ");
+        else
+            printf("\n");
+    }
     else
         printf("\n");
 }

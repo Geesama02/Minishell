@@ -1,6 +1,6 @@
 #include "parse_header.h"
 
-int executing_command(t_token_tree *tree)
+int executing_command(t_token_tree *tree, char **envp)
 {
     static t_env_vars   *head;
     char                **cmds;
@@ -43,11 +43,15 @@ int executing_command(t_token_tree *tree)
     else if (!ft_strcmp(cmds[0], "unset"))
         unset_command(&head, cmds[1]);
     else if (!ft_strcmp(cmds[0], "env"))
-        env_command(cmds[1], head);
+        env_command(head, envp);
+    else if (!ft_strcmp(cmds[0], "exit"))
+        exit(1);
+    else
+        printf("minishell: %s: command not found\n", cmds[0]);
     return (0);
 }
 
-void    executing(t_token_tree *ex_tree)
+void    executing(t_token_tree *ex_tree, char **envp)
 {
     if (ex_tree->type == OPERATOR_T && ex_tree->right && ex_tree->left)
     {
@@ -56,22 +60,22 @@ void    executing(t_token_tree *ex_tree)
         {
             if (!ft_strcmp(ex_tree->token, "&&"))
             {
-                if (!executing_command(ex_tree->left))
-                    executing_command(ex_tree->right);
+                if (!executing_command(ex_tree->left, envp))
+                    executing_command(ex_tree->right, envp);
             }
             else if (!ft_strcmp(ex_tree->token, "||"))
             {
-                if (executing_command(ex_tree->left) == -1)
-                    executing_command(ex_tree->right);
+                if (executing_command(ex_tree->left, envp) == -1)
+                    executing_command(ex_tree->right, envp);
             }
         }
         else
-            executing(ex_tree->left);
+            executing(ex_tree->left, envp);
     }
     else if (ex_tree->left)
-        executing(ex_tree->left);
+        executing(ex_tree->left, envp);
     else if (ex_tree->right)
-        executing(ex_tree->right);
+        executing(ex_tree->right, envp);
     else if (!ex_tree->left && !ex_tree->right)
-        executing_command(ex_tree);
+        executing_command(ex_tree, envp);
 }
