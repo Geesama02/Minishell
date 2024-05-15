@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/15 14:32:39 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:21:37 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,13 +149,16 @@ int check_syntax(char *input)
 	return (1);
 }
 
-int main()
+int main(int argc, char **argv, char **envp)
 {
 	t_token_array *token_array;
 	t_stack postfix_stack;
 	t_token_tree *ast_tree;
+
     while(1)
     {
+		(void)argc;
+		(void)argv;
         char *input = readline("Minishell $> ");
         if (input == NULL)
             break;
@@ -168,7 +171,6 @@ int main()
 			free(input);
 			continue;
 		}
-		int i = 0;
 		token_array = tokenizer(input);
 		if (!token_array)
 		{
@@ -176,15 +178,20 @@ int main()
 			free(input);
 			continue;
 		}
-		while(token_array[i].token)
-		{
-			printf("token ==> %s | type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
-			i++;
-		}
+		// while(token_array[i].token)
+		// {
+		// 	printf("token ==> %s | type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
+		// 	i++;
+		// }
 		postfix_stack = shunting_yard(token_array);
 		ast_tree = build_tree(&postfix_stack);
-		printf("======== Tree ========\n");
-		print_tree(ast_tree, 0);
+		// printf("left -> %s\n", ast_tree->left->token);
+		// printf("right -> %s\n", ast_tree->right->token);
+		// printf("========= stack =========\n");
+		// print_stack(&postfix_stack, postfix_stack.head);
+		// printf("======== Tree ========\n");
+		executing(ast_tree, envp);
+		// print_tree(ast_tree, 0);
     }
     return (0);
 }
