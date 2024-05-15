@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/11 14:46:25 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:32:39 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,36 @@ void	*free_alloc(char **bigstr, int l)
 	return (NULL);
 }
 
+int check_syntax(char *input)
+{
+	int i;
+	int quote;
+	int dquote;
+	int parenthesis;
+
+	i = 0;
+	quote = 0;
+	dquote = 0;
+	parenthesis = 0;
+	while (input[i])
+	{
+		if (input[i] == ')' && parenthesis != 1 && is_inside_quotes(input, i) == 0)
+			return (0);
+		if (input[i] == '(' && is_inside_quotes(input, i) == 0)
+			parenthesis = !parenthesis;
+		if (input[i] == ')' && is_inside_quotes(input, i) == 0)
+			parenthesis = !parenthesis;
+		if (input[i] == '\'' && dquote == 0)
+			quote = !quote;
+		if (input[i] == '\"' && quote == 0)
+			dquote = !dquote;
+		i++;
+	}
+	if (dquote || quote || parenthesis)
+		return (0);
+	return (1);
+}
+
 int main()
 {
 	t_token_array *token_array;
@@ -131,11 +161,21 @@ int main()
             break;
         if (input[0] == '\0')
             continue;
-		if (check_ending_pipe(input, ft_strlen(input) - 1) == 1)
-			continue_pipe(&input);
         add_history(input);
+		if (check_syntax(input) == 0)
+		{
+			write_error("Error: parse error\n");
+			free(input);
+			continue;
+		}
 		int i = 0;
 		token_array = tokenizer(input);
+		if (!token_array)
+		{
+			write_error("Error: parse error\n");
+			free(input);
+			continue;
+		}
 		while(token_array[i].token)
 		{
 			printf("token ==> %s | type ==> %s\n", token_array[i].token, print_type(token_array[i].type));

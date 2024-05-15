@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/10 15:13:18 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:01:27 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	handle_cmd(char **input, char *input_cpy, char **holder, int i)
 	j = 0;
 	if (**input == ' ')
 	{
-		(*input)++;
+		// (*input)++;
 		return (1);
 	}
 	holder[i] = malloc(count_token_len(*input) + 1);
@@ -61,24 +61,35 @@ int	handle_cmd(char **input, char *input_cpy, char **holder, int i)
 	return (1);
 }
 
-int	copy_to_array(t_token_array *token_array, char **holder)
+int	free_token_holder(char **holder, t_token_array *token_array, int i)
+{
+	int j;
+
+	j = 0;
+	while (holder[j] != NULL)
+	{
+		free(holder[j]);
+		j++;
+	}
+	free(holder);
+	while (i-- > 0)
+		free(token_array[i].token);
+	free(token_array);
+	return (0);
+}
+
+int	copy_to_array(t_token_array *token_array, char **holder, int j)
 {
 	int	i;
 
 	i = 0;
+	if (scan_syntax(holder, j) == 0)
+		return (free_token_holder(holder, token_array, i));
 	while(holder[i] != NULL)
 	{
 		token_array[i].token = ft_strdup(holder[i]);
 		if (!token_array[i].token)
-		{
-			while (*holder)
-				free((*holder)++);
-			free(holder);
-			while (--i > 0)
-				free(token_array[i].token);
-			free(token_array);
-			return (0);
-		}
+			return (free_token_holder(holder, token_array, i));
 		token_array[i].type = set_token_type(holder[i]);
 		free(holder[i]);
 		i++;
@@ -101,13 +112,14 @@ t_token_array *tokenizer(char *input)
 	i = 0;
 	while(*input)
 	{
+		while (*input == ' ')
+			input++;
 		if (!handle_tokens(&input, input_cpy, holder, i))
 			return (NULL);
-		if (*input != ' ')
-			i++;
+		i++;
 	}
 	holder[i] = NULL;
-	if (copy_to_array(token_array, holder) == 0)
+	if (copy_to_array(token_array, holder, i) == 0)
 		return (NULL);
 	return (token_array);
 }

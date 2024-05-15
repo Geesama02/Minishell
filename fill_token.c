@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 10:20:06 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/08 11:19:24 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/13 14:50:48 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void swap_tospace(char *input)
 	}
 }
 
-int	unclosed_quotes(char *str, char c)
+int	unclosed_var(char *str, char c)
 {
 	int i = 0;
 	int count = 0;
@@ -59,7 +59,7 @@ char	*remove__quotes(char *str)
 
 	if (!str)
 		return (NULL);
-	if (unclosed_quotes(str, '\"') == 1 || unclosed_quotes(str, '\'') == 1)
+	if (unclosed_var(str, '\"') == 1 || unclosed_var(str, '\'') == 1)
 	{
 		write_error("Error: quotes not closed\n");
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/11 14:11:34 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:01:34 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,5 +123,8 @@ int	handle_cmd(char **input, char *input_cpy, char **holder, int i);
 t_stack shunting_yard(t_token_array *tokens);
 int	count_array(t_token_array *tokens);
 t_token_tree	*build_tree(t_stack *stack);
+int	scan_syntax(char **holder, int j);
+int	unclosed_var(char *str, char c);
+t_t_type	set_token_type(char *token);
 
 #endif
