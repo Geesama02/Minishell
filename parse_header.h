@@ -6,9 +6,10 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/17 19:52:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/17 20:39:21 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef PARSE_HEADER_H
 #define PARSE_HEADER_H
@@ -135,5 +136,8 @@ int     execute(t_token_tree *tree, char **envp);
 void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right);
 int		exec_command(char **cmds, char **envp);
 int		exec_normal_commands(t_token_tree *tree, char **envp);
+int		scan_syntax(char **holder, int j);
+int		unclosed_var(char *str, char c);
+t_t_type	set_token_type(char *token);
 
 #endif
