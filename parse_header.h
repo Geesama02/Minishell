@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/17 20:39:21 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/17 20:41:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,9 @@ void    print_env_variable(char *env_name, t_env_vars *head);
 void    unset_command(t_env_vars **head, char *cmd);
 void    env_command(t_env_vars *env_vars, char **envp);
 char	**ft_split_one(char const *s, char c);
+int		scan_syntax(char **holder, int j);
+int		unclosed_var(char *str, char c);
+t_t_type	set_token_type(char *token);
 int     execute(t_token_tree *tree, char **envp);
 void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right);
 int		exec_command(char **cmds, char **envp);
