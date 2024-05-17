@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/14 12:33:45 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/17 19:48:53 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ int main(int argc, char **argv, char **envp)
     {
 		(void)argc;
 		(void)argv;
+		(void)envp;
         char *input = readline("Minishell $> ");
         if (input == NULL)
             break;
@@ -151,7 +152,7 @@ int main(int argc, char **argv, char **envp)
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
-		executing(ast_tree, envp);
+		execute(ast_tree, envp);
 		// print_tree(ast_tree, 0);
     }
     return (0);
