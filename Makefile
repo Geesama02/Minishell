@@ -3,7 +3,7 @@ CC = cc
 NAME = main
 SRC = main.c ft_split.c ft_strcmp.c ft_strjoin.c fill_token.c ft_strtrim.c builtins.c create_ast.c ft_strncmp.c ft_strdup.c \
 	execution.c expanding.c tokenizer.c tokenizer_utils.c tokenizer_utils2.c shunting_yard.c shunting_yard_utils.c \
-	build_tree.c expanding_utils.c ft_split_one.c
+	build_tree.c expanding_utils.c ft_split_one.c wildcard_utils.c
 OBJS = ${SRC:.c=.o}
 LIBFT = ./libft/libft.a
 

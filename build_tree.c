@@ -3,14 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/12 15:49:19 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/18 11:38:49 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_header.h"
+
+void set_ids(t_token_tree *root, int *id)
+{
+	if (!root)
+		return ;
+	if (root->type == CMD_T)
+	{
+		root->id = *id;
+		(*id)++;
+	}
+	else
+		root->id = -1;
+	set_ids(root->left, id);
+	set_ids(root->right, id);
+}
+
+void set_count(t_token_tree *root, int count)
+{
+	if (!root)
+		return ;
+	root->cmd_count = count - 1;
+	set_count(root->left, count);
+	set_count(root->right, count);
+}
 
 int	handle_non_cmd(t_stack *stack, t_token_tree **stack_tree, int *tree_offset, int i)
 {
@@ -31,6 +55,7 @@ t_token_tree	*build_tree(t_stack *stack)
 {
 	int i;
 	t_token_tree	**stack_tree;
+	t_token_tree	*root;
 	int	tree_offset;
 
 	stack_tree = malloc(sizeof(t_token_tree *) * stack->head);
@@ -48,5 +73,10 @@ t_token_tree	*build_tree(t_stack *stack)
 			handle_non_cmd(stack, stack_tree, &tree_offset, i);
 		i++;
 	}
-	return (stack_tree[0]);
+	i = 1;
+	root = stack_tree[0];
+	free(stack_tree);
+	set_ids(root, &i);
+	set_count(root, i);
+	return (root);
 }

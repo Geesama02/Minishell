@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/15 15:16:20 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/18 10:58:06 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <limits.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <dirent.h>
 
 
 
@@ -77,6 +78,8 @@ typedef struct	s_token_list
 
 typedef struct s_token_tree
 {
+	int id;
+	int cmd_count;
 	char *token;
 	t_t_type type;
 	struct s_token_tree *left;
@@ -135,5 +138,8 @@ char	**ft_split_one(char const *s, char c);
 int		scan_syntax(char **holder, int j);
 int		unclosed_var(char *str, char c);
 t_t_type	set_token_type(char *token);
+void 	free_tree(t_token_tree *root);
+char 	*wildcard(char *str);
+int		has_wildcard(char *str);
 
 #endif

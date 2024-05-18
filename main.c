@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/15 15:21:37 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/18 11:03:11 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ int main(int argc, char **argv, char **envp)
     {
 		(void)argc;
 		(void)argv;
+		(void)envp;
         char *input = readline("Minishell $> ");
         if (input == NULL)
             break;
@@ -178,11 +179,14 @@ int main(int argc, char **argv, char **envp)
 			free(input);
 			continue;
 		}
+		free(input);
 		// while(token_array[i].token)
 		// {
 		// 	printf("token ==> %s | type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
 		// 	i++;
 		// }
+		(void)postfix_stack;
+		(void)ast_tree;
 		postfix_stack = shunting_yard(token_array);
 		ast_tree = build_tree(&postfix_stack);
 		// printf("left -> %s\n", ast_tree->left->token);
@@ -190,8 +194,10 @@ int main(int argc, char **argv, char **envp)
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
-		executing(ast_tree, envp);
-		// print_tree(ast_tree, 0);
+		// executing(ast_tree, envp);
+		print_tree(ast_tree, 0);
+		free_tree(ast_tree);
+		// wildcard("ft*p*.c");
     }
     return (0);
 }
