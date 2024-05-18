@@ -26,7 +26,9 @@ int exec_normal_commands(t_token_tree *tree, char **envp)
 
 int     execute(t_token_tree *tree, char **envp)
 {
-    if (tree->type == OPERATOR_T)
+    if (tree->type == REDIRECTION_T)
+        execute_redirection(tree->left->token, tree->right->token, envp);
+    else if (tree->type == OPERATOR_T)
     {
         if (tree->left->type == CMD_T && tree->right->type == CMD_T)
         {
@@ -47,8 +49,6 @@ int     execute(t_token_tree *tree, char **envp)
             }
             else if (!ft_strcmp(tree->token, "|"))
                 execute_pipe(envp, tree->left, tree->right);
-            // else if (!ft_strcmp(tree->token, ">"))
-            //     execute_redireciton()
         }
         else
             execute(tree->left, envp);
@@ -61,4 +61,31 @@ int     execute(t_token_tree *tree, char **envp)
             return (-1);
     }
     return (0);
+}
+
+void    execute_tree(t_token_tree *tree, char **envp)
+{
+    if (!tree->right && !tree->left)
+        exec_normal_commands(tree, envp);
+    else
+    {
+        if (!ft_strcmp(tree->token, "&&"))
+        {
+            if (!execute(tree->left, envp))
+                execute(tree->right, envp);
+        }
+        else if (!ft_strcmp(tree->token, "||"))
+        {
+            if (execute(tree->left, envp) == -1)
+                execute(tree->right, envp);
+        }
+        else if (!ft_strcmp(tree->token, "|")
+            && tree->right->type == CMD_T && tree->left->type == CMD_T)
+            execute_pipe(envp, tree->left, tree->right);
+        else
+        {
+            execute(tree->left, envp);
+            execute(tree->right, envp);
+        }
+    }
 }

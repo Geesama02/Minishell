@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/15 15:19:17 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/17 17:11:14 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ int	copy_to_array(t_token_array *token_array, char **holder, int j)
 		return (free_token_holder(holder, token_array, i));
 	while(holder[i] != NULL)
 	{
+		if (has_wildcard(holder[i]) == 1)
+			printf("has wildcard\n");
 		token_array[i].token = ft_strdup(holder[i]);
 		if (!token_array[i].token)
 			return (free_token_holder(holder, token_array, i));

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/18 12:38:38 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/18 15:26:32 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include <limits.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <dirent.h>
+#include <fcntl.h>
 
 typedef enum e_t_type
 {
@@ -52,7 +54,7 @@ typedef struct	s_env_vars {
 typedef struct s_token_tree
 {
 	int id;
-	int nbr_commands;
+	int cmd_count;
 	char *token;
 	t_t_type type;
 	struct s_token_tree *left;
@@ -97,8 +99,6 @@ void    print_env_variable(char *env_name, t_env_vars *head);
 void    unset_command(t_env_vars **head, char *cmd);
 void    env_command(t_env_vars *env_vars, char **envp);
 char	**ft_split_one(char const *s, char c);
-int		scan_syntax(char **holder, int j);
-int		unclosed_var(char *str, char c);
 t_t_type	set_token_type(char *token);
 int     execute(t_token_tree *tree, char **envp);
 void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right);
@@ -107,5 +107,10 @@ int		exec_normal_commands(t_token_tree *tree, char **envp);
 int		scan_syntax(char **holder, int j);
 int		unclosed_var(char *str, char c);
 t_t_type	set_token_type(char *token);
+void 	free_tree(t_token_tree *root);
+char 	*wildcard(char *str);
+int		has_wildcard(char *str);
+void    execute_tree(t_token_tree *tree, char **envp);
+void    execute_redirection(char *cmd, char *file_name, char **envp);
 
 #endif

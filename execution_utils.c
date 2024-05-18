@@ -34,7 +34,7 @@ int exec_command(char **cmds, char **envp)
                     if (echo_command(" ") == -1)
                         return (-1);
                 }
-                if (ft_strcmp(cmds[1], "-n"))
+                if (ft_strcmp(cmds[1], "-n") && !cmds[i + 1])
                 {    
                     if (echo_command("\n") == -1)
                         return (-1);

@@ -28,7 +28,10 @@ int pwd_command()
         return (-1);
     }
     else
+    {    
         write(1, buff, ft_strlen(buff));
+        write(1, "\n", 1);
+    }
     return (0);
 }
 
@@ -39,7 +42,7 @@ int echo_command(char *string)
         write(1, "\n", 1);
         write(1, "\n", 1);
     }
-    while (*string)
+    while (*string && *string != '>')
     {
         if (write(1, &*string, 1) == -1)
             return (-1);

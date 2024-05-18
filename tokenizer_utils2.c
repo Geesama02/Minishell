@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/15 15:01:20 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/17 17:09:44 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,18 @@ int	scan_syntax(char **holder, int j)
 		i++;
 	}
 	return (1);
+}
+
+int	has_wildcard(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '*' && is_inside_quotes(str, i) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
 }

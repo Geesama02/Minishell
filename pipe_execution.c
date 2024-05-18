@@ -37,7 +37,8 @@ void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right)
     if (r_pid == 0)
     {
         close(r_fds[0]);
-        dup2(stdout_fd, 1);
+        if (right->id == right->cmd_count)
+            dup2(stdout_fd, 1);
         buff = get_next_line(0);
         while (buff)
         {
@@ -54,8 +55,10 @@ void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right)
     dup2(stdin_fd, 0);
     dup2(stdout_fd, 1);
     wait(NULL);
-    // close(fds[0]); // close fail
-    // close(fds[1]);
-    close(r_fds[0]); //close fail
+    close(fds[0]); // close fail
+    close(fds[1]);
+    close(r_fds[0]);
     close(r_fds[1]);
+    close(stdout_fd);
+    close(stdin_fd);
 }
