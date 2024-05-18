@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/18 11:54:35 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/18 12:09:38 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ int main(int argc, char **argv, char **envp)
 		(void)envp;
         char *input = readline("Minishell $> ");
         if (input == NULL)
-            break;
+			break;
         if (input[0] == '\0')
             continue;
         add_history(input);
@@ -195,8 +195,8 @@ int main(int argc, char **argv, char **envp)
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
-		execute(ast_tree, envp);
-		// print_tree(ast_tree, 0);
+		// execute(ast_tree, envp);
+		print_tree(ast_tree, 0);
 		free_tree(ast_tree);
 		// wildcard("ft*p*.c");
     }

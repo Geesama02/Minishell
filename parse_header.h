@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/18 11:47:19 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/18 12:05:06 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_token_array
 typedef struct s_stack
 {
 	t_token_array *token;
-	int head;
+	int	head;
 } t_stack;
 
 typedef struct	s_env_vars {
@@ -70,12 +70,6 @@ typedef struct	s_env_vars {
 	char *env_val;
 	struct s_env_vars *next;
 }				t_env_vars;
-
-typedef struct	s_token_list
-{
-	char *token;
-	t_token_type type;
-} t_token_list;
 
 typedef struct s_token_tree
 {
@@ -87,14 +81,6 @@ typedef struct s_token_tree
 	struct s_token_tree *right;
 } t_token_tree;
 
-typedef struct	s_pipe_list
-{
-	int					id;
-	t_token_list		*tokens;
-	t_env_vars			**env_variables;
-	struct s_pipe_list	*next;
-}				t_pipe_list;
-
 
 char	*ft_strdup(const char *s1);
 char	*ft_strtrim(char const *s1, char const *set);
@@ -104,10 +90,10 @@ char	**ft_split(char const *s, char c);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char  *s1, char  *s2);
-int		fill_token(char *pipe_c, int i, t_pipe_list *new_pipe,
-			t_env_vars **env_vars);
+// int		fill_token(char *pipe_c, int i, t_pipe_list *new_pipe,
+// 			t_env_vars **env_vars);
 int		len(char **s);
-int		set_type(t_token_list *tokens, char **token, int *i);
+// int		set_type(t_token_list *tokens, char **token, int *i);
 void	write_error(char *str);
 char	*ft_strtrim(char const *s1, char const *set);
 int		check_cmd(char *str);

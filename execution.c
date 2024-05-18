@@ -10,8 +10,8 @@ int exec_normal_commands(t_token_tree *tree, char **envp)
     cmds = ft_split(tree->token, ' ');
     pid = fork();
     if (pid == -1)
-        write(2, "fork() failed!!\n", 17); //error
-    if (pid == 0)
+        write(2, "fork() failed!!\n", 17); //fail
+    else if (pid == 0)
     {    
         if (exec_command(cmds, envp) == -1)
             exit(1);
