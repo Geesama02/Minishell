@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/17 20:41:21 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/18 11:40:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,10 +160,10 @@ int main(int argc, char **argv, char **envp)
     {
 		(void)argc;
 		(void)argv;
-		(void)envp;
+		// (void)envp;
         char *input = readline("Minishell $> ");
         if (input == NULL)
-            break;
+			break;
         if (input[0] == '\0')
             continue;
         add_history(input);

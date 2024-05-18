@@ -50,7 +50,7 @@ int exec_command(char **cmds, char **envp)
     else if (!ft_strcmp(cmds[0], "env"))
         env_command(head, envp);
     else if (!ft_strcmp(cmds[0], "exit"))
-        exit(1);
+        exit(0);
     else
         printf("minishell: %s: command not found\n", cmds[0]);
     return (0);
