@@ -28,14 +28,14 @@ int pwd_command()
         return (-1);
     }
     else
-        printf("%s\n", buff);
+        write(1, buff, ft_strlen(buff));
     return (0);
 }
 
 int echo_command(char *string)
 {
     if (!string)
-    {    
+    {
         write(1, "\n", 1);
         write(1, "\n", 1);
     }
@@ -125,8 +125,11 @@ void    env_command(t_env_vars *env_vars, char **envp)
 {
     while (*envp)
     {
-        printf("%s\n", *envp);
-        envp++;
+        while (*envp)
+        {    
+            printf("%s\n", *envp);
+            envp++;
+        }
     }
     while (env_vars)
     {
