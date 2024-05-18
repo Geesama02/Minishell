@@ -2,7 +2,7 @@
 
 void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right)
 {
-    char        buff[256];
+    char        *buff;
     char        **cmds;
     pid_t       l_pid;
     pid_t       r_pid;
@@ -37,9 +37,15 @@ void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right)
     if (r_pid == 0)
     {
         close(r_fds[0]);
-        int nbytes = read(0, buff, 256);
-        buff[nbytes] = '\0';
         dup2(stdout_fd, 1);
+        buff = get_next_line(0);
+        while (buff)
+        {
+            printf("in the printing!!\n"); 
+            printf("%s\n", buff);
+            buff = get_next_line(0);
+        }
+        printf("passed the printing!!\n"); 
         cmds = ft_split(right->token, ' ');
         exec_command(cmds, envp);
         close(r_fds[1]);

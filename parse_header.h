@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/18 10:51:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/18 12:38:38 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_token_tree
 } t_token_tree;
 
 
+char	*get_next_line(int fd);
 char	*ft_strdup(const char *s1);
 char	*ft_strtrim(char const *s1, char const *set);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -67,11 +68,8 @@ size_t	ft_strlen(const char *s);
 char	**ft_split(char const *s, char c);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char  *s1, char  *s2);
-// int		fill_token(char *pipe_c, int i, t_pipe_list *new_pipe,
-// 			t_env_vars **env_vars);
+char	*ft_strjoin(char *s1, char *s2);
 int		len(char **s);
-// int		set_type(t_token_list *tokens, char **token, int *i);
 void	write_error(char *str);
 char	*ft_strtrim(char const *s1, char const *set);
 int		check_cmd(char *str);

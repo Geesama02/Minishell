@@ -47,6 +47,8 @@ int     execute(t_token_tree *tree, char **envp)
             }
             else if (!ft_strcmp(tree->token, "|"))
                 execute_pipe(envp, tree->left, tree->right);
+            // else if (!ft_strcmp(tree->token, ">"))
+            //     execute_redireciton()
         }
         else
             execute(tree->left, envp);
