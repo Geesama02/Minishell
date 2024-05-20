@@ -61,32 +61,6 @@ void    execute_rest(char **cmds, char **envp)
     }
 }
 
-void    execute_rest_pipe(char **cmds, char **envp)
-{
-    int     i;
-    char    **paths;
-    char    *path;
-    pid_t   pid;
-
-    i = 0;
-    paths = ft_split(getenv("PATH"), ':'); //leaks
-    while(paths[i])
-    {
-        paths[i] = add_slash(paths[i]); //leaks
-        i++;
-    }
-    i = 0;
-    path = find_path(paths, cmds[0]);
-    if (path)
-    {
-        pid = fork();
-        if (!pid)
-            execve(path, cmds, envp);
-        wait(NULL);
-    }
-}
-
-
 
 int exec_command(char **cmds, char **envp)
 {
