@@ -1,5 +1,93 @@
 #include "parse_header.h"
 
+char *add_slash(char *string)
+{
+    int i;
+    char *f_string;
+
+    f_string = malloc((sizeof(char) * ft_strlen(string)) + 2); //leaks
+    i = 0;
+    while (string[i])
+    {   
+        f_string[i] = string[i];
+        i++;
+    }
+    f_string[i] = '/';
+    f_string[i + 1] = '\0';
+    return (f_string);
+}
+
+char *find_path(char **paths, char *cmd)
+{
+    int         i;
+    char        *path;
+    struct stat buffer;
+
+    path = NULL;
+    i = 0;
+    while (paths[i])
+    {
+        path = ft_strjoin(paths[i], cmd); //leaks
+        if (!stat(path, &buffer))
+            return (path);
+        else
+            i++;
+    }
+    return (NULL);
+}
+
+void    execute_rest(char **cmds, char **envp)
+{
+    int     i;
+    char    **paths;
+    char    *path;
+    pid_t   pid;
+
+    i = 0;
+    paths = ft_split(getenv("PATH"), ':'); //leaks
+    while(paths[i])
+    {
+        paths[i] = add_slash(paths[i]); //leaks
+        i++;
+    }
+    i = 0;
+    path = find_path(paths, cmds[0]);
+    if (path)
+    {
+        pid = fork();
+        if (!pid)
+            execve(path, cmds, envp);
+        wait(NULL);
+    }
+}
+
+void    execute_rest_pipe(char **cmds, char **envp)
+{
+    int     i;
+    char    **paths;
+    char    *path;
+    pid_t   pid;
+
+    i = 0;
+    paths = ft_split(getenv("PATH"), ':'); //leaks
+    while(paths[i])
+    {
+        paths[i] = add_slash(paths[i]); //leaks
+        i++;
+    }
+    i = 0;
+    path = find_path(paths, cmds[0]);
+    if (path)
+    {
+        pid = fork();
+        if (!pid)
+            execve(path, cmds, envp);
+        wait(NULL);
+    }
+}
+
+
+
 int exec_command(char **cmds, char **envp)
 {
     static t_env_vars   *head;
@@ -52,6 +140,8 @@ int exec_command(char **cmds, char **envp)
     else if (!ft_strcmp(cmds[0], "exit"))
         exit(0);
     else
-        printf("minishell: %s: command not found\n", cmds[0]);
+        execute_rest(cmds, envp);
+    // else
+    //     printf("minishell: %s: command not found\n", cmds[0]);
     return (0);
 }

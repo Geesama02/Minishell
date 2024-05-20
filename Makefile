@@ -13,7 +13,7 @@ NEXT_LINE_H = ./get_next_line/get_next_line.h
 all : ${NAME}
 
 ${LIBFT} :
-	cd ./libft && make 
+	make -C libft
 
 ${NAME} : ${OBJS} ${LIBFT}
 	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -lreadline -o ${NAME}
@@ -23,11 +23,11 @@ ${NAME} : ${OBJS} ${LIBFT}
 
 clean : 
 	rm -rf ${OBJS} ${BOBJS}
-	cd ./libft && make clean
+	make clean -C libft
 
 fclean : clean
 	rm -rf ${NAME}
-	cd ./libft && make fclean
+	make fclean -C libft
 
 re : fclean all
 

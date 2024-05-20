@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/18 15:25:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:12:51 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ int main(int argc, char **argv, char **envp)
 		// printf("======== Tree ========\n");
 		execute_tree(ast_tree, envp);
 		// print_tree(ast_tree, 0);
-		// free_tree(ast_tree);
+		free_tree(ast_tree);
 		// wildcard("ft*p*.c");
     }
     return (0);

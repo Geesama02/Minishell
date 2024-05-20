@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_ast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:48:47 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/18 11:35:58 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/19 09:38:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void print_tree(t_token_tree *root, int level)
 		printf("------------");
 		i++;
 	}
-	printf("%s | id -> %d | count -> %d\n", root->token, root->id, root->cmd_count);
+	printf("%s\n", root->token);
 	print_tree(root->left, level + 1);
 	print_tree(root->right, level + 1);
 }

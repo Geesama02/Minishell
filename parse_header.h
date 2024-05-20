@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/18 15:26:32 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:05:39 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <readline/history.h>
 #include <dirent.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 
 typedef enum e_t_type
 {
@@ -101,7 +102,7 @@ void    env_command(t_env_vars *env_vars, char **envp);
 char	**ft_split_one(char const *s, char c);
 t_t_type	set_token_type(char *token);
 int     execute(t_token_tree *tree, char **envp);
-void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right);
+void	execute_pipe(char **envp, t_token_tree *left, t_token_tree *right);
 int		exec_command(char **cmds, char **envp);
 int		exec_normal_commands(t_token_tree *tree, char **envp);
 int		scan_syntax(char **holder, int j);
