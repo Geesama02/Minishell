@@ -16,6 +16,12 @@ void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right)
     l_pid = fork();
     if (l_pid == -1)
         write(2, "fork() failed!!\n", 17); //fork fail
+    if (l_pid != 0)
+    {    
+        dup2(stdout_fd, 1); //fail
+        close(stdout_fd); //fail
+        close(fds[1]); //fail
+    }
     if (l_pid == 0)
     {
         close(fds[0]); //close fail
@@ -29,22 +35,23 @@ void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right)
     r_pid = fork();
     if (r_pid == -1)
         write(2, "fork() failed!!\n", 17); //fork fail
+    if (r_pid != 0)
+    {    
+        dup2(stdin_fd, 0); //fail
+        close(stdin_fd); //fail
+        close(fds[0]); //fail
+    }
     if (r_pid == 0)
     {
+        close(fds[1]); //close fail
+        close(fds[0]); //close fail
         if (right->id == right->cmd_count)
             dup2(stdout_fd, 1); //fail
         execute(right, envp);
+        dup2(stdin_fd, 0); //fail
         close(stdout_fd); //fail
         close(stdin_fd); //fail
-        close(fds[1]); //close fail
-        close(fds[0]); //close fail
         exit(0);
     }
     wait(NULL);
-    dup2(stdin_fd, 0); //fail
-    dup2(stdout_fd, 1); //fail
-    close(fds[0]); //fail
-    close(fds[1]); //fail
-    close(stdout_fd); //fail
-    close(stdin_fd); //fail
 }

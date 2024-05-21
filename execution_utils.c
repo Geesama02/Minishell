@@ -36,29 +36,27 @@ char *find_path(char **paths, char *cmd)
     return (NULL);
 }
 
-void    execute_rest(char **cmds, char **envp)
+int execute_rest(char **cmds, char **envp)
 {
     int     i;
     char    **paths;
     char    *path;
-    pid_t   pid;
 
     i = 0;
     paths = ft_split(getenv("PATH"), ':'); //leaks
-    while(paths[i])
+    while (paths[i])
     {
         paths[i] = add_slash(paths[i]); //leaks
         i++;
     }
     i = 0;
-    path = find_path(paths, cmds[0]);
+    path = find_path(paths, cmds[0]); //leaks
     if (path)
     {
-        pid = fork();
-        if (!pid)
-            execve(path, cmds, envp);
-        wait(NULL);
+        if (execve(path, cmds, envp) == -1)
+            return (-1);
     }
+    return (0);
 }
 
 
@@ -114,7 +112,10 @@ int exec_command(char **cmds, char **envp)
     else if (!ft_strcmp(cmds[0], "exit"))
         exit(0);
     else
-        execute_rest(cmds, envp);
+    {     
+        if (execute_rest(cmds, envp) == -1)
+            return (-1);
+    }
     // else
     //     printf("minishell: %s: command not found\n", cmds[0]);
     return (0);

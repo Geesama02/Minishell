@@ -7,7 +7,7 @@ int exec_normal_commands(t_token_tree *tree, char **envp)
     char                **cmds;
 
     status = 0;
-    cmds = ft_split(tree->token, ' ');
+    cmds = ft_split(tree->token, ' '); //leaks
     pid = fork();
     if (pid == -1)
         write(2, "fork() failed!!\n", 17); //fail
@@ -15,8 +15,6 @@ int exec_normal_commands(t_token_tree *tree, char **envp)
     {
         if (exec_command(cmds, envp) == -1)
             exit(1);
-        else
-            exit(0);
     }
     wait(&status);
     if (status == 1)
