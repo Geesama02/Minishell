@@ -74,8 +74,8 @@ t_env_vars  *export_command(char **tokens, t_env_vars *p_head)
     {
         if (ft_strchr(tokens[i], '='))
         {
-            cmds = ft_split_one(tokens[i], '=');
-            env_vars = malloc(sizeof(t_env_vars));
+            cmds = ft_split_one(tokens[i], '='); //leaks
+            env_vars = malloc(sizeof(t_env_vars)); //leaks
             env_vars->env_name = cmds[0];
             env_vars->env_val = cmds[1];
             if (p_head && i == 1)

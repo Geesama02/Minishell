@@ -101,7 +101,7 @@ int exec_command(char **cmds, char **envp)
                 }
             }
             i++;
-        }
+        }   
     }
     else if (!ft_strcmp(cmds[0], "export"))
         head = export_command(cmds, head);

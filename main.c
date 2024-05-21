@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/21 09:53:04 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:03:28 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ int main(int argc, char **argv, char **envp)
     {
 		(void)argc;
 		(void)argv;
-        char *input = readline("Minishell $> ");
+        char *input = readline("Minishell$ ");
         if (input == NULL)
 			break;
         if (input[0] == '\0')
@@ -185,8 +185,6 @@ int main(int argc, char **argv, char **envp)
 		// 	printf("token ==> %s | type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
 		// 	i++;
 		// }
-		(void)postfix_stack;
-		(void)ast_tree;
 		postfix_stack = shunting_yard(token_array);
 		ast_tree = build_tree(&postfix_stack);
 		// printf("left -> %s\n", ast_tree->left->token);
@@ -197,6 +195,7 @@ int main(int argc, char **argv, char **envp)
 		execute_tree(ast_tree, envp);
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
+		wait(NULL);
 		// wildcard("ft*p*.c");
     }
     return (0);
