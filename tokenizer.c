@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/17 17:11:14 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/22 12:16:14 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,10 @@ int	handle_cmd(char **input, char *input_cpy, char **holder, int i)
 
 	j = 0;
 	if (**input == ' ')
-	{
-		// (*input)++;
 		return (1);
-	}
 	holder[i] = malloc(count_token_len(*input) + 1);
 	if (!holder[i])
-		return ((int)free_alloc(holder, i));
+		return (free_alloc(holder, i), free(*input), exit(1), 0);
 	while (**input != '\0' && (!is_op(*input)
 		|| (is_op(*input) && is_inside_quotes(input_cpy, *input - input_cpy))))
 	{
@@ -78,20 +75,20 @@ int	free_token_holder(char **holder, t_token_array *token_array, int i)
 	return (0);
 }
 
-int	copy_to_array(t_token_array *token_array, char **holder, int j)
+int	copy_to_array(t_token_array *token_array, char *input, char **holder, int j)
 {
 	int	i;
 
 	i = 0;
-	if (scan_syntax(holder, j) == 0)
+	if (*holder == NULL)
+		return (free_token_holder(holder, token_array, i), 0);
+	if (scan_syntax(holder, input, j) == 0)
 		return (free_token_holder(holder, token_array, i));
 	while(holder[i] != NULL)
 	{
-		if (has_wildcard(holder[i]) == 1)
-			printf("has wildcard\n");
 		token_array[i].token = ft_strdup(holder[i]);
 		if (!token_array[i].token)
-			return (free_token_holder(holder, token_array, i));
+			return (free_token_holder(holder, token_array, i), free(input), exit(1), 0);
 		token_array[i].type = set_token_type(holder[i]);
 		free(holder[i]);
 		i++;
@@ -109,19 +106,25 @@ t_token_array *tokenizer(char *input)
 	int i;
 
 	token_array = malloc(sizeof(t_token_array) * (count_cmds(input) + 1));
+	if (!token_array)
+		return (free(input), exit(1), NULL);
 	holder = malloc(sizeof(char *) * (count_cmds(input) + 1));
+	if (!holder)
+		return (free(input), free(token_array), exit(1), NULL);
 	input_cpy = input;
 	i = 0;
 	while(*input)
 	{
 		while (*input == ' ')
 			input++;
+		if (*input == '\0')
+			break;
 		if (!handle_tokens(&input, input_cpy, holder, i))
 			return (NULL);
 		i++;
 	}
 	holder[i] = NULL;
-	if (copy_to_array(token_array, holder, i) == 0)
+	if (copy_to_array(token_array, input, holder, i) == 0)
 		return (NULL);
 	return (token_array);
 }

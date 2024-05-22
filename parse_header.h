@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/18 12:05:06 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:07:31 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,11 +126,16 @@ int     execute(t_token_tree *tree, char **envp);
 void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right);
 int		exec_command(char **cmds, char **envp);
 int		exec_normal_commands(t_token_tree *tree, char **envp);
-int		scan_syntax(char **holder, int j);
+int		scan_syntax(char **holder, char *input, int j);
 int		unclosed_var(char *str, char c);
 t_t_type	set_token_type(char *token);
 void 	free_tree(t_token_tree *root);
 char 	*wildcard(char *str);
 int		has_wildcard(char *str);
+int		join_strings(char **s1, char *s2);
+int		handle_wildcard(char **str, char *input);
+int		free_2d_array(char **array);
+int		join_wildcard(char **sep_str, char **str, char *input);
+int		filter_files(struct dirent *dir_content, char **sep_str, char *str, char **res);
 
 #endif

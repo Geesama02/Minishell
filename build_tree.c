@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/18 11:38:49 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/22 12:15:04 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ t_token_tree	*build_tree(t_stack *stack)
 		i++;
 	}
 	i = 1;
+	free(stack->token);
 	root = stack_tree[0];
 	free(stack_tree);
 	set_ids(root, &i);

@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/18 12:09:38 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/22 12:15:09 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,10 @@ int main(int argc, char **argv, char **envp)
         if (input == NULL)
 			break;
         if (input[0] == '\0')
+		{
+			free(input);
             continue;
+		}
         add_history(input);
 		if (check_syntax(input) == 0)
 		{
@@ -176,7 +179,6 @@ int main(int argc, char **argv, char **envp)
 		token_array = tokenizer(input);
 		if (!token_array)
 		{
-			write_error("Error: parse error\n");
 			free(input);
 			continue;
 		}
@@ -186,6 +188,7 @@ int main(int argc, char **argv, char **envp)
 		// 	printf("token ==> %s | type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
 		// 	i++;
 		// }
+		(void)token_array;
 		(void)postfix_stack;
 		(void)ast_tree;
 		postfix_stack = shunting_yard(token_array);
@@ -198,7 +201,8 @@ int main(int argc, char **argv, char **envp)
 		// execute(ast_tree, envp);
 		print_tree(ast_tree, 0);
 		free_tree(ast_tree);
-		// wildcard("ft*p*.c");
+		// rl_clear_history();
+		// printf("line --> %s\n", wildcard("ft*p*.c"));
     }
     return (0);
 }
