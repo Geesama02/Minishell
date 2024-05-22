@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 16:07:31 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:53:51 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <dirent.h>
-
-
-
-typedef enum e_token_type
-{
-	CMD,
-	ARG,
-	PIPE,
-	AND_OPERATOR,
-	OR_OPERATOR,
-	INPUT_REDIRECTION,
-	OUTPUT_REDIRECTION,
-	APPEND_REDIRECTION,
-	OUT_FILE,
-	IN_FILE,
-	APPEND_FILE,
-	STR,
-	HEREDOC,
-	DELIMETER,
-	ENV_VAR,
-} t_token_type;
+#include <fcntl.h>
+#include <sys/stat.h>
 
 typedef enum e_t_type
 {
@@ -82,6 +63,7 @@ typedef struct s_token_tree
 } t_token_tree;
 
 
+char	*get_next_line(int fd);
 char	*ft_strdup(const char *s1);
 char	*ft_strtrim(char const *s1, char const *set);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -89,11 +71,8 @@ size_t	ft_strlen(const char *s);
 char	**ft_split(char const *s, char c);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char  *s1, char  *s2);
-// int		fill_token(char *pipe_c, int i, t_pipe_list *new_pipe,
-// 			t_env_vars **env_vars);
+char	*ft_strjoin(char *s1, char *s2);
 int		len(char **s);
-// int		set_type(t_token_list *tokens, char **token, int *i);
 void	write_error(char *str);
 char	*ft_strtrim(char const *s1, char const *set);
 int		check_cmd(char *str);
@@ -123,7 +102,7 @@ void    env_command(t_env_vars *env_vars, char **envp);
 char	**ft_split_one(char const *s, char c);
 t_t_type	set_token_type(char *token);
 int     execute(t_token_tree *tree, char **envp);
-void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right);
+void	execute_pipe(char **envp, t_token_tree *left, t_token_tree *right);
 int		exec_command(char **cmds, char **envp);
 int		exec_normal_commands(t_token_tree *tree, char **envp);
 int		scan_syntax(char **holder, char *input, int j);
@@ -132,6 +111,8 @@ t_t_type	set_token_type(char *token);
 void 	free_tree(t_token_tree *root);
 char 	*wildcard(char *str);
 int		has_wildcard(char *str);
+void    execute_tree(t_token_tree *tree, char **envp);
+void    execute_redirection(char *cmd, char *file_name, char **envp);
 int		join_strings(char **s1, char *s2);
 int		handle_wildcard(char **str, char *input);
 int		free_2d_array(char **array);

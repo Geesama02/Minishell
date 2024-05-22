@@ -28,7 +28,10 @@ int pwd_command()
         return (-1);
     }
     else
+    {    
         write(1, buff, ft_strlen(buff));
+        write(1, "\n", 1);
+    }
     return (0);
 }
 
@@ -39,7 +42,7 @@ int echo_command(char *string)
         write(1, "\n", 1);
         write(1, "\n", 1);
     }
-    while (*string)
+    while (*string && *string != '>')
     {
         if (write(1, &*string, 1) == -1)
             return (-1);
@@ -71,8 +74,8 @@ t_env_vars  *export_command(char **tokens, t_env_vars *p_head)
     {
         if (ft_strchr(tokens[i], '='))
         {
-            cmds = ft_split_one(tokens[i], '=');
-            env_vars = malloc(sizeof(t_env_vars));
+            cmds = ft_split_one(tokens[i], '='); //leaks
+            env_vars = malloc(sizeof(t_env_vars)); //leaks
             env_vars->env_name = cmds[0];
             env_vars->env_val = cmds[1];
             if (p_head && i == 1)
