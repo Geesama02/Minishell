@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   shunting_yard.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:01:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/10 17:25:33 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/22 09:40:57 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_header.h"
+#include "../parse_header.h"
 
 void	stack_push(t_token_array token, t_stack *stack)
 {

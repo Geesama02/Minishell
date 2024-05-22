@@ -1,4 +1,4 @@
-#include "parse_header.h"
+#include "../parse_header.h"
 
 int cd_command(char *path)
 {
@@ -51,49 +51,18 @@ int echo_command(char *string)
     return (0);
 }
 
-t_env_vars  *export_command(char **tokens, t_env_vars *p_head)
+t_env_vars  *export_command(char **tokens, t_env_vars *head, char **envp)
 {
-    t_env_vars  *env_vars;
-    t_env_vars  *prev;
-    t_env_vars  *head;
+    t_env_vars *last_node;
     int         nbr_envs;
-    int         i;
-    char        **cmds;
 
-    i = 1;
-    env_vars = NULL;
-    prev = NULL;
-    head = NULL;
-    if (p_head)
-    {
-        while (p_head->next)
-            p_head = p_head->next;
-    }
+    last_node = head;
+    if (!tokens[1])
+        export_without_arguments(head, envp);
+    if (head)
+        last_node = get_last_node(head);
     nbr_envs = count_env_vars(tokens);
-    while (i <= nbr_envs)
-    {
-        if (ft_strchr(tokens[i], '='))
-        {
-            cmds = ft_split_one(tokens[i], '='); //leaks
-            env_vars = malloc(sizeof(t_env_vars)); //leaks
-            env_vars->env_name = cmds[0];
-            env_vars->env_val = cmds[1];
-            if (p_head && i == 1)
-            {    
-                p_head->next = env_vars;
-                head = p_head;
-            }
-            else if (!p_head && i == 1)
-                head = env_vars;
-            env_vars->next = NULL;
-            if (i != 1)
-                prev->next = env_vars;
-            prev = env_vars;
-        }
-        else
-            printf("export: `%s' : not a valid identifier", tokens[i]);
-        i++;
-    }
+    head = add_env_var(last_node, tokens, nbr_envs, head);
     return (head);
 }
 
@@ -134,9 +103,10 @@ void    env_command(t_env_vars *env_vars, char **envp)
             envp++;
         }
     }
-    while (env_vars)
+    while (env_vars && env_vars->env_val)
     {
         printf("%s=%s\n", env_vars->env_name, env_vars->env_val);
         env_vars = env_vars->next;
     }
 }
+

@@ -1,4 +1,4 @@
-#include "parse_header.h"
+#include "../parse_header.h"
 
 int exec_normal_commands(t_token_tree *tree, char **envp)
 {

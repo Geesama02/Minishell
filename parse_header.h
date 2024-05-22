@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/20 16:05:39 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:32:04 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	*free_alloc(char **bigstr, int l);
 int		is_inside_quotes(char const *s, int i);
 int		pwd_command();
 int		echo_command(char *string);
-t_env_vars  *export_command(char **tokens, t_env_vars *head);
+t_env_vars  *export_command(char **tokens, t_env_vars *head, char **envp);
 int		is_op(char *input);
 int		count_token_len(char *input);
 char	*get_token(char **input, int num, char *str);
@@ -113,5 +113,11 @@ char 	*wildcard(char *str);
 int		has_wildcard(char *str);
 void    execute_tree(t_token_tree *tree, char **envp);
 void    execute_redirection(char *cmd, char *file_name, char **envp);
+int		is_string(char *str);
+void    export_without_arguments(t_env_vars *head, char **envp);
+t_env_vars  *add_env_var(t_env_vars *last_env, char **tokens, int nbr_envs, t_env_vars *head);
+t_env_vars *get_last_node(t_env_vars *head);
+t_env_vars  *lst_add_element(char *token, t_env_vars *last_env, t_env_vars *head, int i);
+void    display_envs_sorted(char **envp);
 
 #endif

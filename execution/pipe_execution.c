@@ -1,4 +1,4 @@
-#include "parse_header.h"
+#include "../parse_header.h"
 
 void    execute_pipe(char **envp, t_token_tree *left, t_token_tree *right)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   shunting_yard_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 10:46:54 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/11 10:47:04 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/22 09:40:52 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_header.h"
+#include "../parse_header.h"
 
 int	count_array(t_token_array *tokens)
 {

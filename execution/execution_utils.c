@@ -1,4 +1,4 @@
-#include "parse_header.h"
+#include "../parse_header.h"
 
 char *add_slash(char *string)
 {
@@ -101,10 +101,10 @@ int exec_command(char **cmds, char **envp)
                 }
             }
             i++;
-        }   
+        }
     }
     else if (!ft_strcmp(cmds[0], "export"))
-        head = export_command(cmds, head);
+        head = export_command(cmds, head, envp);
     else if (!ft_strcmp(cmds[0], "unset"))
         unset_command(&head, cmds[1]);
     else if (!ft_strcmp(cmds[0], "env"))

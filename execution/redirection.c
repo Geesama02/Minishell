@@ -1,4 +1,4 @@
-#include "parse_header.h"
+#include "../parse_header.h"
 
 void    execute_redirection(char *cmd, char *file_name, char **envp)
 {
