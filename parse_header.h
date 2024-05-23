@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 19:32:04 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:45:55 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int     execute(t_token_tree *tree, char **envp);
 void	execute_pipe(char **envp, t_token_tree *left, t_token_tree *right);
 int		exec_command(char **cmds, char **envp);
 int		exec_normal_commands(t_token_tree *tree, char **envp);
-int		scan_syntax(char **holder, int j);
+int		scan_syntax(char **holder, char *input, int j);
 int		unclosed_var(char *str, char c);
 t_t_type	set_token_type(char *token);
 void 	free_tree(t_token_tree *root);
@@ -119,5 +119,10 @@ t_env_vars  *add_env_var(t_env_vars *last_env, char **tokens, int nbr_envs, t_en
 t_env_vars *get_last_node(t_env_vars *head);
 t_env_vars  *lst_add_element(char *token, t_env_vars *last_env, t_env_vars *head, int i);
 void    display_envs_sorted(char **envp);
+int		join_strings(char **s1, char *s2);
+int		handle_wildcard(char **str, char *input);
+int		free_2d_array(char **array);
+int		join_wildcard(char **sep_str, char **str, char *input);
+int		filter_files(struct dirent *dir_content, char **sep_str, char *str, char **res);
 
 #endif

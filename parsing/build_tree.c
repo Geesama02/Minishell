@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 09:40:41 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:55:51 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ t_token_tree	*build_tree(t_stack *stack)
 		i++;
 	}
 	i = 1;
+	free(stack->token);
 	root = stack_tree[0];
 	free(stack_tree);
 	set_ids(root, &i);

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 09:41:06 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:55:34 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	handle_tokens(char **input, char *input_cpy, char **holder, int i)
 	return (1);
 }
 
-int	scan_syntax(char **holder, int j)
+int	scan_syntax(char **holder, char *input, int j)
 {
 	int i;
 
@@ -49,13 +49,24 @@ int	scan_syntax(char **holder, int j)
 		|| set_token_type(holder[0]) == REDIRECTION_T)
 		|| (set_token_type(holder[j - 1]) == OPERATOR_T
 		|| set_token_type(holder[j - 1]) == REDIRECTION_T))
+	{
+		write_error("Error: parse error\n");
 		return (0);
+	}
 	while(holder[i] != NULL)
 	{
+		if (has_wildcard(holder[i]))
+		{
+			if (handle_wildcard(&holder[i], input) == 0)
+				return (0);
+		}
 		if (holder[i + 1]
 			&& (set_token_type(holder[i]) == OPERATOR_T || set_token_type(holder[i]) == REDIRECTION_T)
 			&& (set_token_type(holder[i + 1]) == OPERATOR_T || set_token_type(holder[i + 1]) == REDIRECTION_T))
+		{
+			write_error("Error: parse error\n");
 			return (0);
+		}
 		i++;
 	}
 	return (1);
@@ -74,3 +85,34 @@ int	has_wildcard(char *str)
 	}
 	return (0);
 }
+
+int	free_2d_array(char **array)
+{
+	int i;
+
+	i = 0;
+	if (!array)
+		return (0);
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+	return (0);
+}
+
+int	handle_wildcard(char **str, char *input)
+{
+	char **sep_str;
+
+	sep_str = ft_split(*str, ' ');
+	if (!sep_str)
+		return (0);
+	free(*str);
+	*str = ft_strdup("");
+	if(!join_wildcard(sep_str, str, input))
+		return (0);
+	free_2d_array(sep_str);
+	return (1);
+} 

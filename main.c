@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 09:39:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:46:15 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,10 @@ int main(int argc, char **argv, char **envp)
         if (input == NULL)
 			break;
         if (input[0] == '\0')
+		{
+			free(input);
             continue;
+		}
         add_history(input);
 		if (check_syntax(input) == 0)
 		{
@@ -175,7 +178,6 @@ int main(int argc, char **argv, char **envp)
 		token_array = tokenizer(input);
 		if (!token_array)
 		{
-			write_error("Error: parse error\n");
 			free(input);
 			continue;
 		}
