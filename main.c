@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 19:46:15 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:26:23 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,13 +188,13 @@ int main(int argc, char **argv, char **envp)
 		// 	i++;
 		// }
 		postfix_stack = shunting_yard(token_array);
-		ast_tree = build_tree(&postfix_stack);
+		ast_tree = build_tree(&postfix_stack, envp);
 		// printf("left -> %s\n", ast_tree->left->token);
 		// printf("right -> %s\n", ast_tree->right->token);
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
-		execute_tree(ast_tree, envp);
+		execute_tree(ast_tree);
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
 		wait(NULL);

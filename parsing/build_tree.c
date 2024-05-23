@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 19:55:51 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:20:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void set_count(t_token_tree *root, int count)
 	set_count(root->right, count);
 }
 
-int	handle_non_cmd(t_stack *stack, t_token_tree **stack_tree, int *tree_offset, int i)
+int	handle_non_cmd(t_token_array token, t_token_tree **stack_tree, int *tree_offset, char **envp)
 {
 	t_token_tree *tmp_right;
 	t_token_tree *tmp_left;
@@ -44,14 +44,14 @@ int	handle_non_cmd(t_stack *stack, t_token_tree **stack_tree, int *tree_offset, 
 	tmp_right = stack_tree[*tree_offset - 1];
 	tmp_left = stack_tree[*tree_offset - 2];
 	*tree_offset -= 2;
-	stack_tree[*tree_offset] = create_node(stack->token[i].token, stack->token[i].type);
+	stack_tree[*tree_offset] = create_node(token.token, token.type, envp);
 	stack_tree[*tree_offset]->right = tmp_right;
 	stack_tree[*tree_offset]->left = tmp_left;
 	(*tree_offset)++;
 	return (1);
 }
 
-t_token_tree	*build_tree(t_stack *stack)
+t_token_tree	*build_tree(t_stack *stack, char **envp)
 {
 	int i;
 	t_token_tree	**stack_tree;
@@ -65,12 +65,12 @@ t_token_tree	*build_tree(t_stack *stack)
 	{
 		if (stack->token[i].type == CMD_T)
 		{
-			stack_tree[tree_offset] = create_node(stack->token[i].token, CMD_T);
+			stack_tree[tree_offset] = create_node(stack->token[i].token, CMD_T, envp);
 			tree_offset++;
 		}
 		else if ((stack->token[i].type == REDIRECTION_T || stack->token[i].type == OPERATOR_T)
 				&& tree_offset > 1)
-			handle_non_cmd(stack, stack_tree, &tree_offset, i);
+			handle_non_cmd(stack->token[i], stack_tree, &tree_offset, envp);
 		i++;
 	}
 	i = 1;

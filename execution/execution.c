@@ -1,6 +1,6 @@
 #include "../parse_header.h"
 
-int exec_normal_commands(t_token_tree *tree, char **envp)
+int exec_normal_commands(t_token_tree *tree)
 {
     int                 status;
     pid_t               pid;
@@ -13,7 +13,7 @@ int exec_normal_commands(t_token_tree *tree, char **envp)
         write(2, "fork() failed!!\n", 17); //fail
     else if (pid == 0)
     {
-        if (exec_command(cmds, envp) == -1)
+        if (exec_command(cmds, tree->envp) == -1)
             exit(1);
     }
     wait(&status);
@@ -22,69 +22,41 @@ int exec_normal_commands(t_token_tree *tree, char **envp)
     return (0);
 }
 
-int execute(t_token_tree *tree, char **envp)
+int execute_cmds_with_operators(t_token_tree *tree)
 {
-    if (tree->type == OPERATOR_T)
+    if (!ft_strcmp(tree->token, "&&"))
     {
-        if (tree->left->type == CMD_T && tree->right->type == CMD_T)
-        {
-            if (!ft_strcmp(tree->token, "&&"))
-            {
-                if (!exec_normal_commands(tree->left, envp))
-                    exec_normal_commands(tree->right, envp);
-                else
-                    return (-1);
-            }
-            else if (!ft_strcmp(tree->token, "||"))
-            {
-                if (exec_normal_commands(tree->left, envp) == -1)
-                {
-                    if (exec_normal_commands(tree->right, envp) == -1)
-                        return (-1);
-                }
-            }
-            else if (!ft_strcmp(tree->token, "|"))
-                execute_pipe(envp, tree->left, tree->right);
-        }
+        if (!execute_tree(tree->left))
+            execute_tree(tree->right);
         else
-            execute(tree->left, envp);
-    }
-    else if (tree->left)
-        execute(tree->left, envp);
-    else if (tree->right)
-        execute(tree->right, envp);
-    else
-    {   
-        if (exec_normal_commands(tree, envp) == -1)
             return (-1);
     }
+    else if (!ft_strcmp(tree->token, "||"))
+    {
+        if (execute_tree(tree->left) == -1)
+        {
+            if (execute_tree(tree->right) == -1)
+                return (-1);
+        }
+    }
+    else if (!ft_strcmp(tree->token, "|"))
+        execute_pipe(tree->left, tree->right);
     return (0);
 }
 
-void    execute_tree(t_token_tree *tree, char **envp)
+int    execute_tree(t_token_tree *tree)
 {
     if (tree->type == REDIRECTION_T)
-        execute_redirection(tree->left->token, tree->right->token, envp);
+        execute_redirection(tree->left->token, tree->right->token, tree->envp);
     else if (!tree->right && !tree->left)
-        exec_normal_commands(tree, envp);
+    {    
+        if (exec_normal_commands(tree) == -1)
+            return (-1);
+    }
     else if (tree->type == OPERATOR_T)
     {
-        if (!ft_strcmp(tree->token, "&&"))
-        {
-            if (!execute(tree->left, envp))
-                execute(tree->right, envp);
-            else
-                return ;
-        }
-        else if (!ft_strcmp(tree->token, "||"))
-        {
-            if (execute(tree->left, envp) == -1)
-            {
-                if (execute(tree->right, envp) == -1)
-                    return ;
-            }
-        }
-        else if (!ft_strcmp(tree->token, "|"))
-            execute_pipe(envp, tree->left, tree->right);
+        if (execute_cmds_with_operators(tree) == -1)
+            return (-1);
     }
+    return (0);
 }

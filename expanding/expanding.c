@@ -44,7 +44,6 @@ void    display_envs_sorted(char **envp)
                 printf("declare -x %s\n", envp[i]);
             i++;
         }
-        i = 0;
         ascii_nbr++;
     }
 }
