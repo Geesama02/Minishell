@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/23 18:26:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:37:49 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,20 +93,20 @@ void print_stack(t_stack *stack, int len)
 	printf("=====================\n");
 }
 
-char *print_type(t_t_type type)
-{
-	if (type == OPERATOR_T)
-		return ("OPERATOR");
-	if (type == REDIRECTION_T)
-		return ("REDIRECTION_T");
-	if (type == PARETHESIS_O)
-		return ("PARETHESIS_O");
-	if (type == PARETHESIS_C)
-		return ("PARETHESIS_C");
-	if (type == CMD_T)
-		return ("CMD_T");
-	return ("NULL");
-}
+// char *print_type(t_t_type type)
+// {
+// 	if (type == OPERATOR_T)
+// 		return ("OPERATOR");
+// 	if (type == REDIRECTION_T)
+// 		return ("REDIRECTION_T");
+// 	if (type == PARETHESIS_O)
+// 		return ("PARETHESIS_O");
+// 	if (type == PARETHESIS_C)
+// 		return ("PARETHESIS_C");
+// 	if (type == CMD_T)
+// 		return ("CMD_T");
+// 	return ("NULL");
+// }
 
 
 void	*free_alloc(char **bigstr, int l)

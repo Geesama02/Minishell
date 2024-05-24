@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/23 18:20:35 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:37:29 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ t_token_tree	*build_tree(t_stack *stack, char **envp)
 			stack_tree[tree_offset] = create_node(stack->token[i].token, CMD_T, envp);
 			tree_offset++;
 		}
-		else if ((stack->token[i].type == REDIRECTION_T || stack->token[i].type == OPERATOR_T)
+		else if ((stack->token[i].type == REDIRECTION_I
+			|| stack->token[i].type == REDIRECTION_A || stack->token[i].type == REDIRECTION_O || stack->token[i].type == OPERATOR_T)
 				&& tree_offset > 1)
 			handle_non_cmd(stack->token[i], stack_tree, &tree_offset, envp);
 		i++;

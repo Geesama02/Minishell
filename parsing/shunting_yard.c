@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:01:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 19:55:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:36:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	postfix_notation(t_stack *op_stack, t_stack *cmd_stack, t_token_array *toke
 {
 	if (tokens[i].type == CMD_T)
 		stack_push(&tokens[i], cmd_stack);
-	else if (tokens[i].type == OPERATOR_T || tokens[i].type == REDIRECTION_T)
+	else if (tokens[i].type == OPERATOR_T || tokens[i].type == REDIRECTION_O
+		|| tokens[i].type == REDIRECTION_I || tokens[i].type == REDIRECTION_A)
 	{
 		empty_stack(op_stack, cmd_stack, tokens, i);
 		stack_push(&tokens[i], op_stack);

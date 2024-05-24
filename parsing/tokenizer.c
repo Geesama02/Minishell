@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 19:55:20 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:35:27 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,12 @@ t_t_type	set_token_type(char *token)
 	if (ft_strcmp("&&", token) == 0 || ft_strcmp("||", token) == 0
 		|| ft_strcmp("|", token) == 0)
 		return (OPERATOR_T);
-	if (ft_strcmp(">>", token) == 0 || ft_strcmp(">", token) == 0
-		|| ft_strcmp("<", token) == 0)
-		return (REDIRECTION_T);
+	if (ft_strcmp(">>", token) == 0)
+		return (REDIRECTION_A);
+	if (ft_strcmp(">", token) == 0)
+		return (REDIRECTION_O);
+	if (ft_strcmp("<", token) == 0)
+		return (REDIRECTION_I);
 	if (ft_strcmp("(", token) == 0)
 		return (PARETHESIS_O);
 	if (ft_strcmp(")", token) == 0)

@@ -14,6 +14,7 @@ all : ${NAME}
 
 ${LIBFT} :
 	make -C ./libft
+	make bonus -C ./libft
 
 ${NAME} : ${OBJS} ${LIBFT}
 	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -lreadline -L ${LPATH}/lib -o ${NAME}

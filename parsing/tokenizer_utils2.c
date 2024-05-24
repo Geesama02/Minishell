@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 19:55:34 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:57:41 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,13 @@ int	scan_syntax(char **holder, char *input, int j)
 
 	i = 0;
 	if ((set_token_type(holder[0]) == OPERATOR_T
-		|| set_token_type(holder[0]) == REDIRECTION_T)
+		|| set_token_type(holder[0]) == REDIRECTION_I
+		|| set_token_type(holder[0]) == REDIRECTION_O
+		|| set_token_type(holder[0]) == REDIRECTION_A)
 		|| (set_token_type(holder[j - 1]) == OPERATOR_T
-		|| set_token_type(holder[j - 1]) == REDIRECTION_T))
+		|| set_token_type(holder[j - 1]) == REDIRECTION_I
+		|| set_token_type(holder[j - 1]) == REDIRECTION_O
+		|| set_token_type(holder[j - 1]) == REDIRECTION_A))
 	{
 		write_error("Error: parse error\n");
 		return (0);
@@ -61,8 +65,10 @@ int	scan_syntax(char **holder, char *input, int j)
 				return (0);
 		}
 		if (holder[i + 1]
-			&& (set_token_type(holder[i]) == OPERATOR_T || set_token_type(holder[i]) == REDIRECTION_T)
-			&& (set_token_type(holder[i + 1]) == OPERATOR_T || set_token_type(holder[i + 1]) == REDIRECTION_T))
+			&& (set_token_type(holder[i]) == OPERATOR_T || set_token_type(holder[i]) == REDIRECTION_I
+				|| set_token_type(holder[i]) == REDIRECTION_O || set_token_type(holder[i]) == REDIRECTION_A)
+			&& (set_token_type(holder[i + 1]) == OPERATOR_T || set_token_type(holder[i + 1]) == REDIRECTION_O
+				|| set_token_type(holder[i + 1]) == REDIRECTION_I || set_token_type(holder[i + 1]) == REDIRECTION_A))
 		{
 			write_error("Error: parse error\n");
 			return (0);

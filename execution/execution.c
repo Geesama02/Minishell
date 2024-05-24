@@ -46,10 +46,10 @@ int execute_cmds_with_operators(t_token_tree *tree)
 
 int    execute_tree(t_token_tree *tree)
 {
-    if (tree->type == REDIRECTION_T)
-        execute_redirection(tree->left->token, tree->right->token, tree->envp);
+    if (tree->type == REDIRECTION_I || tree->type == REDIRECTION_O)
+        execute_redirection(tree);
     else if (!tree->right && !tree->left)
-    {    
+    {
         if (exec_normal_commands(tree) == -1)
             return (-1);
     }

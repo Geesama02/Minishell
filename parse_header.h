@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/23 19:00:21 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:27:45 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@
 typedef enum e_t_type
 {
 	OPERATOR_T,
-	REDIRECTION_T,
+	REDIRECTION_I,
+	REDIRECTION_A,
+	REDIRECTION_O,
 	PARETHESIS_O,
 	PARETHESIS_C,
 	CMD_T
@@ -63,8 +65,8 @@ typedef struct s_token_tree
 	char				**envp;
 } t_token_tree;
 
-
-char	*get_next_line(int fd);
+void	ft_lstadd_back(t_env_vars **lst, t_env_vars *new);
+char	*get_next_line(int fd); //debugging
 char	*ft_strdup(const char *s1);
 char	*ft_strtrim(char const *s1, char const *set);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -72,7 +74,7 @@ size_t	ft_strlen(const char *s);
 char	**ft_split(char const *s, char c);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strjoin(const char *s1, const char *s2);
 int		len(char **s);
 void	write_error(char *str);
 char	*ft_strtrim(char const *s1, char const *set);
@@ -112,13 +114,12 @@ void 	free_tree(t_token_tree *root);
 char 	*wildcard(char *str);
 int		has_wildcard(char *str);
 int    execute_tree(t_token_tree *tree);
-void    execute_redirection(char *cmd, char *file_name, char **envp);
+void    execute_redirection(t_token_tree *tree);
 int		is_string(char *str);
 void    export_without_arguments(t_env_vars *head, char **envp);
 t_env_vars  *add_env_var(t_env_vars *last_env, char **tokens, int nbr_envs, t_env_vars *head);
 t_env_vars *get_last_node(t_env_vars *head);
 t_env_vars  *lst_add_element(char *token, t_env_vars *last_env, t_env_vars *head, int i);
-void    display_envs_sorted(char **envp);
 int		join_strings(char **s1, char *s2);
 int		handle_wildcard(char **str, char *input);
 int		free_2d_array(char **array);
