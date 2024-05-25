@@ -1,27 +1,26 @@
 #include "../parse_header.h"
 
-t_env_vars  *lst_add_element(char *token, t_env_vars *last_env, t_env_vars *head, int i)
+void    lst_add_element(char *token, t_env_vars **head, int i)
 {
     t_env_vars          *new_env;
-    static t_env_vars   *prev;
+    t_env_vars          *prev;
     char                **cmds;
 
+    prev = NULL;
+    if (*head)
+        prev = get_last_node(*head);
     cmds = ft_split_one(token, '='); //leaks
     new_env = malloc(sizeof(t_env_vars)); //leaks
+    if (prev)
+        prev->next = new_env;
+    else if (!prev && i == 1)
+        *head = new_env;
     new_env->env_name = cmds[0];
     if (ft_strchr(token, '='))
         new_env->env_val = cmds[1];
     else
         new_env->env_val = NULL;
-    if (last_env && i == 1)
-        last_env->next = new_env;
-    else if (!last_env && i == 1)
-        head = new_env;
     new_env->next = NULL;
-    if (i != 1)
-        prev->next = new_env;
-    prev = new_env;
-    return (head);
 }
 
 int is_string(char *str)
@@ -79,7 +78,7 @@ void	ft_lstadd(t_env_vars **lst, t_env_vars *new)
 		return ;
 	}
 	current = *lst;
-	while (current->next != 0)
+	while (current && current->next != 0)
 		current = current->next;
 	current->next = new;
 }

@@ -53,16 +53,12 @@ int echo_command(char *string)
 
 t_env_vars  *export_command(char **tokens, t_env_vars *head, char **envp)
 {
-	t_env_vars	*last_node;
 	int			nbr_envs;
 
-	last_node = head;
 	if (!tokens[1])
 		export_without_arguments(head, envp);
-	if (head)
-		last_node = get_last_node(head);
 	nbr_envs = count_env_vars(tokens);
-	head = add_env_var(last_node, tokens, nbr_envs, head);
+	head = add_env_var(tokens, nbr_envs, head);
 	return (head);
 }
 

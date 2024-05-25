@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/25 18:40:35 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:19:36 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,9 @@ int    execute_tree(t_token_tree *tree);
 void    execute_redirection(t_token_tree *tree);
 int		is_string(char *str);
 void    export_without_arguments(t_env_vars *head, char **envp);
-t_env_vars  *add_env_var(t_env_vars *last_env, char **tokens, int nbr_envs, t_env_vars *head);
+t_env_vars  *add_env_var(char **tokens, int nbr_envs, t_env_vars *head);
 t_env_vars *get_last_node(t_env_vars *head);
-t_env_vars  *lst_add_element(char *token, t_env_vars *last_env, t_env_vars *head, int i);
+void	lst_add_element(char *token, t_env_vars **head, int i);
 int		join_strings(char **s1, char *s2);
 int		handle_wildcard(char **str, char *input);
 int		free_2d_array(char **array);

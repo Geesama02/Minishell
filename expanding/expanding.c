@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/25 18:55:37 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:43:38 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@ void    print_lst(t_env_vars *head)
 	}
 }
 //debugging
+
+void swap_nodes_content(t_env_vars *env1, t_env_vars *env2)
+{
+	char *tmpname;
+	char *tmpval;
+
+	tmpname = env2->env_name;
+	tmpval = env2->env_val;
+	env2->env_name = env1->env_name;
+	env2->env_val = env1->env_val;
+	env1->env_name = tmpname;
+	env1->env_val = tmpval;
+}
 
 void    sort_matched_envs(t_env_vars *head, int nbr_matched, int ascii_nbr)
 {
@@ -42,14 +55,7 @@ void    sort_matched_envs(t_env_vars *head, int nbr_matched, int ascii_nbr)
 			while (tmp_head->env_name[index] == tmp_head->next->env_name[index])
 				index++;
 			if (tmp_head->env_name[index] > tmp_head->next->env_name[index])
-			{
-				char *tmpname = tmp_head->next->env_name;
-				char *tmpval = tmp_head->next->env_val;
-				tmp_head->next->env_name = tmp_head->env_name;
-				tmp_head->next->env_val = tmp_head->env_val;
-				tmp_head->env_name = tmpname;
-				tmp_head->env_val = tmpval;
-			}
+				swap_nodes_content(tmp_head, tmp_head->next);
 			tmp_head = tmp_head->next;
 			index = 0;
 		}
@@ -122,7 +128,9 @@ t_env_vars  *create_lst(char **envp, t_env_vars *env_head)
 {
 	t_env_vars *head;
 	t_env_vars *newnode;
+	t_env_vars *lastnode;
 
+	lastnode = NULL;
 	head = malloc(sizeof(t_env_vars)); //leaks
 	create_env(head, NULL, *envp);
 	envp++;
@@ -134,7 +142,10 @@ t_env_vars  *create_lst(char **envp, t_env_vars *env_head)
 	}
 	while (env_head)
 	{
-		ft_lstadd(&head, env_head);
+		newnode = malloc(sizeof(t_env_vars)); //leaks
+		newnode->env_name = env_head->env_name;
+		newnode->env_val = env_head->env_val;
+		ft_lstadd(&head, newnode);
 		env_head = env_head->next;
 	}
 	return (head);
@@ -157,7 +168,7 @@ void    export_without_arguments(t_env_vars *p_head, char **envp)
 	}
 }
 
-t_env_vars  *add_env_var(t_env_vars *last_env, char **tokens, int nbr_envs, t_env_vars *head)
+t_env_vars  *add_env_var(char **tokens, int nbr_envs, t_env_vars *head)
 {
 	int	i;
 
@@ -165,7 +176,7 @@ t_env_vars  *add_env_var(t_env_vars *last_env, char **tokens, int nbr_envs, t_en
 	while (i <= nbr_envs)
 	{
 		if (ft_strchr(tokens[i], '=') || is_string(tokens[i]))
-			head = lst_add_element(tokens[i], last_env, head, i);
+			lst_add_element(tokens[i], &head, i);
 		else
 			printf("export: `%s' : not a valid identifier", tokens[i]);
 		i++;
