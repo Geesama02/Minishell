@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/24 15:27:45 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/25 18:40:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ typedef struct s_token_tree
 	char				**envp;
 } t_token_tree;
 
-void	ft_lstadd_back(t_env_vars **lst, t_env_vars *new);
 char	*get_next_line(int fd); //debugging
 char	*ft_strdup(const char *s1);
 char	*ft_strtrim(char const *s1, char const *set);
@@ -125,5 +124,6 @@ int		handle_wildcard(char **str, char *input);
 int		free_2d_array(char **array);
 int		join_wildcard(char **sep_str, char **str, char *input);
 int		filter_files(struct dirent *dir_content, char **sep_str, char *str, char **res);
+void	ft_lstadd(t_env_vars **lst, t_env_vars *new);
 
 #endif

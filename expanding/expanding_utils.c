@@ -54,12 +54,32 @@ int count_env_vars(char **tokens)
     return (counter);
 }
 
-t_env_vars *get_last_node(t_env_vars *last_node)
+t_env_vars *get_last_node(t_env_vars *head)
 {
-    if (last_node)
+    t_env_vars *lastnode;
+
+    lastnode = head;
+    if (head)
     {
-        while (last_node && last_node->next)
-            last_node = last_node->next;
+        while (lastnode && lastnode->next)
+            lastnode = lastnode->next;
     }
-    return (last_node);
+    return (lastnode);
+}
+
+void	ft_lstadd(t_env_vars **lst, t_env_vars *new)
+{
+	t_env_vars	*current;
+
+	if (!lst || !new)
+		return ;
+	if (*lst == NULL || new == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	current = *lst;
+	while (current->next != 0)
+		current = current->next;
+	current->next = new;
 }
