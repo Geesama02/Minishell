@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/25 19:05:41 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:59:10 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,9 @@ int main(int argc, char **argv, char **envp)
 	t_token_array *token_array;
 	t_stack postfix_stack;
 	t_token_tree *ast_tree;
+	int	status;
 
+	status = 0;
     while(1)
     {
 		(void)argc;
@@ -195,7 +197,12 @@ int main(int argc, char **argv, char **envp)
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
 		execute_tree(ast_tree);
-		wait(NULL);
+		// wait(&status);
+		// if (status == 1)
+		// {
+		// 	write(2, "problem occured while executing the tree\n", 42);
+		// 	return (0);
+		// }
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
 		// wildcard("ft*p*.c");
