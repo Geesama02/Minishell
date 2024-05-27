@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/27 14:12:18 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:25:47 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int exec_normal_commands(t_token_tree *tree)
 		else
 			exit(0);
 	}
-	if (status == 1)
+	if (WEXITSTATUS(status) == 1)
 		return (-1);
 	return (0);
 }
