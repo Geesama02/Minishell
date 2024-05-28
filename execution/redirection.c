@@ -13,7 +13,7 @@ void    execute_redirection_in(t_token_tree *tree)
             fd = open(tree->right->token, O_RDONLY, 0700); //fail
         dup2(fd, 0); //fail
         close(fd); //fail
-        execute_tree(tree->left);
+        execute_tree(tree->left, &tree->head);
         exit(0);
     }
     wait(NULL);
@@ -37,7 +37,7 @@ void    execute_redirection_out(t_token_tree *tree)
             write(2, "open() failed!!\n", 17); //open() fail
         dup2(fd_file, 1); //fail
         close(fd_file); //fail
-        execute_tree(tree->left);
+        execute_tree(tree->left, &tree->head);
         exit(0);
     }
     wait(NULL);

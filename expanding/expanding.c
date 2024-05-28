@@ -6,27 +6,16 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/25 19:43:38 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:41:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-//debugging (to remove)
-void    print_lst(t_env_vars *head)
-{
-	while (head)
-	{
-		printf("%s\n", head->env_name);
-		head = head->next;
-	}
-}
-//debugging
-
 void swap_nodes_content(t_env_vars *env1, t_env_vars *env2)
 {
-	char *tmpname;
-	char *tmpval;
+	char	*tmpname;
+	char	*tmpval;
 
 	tmpname = env2->env_name;
 	tmpval = env2->env_val;
@@ -65,8 +54,8 @@ void    sort_matched_envs(t_env_vars *head, int nbr_matched, int ascii_nbr)
 
 void    create_sorted_lst(t_env_vars *node, t_env_vars **head)
 {
-	t_env_vars          *newnode;
-	t_env_vars			*prev;
+	t_env_vars	*newnode;
+	t_env_vars	*prev;
 
 	prev = get_last_node(*head);
 	newnode = malloc(sizeof(t_env_vars)); //leaks
@@ -81,15 +70,13 @@ void    create_sorted_lst(t_env_vars *node, t_env_vars **head)
 
 t_env_vars  *display_envs_sorted(t_env_vars *head)
 {
-	int         matches;
-	int         ascii_nbr;
-	t_env_vars  *tmp;
-	t_env_vars  *s_head;
-	t_env_vars  *matched_node;
+	int			matches;
+	int			ascii_nbr;
+	t_env_vars	*tmp;
+	t_env_vars	*s_head;
 
 	matches = 0;
 	ascii_nbr = 33;
-	matched_node = NULL;
 	tmp = NULL;
 	s_head = NULL;
 	while (ascii_nbr <= 127)
@@ -99,8 +86,7 @@ t_env_vars  *display_envs_sorted(t_env_vars *head)
 		{
 			if (tmp->env_name[0] == ascii_nbr)
 			{
-				matched_node = tmp;
-				create_sorted_lst(matched_node, &s_head);
+				create_sorted_lst(tmp, &s_head);
 				matches++;
 			}
 			tmp = tmp->next;
@@ -124,11 +110,11 @@ void    create_env(t_env_vars *node, t_env_vars *head, char *env)
 	ft_lstadd(&head, node);
 }
 
-t_env_vars  *create_lst(char **envp, t_env_vars *env_head)
+t_env_vars  *create_lst(char **envp)
 {
-	t_env_vars *head;
-	t_env_vars *newnode;
-	t_env_vars *lastnode;
+	t_env_vars	*head;
+	t_env_vars	*newnode;
+	t_env_vars	*lastnode;
 
 	lastnode = NULL;
 	head = malloc(sizeof(t_env_vars)); //leaks
@@ -140,24 +126,23 @@ t_env_vars  *create_lst(char **envp, t_env_vars *env_head)
 		create_env(newnode, head, *envp);
 		envp++;
 	}
-	while (env_head)
-	{
-		newnode = malloc(sizeof(t_env_vars)); //leaks
-		newnode->env_name = env_head->env_name;
-		newnode->env_val = env_head->env_val;
-		ft_lstadd(&head, newnode);
-		env_head = env_head->next;
-	}
+	// while (env_head)
+	// {
+	// 	newnode = malloc(sizeof(t_env_vars)); //leaks
+	// 	newnode->env_name = env_head->env_name;
+	// 	newnode->env_val = env_head->env_val;
+	// 	ft_lstadd(&head, newnode);
+	// 	env_head = env_head->next;
+	// }
 	return (head);
 }
 
-void    export_without_arguments(t_env_vars *p_head, char **envp)
+void    export_without_arguments(t_env_vars *p_head)
 {
-	t_env_vars *head;
-	t_env_vars *s_head;
+	t_env_vars	*s_head;
 
-	head = create_lst(envp, p_head);
-	s_head = display_envs_sorted(head);
+	// head = create_lst(envp, p_head);
+	s_head = display_envs_sorted(p_head);
 	while (s_head)
 	{
 		if (s_head->env_val)
@@ -168,7 +153,7 @@ void    export_without_arguments(t_env_vars *p_head, char **envp)
 	}
 }
 
-t_env_vars  *add_env_var(char **tokens, int nbr_envs, t_env_vars *head)
+void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
 {
 	int	i;
 
@@ -176,31 +161,32 @@ t_env_vars  *add_env_var(char **tokens, int nbr_envs, t_env_vars *head)
 	while (i <= nbr_envs)
 	{
 		if (ft_strchr(tokens[i], '=') || is_string(tokens[i]))
-			lst_add_element(tokens[i], &head, i);
+			lst_add_element(tokens[i], head, i);
 		else
 			printf("export: `%s' : not a valid identifier", tokens[i]);
 		i++;
 	}
-	return (head);
 }
 
-void    print_env_variable(char *env_name, t_env_vars *head)
+void    print_env_variable(char **cmds, t_env_vars *head, int i)
 {
-	int     i;
 	char    *env_n;
 
-	i = 0;
-	env_n = ft_strtrim(env_name, "$");
-	while (head && head->env_name && ft_strcmp(head->env_name, env_n))
-		head = head->next;
-	if (head && head->env_name)
-	{    
-		printf("%s", head->env_val);
-		if (head->next)
-			printf(" ");
+	while (cmds[i] && ft_strchr(cmds[i], '$'))
+	{
+		env_n = ft_strtrim(cmds[i], "$");
+		while (head && head->env_name && ft_strcmp(head->env_name, env_n))
+			head = head->next;
+		if (head && head->env_name)
+		{    
+			printf("%s", head->env_val);
+			if (head->next)
+				printf(" ");
+			else
+				printf("\n");
+		}
 		else
 			printf("\n");
+		i++;
 	}
-	else
-		printf("\n");
 }

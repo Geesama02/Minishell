@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/27 14:25:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/27 20:26:25 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,8 @@ int execute_rest(char **cmds, char **envp)
 	return (0);
 }
 
-int exec_command(char **cmds, char **envp)
+int exec_command(char **cmds, char **envp, t_env_vars **head)
 {
-	static t_env_vars   *head;
-
 	if (!ft_strcmp(cmds[0], "cd"))
 	{    
 		if (cd_command(cmds[1]) == -1)
@@ -98,40 +96,13 @@ int exec_command(char **cmds, char **envp)
 			return (-1);
 	}
 	else if (!ft_strcmp(cmds[0], "echo"))
-	{
-		int i;
-
-		i = 1;
-		while (cmds[i])
-		{
-			if (!ft_strcmp(cmds[1], "-n"))
-				i++;
-			if (ft_strchr(cmds[i], '$'))
-				print_env_variable(cmds[i], head);
-			else
-			{
-				if (echo_command(cmds[i]) == -1)
-					return (-1);
-				if (cmds[i + 1])
-				{
-					if (echo_command(" ") == -1)
-						return (-1);
-				}
-				if (ft_strcmp(cmds[1], "-n") && !cmds[i + 1])
-				{    
-					if (echo_command("\n") == -1)
-						return (-1);
-				}
-			}
-			i++;
-		}
-	}
+		echo_command(cmds, *head);
 	else if (!ft_strcmp(cmds[0], "export"))
-		head = export_command(cmds, head, envp);
+		export_command(cmds, head);
 	else if (!ft_strcmp(cmds[0], "unset"))
-		unset_command(&head, cmds[1]);
+		unset_command(head, cmds[1]);
 	else if (!ft_strcmp(cmds[0], "env"))
-		env_command(head, envp);
+		env_command(*head);
 	else if (!ft_strcmp(cmds[0], "exit"))
 		exit(0);
 	else

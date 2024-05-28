@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:21:44 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/27 14:20:32 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/27 20:42:38 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int execute_left_pipe(t_token_tree *left, int fds[2], int stdout_fd, int stdin_f
 	close(fds[0]); //fail
 	dup2(fds[1], 1); //fail
 	close(fds[1]); //fail
-	if (execute_tree(left) == -1)
+	if (execute_tree(left, &left->head) == -1)
 	{
 		write(2, "left of the pipe failed while execution\n", 42);
 		return (-1);
@@ -42,7 +42,7 @@ int execute_right_pipe(t_token_tree *right, int fds[2], int stdout_fd, int stdin
 	close(fds[0]); //fail
 	if (right->id == right->cmd_count)
 		dup2(stdout_fd, 1); //fail
-	if (execute_tree(right) == -1)
+	if (execute_tree(right, &right->head) == -1)
 	{
 		write(2, "right of the pipe failed while execution\n", 42);
 		return (-1);
