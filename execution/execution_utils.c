@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/28 14:29:15 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:29:04 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int exec_command(char **cmds, char **envp, t_env_vars **head)
 	else if (!ft_strcmp(cmds[0], "exit"))
 		exit(0);
 	else
-	{     
+	{
 		if (execute_rest(cmds, envp) == -1)
 			return (-1);
 	}

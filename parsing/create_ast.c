@@ -6,13 +6,13 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:48:47 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/23 18:15:01 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:48:00 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-t_token_tree *create_node(char *token, t_t_type type, char **envp)
+t_token_tree *create_node(char *token, t_t_type type, char **envp, t_env_vars **head)
 {
 	t_token_tree *node;
 
@@ -22,6 +22,7 @@ t_token_tree *create_node(char *token, t_t_type type, char **envp)
 	node->token = token;
 	node->type = type;
 	node->envp = envp;
+	node->head = head;
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
