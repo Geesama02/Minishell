@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/28 17:04:18 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:24:59 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,6 @@ char *print_type(t_t_type type)
 {
 	if (type == OPERATOR_T)
 		return ("OPERATOR");
-	if (type == REDIRECTION_T)
-		return ("REDIRECTION_T");
 	if (type == HEREDOC)
 		return ("HEREDOC");
 	if (type == HEREDOC_TOKEN)
@@ -184,10 +182,12 @@ int check_syntax(char *input)
 
 int main(int argc, char **argv, char **envp)
 {
-	t_token_array *token_array;
-	t_stack postfix_stack;
-	t_token_tree *ast_tree;
+	t_token_array	*token_array;
+	t_stack			postfix_stack;
+	t_token_tree	*ast_tree;
+	t_env_vars		*head;
 
+	head = create_lst(envp);
     while(1)
     {
 		(void)argc;
@@ -225,16 +225,16 @@ int main(int argc, char **argv, char **envp)
 			i++;
 		}
 		postfix_stack = shunting_yard(token_array);
-		ast_tree = build_tree(&postfix_stack);
+		ast_tree = build_tree(&postfix_stack, envp);
+		ast_tree->head = head;
 		// printf("left -> %s\n", ast_tree->left->token);
 		// printf("right -> %s\n", ast_tree->right->token);
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
 		// execute_tree(ast_tree, envp);
-		print_tree(ast_tree, 0);
+		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
-		wait(NULL);
 		// wildcard("ft*p*.c");
     }
     return (0);

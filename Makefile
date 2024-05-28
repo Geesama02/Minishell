@@ -1,19 +1,19 @@
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 CC = cc
 NAME = minishell
 SRC = main.c ft_split.c ft_strcmp.c parsing/fill_token.c ft_strtrim.c execution/builtins.c parsing/create_ast.c ft_strncmp.c \
 	execution/execution.c expanding/expanding.c parsing/tokenizer.c parsing/tokenizer_utils.c parsing/tokenizer_utils2.c parsing/shunting_yard.c parsing/shunting_yard_utils.c \
-	parsing/build_tree.c expanding/expanding_utils.c expanding/ft_split_one.c expanding/wildcard_utils.c execution/pipe_execution.c execution/execution_utils.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
-	execution/redirection.c expanding/wildcard_utils2.c parsing/heredoc.c parsing/heredoc_utils.c parsing/tokenizer_utils3.c
+	parsing/build_tree.c expanding/expanding_utils.c expanding/ft_split_one.c expanding/wildcard_utils.c execution/pipe_execution.c execution/execution_utils.c \
+	execution/redirection.c expanding/wildcard_utils2.c parsing/heredoc.c parsing/heredoc_utils.c parsing/tokenizer_utils3.c execution/builtins_utils.c
 OBJS = ${SRC:.c=.o}
 LIBFT = ./libft/libft.a
-NEXT_LINE_H = ./get_next_line/get_next_line.h
 LPATH = ../../.brew/opt/readline
 
 all : ${NAME}
 
 ${LIBFT} :
 	make -C ./libft
+	make bonus -C ./libft
 
 ${NAME} : ${OBJS} ${LIBFT}
 	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -lreadline -L ${LPATH}/lib -o ${NAME}

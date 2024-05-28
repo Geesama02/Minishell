@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/28 17:03:10 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:23:30 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ t_t_type	set_token_type(char *token)
 	if (ft_strcmp("&&", token) == 0 || ft_strcmp("||", token) == 0
 		|| ft_strcmp("|", token) == 0)
 		return (OPERATOR_T);
-	if (ft_strcmp(">>", token) == 0 || ft_strcmp(">", token) == 0
-		|| ft_strcmp("<", token) == 0)
-		return (REDIRECTION_T);
+	if (ft_strcmp(">>", token) == 0)
+		return (REDIRECTION_A);
+	if (ft_strcmp(">", token) == 0)
+		return (REDIRECTION_O);
 	if (ft_strcmp("<<", token) == 0)
 		return (HEREDOC);
+	if (ft_strcmp("<", token) == 0)
+		return (REDIRECTION_I);
 	if (ft_strcmp("(", token) == 0)
 		return (PARETHESIS_O);
 	if (ft_strcmp(")", token) == 0)

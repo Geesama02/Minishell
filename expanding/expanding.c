@@ -1,71 +1,195 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expanding.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
+/*   Updated: 2024/05/28 16:07:59 by maglagal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../parse_header.h"
 
-void    export_without_arguments(t_env_vars *head, char **envp)
+void swap_nodes_content(t_env_vars *env1, t_env_vars *env2)
 {
-    display_envs_sorted(envp);
-    while (head)
-    {
-        if (head->env_val)
-            printf("declare -x %s=%s\n", head->env_name, head->env_val);
-        else
-            printf("declare -x %s\n", head->env_name);
-        head = head->next;
-    }
+	char	*tmpname;
+	char	*tmpval;
+
+	tmpname = env2->env_name;
+	tmpval = env2->env_val;
+	env2->env_name = env1->env_name;
+	env2->env_val = env1->env_val;
+	env1->env_name = tmpname;
+	env1->env_val = tmpval;
 }
 
-t_env_vars  *add_env_var(t_env_vars *last_env, char **tokens, int nbr_envs, t_env_vars *head)
+void    sort_matched_envs(t_env_vars *head, int nbr_matched, int ascii_nbr)
 {
-    int         i;
+	int         index;
+	int         i;
+	t_env_vars  *tmp_head;
 
-    i = 1;
-    while (i <= nbr_envs)
-    {
-        if (ft_strchr(tokens[i], '=') || is_string(tokens[i]))
-            head = lst_add_element(tokens[i], last_env, head, i);
-        else
-            printf("export: `%s' : not a valid identifier", tokens[i]);
-        i++;
-    }
-    return (head);
+	i = 0;
+	index = 0;
+	tmp_head = NULL;
+	while (head && head->env_name[0] != ascii_nbr)
+		head = head->next;
+	while (i < nbr_matched)
+	{
+		tmp_head = head;
+		while (tmp_head && tmp_head->next)
+		{
+			while (tmp_head->env_name[index] == tmp_head->next->env_name[index])
+				index++;
+			if (tmp_head->env_name[index] > tmp_head->next->env_name[index])
+				swap_nodes_content(tmp_head, tmp_head->next);
+			tmp_head = tmp_head->next;
+			index = 0;
+		}
+		i++;
+	}
 }
 
-void    display_envs_sorted(char **envp)
+void    create_sorted_lst(t_env_vars *node, t_env_vars **head)
 {
-    int i;
-    int ascii_nbr;
+	t_env_vars	*newnode;
+	t_env_vars	*prev;
 
-    i = 0;
-    ascii_nbr = 0;
-    while (ascii_nbr <= 127)
-    {
-        while (envp[i])
-        {
-            if (*envp[i] == ascii_nbr)
-                printf("declare -x %s\n", envp[i]);
-            i++;
-        }
-        i = 0;
-        ascii_nbr++;
-    }
+	prev = get_last_node(*head);
+	newnode = malloc(sizeof(t_env_vars)); //leaks
+	if (!*head)
+		*head = newnode;
+	if (prev)
+		prev->next = newnode;
+	newnode->env_name = node->env_name;
+	newnode->env_val = node->env_val;
+	newnode->next = NULL;
 }
 
-void    print_env_variable(char *env_name, t_env_vars *head)
+t_env_vars  *display_envs_sorted(t_env_vars *head)
 {
-    int     i;
-    char    *env_n;
+	int			matches;
+	int			ascii_nbr;
+	t_env_vars	*tmp;
+	t_env_vars	*s_head;
 
-    i = 0;
-    env_n = ft_strtrim(env_name, "$");
-    while (head && head->env_name && ft_strcmp(head->env_name, env_n))
-        head = head->next;
-    if (head && head->env_name)
-    {    
-        printf("%s", head->env_val);
-        if (head->next)
-            printf(" ");
-        else
-            printf("\n");
-    }
-    else
-        printf("\n");
+	matches = 0;
+	ascii_nbr = 33;
+	tmp = NULL;
+	s_head = NULL;
+	while (ascii_nbr <= 127)
+	{
+		tmp = head;
+		while (tmp)
+		{
+			if (tmp->env_name[0] == ascii_nbr)
+			{
+				create_sorted_lst(tmp, &s_head);
+				matches++;
+			}
+			tmp = tmp->next;
+		}
+		if (matches > 1)
+			sort_matched_envs(s_head, matches, ascii_nbr);
+		matches = 0;
+		ascii_nbr++;
+	}
+	return (s_head);
+}
+
+void    create_env(t_env_vars *node, t_env_vars *head, char *env)
+{
+	char    **envs;
+
+	envs = ft_split(env, '='); //leaks
+	node->env_name = envs[0];
+	node->env_val = envs[1];
+	node->next = NULL;
+	ft_lstadd(&head, node);
+}
+
+t_env_vars  *create_lst(char **envp)
+{
+	t_env_vars	*head;
+	t_env_vars	*newnode;
+	t_env_vars	*lastnode;
+
+	lastnode = NULL;
+	head = malloc(sizeof(t_env_vars)); //leaks
+	create_env(head, NULL, *envp);
+	envp++;
+	while (*envp)
+	{
+		newnode = malloc(sizeof(t_env_vars)); //leaks
+		create_env(newnode, head, *envp);
+		envp++;
+	}
+	return (head);
+}
+
+void    export_without_arguments(t_env_vars *p_head)
+{
+	t_env_vars	*s_head;
+
+	s_head = display_envs_sorted(p_head);
+	while (s_head)
+	{
+		if (s_head->env_val)
+			printf("declare -x %s=\"%s\"\n", s_head->env_name, s_head->env_val);
+		else
+			printf("declare -x %s\n", s_head->env_name);
+		s_head = s_head->next;
+	}
+}
+
+void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
+{
+	char	**cmds;
+	char *env_name;
+	int		i;
+
+	i = 1;
+	env_name = NULL;
+	while (i <= nbr_envs)
+	{
+    	cmds = ft_split_one(tokens[i], '='); //leaks
+		if (ft_strchr(cmds[0], '+'))
+		{	
+			env_name = ft_strtrim(cmds[0], "+");
+			append_env_var(*head, env_name, cmds[1]);
+		}
+		else if (is_string(cmds[0]))
+		{
+			search_for_env_var(head, cmds[0]);
+			lst_add_element(cmds, head, i);
+		}
+		else
+			printf("export: `%s' : not a valid identifier\n", tokens[i]);
+		i++;
+	}
+}
+
+void    print_env_variable(char **cmds, t_env_vars *head, int i)
+{
+	char    *env_n;
+
+	while (cmds[i] && ft_strchr(cmds[i], '$'))
+	{
+		env_n = ft_strtrim(cmds[i], "$");
+		while (head && head->env_name && ft_strcmp(head->env_name, env_n))
+			head = head->next;
+		if (head && head->env_name)
+		{    
+			printf("%s", head->env_val);
+			if (head->next)
+				printf(" ");
+			else
+				printf("\n");
+		}
+		else
+			printf("\n");
+		i++;
+	}
 }
