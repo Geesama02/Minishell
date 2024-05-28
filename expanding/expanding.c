@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/28 11:41:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:07:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,14 +126,6 @@ t_env_vars  *create_lst(char **envp)
 		create_env(newnode, head, *envp);
 		envp++;
 	}
-	// while (env_head)
-	// {
-	// 	newnode = malloc(sizeof(t_env_vars)); //leaks
-	// 	newnode->env_name = env_head->env_name;
-	// 	newnode->env_val = env_head->env_val;
-	// 	ft_lstadd(&head, newnode);
-	// 	env_head = env_head->next;
-	// }
 	return (head);
 }
 
@@ -141,29 +133,40 @@ void    export_without_arguments(t_env_vars *p_head)
 {
 	t_env_vars	*s_head;
 
-	// head = create_lst(envp, p_head);
 	s_head = display_envs_sorted(p_head);
 	while (s_head)
 	{
 		if (s_head->env_val)
 			printf("declare -x %s=\"%s\"\n", s_head->env_name, s_head->env_val);
 		else
-			printf("declare -x %s=\"\"\n", s_head->env_name);
+			printf("declare -x %s\n", s_head->env_name);
 		s_head = s_head->next;
 	}
 }
 
 void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
 {
-	int	i;
+	char	**cmds;
+	char *env_name;
+	int		i;
 
 	i = 1;
+	env_name = NULL;
 	while (i <= nbr_envs)
 	{
-		if (ft_strchr(tokens[i], '=') || is_string(tokens[i]))
-			lst_add_element(tokens[i], head, i);
+    	cmds = ft_split_one(tokens[i], '='); //leaks
+		if (ft_strchr(cmds[0], '+'))
+		{	
+			env_name = ft_strtrim(cmds[0], "+");
+			append_env_var(*head, env_name, cmds[1]);
+		}
+		else if (is_string(cmds[0]))
+		{
+			search_for_env_var(head, cmds[0]);
+			lst_add_element(cmds, head, i);
+		}
 		else
-			printf("export: `%s' : not a valid identifier", tokens[i]);
+			printf("export: `%s' : not a valid identifier\n", tokens[i]);
 		i++;
 	}
 }

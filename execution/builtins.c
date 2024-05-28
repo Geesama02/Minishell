@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/28 11:39:36 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/28 12:22:03 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	unset_command(t_env_vars **head, char *cmd)
 	{
 		while (tmp && tmp->next && ft_strcmp(tmp->next->env_name, cmd))
 			tmp = tmp->next;
-		if (tmp->next->next)
+		if (tmp->next && tmp->next->next)
 			replace_nodes_content(tmp->next, tmp->next->next);
 		else
 		{	

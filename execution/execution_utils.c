@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/27 20:26:25 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:29:15 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,13 @@ char *find_path(char **paths, char *cmd)
 	return (NULL);
 }
 
-int execute_rest(char **cmds, char **envp)
+char	*find_correct_path(char *cmd)
 {
 	int		i;
-	int		status;
 	char	**paths;
 	char	*path;
-	pid_t	pid;
 
+	path = NULL;
 	i = 0;
 	paths = ft_split(getenv("PATH"), ':'); //leaks
 	while (paths[i])
@@ -63,8 +62,20 @@ int execute_rest(char **cmds, char **envp)
 		paths[i] = add_slash(paths[i]); //leaks
 		i++;
 	}
-	i = 0;
-	path = find_path(paths, cmds[0]); //leaks
+	path = find_path(paths, cmd); //leaks
+	return (path);
+}
+
+int execute_rest(char **cmds, char **envp)
+{
+	int		status;
+	char	*path;
+	pid_t	pid;
+
+	if (!ft_strchr(cmds[0], '/'))
+		path = find_correct_path(cmds[0]);
+	else
+		path = cmds[0];
 	if (path)
 	{
 		pid = fork();

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/28 11:40:40 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:57:34 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int				is_string(char *str);
 void			export_without_arguments(t_env_vars *head);
 void			add_env_var(char **tokens, int nbr_envs, t_env_vars **head);
 t_env_vars		*get_last_node(t_env_vars *head);
-void			lst_add_element(char *token, t_env_vars **head, int i);
+void			lst_add_element(char **cmds, t_env_vars **head, int i);
 int				join_strings(char **s1, char *s2);
 int				handle_wildcard(char **str, char *input);
 int				free_2d_array(char **array);
@@ -130,5 +130,7 @@ void			ft_lstadd(t_env_vars **lst, t_env_vars *new);
 void			print_echo_content(char **cmds, int i, int newline);
 void			replace_nodes_content(t_env_vars *node1, t_env_vars *node2);
 t_env_vars		*create_lst(char **envp);
+t_env_vars		*search_for_env_var(t_env_vars **head, char *env_name);
+void			append_env_var(t_env_vars *head, char *env_name, char *to_append);
 
 #endif
