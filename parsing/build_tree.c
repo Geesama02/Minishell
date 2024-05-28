@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 19:55:51 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:06:01 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ t_token_tree	*build_tree(t_stack *stack)
 	tree_offset = 0;
 	while (stack->token[i].token)
 	{
-		if (stack->token[i].type == CMD_T)
+		if (stack->token[i].type == CMD_T || stack->token[i].type == HEREDOC_TOKEN)
 		{
-			stack_tree[tree_offset] = create_node(stack->token[i].token, CMD_T);
+			stack_tree[tree_offset] = create_node(stack->token[i].token, stack->token[i].type);
 			tree_offset++;
 		}
-		else if ((stack->token[i].type == REDIRECTION_T || stack->token[i].type == OPERATOR_T)
-				&& tree_offset > 1)
+		else if ((stack->token[i].type == REDIRECTION_T || stack->token[i].type == OPERATOR_T
+				|| stack->token[i].type == HEREDOC) && tree_offset > 1)
 			handle_non_cmd(stack, stack_tree, &tree_offset, i);
 		i++;
 	}

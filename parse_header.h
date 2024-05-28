@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 19:45:55 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:10:57 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #ifndef PARSE_HEADER_H
-#define PARSE_HEADER_H
+# define PARSE_HEADER_H
 
 #include <stdio.h>
 #include <unistd.h>
@@ -29,10 +29,23 @@ typedef enum e_t_type
 {
 	OPERATOR_T,
 	REDIRECTION_T,
+	HEREDOC,
+	HEREDOC_TOKEN,
 	PARETHESIS_O,
 	PARETHESIS_C,
 	CMD_T
 } t_t_type;
+
+
+
+typedef struct s_token_vars
+{
+	int	l;
+	int	x;
+	int	check;
+	char *input;
+	char	*cmd_holder;
+} t_token_vars;
 
 typedef struct s_token_array
 {
@@ -124,5 +137,23 @@ int		handle_wildcard(char **str, char *input);
 int		free_2d_array(char **array);
 int		join_wildcard(char **sep_str, char **str, char *input);
 int		filter_files(struct dirent *dir_content, char **sep_str, char *str, char **res);
+int		count_heredoc_len(char *input);
+char	*continue_heredoc(char *delimiter);
+char	*ft_split_first(char *str);
+int		has_more_cmds(char *str);
+char	*ignore_quotes(char *str);
+char	*handle_extra_cmd(t_token_array *token_array, char **holder, int *check, int i);
+char	*handle_multi_heredoc(t_token_array *token_array, char *holder, t_token_vars *vars);
+void	*handle_first_heredoc(t_token_array *token_array, char **holder, int *l, int i);
+char	*set_extra_cmd(t_token_array *token_array, char **holder, int i, t_token_vars *vars);
+void	*fill_heredoc(t_token_array *token_array, char **holder, int i, t_token_vars *vars);
+void	handle_heredoc(t_token_array *token_array, char **holder, int *i, t_token_vars *vars);
+void	*handle_other_tokens(t_token_array *token_array, char **holder, int *i, t_token_vars *vars);
+int		free_token_holder(char **holder, t_token_array *token_array, int i);
+
+
+
+// delete later
+char *print_type(t_t_type type);
 
 #endif

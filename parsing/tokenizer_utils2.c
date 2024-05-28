@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 19:55:34 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:03:10 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ int	handle_tokens(char **input, char *input_cpy, char **holder, int i)
 		holder[i] = get_token(input, 1, "(");
 	else if (ft_strncmp(")", *input , 1) == 0)
 		holder[i] = get_token(input, 1, ")");
-	else if (ft_strncmp(">", *input , 1) == 0)
-		holder[i] = get_token(input, 1, ">");
 	else if (ft_strncmp(">>", *input , 2) == 0)
 		holder[i] = get_token(input, 2, ">>");
-	else if (ft_strncmp("<", *input , 1) == 0)
-		holder[i] = get_token(input, 1, "<");
+	else if (ft_strncmp(">", *input , 1) == 0)
+		holder[i] = get_token(input, 1, ">");
 	else if (ft_strncmp("<<", *input , 2) == 0)
 		holder[i] = get_token(input, 2, "<<");
+	else if (ft_strncmp("<", *input , 1) == 0)
+		holder[i] = get_token(input, 1, "<");
 	else
 	{
 		if (handle_cmd(input, input_cpy, holder, i) == 0)
@@ -46,8 +46,10 @@ int	scan_syntax(char **holder, char *input, int j)
 
 	i = 0;
 	if ((set_token_type(holder[0]) == OPERATOR_T
-		|| set_token_type(holder[0]) == REDIRECTION_T)
+		|| set_token_type(holder[0]) == REDIRECTION_T
+		|| set_token_type(holder[0]) == HEREDOC)
 		|| (set_token_type(holder[j - 1]) == OPERATOR_T
+		|| set_token_type(holder[j - 1]) == HEREDOC
 		|| set_token_type(holder[j - 1]) == REDIRECTION_T))
 	{
 		write_error("Error: parse error\n");
@@ -61,10 +63,14 @@ int	scan_syntax(char **holder, char *input, int j)
 				return (0);
 		}
 		if (holder[i + 1]
-			&& (set_token_type(holder[i]) == OPERATOR_T || set_token_type(holder[i]) == REDIRECTION_T)
-			&& (set_token_type(holder[i + 1]) == OPERATOR_T || set_token_type(holder[i + 1]) == REDIRECTION_T))
+			&& (set_token_type(holder[i]) == OPERATOR_T || set_token_type(holder[i]) == REDIRECTION_T
+			|| set_token_type(holder[i]) == HEREDOC)
+			&& (set_token_type(holder[i + 1]) == OPERATOR_T || set_token_type(holder[i + 1]) == REDIRECTION_T
+			|| set_token_type(holder[i + 1]) == HEREDOC))
 		{
 			write_error("Error: parse error\n");
+			printf("holder => %s\n", holder[i]);
+			printf("holder + i => %s\n", holder[i + 1]);
 			return (0);
 		}
 		i++;
