@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:48:47 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/28 16:48:00 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/29 09:25:52 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void print_tree(t_token_tree *root, int level)
 		printf("------------");
 		i++;
 	}
-	printf("%s\n", root->token);
+	printf("%s -> %s\n", root->token, print_type(root->type));
 	print_tree(root->left, level + 1);
 	print_tree(root->right, level + 1);
 }

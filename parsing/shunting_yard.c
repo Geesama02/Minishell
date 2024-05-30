@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shunting_yard.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:01:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/24 11:36:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:21:18 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	precedence_prio(char *token)
 		return (2);
 	if (ft_strcmp(token, "|") == 0)
 		return (3);
-	if (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0 || ft_strcmp(token, ">>") == 0)
+	if (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0
+		|| ft_strcmp(token, ">>") == 0 || ft_strcmp(token, "<<") == 0)
 		return (4);
 	return (0);
 }
@@ -46,10 +47,11 @@ void	empty_stack(t_stack *op_stack, t_stack *cmd_stack, t_token_array *tokens, i
 
 void	postfix_notation(t_stack *op_stack, t_stack *cmd_stack, t_token_array *tokens, int i)
 {
-	if (tokens[i].type == CMD_T)
+	if (tokens[i].type == CMD_T || tokens[i].type == HEREDOC_TOKEN)
 		stack_push(&tokens[i], cmd_stack);
 	else if (tokens[i].type == OPERATOR_T || tokens[i].type == REDIRECTION_O
-		|| tokens[i].type == REDIRECTION_I || tokens[i].type == REDIRECTION_A)
+		|| tokens[i].type == REDIRECTION_I || tokens[i].type == REDIRECTION_A
+			|| tokens[i].type == HEREDOC)
 	{
 		empty_stack(op_stack, cmd_stack, tokens, i);
 		stack_push(&tokens[i], op_stack);

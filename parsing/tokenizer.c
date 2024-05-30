@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/24 11:35:27 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:24:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ t_t_type	set_token_type(char *token)
 		return (REDIRECTION_A);
 	if (ft_strcmp(">", token) == 0)
 		return (REDIRECTION_O);
+	if (ft_strcmp("<<", token) == 0)
+		return (HEREDOC);
 	if (ft_strcmp("<", token) == 0)
 		return (REDIRECTION_I);
 	if (ft_strcmp("(", token) == 0)
@@ -81,22 +83,27 @@ int	free_token_holder(char **holder, t_token_array *token_array, int i)
 int	copy_to_array(t_token_array *token_array, char *input, char **holder, int j)
 {
 	int	i;
+	t_token_vars	vars;
 
 	i = 0;
+	vars.l = 0;
+	vars.x = -1;
+	vars.check = 0;
+	vars.input = input;
 	if (*holder == NULL)
 		return (free_token_holder(holder, token_array, i), 0);
 	if (scan_syntax(holder, input, j) == 0)
 		return (free_token_holder(holder, token_array, i));
 	while(holder[i] != NULL)
 	{
-		token_array[i].token = ft_strdup(holder[i]);
-		if (!token_array[i].token)
-			return (free_token_holder(holder, token_array, i), free(input), exit(1), 0);
-		token_array[i].type = set_token_type(holder[i]);
-		free(holder[i]);
-		i++;
+		if (set_token_type(holder[i]) == HEREDOC)
+			handle_heredoc(token_array, holder, &i, &vars);
+		else
+			handle_other_tokens(token_array, holder, &i, &vars);
 	}
-	token_array[i].token = NULL;
+	if (vars.x != -1)
+		vars.l++;
+	token_array[vars.l].token = NULL;
 	free(holder);
 	return (1);
 }

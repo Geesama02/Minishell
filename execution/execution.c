@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/27 20:37:38 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/29 21:20:22 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int    execute_tree(t_token_tree *tree, t_env_vars **head)
 		if (execute_cmds_with_operators(tree, head) == -1)
 			return (-1);
 	}
+	else if (tree->type == HEREDOC)
+		execute_heredoc(tree->left, tree->right);
 	wait(&status);
 	return (0);
 }

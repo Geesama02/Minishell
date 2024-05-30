@@ -6,10 +6,9 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/28 16:50:28 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/29 21:35:32 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "parse_header.h"
 
@@ -30,54 +29,82 @@ void write_error(char *str)
 	write(2, str, ft_strlen(str));
 }
 
-int check_ending_pipe(char *input, int len)
+int check_heredoc(char *input)
 {
-	while (len > 0)
+	int i;
+
+	i = 0;
+	while (input[i])
 	{
-		if (input[len] == '|')
+		if (ft_strncmp(input + i, "<<", 2) == 0)
 			return (1);
-		else if (input[len] == ' ')
-			len--;
-		else
-			return (0);
+		i++;
 	}
 	return (0);
 }
 
-int continue_pipe(char **input)
+char *get_heredoc(char *input)
+{
+	int i;
+	int	j;
+	char *delimiter;
+
+	i = 0;
+	j = 0;
+	while (input[i])
+	{
+		if (ft_strncmp(input + i, "<<", 2) == 0 && is_inside_quotes(input, i) == 0)
+		{
+			
+			i += 2;
+			while (input[i] == ' ')
+				i++;
+			delimiter = malloc(count_heredoc_len(input + i) + 1);
+			while (input[i] && (input[i] != ' ' || (input[i] != ' ' && is_inside_quotes(input, i) == 0))
+				&& (!is_op(input + i) || (is_op(input + i) && is_inside_quotes(input, i))))
+			{
+				delimiter[j] = input[i];
+				i++;
+				j++;
+			}
+			delimiter[j] = '\0';
+		}
+		i++;
+	}
+	return (delimiter);
+}
+
+char	*continue_heredoc(char *delimiter)
 {
     char *tmp;
+	char *input;
     char *old_input;
 
+	input = ft_strdup("");
     while (1) {
-        tmp = readline("Pipe>");
+        tmp = readline("> ");
         if (tmp == NULL)
-            return (0);
+            return (NULL);
         if (tmp[0] == '\0')
 		{
             free(tmp);
-            old_input = *input;
-            *input = ft_strjoin(old_input, "\n");
+			old_input = input;
+            input = ft_strjoin(old_input, "\n");
             free(old_input);
 			continue;
         }
-		else if (ft_strcmp(tmp, "exit") == 0)
-		{
-            free(tmp);
-			free(*input);
-            return (0);
-        }
-		else
-		{
-            old_input = *input;
-            *input = ft_strjoin(old_input, tmp);
-            free(old_input);
-            return (1);
-        }
+		if (ft_strcmp(tmp, delimiter) == 0)
+			return (free(tmp), input);
+		old_input = input;
+		input = ft_strjoin(old_input, tmp);
+		free(old_input);
+		free(tmp);
+		old_input = input;
+		input = ft_strjoin(old_input, "\n");
+		free(old_input);
     }
+	return (input);
 }
-
-
 
 void print_stack(t_stack *stack, int len)
 {
@@ -93,20 +120,22 @@ void print_stack(t_stack *stack, int len)
 	printf("=====================\n");
 }
 
-// char *print_type(t_t_type type)
-// {
-// 	if (type == OPERATOR_T)
-// 		return ("OPERATOR");
-// 	if (type == REDIRECTION_T)
-// 		return ("REDIRECTION_T");
-// 	if (type == PARETHESIS_O)
-// 		return ("PARETHESIS_O");
-// 	if (type == PARETHESIS_C)
-// 		return ("PARETHESIS_C");
-// 	if (type == CMD_T)
-// 		return ("CMD_T");
-// 	return ("NULL");
-// }
+char *print_type(t_t_type type)
+{
+	if (type == OPERATOR_T)
+		return ("OPERATOR");
+	if (type == HEREDOC)
+		return ("HEREDOC");
+	if (type == HEREDOC_TOKEN)
+		return ("HEREDOC_TOKEN");
+	if (type == PARETHESIS_O)
+		return ("PARETHESIS_O");
+	if (type == PARETHESIS_C)
+		return ("PARETHESIS_C");
+	if (type == CMD_T)
+		return ("CMD_T");
+	return ("NULL");
+}
 
 
 void	*free_alloc(char **bigstr, int l)
@@ -152,16 +181,23 @@ int check_syntax(char *input)
 
 int main(int argc, char **argv, char **envp)
 {
-	t_token_array	*token_array;
-	t_stack			postfix_stack;
-	t_token_tree	*ast_tree;
-	t_env_vars		*head;
+	t_token_array		*token_array;
+	t_stack				postfix_stack;
+	t_token_tree		*ast_tree;
+	t_env_vars			*head;
+	struct sigaction	sa1;
 
 	head = create_lst(envp);
     while(1)
     {
 		(void)argc;
 		(void)argv;
+		// (void)envp;
+		// (void)postfix_stack;
+		// (void)token_array;
+		// (void)ast_tree;
+		sa1.sa_handler = handle_new_prompt;
+    	sigaction(SIGINT, &sa1, NULL);
         char *input = readline("Minishell$ ");
         if (input == NULL)
 			break;
@@ -178,15 +214,16 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		}
 		token_array = tokenizer(input);
-		if (!token_array)
-		{
-			free(input);
-			continue;
-		}
-		free(input);
+		// if (!token_array)
+		// {
+		// 	free(input);
+		// 	continue;
+		// }
+		// free(input);
+		// int i = 0;
 		// while(token_array[i].token)
 		// {
-		// 	printf("token ==> %s | type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
+		// 	printf("token ==> %s -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
 		// 	i++;
 		// }
 		postfix_stack = shunting_yard(token_array);
@@ -195,15 +232,10 @@ int main(int argc, char **argv, char **envp)
 		// printf("right -> %s\n", ast_tree->right->token);
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
-		// printf("======== Tree ========\n");
-		execute_tree(ast_tree, &head);
-		// wait(&status);
-		// if (status == 1)
-		// {
-		// 	write(2, "problem occured while executing the tree\n", 42);
-		// 	return (0);
-		// }
-		// print_tree(ast_tree, 0);
+		printf("======== Tree ========\n");
+		// ast_tree->head = &head;
+		// execute_tree(ast_tree, ast_tree->head);
+		print_tree(ast_tree, 0);
 		free_tree(ast_tree);
 		// wildcard("ft*p*.c");
     }

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/28 16:51:18 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/29 09:26:16 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,14 @@ t_token_tree	*build_tree(t_stack *stack, char **envp, t_env_vars **head)
 	tree_offset = 0;
 	while (stack->token[i].token)
 	{
-		if (stack->token[i].type == CMD_T)
+		if (stack->token[i].type == CMD_T || stack->token[i].type == HEREDOC_TOKEN)
 		{
-			stack_tree[tree_offset] = create_node(stack->token[i].token, CMD_T, envp, head);
+			stack_tree[tree_offset] = create_node(stack->token[i].token, stack->token[i].type, envp, head);
 			tree_offset++;
 		}
 		else if ((stack->token[i].type == REDIRECTION_I
-			|| stack->token[i].type == REDIRECTION_A || stack->token[i].type == REDIRECTION_O || stack->token[i].type == OPERATOR_T)
-				&& tree_offset > 1)
+			|| stack->token[i].type == REDIRECTION_A || stack->token[i].type == REDIRECTION_O || stack->token[i].type == OPERATOR_T
+				|| stack->token[i].type == HEREDOC) && tree_offset > 1)
 			handle_non_cmd(stack->token[i], stack_tree, &tree_offset, envp, head);
 		i++;
 	}
