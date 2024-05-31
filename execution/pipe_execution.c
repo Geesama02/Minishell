@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:21:44 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/27 20:42:38 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:51:36 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int execute_left_pipe(t_token_tree *left, int fds[2], int stdout_fd, int stdin_f
 	close(fds[0]); //fail
 	dup2(fds[1], 1); //fail
 	close(fds[1]); //fail
-	if (execute_tree(left, &left->head) == -1)
+	if (execute_tree(left, left->head) == -1)
 	{
 		write(2, "left of the pipe failed while execution\n", 42);
 		return (-1);
@@ -35,14 +35,14 @@ int execute_left_pipe(t_token_tree *left, int fds[2], int stdout_fd, int stdin_f
 	exit(0);
 }
 
-int execute_right_pipe(t_token_tree *right, int fds[2], int stdout_fd, int stdin_fd)
+int	execute_right_pipe(t_token_tree *right, int fds[2], int stdout_fd, int stdin_fd)
 {
 	close(fds[1]); //fail
 	dup2(fds[0], 0); //fail
 	close(fds[0]); //fail
 	if (right->id == right->cmd_count)
 		dup2(stdout_fd, 1); //fail
-	if (execute_tree(right, &right->head) == -1)
+	if (execute_tree(right, right->head) == -1)
 	{
 		write(2, "right of the pipe failed while execution\n", 42);
 		return (-1);
@@ -54,11 +54,11 @@ int execute_right_pipe(t_token_tree *right, int fds[2], int stdout_fd, int stdin
 
 void    execute_pipe(t_token_tree *left, t_token_tree *right)
 {
-	pid_t       l_pid;
-	pid_t       r_pid;
-	int         fds[2];
-	int         stdout_fd;
-	int         stdin_fd;
+	pid_t	l_pid;
+	pid_t	r_pid;
+	int		fds[2];
+	int		stdout_fd;
+	int		stdin_fd;
 
 	stdout_fd = dup(1);
 	stdin_fd = dup(0);

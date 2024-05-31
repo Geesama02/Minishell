@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/31 16:39:52 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:02:30 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <signal.h>
 
 typedef enum e_t_type
 {
@@ -78,7 +79,7 @@ typedef struct s_token_tree
 	struct s_token_tree	*left;
 	struct s_token_tree	*right;
 	char				**envp;
-	t_env_vars			*head;
+	t_env_vars			**head;
 } t_token_tree;
 
 void    		ft_putchar(char c);
@@ -98,7 +99,7 @@ int				check_cmd(char *str);
 int				cd_command(char *path);
 char			*remove__quotes(char *str);
 void 			print_tree(t_token_tree *root, int level);
-t_token_tree	*create_node(char *token, t_t_type type, char **envp);
+t_token_tree	*create_node(char *token, t_t_type type, char **envp, t_env_vars **head);
 t_token_array	*tokenizer(char *input, t_env_vars *head);
 void			*free_alloc(char **bigstr, int l);
 int				is_inside_quotes(char const *s, int i);
@@ -113,7 +114,7 @@ int				handle_tokens(char **input, char *input_cpy, char **holder, int i);
 int				handle_cmd(char **input, char *input_cpy, char **holder, int i);
 t_stack			shunting_yard(t_token_array *tokens);
 int				count_array(t_token_array *tokens);
-t_token_tree	*build_tree(t_stack *stack, char **envp);
+t_token_tree	*build_tree(t_stack *stack, char **envp, t_env_vars **head);
 int				count_env_vars(char **tokens);
 void			print_env_variable(char **cmds, t_env_vars *head, int i);
 void			unset_command(t_env_vars **head, char *cmd);
@@ -172,6 +173,9 @@ char			*get_extra_chars(char *holder);
 int				has_vars(char *str);
 int				has_vars_no_quotes(char *str);
 void			*join_all_vars(char **words, char **result);
+void			execute_heredoc(t_token_tree *cmd, t_token_tree *content);
+void			handle_new_prompt(int signum);
+
 
 
 

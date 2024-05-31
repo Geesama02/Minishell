@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   create_ast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:48:47 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/28 17:18:33 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/29 09:25:52 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-t_token_tree *create_node(char *token, t_t_type type, char **envp)
+t_token_tree *create_node(char *token, t_t_type type, char **envp, t_env_vars **head)
 {
 	t_token_tree *node;
 
@@ -22,6 +22,7 @@ t_token_tree *create_node(char *token, t_t_type type, char **envp)
 	node->token = token;
 	node->type = type;
 	node->envp = envp;
+	node->head = head;
 	node->left = NULL;
 	node->right = NULL;
 	return (node);

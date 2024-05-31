@@ -6,10 +6,9 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/31 16:51:36 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:32:25 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "parse_header.h"
 
@@ -190,20 +189,23 @@ int check_syntax(char *input)
 
 int main(int argc, char **argv, char **envp)
 {
-	t_token_array	*token_array;
-	t_stack			postfix_stack;
-	t_token_tree	*ast_tree;
-	t_env_vars		*head;
+	t_token_array		*token_array;
+	t_stack				postfix_stack;
+	t_token_tree		*ast_tree;
+	t_env_vars			*head;
+	struct sigaction	sa1;
 
 	head = create_lst(envp);
     while(1)
     {
 		(void)argc;
 		(void)argv;
-		(void)envp;
-		(void)postfix_stack;
-		(void)token_array;
-		(void)ast_tree;
+		// (void)envp;
+		// (void)postfix_stack;
+		// (void)token_array;
+		// (void)ast_tree;
+		sa1.sa_handler = handle_new_prompt;
+    	sigaction(SIGINT, &sa1, NULL);
         char *input = readline("Minishell$ ");
         if (input == NULL)
 			break;
@@ -226,24 +228,22 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		}
 		free(input);
-		int i = 0;
-		while(token_array[i].token)
-		{
-			printf("token ==> %s -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
-			i++;
-		}
+		// int i = 0;
+		// while(token_array[i].token)
+		// {
+		// 	printf("token ==> %s -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
+		// 	i++;
+		// }
 		postfix_stack = shunting_yard(token_array);
-		ast_tree = build_tree(&postfix_stack, envp);
-		ast_tree->head = head;
+		ast_tree = build_tree(&postfix_stack, envp, &head);
 		// printf("left -> %s\n", ast_tree->left->token);
 		// printf("right -> %s\n", ast_tree->right->token);
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
-		// execute_tree(ast_tree, envp);
+		// execute_tree(ast_tree, &head);
 		print_tree(ast_tree, 0);
 		free_tree(ast_tree);
-		// wildcard("ft*p*.c");
     }
     return (0);
 }
