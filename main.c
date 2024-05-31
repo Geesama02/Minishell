@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/28 17:24:59 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:51:36 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,14 @@ char	*continue_heredoc(char *delimiter)
 	input = ft_strdup("");
     while (1) {
         tmp = readline("> ");
-        if (tmp == NULL)
+        if (tmp == NULL) // handle ctrl + d here
+		{
+			if (errno == ENOMEM)
+				return (write_error("Allocation Failed"), NULL);
+			else
+				return (free(tmp), input);
             return (NULL);
+		}
         if (tmp[0] == '\0')
 		{
             free(tmp);
@@ -95,7 +101,9 @@ char	*continue_heredoc(char *delimiter)
 			continue;
         }
 		if (ft_strcmp(tmp, delimiter) == 0)
+		{
 			return (free(tmp), input);
+		}
 		old_input = input;
 		input = ft_strjoin(old_input, tmp);
 		free(old_input);
@@ -211,7 +219,7 @@ int main(int argc, char **argv, char **envp)
 			free(input);
 			continue;
 		}
-		token_array = tokenizer(input);
+		token_array = tokenizer(input, head);
 		if (!token_array)
 		{
 			free(input);
@@ -233,7 +241,7 @@ int main(int argc, char **argv, char **envp)
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
 		// execute_tree(ast_tree, envp);
-		// print_tree(ast_tree, 0);
+		print_tree(ast_tree, 0);
 		free_tree(ast_tree);
 		// wildcard("ft*p*.c");
     }

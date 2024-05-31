@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/28 17:23:30 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/31 11:45:53 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,16 @@ int	free_token_holder(char **holder, t_token_array *token_array, int i)
 		j++;
 	}
 	free(holder);
-	while (i-- > 0)
+	while (i > 0)
+	{
+		i--;
 		free(token_array[i].token);
+	}
 	free(token_array);
 	return (0);
 }
 
-int	copy_to_array(t_token_array *token_array, char *input, char **holder, int j)
+int	copy_to_array(t_token_array *token_array, char *input, char **holder, t_env_vars *head)
 {
 	int	i;
 	t_token_vars	vars;
@@ -90,9 +93,10 @@ int	copy_to_array(t_token_array *token_array, char *input, char **holder, int j)
 	vars.x = -1;
 	vars.check = 0;
 	vars.input = input;
+	vars.head = head;
 	if (*holder == NULL)
 		return (free_token_holder(holder, token_array, i), 0);
-	if (scan_syntax(holder, input, j) == 0)
+	if (scan_syntax(holder, input) == 0)
 		return (free_token_holder(holder, token_array, i));
 	while(holder[i] != NULL)
 	{
@@ -104,12 +108,11 @@ int	copy_to_array(t_token_array *token_array, char *input, char **holder, int j)
 	if (vars.x != -1)
 		vars.l++;
 	token_array[vars.l].token = NULL;
-	printf("l ==> %d\n", vars.l);
 	free(holder);
 	return (1);
 }
 
-t_token_array *tokenizer(char *input)
+t_token_array *tokenizer(char *input, t_env_vars *head)
 {
 	t_token_array *token_array;
 	char **holder;
@@ -135,7 +138,7 @@ t_token_array *tokenizer(char *input)
 		i++;
 	}
 	holder[i] = NULL;
-	if (copy_to_array(token_array, input, holder, i) == 0)
+	if (copy_to_array(token_array, input, holder, head) == 0)
 		return (NULL);
 	return (token_array);
 }

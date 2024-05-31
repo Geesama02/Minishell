@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/28 17:22:53 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:22:33 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,15 @@ int	handle_tokens(char **input, char *input_cpy, char **holder, int i)
 	return (1);
 }
 
-int	scan_syntax(char **holder, char *input, int j)
+int	scan_syntax(char **holder, char *input)
 {
 	int i;
+	int j;
 
 	i = 0;
+	j = 0;
+	while(holder[j])
+		j++;
 	if ((set_token_type(holder[0]) == OPERATOR_T
 		|| set_token_type(holder[0]) == REDIRECTION_I
 		|| set_token_type(holder[0]) == REDIRECTION_O
