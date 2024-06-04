@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:53:25 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/28 17:03:10 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:36:37 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void *handle_first_heredoc(t_token_array *token_array, char **holder, int *l, in
 	token_array[*l].type = HEREDOC;
 	(*l)++;
 	token_array[*l].token = continue_heredoc(ignore_quotes(holder[i + 1]));
+	// printf("here -> %s\n", token_array[*l].token);
 	if (!token_array[*l].token)
 		return (NULL);
 	token_array[*l].type = HEREDOC_TOKEN;
@@ -103,12 +104,27 @@ void *fill_heredoc(t_token_array *token_array, char **holder, int i, t_token_var
 	}
 	return (NULL);
 }
-void	handle_heredoc(t_token_array *token_array, char **holder, int *i, t_token_vars *vars)
+void	*handle_heredoc(t_token_array *token_array, char **holder, int *i, t_token_vars *vars)
 {
 	vars->cmd_holder = set_extra_cmd(token_array, holder, *i, vars);
 	fill_heredoc(token_array, holder, *i, vars);
 	free(vars->cmd_holder);
 	free(holder[*i]);
 	free(holder[*i + 1]);
+	if (token_array[vars->l].type == HEREDOC_TOKEN && has_vars_no_quotes(token_array[vars->l].token))
+	{
+		token_array[vars->l].token = expand_vars(token_array[vars->l].token, vars->head);
+		if (!token_array[vars->l].token)
+			return (free_token_holder(holder, token_array, vars->l),
+				free(vars->input), exit(1), NULL);
+	}
+	else if (has_vars(token_array[vars->l].token))
+	{
+		token_array[vars->l].token = expand_vars(token_array[vars->l].token, vars->head);
+		if (!token_array[vars->l].token)
+			return (free_token_holder(holder, token_array, vars->l),
+				free(vars->input), exit(1), NULL);
+	}
 	*i += 2;
+	return (NULL);
 }

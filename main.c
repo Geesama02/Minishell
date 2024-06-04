@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/03 17:51:54 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:11:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,14 @@ char	*continue_heredoc(char *delimiter)
 	input = ft_strdup("");
     while (1) {
         tmp = readline("> ");
-        if (tmp == NULL)
+        if (tmp == NULL) // handle ctrl + d here
+		{
+			if (errno == ENOMEM)
+				return (write_error("Allocation Failed"), NULL);
+			else
+				return (free(tmp), input);
             return (NULL);
+		}
         if (tmp[0] == '\0')
 		{
             free(tmp);
@@ -94,7 +100,9 @@ char	*continue_heredoc(char *delimiter)
 			continue;
         }
 		if (ft_strcmp(tmp, delimiter) == 0)
+		{
 			return (free(tmp), input);
+		}
 		old_input = input;
 		input = ft_strjoin(old_input, tmp);
 		free(old_input);
@@ -214,13 +222,13 @@ int main(int argc, char **argv, char **envp)
 			free(input);
 			continue;
 		}
-		token_array = tokenizer(input);
-		// if (!token_array)
-		// {
-		// 	free(input);
-		// 	continue;
-		// }
-		// free(input);
+		token_array = tokenizer(input, head);
+		if (!token_array)
+		{
+			free(input);
+			continue;
+		}
+		free(input);
 		// int i = 0;
 		// while(token_array[i].token)
 		// {
@@ -237,8 +245,9 @@ int main(int argc, char **argv, char **envp)
 		ast_tree->head = &head;
 		execute_tree(ast_tree, ast_tree->head);
 		// print_tree(ast_tree, 0);
+		// execute_tree(ast_tree, &head);
+		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
-		// wildcard("ft*p*.c");
     }
     return (0);
 }
