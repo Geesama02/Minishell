@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:33:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/27 17:49:41 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:50:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void    ft_putchar(char c)
     write(1, &c, 1);
 }
 
-void    print_echo_content(char **cmds, int i, int newline)
+void    print_echo_content(char **cmds, int i, int new_line)
 {
     while (cmds[i])
     {
@@ -26,7 +26,7 @@ void    print_echo_content(char **cmds, int i, int newline)
             ft_putchar(' ');
         i++;
     }
-    if (newline)
+    if (new_line)
 		ft_putchar('\n');
 }
 

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/29 21:12:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:51:50 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <signal.h>
+#include <termios.h>
 
 typedef enum e_t_type
 {
@@ -153,13 +154,13 @@ void			handle_heredoc(t_token_array *token_array, char **holder, int *i, t_token
 void			*handle_other_tokens(t_token_array *token_array, char **holder, int *i, t_token_vars *vars);
 int				free_token_holder(char **holder, t_token_array *token_array, int i);
 void			ft_lstadd(t_env_vars **lst, t_env_vars *new);
-void			print_echo_content(char **cmds, int i, int newline);
+void			print_echo_content(char **cmds, int i, int new_line);
 void			replace_nodes_content(t_env_vars *node1, t_env_vars *node2);
 t_env_vars		*create_lst(char **envp);
 t_env_vars		*search_for_env_var(t_env_vars **head, char *env_name);
 void			append_env_var(t_env_vars *head, char *env_name, char *to_append);
 void			execute_heredoc(t_token_tree *cmd, t_token_tree *content);
-void			handle_new_prompt(int signum);
+void			define_signals();
 
 
 

@@ -6,13 +6,13 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/29 21:35:32 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:51:54 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_header.h"
 
-int len(char **s)
+int	len(char **s)
 {
     int i = 0;
     while (*s)
@@ -24,7 +24,7 @@ int len(char **s)
 
 }
 
-void write_error(char *str)
+void	write_error(char *str)
 {
 	write(2, str, ft_strlen(str));
 }
@@ -43,7 +43,7 @@ int check_heredoc(char *input)
 	return (0);
 }
 
-char *get_heredoc(char *input)
+char	*get_heredoc(char *input)
 {
 	int i;
 	int	j;
@@ -106,7 +106,7 @@ char	*continue_heredoc(char *delimiter)
 	return (input);
 }
 
-void print_stack(t_stack *stack, int len)
+void	print_stack(t_stack *stack, int len)
 {
 	int i;
 
@@ -120,7 +120,7 @@ void print_stack(t_stack *stack, int len)
 	printf("=====================\n");
 }
 
-char *print_type(t_t_type type)
+char	*print_type(t_t_type type)
 {
 	if (type == OPERATOR_T)
 		return ("OPERATOR");
@@ -149,7 +149,7 @@ void	*free_alloc(char **bigstr, int l)
 	return (NULL);
 }
 
-int check_syntax(char *input)
+int	check_syntax(char *input)
 {
 	int i;
 	int quote;
@@ -185,19 +185,20 @@ int main(int argc, char **argv, char **envp)
 	t_stack				postfix_stack;
 	t_token_tree		*ast_tree;
 	t_env_vars			*head;
-	struct sigaction	sa1;
+	struct termios		s1;
 
+	(void)argc;
+	(void)argv;
+	tcgetattr(0, &s1);
 	head = create_lst(envp);
-    while(1)
+	define_signals();
+    while (1)
     {
-		(void)argc;
-		(void)argv;
 		// (void)envp;
 		// (void)postfix_stack;
 		// (void)token_array;
 		// (void)ast_tree;
-		sa1.sa_handler = handle_new_prompt;
-    	sigaction(SIGINT, &sa1, NULL);
+		tcsetattr(0, TCSANOW, &s1);
         char *input = readline("Minishell$ ");
         if (input == NULL)
 			break;
@@ -232,10 +233,10 @@ int main(int argc, char **argv, char **envp)
 		// printf("right -> %s\n", ast_tree->right->token);
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
-		printf("======== Tree ========\n");
-		// ast_tree->head = &head;
-		// execute_tree(ast_tree, ast_tree->head);
-		print_tree(ast_tree, 0);
+		// printf("======== Tree ========\n");
+		ast_tree->head = &head;
+		execute_tree(ast_tree, ast_tree->head);
+		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
 		// wildcard("ft*p*.c");
     }
