@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/04 16:13:51 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/05 11:32:26 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,11 +193,10 @@ int main(int argc, char **argv, char **envp)
 	t_stack				postfix_stack;
 	t_token_tree		*ast_tree;
 	t_env_vars			*head;
-	struct termios		s1;
 
 	(void)argc;
 	(void)argv;
-	tcgetattr(0, &s1);
+	// tcgetattr(0, &old_attr);
 	head = create_lst(envp);
 	define_signals();
     while (1)
@@ -206,7 +205,7 @@ int main(int argc, char **argv, char **envp)
 		// (void)postfix_stack;
 		// (void)token_array;
 		// (void)ast_tree;
-		tcsetattr(0, TCSANOW, &s1);
+		rl_catch_signals = 0;
         char *input = readline("Minishell$ ");
         if (input == NULL)
 			break;

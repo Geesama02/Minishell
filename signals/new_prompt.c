@@ -6,21 +6,21 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:49:24 by maglagal          #+#    #+#             */
-/*   Updated: 2024/06/04 16:10:19 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/05 09:58:47 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-// void	reset_terminal_attr()
-// {
-// 	struct termios s_new;
+void	reset_terminal_attr()
+{
+	struct termios s_new;
 
-// 	s_new.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN | IXON);
-// 	s_new.c_cc[VMIN] = 1;
-// 	s_new.c_cc[VTIME] = 0;
-// 	tcsetattr(0, TCSANOW, &s_new);
-// }
+	s_new.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN | IXON);
+	s_new.c_cc[VMIN] = 1;
+	s_new.c_cc[VTIME] = 0;
+	tcsetattr(0, TCSANOW, &s_new);
+}
 
 void	handle_new_prompt(int signum)
 {
@@ -31,6 +31,7 @@ void	handle_new_prompt(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		// tcsetattr(0, TCSANOW, &old_attr);
 		return ;
 	}
 }

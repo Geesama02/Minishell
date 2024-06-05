@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/04 16:13:58 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:58:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ typedef struct s_token_tree
 	char				**envp;
 	t_env_vars			**head;
 } t_token_tree;
+
+struct termios	old_attr;
 
 void    		ft_putchar(char c);
 void    		ft_putstr(char *str);
