@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/29 09:26:16 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:46:41 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void set_ids(t_token_tree *root, int *id)
+void	set_ids(t_token_tree *root, int *id)
 {
 	if (!root)
 		return ;
@@ -27,7 +27,7 @@ void set_ids(t_token_tree *root, int *id)
 	set_ids(root->right, id);
 }
 
-void set_count(t_token_tree *root, int count)
+void	set_count(t_token_tree *root, int count)
 {
 	if (!root)
 		return ;
@@ -36,45 +36,68 @@ void set_count(t_token_tree *root, int count)
 	set_count(root->right, count);
 }
 
-int	handle_non_cmd(t_token_array token, t_token_tree **stack_tree, int *tree_offset, char **envp,
-	t_env_vars **head)
+int	handle_non_cmd(t_token_array token, t_token_tree **stack_tree,
+	int *tree_offset, t_tree_vars vars)
 {
-	t_token_tree *tmp_right;
-	t_token_tree *tmp_left;
-	
+	t_token_tree	*tmp_right;
+	t_token_tree	*tmp_left;
+
 	tmp_right = stack_tree[*tree_offset - 1];
 	tmp_left = stack_tree[*tree_offset - 2];
 	*tree_offset -= 2;
-	stack_tree[*tree_offset] = create_node(token.token, token.type, envp, head);
+	stack_tree[*tree_offset] = create_node(token.token,
+			token.type, vars.envp, vars.head);
+	if (!stack_tree[*tree_offset])
+		return (0);
 	stack_tree[*tree_offset]->right = tmp_right;
 	stack_tree[*tree_offset]->left = tmp_left;
 	(*tree_offset)++;
 	return (1);
 }
 
-t_token_tree	*build_tree(t_stack *stack, char **envp, t_env_vars **head)
+int	make_nodes(t_stack *stack, int i, t_token_tree **stack_tree,
+	t_tree_vars tree_vars)
 {
-	int i;
-	t_token_tree	**stack_tree;
-	t_token_tree	*root;
 	int	tree_offset;
 
-	stack_tree = malloc(sizeof(t_token_tree *) * stack->head);
-	i = 0;
 	tree_offset = 0;
 	while (stack->token[i].token)
 	{
-		if (stack->token[i].type == CMD_T || stack->token[i].type == HEREDOC_TOKEN)
+		if (stack->token[i].type == CMD_T
+			|| stack->token[i].type == HEREDOC_TOKEN)
 		{
-			stack_tree[tree_offset] = create_node(stack->token[i].token, stack->token[i].type, envp, head);
+			stack_tree[tree_offset] = create_node(stack->token[i].token,
+					stack->token[i].type, tree_vars.envp, tree_vars.head);
+			if (!stack_tree[tree_offset])
+				return (handle_node_failure(stack, stack_tree, tree_offset), 0);
 			tree_offset++;
 		}
-		else if ((stack->token[i].type == REDIRECTION_I
-			|| stack->token[i].type == REDIRECTION_A || stack->token[i].type == REDIRECTION_O || stack->token[i].type == OPERATOR_T
-				|| stack->token[i].type == HEREDOC) && tree_offset > 1)
-			handle_non_cmd(stack->token[i], stack_tree, &tree_offset, envp, head);
+		else if (tree_offset > 1)
+		{
+			if (!handle_non_cmd(stack->token[i], stack_tree,
+					&tree_offset, tree_vars))
+				return (handle_node_failure(stack, stack_tree, tree_offset), 0);
+		}
 		i++;
 	}
+	return (1);
+}
+
+t_token_tree	*build_tree(t_stack *stack, char **envp, t_env_vars **head)
+{
+	int				i;
+	t_token_tree	**stack_tree;
+	t_token_tree	*root;
+	t_tree_vars		tree_vars;
+
+	stack_tree = malloc(sizeof(t_token_tree *) * stack->head);
+	if (!stack_tree)
+		return (handle_node_failure(stack, stack_tree, -1), exit(1), NULL);
+	i = 0;
+	tree_vars.envp = envp;
+	tree_vars.head = head;
+	if (!make_nodes(stack, i, stack_tree, tree_vars))
+		return (exit(1), NULL);
 	i = 1;
 	free(stack->token);
 	root = stack_tree[0];

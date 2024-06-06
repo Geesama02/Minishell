@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/31 17:32:25 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/06 12:27:56 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,76 +43,7 @@ int check_heredoc(char *input)
 	return (0);
 }
 
-char *get_heredoc(char *input)
-{
-	int i;
-	int	j;
-	char *delimiter;
 
-	i = 0;
-	j = 0;
-	while (input[i])
-	{
-		if (ft_strncmp(input + i, "<<", 2) == 0 && is_inside_quotes(input, i) == 0)
-		{
-			
-			i += 2;
-			while (input[i] == ' ')
-				i++;
-			delimiter = malloc(count_heredoc_len(input + i) + 1);
-			while (input[i] && (input[i] != ' ' || (input[i] != ' ' && is_inside_quotes(input, i) == 0))
-				&& (!is_op(input + i) || (is_op(input + i) && is_inside_quotes(input, i))))
-			{
-				delimiter[j] = input[i];
-				i++;
-				j++;
-			}
-			delimiter[j] = '\0';
-		}
-		i++;
-	}
-	return (delimiter);
-}
-
-char	*continue_heredoc(char *delimiter)
-{
-    char *tmp;
-	char *input;
-    char *old_input;
-
-	input = ft_strdup("");
-    while (1) {
-        tmp = readline("> ");
-        if (tmp == NULL) // handle ctrl + d here
-		{
-			if (errno == ENOMEM)
-				return (write_error("Allocation Failed"), NULL);
-			else
-				return (free(tmp), input);
-            return (NULL);
-		}
-        if (tmp[0] == '\0')
-		{
-            free(tmp);
-			old_input = input;
-            input = ft_strjoin(old_input, "\n");
-            free(old_input);
-			continue;
-        }
-		if (ft_strcmp(tmp, delimiter) == 0)
-		{
-			return (free(tmp), input);
-		}
-		old_input = input;
-		input = ft_strjoin(old_input, tmp);
-		free(old_input);
-		free(tmp);
-		old_input = input;
-		input = ft_strjoin(old_input, "\n");
-		free(old_input);
-    }
-	return (input);
-}
 
 void print_stack(t_stack *stack, int len)
 {
@@ -195,20 +126,36 @@ int main(int argc, char **argv, char **envp)
 	t_env_vars			*head;
 	struct sigaction	sa1;
 
+
 	head = create_lst(envp);
     while(1)
     {
 		(void)argc;
 		(void)argv;
-		// (void)envp;
+		// (void)envp; 
 		// (void)postfix_stack;
 		// (void)token_array;
 		// (void)ast_tree;
 		sa1.sa_handler = handle_new_prompt;
+		sa1.sa_flags = SA_RESTART;
     	sigaction(SIGINT, &sa1, NULL);
+    	// sigaction(SIGQUIT, &sa1, NULL);
+		rl_catch_signals = 0;
         char *input = readline("Minishell$ ");
         if (input == NULL)
-			break;
+		{
+			if (errno == ENOMEM)
+			{
+				write_error("readline: allocation failure!\n");
+				rl_clear_history();
+				exit(1);
+			}
+			else
+			{
+				write(0, "exit\n", 5);
+				break;
+			}
+		}
         if (input[0] == '\0')
 		{
 			free(input);

@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/31 17:02:30 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:13:38 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <signal.h>
+#include <termios.h>
 
 typedef enum e_t_type
 {
@@ -46,6 +47,12 @@ typedef struct	s_env_vars {
 	struct s_env_vars *next;
 }				t_env_vars;
 
+typedef struct	s_tree_vars
+{
+	char	**envp;
+	t_env_vars **head;
+	// int	*tree_offset;
+} t_tree_vars;
 
 typedef struct s_token_vars
 {
@@ -175,6 +182,9 @@ int				has_vars_no_quotes(char *str);
 void			*join_all_vars(char **words, char **result);
 void			execute_heredoc(t_token_tree *cmd, t_token_tree *content);
 void			handle_new_prompt(int signum);
+int				inside_single_quotes(char *s, int i);
+int				tokenize(char **input, char *input_cpy, char **holder);
+void			handle_node_failure(t_stack *stack, t_token_tree **stack_tree,int tree_offset);
 
 
 

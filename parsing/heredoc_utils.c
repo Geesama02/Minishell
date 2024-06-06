@@ -6,18 +6,20 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:53:25 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/31 15:36:37 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/06 10:40:34 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-char *handle_multi_heredoc(t_token_array *token_array, char *holder, t_token_vars *vars)
+char	*handle_multi_heredoc(t_token_array *token_array, char *holder, t_token_vars *vars)
 {
-	char *tmp;
-	char *token;
+	char	*tmp;
+	char	*token;
 
 	tmp = ft_strdup(token_array[vars->x].token);
+	if (!tmp)
+		return (NULL);
 	free(token_array[vars->x].token);
 	if (vars->cmd_holder && token_array[vars->x].type == CMD_T)
 	{
@@ -45,7 +47,7 @@ char *handle_multi_heredoc(t_token_array *token_array, char *holder, t_token_var
 	return (token);
 }
 
-void *handle_first_heredoc(t_token_array *token_array, char **holder, int *l, int i)
+void	*handle_first_heredoc(t_token_array *token_array, char **holder, int *l, int i)
 {
 	token_array[*l].token = ft_strdup(holder[i]);
 	if (!token_array[*l].token)
@@ -53,14 +55,13 @@ void *handle_first_heredoc(t_token_array *token_array, char **holder, int *l, in
 	token_array[*l].type = HEREDOC;
 	(*l)++;
 	token_array[*l].token = continue_heredoc(ignore_quotes(holder[i + 1]));
-	// printf("here -> %s\n", token_array[*l].token);
 	if (!token_array[*l].token)
 		return (NULL);
 	token_array[*l].type = HEREDOC_TOKEN;
 	return (holder);
 }
 
-char *set_extra_cmd(t_token_array *token_array, char **holder, int i, t_token_vars *vars)
+char	*set_extra_cmd(t_token_array *token_array, char **holder, int i, t_token_vars *vars)
 {
 	char *tmp;
 
@@ -76,7 +77,7 @@ char *set_extra_cmd(t_token_array *token_array, char **holder, int i, t_token_va
 	return (tmp);
 }
 
-void *fill_heredoc(t_token_array *token_array, char **holder, int i, t_token_vars *vars)
+void	*fill_heredoc(t_token_array *token_array, char **holder, int i, t_token_vars *vars)
 {
 	if (vars->x != -1)
 	{

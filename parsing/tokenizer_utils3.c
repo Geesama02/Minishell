@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:03:52 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/31 16:51:20 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/02 15:20:07 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,47 +37,6 @@ void	*handle_other_tokens(t_token_array *token_array, char **holder, int *i, t_t
 	vars->l++;
 	return (NULL);
 }
-int	inside_single_quotes(char *s, int i)
-{
-	int quote;
-
-	quote = 0;
-	while (i >= 0)
-	{
-		if (s[i] == '\'')
-			quote = !quote;
-		i--;
-	}
-	if (quote)
-		return (1);
-	return (0);
-}
-
-int	has_vars(char *str)
-{
-	int	i;
-	
-	i = 0;
-	while(str[i])
-	{
-		if (str[i] == '$' && inside_single_quotes(str, i) == 0)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char *search_for_var(t_env_vars *head, char *env_name)
-{
-	t_env_vars	*tmp;
-
-	tmp = head;
-	while (tmp && ft_strcmp(tmp->env_name, env_name) != 0)
-		tmp = tmp->next;
-	if (!tmp)
-		return (NULL);
-	return (tmp->env_val);
-}
 
 char *get_extra_chars(char *holder)
 {
@@ -93,31 +52,41 @@ char *get_extra_chars(char *holder)
 	return (NULL);
 }
 
-
-char *expand_vars(char *holder, t_env_vars *head)
+int	tokenize(char **input, char *input_cpy, char **holder)
 {
 	int	i;
-	char **words;
-	char *result;
+	
 	i = 0;
-
-	result = ft_strdup("");
-	if (!result)
-		return (free(holder), NULL);
-	words = ft_env_split(holder, '$');
-	if (!words)
-		return (free(holder), free(result), NULL);
-	if (*holder != '$')
-		i++;
-	free(holder);
-	while(words[i])
+	while (**input)
 	{
-		if (!get_extras_and_join(head, words, i))
-			return (free(result), NULL);
+		while (**input == ' ')
+			(*input)++;
+		if (**input == '\0')
+			break;
+		if (!handle_tokens(input, input_cpy, holder, i))
+			return (0);
 		i++;
 	}
-	if (!join_all_vars(words, &result))
-		return (NULL);
-	free_2d_array(words);
-	return (result);
+	holder[i] = NULL;
+	return (1);
+}
+
+t_t_type	set_token_type(char *token)
+{
+	if (ft_strcmp("&&", token) == 0 || ft_strcmp("||", token) == 0
+		|| ft_strcmp("|", token) == 0)
+		return (OPERATOR_T);
+	if (ft_strcmp(">>", token) == 0)
+		return (REDIRECTION_A);
+	if (ft_strcmp(">", token) == 0)
+		return (REDIRECTION_O);
+	if (ft_strcmp("<<", token) == 0)
+		return (HEREDOC);
+	if (ft_strcmp("<", token) == 0)
+		return (REDIRECTION_I);
+	if (ft_strcmp("(", token) == 0)
+		return (PARETHESIS_O);
+	if (ft_strcmp(")", token) == 0)
+		return (PARETHESIS_C);
+	return (CMD_T);
 }
