@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/28 16:29:04 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/06 18:06:21 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int execute_rest(char **cmds, char **envp)
 	}
 	if (WEXITSTATUS(status) == 1)
 		return (-1);
+	if (WTERMSIG(status) == SIGQUIT)
+		write(1, "Quit: 3\n", 9);
 	return (0);
 }
 
