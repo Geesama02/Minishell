@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/05 16:13:38 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:12:34 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ typedef struct s_token_tree
 	t_env_vars			**head;
 } t_token_tree;
 
+struct termios	old_attr;
+
 void    		ft_putchar(char c);
 void    		ft_putstr(char *str);
 char			*ft_strdup(const char *s1);
@@ -163,7 +165,7 @@ void			*handle_heredoc(t_token_array *token_array, char **holder, int *i, t_toke
 void			*handle_other_tokens(t_token_array *token_array, char **holder, int *i, t_token_vars *vars);
 int				free_token_holder(char **holder, t_token_array *token_array, int i);
 void			ft_lstadd(t_env_vars **lst, t_env_vars *new);
-void			print_echo_content(char **cmds, int i, int newline);
+void			print_echo_content(char **cmds, int i, int new_line);
 void			replace_nodes_content(t_env_vars *node1, t_env_vars *node2);
 t_env_vars		*create_lst(char **envp);
 t_env_vars		*search_for_env_var(t_env_vars **head, char *env_name);
@@ -181,7 +183,7 @@ int				has_vars(char *str);
 int				has_vars_no_quotes(char *str);
 void			*join_all_vars(char **words, char **result);
 void			execute_heredoc(t_token_tree *cmd, t_token_tree *content);
-void			handle_new_prompt(int signum);
+void			define_signals();
 int				inside_single_quotes(char *s, int i);
 int				tokenize(char **input, char *input_cpy, char **holder);
 void			handle_node_failure(t_stack *stack, t_token_tree **stack_tree,int tree_offset);

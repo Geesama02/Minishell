@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/28 16:43:53 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:49:29 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,19 @@ int pwd_command()
 int echo_command(char **cmds, t_env_vars *head)
 {
 	int		i;
-	int		newline;
+	int		new_line;
 
 	i = 1;
-	newline = 1;
+	new_line = 1;
 	if (cmds[i] && !ft_strcmp(cmds[1], "-n"))
 	{
-		newline = 0;
+		new_line = 0;
 		i++;
 	}
 	if (cmds[i] && ft_strchr(cmds[i], '$'))
 		print_env_variable(cmds, head, i);
 	else
-		print_echo_content(cmds, i, newline);
+		print_echo_content(cmds, i, new_line);
 	return (0);
 }
 

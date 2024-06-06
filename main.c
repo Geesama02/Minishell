@@ -6,13 +6,13 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/06 12:27:56 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:14:08 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_header.h"
 
-int len(char **s)
+int	len(char **s)
 {
     int i = 0;
     while (*s)
@@ -24,7 +24,7 @@ int len(char **s)
 
 }
 
-void write_error(char *str)
+void	write_error(char *str)
 {
 	write(2, str, ft_strlen(str));
 }
@@ -45,7 +45,7 @@ int check_heredoc(char *input)
 
 
 
-void print_stack(t_stack *stack, int len)
+void	print_stack(t_stack *stack, int len)
 {
 	int i;
 
@@ -59,7 +59,7 @@ void print_stack(t_stack *stack, int len)
 	printf("=====================\n");
 }
 
-char *print_type(t_t_type type)
+char	*print_type(t_t_type type)
 {
 	if (type == OPERATOR_T)
 		return ("OPERATOR");
@@ -88,7 +88,7 @@ void	*free_alloc(char **bigstr, int l)
 	return (NULL);
 }
 
-int check_syntax(char *input)
+int	check_syntax(char *input)
 {
 	int i;
 	int quote;
@@ -124,22 +124,18 @@ int main(int argc, char **argv, char **envp)
 	t_stack				postfix_stack;
 	t_token_tree		*ast_tree;
 	t_env_vars			*head;
-	struct sigaction	sa1;
 
-
+	(void)argc;
+	(void)argv;
+	// tcgetattr(0, &old_attr);
 	head = create_lst(envp);
-    while(1)
+	define_signals();
+    while (1)
     {
-		(void)argc;
-		(void)argv;
-		// (void)envp; 
+		// (void)envp;
 		// (void)postfix_stack;
 		// (void)token_array;
 		// (void)ast_tree;
-		sa1.sa_handler = handle_new_prompt;
-		sa1.sa_flags = SA_RESTART;
-    	sigaction(SIGINT, &sa1, NULL);
-    	// sigaction(SIGQUIT, &sa1, NULL);
 		rl_catch_signals = 0;
         char *input = readline("Minishell$ ");
         if (input == NULL)
@@ -188,8 +184,11 @@ int main(int argc, char **argv, char **envp)
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
-		// execute_tree(ast_tree, &head);
+		ast_tree->head = &head;
+		// execute_tree(ast_tree, ast_tree->head);
 		print_tree(ast_tree, 0);
+		// execute_tree(ast_tree, &head);
+		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
     }
     return (0);
