@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 11:00:27 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 09:41:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/01 15:25:04 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,6 @@ int	is_inside_quotes(char const *s, int i)
 		return (1);
 
 	return (0);
-	// int	inside;
-
-	// inside = 0;
-	// while (i >= 0)
-	// {
-	// 	if (s[i] == '\'' || s[i] == '\"')
-	// 		inside = !inside;
-	// 	i--;
-	// }
-	// return (inside);
 }
 
 void skip_op(int *i, char *input)

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/06 18:05:37 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/06 18:07:48 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ typedef struct	s_env_vars {
 	struct s_env_vars *next;
 }				t_env_vars;
 
+typedef struct	s_tree_vars
+{
+	char	**envp;
+	t_env_vars **head;
+	// int	*tree_offset;
+} t_tree_vars;
 
 typedef struct s_token_vars
 {
@@ -178,6 +184,9 @@ int				has_vars_no_quotes(char *str);
 void			*join_all_vars(char **words, char **result);
 void			execute_heredoc(t_token_tree *cmd, t_token_tree *content);
 void			define_signals();
+int				inside_single_quotes(char *s, int i);
+int				tokenize(char **input, char *input_cpy, char **holder);
+void			handle_node_failure(t_stack *stack, t_token_tree **stack_tree,int tree_offset);
 
 
 
