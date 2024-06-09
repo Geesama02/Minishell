@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/06 18:07:48 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/08 16:00:37 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ char			*expand_vars(char *holder, t_env_vars *head);
 int				ft_isalpha(int c);
 char			**ft_env_split(char const *s, char c);
 int				ft_isdigit(int c);
+int				is_operand(char *str);
 int				non_var_name(char c);
 char			*join_var_with_extras(t_env_vars *head, char **words, int i, char *extras);
 char			*search_for_var(t_env_vars *head, char *env_name);
@@ -187,6 +188,7 @@ void			define_signals();
 int				inside_single_quotes(char *s, int i);
 int				tokenize(char **input, char *input_cpy, char **holder);
 void			handle_node_failure(t_stack *stack, t_token_tree **stack_tree,int tree_offset);
+void			check_if_has_file(t_token_array *token_array, char **token, t_token_vars *vars, char *tmp);
 
 
 

@@ -6,13 +6,14 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:03:52 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/02 15:20:07 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/08 16:37:50 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void	*handle_other_tokens(t_token_array *token_array, char **holder, int *i, t_token_vars *vars)
+void	*handle_other_tokens(t_token_array *token_array, char **holder,
+	int *i, t_token_vars *vars)
 {
 	if (vars->x != -1)
 	{
@@ -29,7 +30,8 @@ void	*handle_other_tokens(t_token_array *token_array, char **holder, int *i, t_t
 	(*i)++;
 	if (has_vars(token_array[vars->l].token))
 	{
-		token_array[vars->l].token = expand_vars(token_array[vars->l].token, vars->head);
+		token_array[vars->l].token = expand_vars(token_array[vars->l].token,
+				vars->head);
 		if (!token_array[vars->l].token)
 			return (free_token_holder(holder, token_array, vars->l),
 				free(vars->input), exit(1), NULL);
@@ -38,7 +40,7 @@ void	*handle_other_tokens(t_token_array *token_array, char **holder, int *i, t_t
 	return (NULL);
 }
 
-char *get_extra_chars(char *holder)
+char	*get_extra_chars(char *holder)
 {
 	int	i;
 
@@ -55,14 +57,14 @@ char *get_extra_chars(char *holder)
 int	tokenize(char **input, char *input_cpy, char **holder)
 {
 	int	i;
-	
+
 	i = 0;
 	while (**input)
 	{
 		while (**input == ' ')
 			(*input)++;
 		if (**input == '\0')
-			break;
+			break ;
 		if (!handle_tokens(input, input_cpy, holder, i))
 			return (0);
 		i++;
@@ -89,4 +91,13 @@ t_t_type	set_token_type(char *token)
 	if (ft_strcmp(")", token) == 0)
 		return (PARETHESIS_C);
 	return (CMD_T);
+}
+
+int	is_operand(char *str)
+{
+	return (set_token_type(str) == OPERATOR_T
+		|| set_token_type(str) == REDIRECTION_I
+		|| set_token_type(str) == REDIRECTION_O
+		|| set_token_type(str) == REDIRECTION_A
+		|| set_token_type(str) == HEREDOC);
 }
