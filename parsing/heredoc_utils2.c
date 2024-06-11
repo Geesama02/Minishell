@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:29:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/03 17:41:41 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/11 10:06:09 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,16 @@ char	*continue_heredoc(char *delimiter)
     char *tmp;
 	char *input;
 
+	is_heredoc = 1;
 	input = ft_strdup("");
 	if (!input)
 		return (NULL);
-    while (1) {
+    while (1)
+	{
         tmp = readline("> ");
-        if (tmp == NULL)
+		if (tmp == NULL)
 			return (handle_null(input));
-        if (tmp[0] == '\0')
+		if (tmp[0] == '\0')
 		{
 			if (!handle_empty_line(&input, input, tmp))
 				return (NULL);

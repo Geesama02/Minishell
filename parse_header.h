@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/06 18:07:48 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/11 10:04:11 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <signal.h>
-#include <termios.h>
 
 typedef enum e_t_type
 {
@@ -89,8 +88,9 @@ typedef struct s_token_tree
 	t_env_vars			**head;
 } t_token_tree;
 
-struct termios	old_attr;
+int	is_heredoc;
 
+char			*get_next_line(int fd);
 void    		ft_putchar(char c);
 void    		ft_putstr(char *str);
 char			*ft_strdup(const char *s1);

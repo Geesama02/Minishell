@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:53:25 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/06 10:40:34 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/09 21:18:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	*fill_heredoc(t_token_array *token_array, char **holder, int i, t_token_var
 	}
 	return (NULL);
 }
+
 void	*handle_heredoc(t_token_array *token_array, char **holder, int *i, t_token_vars *vars)
 {
 	vars->cmd_holder = set_extra_cmd(token_array, holder, *i, vars);
@@ -127,5 +128,6 @@ void	*handle_heredoc(t_token_array *token_array, char **holder, int *i, t_token_
 				free(vars->input), exit(1), NULL);
 	}
 	*i += 2;
+	is_heredoc = 0;
 	return (NULL);
 }

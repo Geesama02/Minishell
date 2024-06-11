@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/06 18:09:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:24:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	// tcgetattr(0, &old_attr);
+	is_heredoc = 0;
 	rl_catch_signals = 0;
 	head = create_lst(envp);
 	define_signals();
@@ -138,6 +138,7 @@ int main(int argc, char **argv, char **envp)
 		// (void)postfix_stack;
 		// (void)token_array;
 		// (void)ast_tree;
+		rl_done = 0;
         input = readline("Minishell$ ");
         if (input == NULL)
 		{
@@ -191,6 +192,7 @@ int main(int argc, char **argv, char **envp)
 		// execute_tree(ast_tree, &head);
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
+		is_heredoc = 0;
     }
     return (0);
 }

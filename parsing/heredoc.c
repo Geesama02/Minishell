@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 12:07:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/29 11:20:28 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/09 10:22:22 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	count_heredoc_len(char *input)
 	while (input[i] && (input[i] != ' ' || (input[i] != ' ' && is_inside_quotes(input, i) == 0))
 			&& (!is_op(input + i) || (is_op(input + i) && is_inside_quotes(input, i))))
 		i++;
-	
 	return (i);
 }
 
@@ -29,7 +28,7 @@ int	has_more_cmds(char *str)
 	int i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == ' ' && str[i + 1] && str[i + 1] != ' ' && is_inside_quotes(str, i) == 0)
 			return (1);
@@ -52,7 +51,7 @@ char	*ignore_quotes(char *str)
 	}
 	if (str[len] == '\"' || str[len] == '\'')
 		str[len] = '\0';
-	while(str[i] == ' ')
+	while (str[i] == ' ')
 		i++;
 	if (str[i] == '\"' || str[i] == '\'')
 		str++;
@@ -61,8 +60,8 @@ char	*ignore_quotes(char *str)
 
 char *ft_split_first(char *str)
 {
-	int	i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	while (str[i] && str[i] != ' ' && is_inside_quotes(str, i) == 0)
@@ -74,9 +73,9 @@ char *ft_split_first(char *str)
 
 char *handle_extra_cmd(t_token_array *token_array, char **holder, int *check, int i)
 {
-	char *tmp;
-	char *first_cmd;
-	char *second_cmd;
+	char	*tmp;
+	char	*first_cmd;
+	char	*second_cmd;
 
 	if (has_more_cmds(holder[i - 1]) && has_more_cmds(holder[i + 1]))
 	{
