@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/09 18:26:15 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:29:29 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	free_token_holder(char **holder, t_token_array *token_array, int i)
 		i--;
 		free(token_array[i].token);
 	}
-	free(token_array);
+	if (token_array)
+		free(token_array);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:53:25 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/09 21:18:44 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/12 13:57:37 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,12 @@ void	*fill_heredoc(t_token_array *token_array, char **holder, int i, t_token_var
 	else
 	{
 		if (!handle_first_heredoc(token_array, holder, &vars->l, i))
-			return (free_token_holder(holder, token_array, vars->l),
-				free(vars->input), exit(1), NULL);
+		{
+			free_token_holder(holder, token_array, vars->l);
+			// free(vars->input);
+			// exit(1);
+			return (NULL);
+		}
 		vars->x = vars->l;
 		if (vars->cmd_holder)
 		{
@@ -111,9 +115,12 @@ void	*handle_heredoc(t_token_array *token_array, char **holder, int *i, t_token_
 	vars->cmd_holder = set_extra_cmd(token_array, holder, *i, vars);
 	fill_heredoc(token_array, holder, *i, vars);
 	free(vars->cmd_holder);
-	free(holder[*i]);
-	free(holder[*i + 1]);
-	if (token_array[vars->l].type == HEREDOC_TOKEN && has_vars_no_quotes(token_array[vars->l].token))
+	// free(holder[*i]);
+	// free(holder[*i + 1]);
+	printf("token array type -> %d\n", token_array[vars->l].type);
+	if (token_array[vars->l].type == HEREDOC_TOKEN &&
+			token_array[vars->l].token &&
+			has_vars_no_quotes(token_array[vars->l].token))
 	{
 		token_array[vars->l].token = expand_vars(token_array[vars->l].token, vars->head);
 		if (!token_array[vars->l].token)
@@ -128,6 +135,5 @@ void	*handle_heredoc(t_token_array *token_array, char **holder, int *i, t_token_
 				free(vars->input), exit(1), NULL);
 	}
 	*i += 2;
-	is_heredoc = 0;
 	return (NULL);
 }

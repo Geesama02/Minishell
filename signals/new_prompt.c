@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:49:24 by maglagal          #+#    #+#             */
-/*   Updated: 2024/06/11 10:02:32 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:47:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@ void	handle_new_prompt(int signum)
 {
 	if (signum == SIGINT)
 	{
-		if (is_heredoc == 1)
+		if (is_heredoc[0])
 		{
-			// rl_done = 1;
+			is_heredoc[1] = 1;
+			close(0);
 			return ;
 		}
 		write(1, "\n", 1);
@@ -35,9 +36,9 @@ void	define_signals()
 	sigset_t			set;
 
 	sigemptyset(&set);
-	// sigaddset(&set, SIGINT);
+	sigaddset(&set, SIGINT);
 	sa1.sa_handler = handle_new_prompt;
-	// sa1.sa_flags = SA_RESTART;
+	sa1.sa_flags = SA_RESTART;
 	sa1.sa_mask = set;
 	sigaction(SIGINT, &sa1, NULL);
 	sigaction(SIGQUIT, &sa1, NULL);

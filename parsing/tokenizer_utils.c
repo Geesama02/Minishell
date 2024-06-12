@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 11:00:27 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/01 15:25:04 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:03:45 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	is_inside_quotes(char const *s, int i)
 	}
 	if (dquote || quote)
 		return (1);
-
 	return (0);
 }
 

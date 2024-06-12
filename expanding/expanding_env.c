@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:02:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/02 10:43:21 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/12 13:58:25 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	has_vars_no_quotes(char *str)
 	int	i;
 	
 	i = 0;
-	while(str[i])
+	while (str && str[i])
 	{
 		if (str[i] == '$')
 			return (1);

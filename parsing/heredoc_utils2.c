@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:29:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/11 10:06:09 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/12 13:55:08 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,34 @@ char	*handle_null(char *input)
 
 char	*continue_heredoc(char *delimiter)
 {
-    char *tmp;
-	char *input;
+    char	*tmp;
+	char	*input;
+	int		stdin_fd;
 
-	is_heredoc = 1;
+	is_heredoc[0] = 1;
+	stdin_fd = dup(0);
 	input = ft_strdup("");
 	if (!input)
 		return (NULL);
     while (1)
 	{
-        tmp = readline("> ");
+		tmp = readline("> ");
+		if (is_heredoc[1])
+		{
+			dup2(stdin_fd, 0);
+			close(stdin_fd);
+			return (NULL);
+		}
 		if (tmp == NULL)
 			return (handle_null(input));
 		if (tmp[0] == '\0')
 		{
 			if (!handle_empty_line(&input, input, tmp))
+			{
+				dup2(stdin_fd, 0);
+				close(stdin_fd);
 				return (NULL);
+			}
 			else
 				continue;
 		}

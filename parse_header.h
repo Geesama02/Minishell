@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/11 10:04:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:47:13 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_token_tree
 	t_env_vars			**head;
 } t_token_tree;
 
-int	is_heredoc;
+int is_heredoc[2];
 
 char			*get_next_line(int fd);
 void    		ft_putchar(char c);
