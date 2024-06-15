@@ -45,7 +45,12 @@ int	handle_empty_line(char **input, char *input_cpy, char *tmp)
 
 char	*handle_null(char *input)
 {
-	if (errno == ENOMEM)
+	if (is_heredoc[1])
+	{
+		is_heredoc[1] = 0;
+		return (NULL);
+	}
+	else if (!is_heredoc[1] && errno == ENOMEM)
 	{
 		write_error("readline: allocation failure!");
 		free(input);
@@ -59,7 +64,10 @@ char	*continue_heredoc(char *delimiter)
 {
 	char	*tmp;
 	char	*input;
+	int		stdin_fd;
 
+	is_heredoc[0] = 1;
+	stdin_fd = dup(0);
 	input = ft_strdup("");
 	if (!input)
 		return (NULL);
@@ -67,7 +75,11 @@ char	*continue_heredoc(char *delimiter)
 	{
 		tmp = readline("> ");
 		if (tmp == NULL)
+		{
+			dup2(stdin_fd, 0);
+			close(stdin_fd);
 			return (handle_null(input));
+		}
 		if (tmp[0] == '\0')
 		{
 			if (!handle_empty_line(&input, input, tmp))

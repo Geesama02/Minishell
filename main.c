@@ -12,6 +12,8 @@
 
 #include "parse_header.h"
 
+int is_heredoc[2];
+
 int	len(char **s)
 {
     int i = 0;
@@ -129,6 +131,8 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	// tcgetattr(0, &old_attr);
+	is_heredoc[0] = 0;
+	is_heredoc[1] = 0;
 	rl_catch_signals = 0;
 	head = create_lst(envp);
 	define_signals();
@@ -187,6 +191,7 @@ int main(int argc, char **argv, char **envp)
 		// printf("======== Tree ========\n");
 		ast_tree->head = &head;
 		execute_tree(ast_tree, ast_tree->head);
+		is_heredoc[0] = 0;
 		// print_tree(ast_tree, 0);
 		// execute_tree(ast_tree, &head);
 		// print_tree(ast_tree, 0);

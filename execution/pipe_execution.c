@@ -27,7 +27,7 @@ int execute_left_pipe(t_token_tree *left, int fds[2], int stdout_fd, int stdin_f
 	close(fds[1]); //fail
 	if (execute_tree(left, left->head) == -1)
 	{
-		write(2, "left of the pipe failed while execution\n", 42);
+		write(2, "left of the pipe failed while execution\n", 41);
 		return (-1);
 	}
 	close(stdin_fd); //fail

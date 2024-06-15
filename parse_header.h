@@ -24,6 +24,7 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <sys/wait.h> // to remove just for linux
 #include <errno.h>
 #include <signal.h>
 #include <termios.h>
@@ -89,7 +90,7 @@ typedef struct s_token_tree
 	t_env_vars			**head;
 } t_token_tree;
 
-struct termios	old_attr;
+extern int is_heredoc[2];
 
 void    		ft_putchar(char c);
 void    		ft_putstr(char *str);

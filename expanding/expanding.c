@@ -114,9 +114,7 @@ t_env_vars  *create_lst(char **envp)
 {
 	t_env_vars	*head;
 	t_env_vars	*newnode;
-	t_env_vars	*lastnode;
 
-	lastnode = NULL;
 	head = malloc(sizeof(t_env_vars)); //leaks
 	create_env(head, NULL, *envp);
 	envp++;

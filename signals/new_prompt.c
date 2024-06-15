@@ -12,20 +12,16 @@
 
 #include "../parse_header.h"
 
-// void	reset_terminal_attr()
-// {
-// 	struct termios s_new;
-
-// 	s_new.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN | IXON);
-// 	s_new.c_cc[VMIN] = 1;
-// 	s_new.c_cc[VTIME] = 0;
-// 	tcsetattr(0, TCSANOW, &s_new);
-// }
-
 void	handle_new_prompt(int signum)
 {
 	if (signum == SIGINT)
-	{	
+	{
+		if (is_heredoc[0] == 1)
+		{
+			is_heredoc[1] = 1;
+			close(0);
+			return ;
+		}
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
