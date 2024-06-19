@@ -24,9 +24,8 @@ void	*handle_other_tokens(t_token_array *token_array, char **holder,
 	token_array[vars->l].token = ft_strdup(holder[*i]);
 	if (!token_array[vars->l].token)
 		return (free_token_holder(holder, token_array, vars->l),
-			free(vars->input), exit(1), NULL);
+			exit(1), NULL);
 	token_array[vars->l].type = set_token_type(holder[*i]);
-	free(holder[*i]);
 	(*i)++;
 	if (has_vars(token_array[vars->l].token))
 	{
@@ -34,7 +33,7 @@ void	*handle_other_tokens(t_token_array *token_array, char **holder,
 				vars->head);
 		if (!token_array[vars->l].token)
 			return (free_token_holder(holder, token_array, vars->l),
-				free(vars->input), exit(1), NULL);
+				exit(1), NULL);
 	}
 	vars->l++;
 	return (NULL);
@@ -57,8 +56,10 @@ char	*get_extra_chars(char *holder)
 int	tokenize(char **input, char *input_cpy, char **holder)
 {
 	int	i;
+	char *cpy;
 
 	i = 0;
+	cpy = *input;
 	while (**input)
 	{
 		while (**input == ' ')
@@ -70,6 +71,7 @@ int	tokenize(char **input, char *input_cpy, char **holder)
 		i++;
 	}
 	holder[i] = NULL;
+	free(cpy);
 	return (1);
 }
 

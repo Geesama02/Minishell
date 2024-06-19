@@ -40,7 +40,7 @@ int	handle_tokens(char **input, char *input_cpy, char **holder, int i)
 	return (1);
 }
 
-int	scan_syntax(char **holder, char *input)
+int	scan_syntax(char **holder)
 {
 	int	i;
 	int	j;
@@ -55,7 +55,7 @@ int	scan_syntax(char **holder, char *input)
 	{
 		if (has_wildcard(holder[i]))
 		{
-			if (handle_wildcard(&holder[i], input) == 0)
+			if (handle_wildcard(&holder[i]) == 0)
 				return (0);
 		}
 		if (holder[i + 1] && is_operand(holder[i]) && is_operand(holder[i + 1]))
@@ -95,18 +95,18 @@ int	free_2d_array(char **array)
 	return (0);
 }
 
-int	handle_wildcard(char **str, char *input)
+int	handle_wildcard(char **str)
 {
 	char	**sep_str;
 
 	sep_str = ft_split(*str, ' ');
 	if (!sep_str)
-		return (free(input), 0);
+		return (0);
 	free(*str);
 	*str = ft_strdup("");
 	if (!*str)
-		return (free_2d_array(sep_str), free(input), 0);
-	if (!join_wildcard(sep_str, str, input))
+		return (free_2d_array(sep_str), 0);
+	if (!join_wildcard(sep_str, str))
 		return (0);
 	free_2d_array(sep_str);
 	return (1);

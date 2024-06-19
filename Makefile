@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 CC = cc
 NAME = minishell
 SRC = main.c ft_split.c ft_strcmp.c parsing/fill_token.c ft_strtrim.c execution/builtins.c parsing/create_ast.c ft_strncmp.c \

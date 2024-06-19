@@ -169,13 +169,14 @@ int main(int argc, char **argv, char **envp)
 			free(input);
 			continue;
 		}
-		token_array = tokenizer(input, head);
+		token_array = tokenizer(&input, head);
 		if (!token_array)
 		{
-			free(input);
+            // printf("out\n");
+			// free(input);
 			continue;
 		}
-		free(input);
+		// free(input);
 		// int i = 0;
 		// while(token_array[i].token)
 		// {

@@ -43,24 +43,28 @@ int	handle_empty_line(char **input, char *input_cpy, char *tmp)
 	return (1);
 }
 
-char	*handle_null(char *input)
+char	*handle_null(char *input, t_token_array *token_array,
+	char **holder, int *l)
 {
 	if (is_heredoc[1])
 	{
 		is_heredoc[1] = 0;
-		return (NULL);
+		free(input);
+		return (free_token_holder(holder, token_array, *l), NULL);
 	}
 	else if (!is_heredoc[1] && errno == ENOMEM)
 	{
 		write_error("readline: allocation failure!");
 		free(input);
-		return (NULL);
+		return (free_token_holder(holder, token_array, *l),
+			exit(1), NULL);
 	}
 	else
 		return (input);
 }
 
-char	*continue_heredoc(char *delimiter)
+char	*continue_heredoc(char *delimiter, t_token_array *token_array,
+	char **holder, int *l)
 {
 	char	*tmp;
 	char	*input;
@@ -78,7 +82,7 @@ char	*continue_heredoc(char *delimiter)
 		{
 			dup2(stdin_fd, 0);
 			close(stdin_fd);
-			return (handle_null(input));
+			return (handle_null(input, token_array, holder, l));
 		}
 		if (tmp[0] == '\0')
 		{

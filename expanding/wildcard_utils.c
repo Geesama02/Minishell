@@ -69,7 +69,7 @@ char *wildcard(char *str)
 	return (res);
 }
 
-int	join_wildcard(char **sep_str, char **str, char *input)
+int	join_wildcard(char **sep_str, char **str)
 {
 	int i;
 	char *wildcard_holder;
@@ -84,13 +84,13 @@ int	join_wildcard(char **sep_str, char **str, char *input)
 				return (free(wildcard_holder), free_2d_array(sep_str));
 			if (!wildcard_holder || !join_strings(str, wildcard_holder)
 				|| !join_strings(str, " "))
-				return (free_2d_array(sep_str), free(input), exit(1), 0);
+				return (free_2d_array(sep_str), exit(1), 0);
 			free(wildcard_holder);
 		}
 		else
 		{
 			if (!join_strings(str, sep_str[i]) || !join_strings(str, " "))
-				return (free_2d_array(sep_str), free(input), exit(1), 0);
+				return (free_2d_array(sep_str), exit(1), 0);
 		}
 		i++;
 	}

@@ -13,7 +13,7 @@
 #include "../parse_header.h"
 
 char	*handle_multi_heredoc(t_token_array *token_array,
-	char *holder, t_token_vars *vars)
+	char **holder, t_token_vars *vars, int i)
 {
 	char	*tmp;
 	char	*token;
@@ -24,7 +24,7 @@ char	*handle_multi_heredoc(t_token_array *token_array,
 	free(token_array[vars->x].token);
 	if (vars->cmd_holder && token_array[vars->x].type == CMD_T)
 	{
-		token = continue_heredoc(ignore_quotes(holder));
+		token = continue_heredoc(ignore_quotes(holder[i + 1]), token_array, holder, &vars->l);
 		if (!token)
 			return (free(tmp), NULL);
 		free(token);
@@ -32,7 +32,7 @@ char	*handle_multi_heredoc(t_token_array *token_array,
 	}
 	else
 	{
-		token = continue_heredoc(ignore_quotes(holder));
+		token = continue_heredoc(ignore_quotes(holder[i + 1]), token_array, holder, &vars->l);
 		if (!token)
 			return (free(tmp), NULL);
 		check_if_has_file(token_array, &token, vars, tmp);
@@ -49,7 +49,7 @@ void	*handle_first_heredoc(t_token_array *token_array,
 		return (NULL);
 	token_array[*l].type = HEREDOC;
 	(*l)++;
-	token_array[*l].token = continue_heredoc(ignore_quotes(holder[i + 1]));
+	token_array[*l].token = continue_heredoc(ignore_quotes(holder[i + 1]), token_array, holder, l);
 	if (!token_array[*l].token)
 		return (NULL);
 	token_array[*l].type = HEREDOC_TOKEN;
@@ -67,29 +67,28 @@ char	*set_extra_cmd(t_token_array *token_array,
 		tmp = handle_extra_cmd(token_array, holder, &vars->check, i);
 		if (!tmp)
 			return (free_token_holder(holder, token_array, vars->l),
-				free(vars->input), exit(1), NULL);
+				exit(1), NULL);
 	}
 	else
 		tmp = NULL;
 	return (tmp);
 }
 
-void	*fill_heredoc(t_token_array *token_array,
+int	fill_heredoc(t_token_array *token_array,
 	char **holder, int i, t_token_vars *vars)
 {
 	if (vars->x != -1)
 	{
 		token_array[vars->x].token = handle_multi_heredoc(token_array,
-				holder[i + 1], vars);
+				holder, vars, i);
 		if (!token_array[vars->x].token)
 			return (free_token_holder(holder, token_array, vars->l),
-				free(vars->input), exit(1), NULL);
+				exit(1), 0);
 	}
 	else
 	{
 		if (!handle_first_heredoc(token_array, holder, &vars->l, i))
-			return (free_token_holder(holder, token_array, vars->l),
-				free(vars->input), exit(1), NULL);
+			return (0);
 		vars->x = vars->l;
 		if (vars->cmd_holder)
 		{
@@ -97,21 +96,20 @@ void	*fill_heredoc(t_token_array *token_array,
 			token_array[vars->l].token = ft_strdup(vars->cmd_holder);
 			if (!token_array[vars->l].token)
 				return (free_token_holder(holder, token_array, vars->l),
-					free(vars->input), exit(1), NULL);
+					exit(1), 0);
 			token_array[vars->l].type = CMD_T;
 		}
 	}
-	return (NULL);
+	return (1);
 }
 
-void	*handle_heredoc(t_token_array *token_array,
+int	handle_heredoc(t_token_array *token_array,
 	char **holder, int *i, t_token_vars *vars)
 {
 	vars->cmd_holder = set_extra_cmd(token_array, holder, *i, vars);
-	fill_heredoc(token_array, holder, *i, vars);
+	if (!fill_heredoc(token_array, holder, *i, vars))
+		return (0);
 	free(vars->cmd_holder);
-	free(holder[*i]);
-	free(holder[*i + 1]);
 	if (token_array[vars->l].type == HEREDOC_TOKEN
 		&& has_vars_no_quotes(token_array[vars->l].token))
 	{
@@ -119,7 +117,7 @@ void	*handle_heredoc(t_token_array *token_array,
 				vars->head);
 		if (!token_array[vars->l].token)
 			return (free_token_holder(holder, token_array, vars->l),
-				free(vars->input), exit(1), NULL);
+				exit(1), 0);
 	}
 	else if (has_vars(token_array[vars->l].token))
 	{
@@ -127,8 +125,8 @@ void	*handle_heredoc(t_token_array *token_array,
 				vars->head);
 		if (!token_array[vars->l].token)
 			return (free_token_holder(holder, token_array, vars->l),
-				free(vars->input), exit(1), NULL);
+				exit(1), 0);
 	}
 	*i += 2;
-	return (NULL);
+	return (1);
 }
