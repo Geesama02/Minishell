@@ -14,7 +14,7 @@
 
 int	non_var_name(char c)
 {
-	return (!ft_isalpha(c) && c != '_'
+	return (!ft_isalpha(c) && c != '_' && c != '?'
 		&& c != '-' && c != '@' && !ft_isdigit(c));
 }
 
@@ -71,6 +71,7 @@ char	*get_extras_and_join(t_env_vars *head, char **words, int i)
 	}
 	else
 	{
+		printf("searched for %s\n", words[i]);
 		env_value = search_for_var(head, words[i]);
 		if (env_value)
 		{

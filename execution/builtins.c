@@ -19,13 +19,13 @@ int cd_command(char *path)
 		if (chdir(getenv("HOME")) != 0)
 		{
 			write(2, "chdir() failed!!\n", 18);
-			exit(1);
+			return (1);
 		}
 	}
 	else if (chdir(path) != 0)
 	{
 		write(2, "chdir() failed!!\n", 18);
-		exit(1);
+		return (1);
 	}
 	return (0);
 }
@@ -37,7 +37,7 @@ int pwd_command()
 	if (!getcwd(buff, sizeof(buff)))
 	{
 		write(2, "getcwd() failed!!\n", 19);
-		exit(1);
+		return (1);
 	}
 	else
 	{    
@@ -51,6 +51,7 @@ int echo_command(char **cmds, t_env_vars *head)
 {
 	int		i;
 	int		new_line;
+	(void)head;
 
 	i = 1;
 	new_line = 1;
@@ -59,10 +60,10 @@ int echo_command(char **cmds, t_env_vars *head)
 		new_line = 0;
 		i++;
 	}
-	if (cmds[i] && ft_strchr(cmds[i], '$'))
-		print_env_variable(cmds, head, i);
-	else
-		print_echo_content(cmds, i, new_line);
+	// if (cmds[i] && ft_strchr(cmds[i], '$'))
+	// 	print_env_variable(cmds, head, i);
+	// else
+	print_echo_content(cmds, i, new_line);
 	return (0);
 }
 
@@ -109,7 +110,7 @@ void    env_command(t_env_vars *env_vars)
 {
 	while (env_vars)
 	{
-		if (env_vars->env_val)
+		if (env_vars->env_val && env_vars->env_name[0] != '?')
 			printf("%s=%s\n", env_vars->env_name, env_vars->env_val);
 		env_vars = env_vars->next;
 	}

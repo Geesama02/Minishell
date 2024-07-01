@@ -66,16 +66,21 @@ char	*find_correct_path(char *cmd)
 	return (path);
 }
 
-int execute_rest(char **cmds, char **envp)
+int execute_rest(char **cmds, char **envp, t_env_vars **head)
 {
 	int		status;
 	char	*path;
 	pid_t	pid;
+	t_env_vars	*tmp;
 
+	tmp = *head;
+	while(tmp->env_name[0] != '?')
+		tmp = tmp->next;
 	if (!ft_strchr(cmds[0], '/'))
 		path = find_correct_path(cmds[0]);
 	else
 		path = cmds[0];
+	// printf("path = %s\n", path);
 	if (path)
 	{
 		pid = fork();
@@ -88,7 +93,21 @@ int execute_rest(char **cmds, char **envp)
 			}
 		}
 		wait(&status);
+		free(tmp->env_val);
+		if (WTERMSIG(status) > 0)
+			tmp->env_val = ft_itoa(128 + WTERMSIG(status)); // free later
+		else
+			tmp->env_val = ft_itoa(WEXITSTATUS(status)); // free later
 	}
+	else
+	{
+		write(2, "command not found\n", 18);
+		free(tmp->env_val);
+		tmp->env_val = ft_strdup("127");
+		return (0);
+	}
+
+	
 	if (WEXITSTATUS(status) == 1)
 		return (-1);
 	if (WTERMSIG(status) == SIGQUIT)
@@ -98,15 +117,30 @@ int execute_rest(char **cmds, char **envp)
 
 int exec_command(char **cmds, char **envp, t_env_vars **head)
 {
+	t_env_vars	*tmp;
+
+	tmp = *head;
+	while(tmp->env_name[0] != '?')
+		tmp = tmp->next;
+	free(tmp->env_val);
+	tmp->env_val = ft_strdup("0");
 	if (!ft_strcmp(cmds[0], "cd"))
 	{    
-		if (cd_command(cmds[1]) == -1)
+		if (cd_command(cmds[1]) == 1)
+		{
+			free(tmp->env_val);
+			tmp->env_val = ft_strdup("1");
 			return (-1);
+		}
 	}
 	else if (!ft_strcmp(cmds[0], "pwd"))
 	{    
-		if (pwd_command() == -1)
+		if (pwd_command() == 1)
+		{
+			free(tmp->env_val);
+			tmp->env_val = ft_strdup("1");
 			return (-1);
+		}
 	}
 	else if (!ft_strcmp(cmds[0], "echo"))
 		echo_command(cmds, *head);
@@ -120,7 +154,7 @@ int exec_command(char **cmds, char **envp, t_env_vars **head)
 		exit(0);
 	else
 	{
-		if (execute_rest(cmds, envp) == -1)
+		if (execute_rest(cmds, envp, head) == -1)
 			return (-1);
 	}
 	return (0);

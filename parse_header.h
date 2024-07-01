@@ -92,6 +92,7 @@ typedef struct s_token_tree
 extern int is_heredoc[2];
 
 void    		ft_putchar(char c);
+char			*ft_itoa(int n);
 void    		ft_putstr(char *str);
 char			*ft_strdup(const char *s1);
 char			*ft_strtrim(char const *s1, char const *set);

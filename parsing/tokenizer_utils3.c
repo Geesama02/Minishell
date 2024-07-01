@@ -46,6 +46,8 @@ char	*get_extra_chars(char *holder)
 	i = 0;
 	while (holder[i])
 	{
+		if (holder[0] == '?')
+			return (holder + 1);
 		if (non_var_name(holder[i]))
 			return (holder + i);
 		i++;

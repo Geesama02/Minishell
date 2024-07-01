@@ -190,10 +190,10 @@ int main(int argc, char **argv, char **envp)
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
+		// print_tree(ast_tree, 0);
 		ast_tree->head = &head;
 		execute_tree(ast_tree, ast_tree->head);
 		is_heredoc[0] = 0;
-		// print_tree(ast_tree, 0);
 		// execute_tree(ast_tree, &head);
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);

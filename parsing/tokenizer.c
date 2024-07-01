@@ -109,7 +109,6 @@ t_token_array	*tokenizer(char **input, t_env_vars *head)
 	if (!holder)
 		return (free(*input), free(token_array), exit(1), NULL);
 	input_cpy = *input;
-	printf("tokeniser input = %s\n", *input);
 	if (!tokenize(input, input_cpy, holder))
 		return (NULL);
 	if (copy_to_array(token_array, holder, head) == 0)
