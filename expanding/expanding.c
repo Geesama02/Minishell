@@ -114,11 +114,14 @@ t_env_vars  *create_lst(char **envp)
 {
 	t_env_vars	*head;
 	t_env_vars	*newnode;
-	t_env_vars	*lastnode;
 
-	lastnode = NULL;
 	head = malloc(sizeof(t_env_vars)); //leaks
 	create_env(head, NULL, *envp);
+	newnode = malloc(sizeof(t_env_vars)); //leaks
+	newnode->env_name = "?";
+	newnode->env_val = ft_strdup("0");
+	newnode->next = NULL;
+	ft_lstadd(&head, newnode);
 	envp++;
 	while (*envp)
 	{
@@ -136,10 +139,13 @@ void    export_without_arguments(t_env_vars *p_head)
 	s_head = display_envs_sorted(p_head);
 	while (s_head)
 	{
-		if (s_head->env_val)
-			printf("declare -x %s=\"%s\"\n", s_head->env_name, s_head->env_val);
-		else
-			printf("declare -x %s\n", s_head->env_name);
+		if (s_head->env_name[0] != '?')
+		{
+			if (s_head->env_val)
+				printf("declare -x %s=\"%s\"\n", s_head->env_name, s_head->env_val);
+			else
+				printf("declare -x %s\n", s_head->env_name);
+		}
 		s_head = s_head->next;
 	}
 }
@@ -149,9 +155,13 @@ void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
 	char	**cmds;
 	char *env_name;
 	int		i;
+	t_env_vars	*tmp;
 
 	i = 1;
+	tmp = *head;
 	env_name = NULL;
+	while(tmp->env_name[0] != '?')
+		tmp = tmp->next;
 	while (i <= nbr_envs)
 	{
     	cmds = ft_split_one(tokens[i], '='); //leaks
@@ -166,7 +176,11 @@ void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
 			lst_add_element(cmds, head, i);
 		}
 		else
+		{
+			free(tmp->env_val);
+			tmp->env_val = ft_strdup("1");
 			printf("export: `%s' : not a valid identifier\n", tokens[i]);
+		}
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/11 17:47:13 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/03 12:02:57 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,30 +58,29 @@ typedef struct s_token_vars
 	int	l;
 	int	x;
 	int	check;
-	char *input;
 	char	*cmd_holder;
 	t_env_vars *head;
 } t_token_vars;
 
 typedef struct s_token_array
 {
-	char *token;
-	t_t_type type;
+	char	*token;
+	t_t_type	type;
 } t_token_array;
 
 typedef struct s_stack
 {
-	t_token_array *token;
+	t_token_array	*token;
 	int	head;
 } t_stack;
 
 
 typedef struct s_token_tree
 {
-	int id;
-	int cmd_count;
-	char *token;
-	t_t_type type;
+	int			id;
+	int			cmd_count;
+	char		*token;
+	t_t_type	type;
 	struct s_token_tree	*left;
 	struct s_token_tree	*right;
 	char				**envp;
@@ -92,6 +91,7 @@ int is_heredoc[2];
 
 char			*get_next_line(int fd);
 void    		ft_putchar(char c);
+char			*ft_itoa(int n);
 void    		ft_putstr(char *str);
 char			*ft_strdup(const char *s1);
 char			*ft_strtrim(char const *s1, char const *set);
@@ -109,7 +109,7 @@ int				cd_command(char *path);
 char			*remove__quotes(char *str);
 void 			print_tree(t_token_tree *root, int level);
 t_token_tree	*create_node(char *token, t_t_type type, char **envp, t_env_vars **head);
-t_token_array	*tokenizer(char *input, t_env_vars *head);
+t_token_array	*tokenizer(char **input, t_env_vars *head);
 void			*free_alloc(char **bigstr, int l);
 int				is_inside_quotes(char const *s, int i);
 int				pwd_command();
@@ -133,7 +133,7 @@ t_t_type		set_token_type(char *token);
 void			execute_pipe(t_token_tree *left, t_token_tree *right);
 int				exec_command(char **cmds, char **envp, t_env_vars **head);
 int				exec_normal_commands(t_token_tree *tree);
-int				scan_syntax(char **holder, char *input);
+int				scan_syntax(char **holder);
 int				unclosed_var(char *str, char c);
 t_t_type		set_token_type(char *token);
 void			free_tree(t_token_tree *root);
@@ -147,21 +147,21 @@ void			add_env_var(char **tokens, int nbr_envs, t_env_vars **head);
 t_env_vars		*get_last_node(t_env_vars *head);
 void			lst_add_element(char **cmds, t_env_vars **head, int i);
 int				join_strings(char **s1, char *s2);
-int				handle_wildcard(char **str, char *input);
+int				handle_wildcard(char **str);
 int				free_2d_array(char **array);
-int				join_wildcard(char **sep_str, char **str, char *input);
+int				join_wildcard(char **sep_str, char **str);
 int				filter_files(struct dirent *dir_content, char **sep_str, char *str, char **res);
 int				count_heredoc_len(char *input);
-char			*continue_heredoc(char *delimiter);
+char			*continue_heredoc(char *delimiter, t_token_array *token_array, char **holder, int *l);
 char			*ft_split_first(char *str);
 int				has_more_cmds(char *str);
 char			*ignore_quotes(char *str);
 char			*handle_extra_cmd(t_token_array *token_array, char **holder, int *check, int i);
-char			*handle_multi_heredoc(t_token_array *token_array, char *holder, t_token_vars *vars);
+char			*handle_multi_heredoc(t_token_array *token_array, char **holder, t_token_vars *vars, int i);
 void			*handle_first_heredoc(t_token_array *token_array, char **holder, int *l, int i);
 char			*set_extra_cmd(t_token_array *token_array, char **holder, int i, t_token_vars *vars);
-void			*fill_heredoc(t_token_array *token_array, char **holder, int i, t_token_vars *vars);
-void			*handle_heredoc(t_token_array *token_array, char **holder, int *i, t_token_vars *vars);
+int				fill_heredoc(t_token_array *token_array, char **holder, int i, t_token_vars *vars);
+int				handle_heredoc(t_token_array *token_array, char **holder, int *i, t_token_vars *vars);
 void			*handle_other_tokens(t_token_array *token_array, char **holder, int *i, t_token_vars *vars);
 int				free_token_holder(char **holder, t_token_array *token_array, int i);
 void			ft_lstadd(t_env_vars **lst, t_env_vars *new);
@@ -174,6 +174,7 @@ char			*expand_vars(char *holder, t_env_vars *head);
 int				ft_isalpha(int c);
 char			**ft_env_split(char const *s, char c);
 int				ft_isdigit(int c);
+int				is_operand(char *str);
 int				non_var_name(char c);
 char			*join_var_with_extras(t_env_vars *head, char **words, int i, char *extras);
 char			*search_for_var(t_env_vars *head, char *env_name);
@@ -187,6 +188,9 @@ void			define_signals();
 int				inside_single_quotes(char *s, int i);
 int				tokenize(char **input, char *input_cpy, char **holder);
 void			handle_node_failure(t_stack *stack, t_token_tree **stack_tree,int tree_offset);
+void			check_if_has_file(t_token_array *token_array, char **token,
+		t_token_vars *vars, char *tmp);
+void			ft_close(t_env_vars **tmp, char **cmds, t_env_vars **head);
 
 
 

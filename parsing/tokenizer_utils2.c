@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/29 14:22:33 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/08 16:36:23 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ int	handle_tokens(char **input, char *input_cpy, char **holder, int i)
 		holder[i] = get_token(input, 2, "&&");
 	else if (ft_strncmp("||", *input, 2) == 0)
 		holder[i] = get_token(input, 2, "||");
-	else if (ft_strncmp("|", *input , 1) == 0)
+	else if (ft_strncmp("|", *input, 1) == 0)
 		holder[i] = get_token(input, 1, "|");
-	else if (ft_strncmp("(", *input , 1) == 0)
+	else if (ft_strncmp("(", *input, 1) == 0)
 		holder[i] = get_token(input, 1, "(");
-	else if (ft_strncmp(")", *input , 1) == 0)
+	else if (ft_strncmp(")", *input, 1) == 0)
 		holder[i] = get_token(input, 1, ")");
-	else if (ft_strncmp(">>", *input , 2) == 0)
+	else if (ft_strncmp(">>", *input, 2) == 0)
 		holder[i] = get_token(input, 2, ">>");
-	else if (ft_strncmp(">", *input , 1) == 0)
+	else if (ft_strncmp(">", *input, 1) == 0)
 		holder[i] = get_token(input, 1, ">");
-	else if (ft_strncmp("<<", *input , 2) == 0)
+	else if (ft_strncmp("<<", *input, 2) == 0)
 		holder[i] = get_token(input, 2, "<<");
-	else if (ft_strncmp("<", *input , 1) == 0)
+	else if (ft_strncmp("<", *input, 1) == 0)
 		holder[i] = get_token(input, 1, "<");
 	else
 	{
@@ -40,49 +40,26 @@ int	handle_tokens(char **input, char *input_cpy, char **holder, int i)
 	return (1);
 }
 
-int	scan_syntax(char **holder, char *input)
+int	scan_syntax(char **holder)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	while(holder[j])
+	while (holder[j])
 		j++;
-	if ((set_token_type(holder[0]) == OPERATOR_T
-		|| set_token_type(holder[0]) == REDIRECTION_I
-		|| set_token_type(holder[0]) == REDIRECTION_O
-		|| set_token_type(holder[0]) == REDIRECTION_A
-		|| set_token_type(holder[0]) == HEREDOC)
-		|| (set_token_type(holder[j - 1]) == OPERATOR_T
-		|| set_token_type(holder[j - 1]) == HEREDOC
-		|| set_token_type(holder[j - 1]) == REDIRECTION_I
-		|| set_token_type(holder[j - 1]) == REDIRECTION_O
-		|| set_token_type(holder[j - 1]) == REDIRECTION_A))
-	{
-		write_error("Error: parse error\n");
-		return (0);
-	}
-	while(holder[i] != NULL)
+	if (is_operand(holder[0]) || is_operand(holder[j - 1]))
+		return (write_error("Error: parse error\n"), 0);
+	while (holder[i] != NULL)
 	{
 		if (has_wildcard(holder[i]))
 		{
-			if (handle_wildcard(&holder[i], input) == 0)
+			if (handle_wildcard(&holder[i]) == 0)
 				return (0);
 		}
-		if (holder[i + 1]
-			&& (set_token_type(holder[i]) == OPERATOR_T || set_token_type(holder[i]) == REDIRECTION_I
-				|| set_token_type(holder[i]) == REDIRECTION_O || set_token_type(holder[i]) == REDIRECTION_A
-				|| set_token_type(holder[i]) == HEREDOC)
-			&& (set_token_type(holder[i + 1]) == OPERATOR_T || set_token_type(holder[i + 1]) == REDIRECTION_O
-				|| set_token_type(holder[i + 1]) == REDIRECTION_I || set_token_type(holder[i + 1]) == REDIRECTION_A
-				|| set_token_type(holder[i + 1]) == HEREDOC))
-		{
-			write_error("Error: parse error\n");
-			printf("holder => %s\n", holder[i]);
-			printf("holder + i => %s\n", holder[i + 1]);
-			return (0);
-		}
+		if (holder[i + 1] && is_operand(holder[i]) && is_operand(holder[i + 1]))
+			return (write_error("Error: parse error\n"), 0);
 		i++;
 	}
 	return (1);
@@ -90,7 +67,7 @@ int	scan_syntax(char **holder, char *input)
 
 int	has_wildcard(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -104,7 +81,7 @@ int	has_wildcard(char *str)
 
 int	free_2d_array(char **array)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!array)
@@ -118,17 +95,19 @@ int	free_2d_array(char **array)
 	return (0);
 }
 
-int	handle_wildcard(char **str, char *input)
+int	handle_wildcard(char **str)
 {
-	char **sep_str;
+	char	**sep_str;
 
 	sep_str = ft_split(*str, ' ');
 	if (!sep_str)
 		return (0);
 	free(*str);
 	*str = ft_strdup("");
-	if(!join_wildcard(sep_str, str, input))
+	if (!*str)
+		return (free_2d_array(sep_str), 0);
+	if (!join_wildcard(sep_str, str))
 		return (0);
 	free_2d_array(sep_str);
 	return (1);
-} 
+}

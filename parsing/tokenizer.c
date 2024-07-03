@@ -65,7 +65,7 @@ int	free_token_holder(char **holder, t_token_array *token_array, int i)
 	return (0);
 }
 
-int	copy_to_array(t_token_array *token_array, char *input,
+int	copy_to_array(t_token_array *token_array,
 	char **holder, t_env_vars *head)
 {
 	int				i;
@@ -75,42 +75,44 @@ int	copy_to_array(t_token_array *token_array, char *input,
 	vars.l = 0;
 	vars.x = -1;
 	vars.check = 0;
-	vars.input = input;
 	vars.head = head;
 	if (*holder == NULL)
 		return (free_token_holder(holder, token_array, i), 0);
-	if (scan_syntax(holder, input) == 0)
+	if (scan_syntax(holder) == 0)
 		return (free_token_holder(holder, token_array, i));
 	while (holder[i] != NULL)
 	{
 		if (set_token_type(holder[i]) == HEREDOC)
-			handle_heredoc(token_array, holder, &i, &vars);
+		{
+			if (handle_heredoc(token_array, holder, &i, &vars) == 0)
+				return (0);
+		}
 		else
 			handle_other_tokens(token_array, holder, &i, &vars);
 	}
 	if (vars.x != -1)
 		vars.l++;
 	token_array[vars.l].token = NULL;
-	free(holder);
+	free_2d_array(holder);
 	return (1);
 }
 
-t_token_array	*tokenizer(char *input, t_env_vars *head)
+t_token_array	*tokenizer(char **input, t_env_vars *head)
 {
 	t_token_array	*token_array;
 	char			**holder;
 	char			*input_cpy;
 
-	token_array = malloc(sizeof(t_token_array) * (count_cmds(input) + 1));
+	token_array = malloc(sizeof(t_token_array) * (count_cmds(*input) + 1));
 	if (!token_array)
-		return (free(input), exit(1), NULL);
-	holder = malloc(sizeof(char *) * (count_cmds(input) + 1));
+		return (free(*input), exit(1), NULL);
+	holder = malloc(sizeof(char *) * (count_cmds(*input) + 1));
 	if (!holder)
-		return (free(input), free(token_array), exit(1), NULL);
-	input_cpy = input;
-	if (!tokenize(&input, input_cpy, holder))
+		return (free(*input), free(token_array), exit(1), NULL);
+	input_cpy = *input;
+	if (!tokenize(input, input_cpy, holder))
 		return (NULL);
-	if (copy_to_array(token_array, input, holder, head) == 0)
+	if (copy_to_array(token_array, holder, head) == 0)
 		return (NULL);
 	return (token_array);
 }

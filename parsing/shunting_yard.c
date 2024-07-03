@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:01:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/28 17:21:18 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/06/08 15:40:44 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@ int	precedence_prio(char *token)
 	return (0);
 }
 
-void	empty_stack(t_stack *op_stack, t_stack *cmd_stack, t_token_array *tokens, int i)
+void	empty_stack(t_stack *op_stack, t_stack *cmd_stack,
+	t_token_array *tokens, int i)
 {
 	while (op_stack->head > 0
-		&& precedence_prio(op_stack->token[op_stack->head - 1].token) >= precedence_prio(tokens[i].token)
+		&& precedence_prio(op_stack->token[op_stack->head - 1].token)
+		>= precedence_prio(tokens[i].token)
 		&& op_stack->token[op_stack->head - 1].type != PARETHESIS_O)
 	{
 		stack_push(&op_stack->token[op_stack->head - 1], cmd_stack);
@@ -45,13 +47,14 @@ void	empty_stack(t_stack *op_stack, t_stack *cmd_stack, t_token_array *tokens, i
 	}
 }
 
-void	postfix_notation(t_stack *op_stack, t_stack *cmd_stack, t_token_array *tokens, int i)
+void	postfix_notation(t_stack *op_stack, t_stack *cmd_stack,
+	t_token_array *tokens, int i)
 {
 	if (tokens[i].type == CMD_T || tokens[i].type == HEREDOC_TOKEN)
 		stack_push(&tokens[i], cmd_stack);
 	else if (tokens[i].type == OPERATOR_T || tokens[i].type == REDIRECTION_O
 		|| tokens[i].type == REDIRECTION_I || tokens[i].type == REDIRECTION_A
-			|| tokens[i].type == HEREDOC)
+		|| tokens[i].type == HEREDOC)
 	{
 		empty_stack(op_stack, cmd_stack, tokens, i);
 		stack_push(&tokens[i], op_stack);
@@ -60,7 +63,8 @@ void	postfix_notation(t_stack *op_stack, t_stack *cmd_stack, t_token_array *toke
 		stack_push(&tokens[i], op_stack);
 	else if (tokens[i].type == PARETHESIS_C)
 	{
-		while (op_stack->head > 0 && op_stack->token[op_stack->head - 1].type != PARETHESIS_O)
+		while (op_stack->head > 0
+			&& op_stack->token[op_stack->head - 1].type != PARETHESIS_O)
 		{
 			stack_push(&op_stack->token[op_stack->head - 1], cmd_stack);
 			op_stack->head--;
@@ -71,12 +75,12 @@ void	postfix_notation(t_stack *op_stack, t_stack *cmd_stack, t_token_array *toke
 	}
 }
 
-t_stack shunting_yard(t_token_array *tokens)
+t_stack	shunting_yard(t_token_array *tokens)
 {
-	t_stack op_stack;
-	t_stack cmd_stack;
-	int i;
-	
+	t_stack	op_stack;
+	t_stack	cmd_stack;
+	int		i;
+
 	op_stack.token = malloc(sizeof(t_token_array) * count_array(tokens));
 	cmd_stack.token = malloc(sizeof(t_token_array) * (count_array(tokens) + 1));
 	op_stack.head = 0;

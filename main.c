@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/12 10:00:58 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/03 12:08:24 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	len(char **s)
         s++;
     }
     return (i);
-
 }
 
 void	write_error(char *str)
@@ -118,6 +117,11 @@ int	check_syntax(char *input)
 	return (1);
 }
 
+void a()
+{
+	system("leaks minishell");
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	t_token_array		*token_array;
@@ -130,15 +134,16 @@ int main(int argc, char **argv, char **envp)
 	(void)argv;
 	is_heredoc[0] = 0;
 	is_heredoc[1] = 0;
+	rl_catch_signals = 0;
 	head = create_lst(envp);
 	define_signals();
+	atexit(a);
     while (1)
     {
 		// (void)envp;
 		// (void)postfix_stack;
 		// (void)token_array;
 		// (void)ast_tree;
-		rl_catch_signals = 0;
         input = readline("Minishell$ ");
         if (input == NULL)
 		{
@@ -146,16 +151,19 @@ int main(int argc, char **argv, char **envp)
 			{
 				write_error("readline: allocation failure!\n");
 				rl_clear_history();
+				ft_close(NULL, NULL, &head);
 				exit(1);
 			}
 			else
 			{
+				ft_close(NULL, NULL, &head);
 				write(0, "exit\n", 5);
 				break;
 			}
 		}
         if (input[0] == '\0')
 		{
+			ft_close(NULL, NULL, &head);
 			free(input);
             continue;
 		}
@@ -163,16 +171,18 @@ int main(int argc, char **argv, char **envp)
 		if (check_syntax(input) == 0)
 		{
 			write_error("Error: parse error\n");
+			ft_close(NULL, NULL, &head);
 			free(input);
 			continue;
 		}
-		token_array = tokenizer(input, head);
+		token_array = tokenizer(&input, head);
 		if (!token_array)
 		{
-			free(input);
+            // printf("out\n");
+			// free(input);
 			continue;
 		}
-		free(input);
+		// free(input);
 		// int i = 0;
 		// while(token_array[i].token)
 		// {
@@ -186,10 +196,9 @@ int main(int argc, char **argv, char **envp)
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
-		ast_tree->head = &head;
-		execute_tree(ast_tree, ast_tree->head);
 		// print_tree(ast_tree, 0);
-		// execute_tree(ast_tree, &head);
+		ast_tree->head = &head;
+		// execute_tree(ast_tree, ast_tree->head);
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
 		is_heredoc[0] = 0;

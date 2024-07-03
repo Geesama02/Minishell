@@ -22,10 +22,8 @@ void    execute_redirection_in(t_token_tree *tree)
 void    execute_redirection_out(t_token_tree *tree)
 {
     int     fd_file;
-    int     i;
     pid_t   pid;
 
-    i = 0;
     fd_file = 0;
     pid = fork(); //fail
     if (pid == -1)

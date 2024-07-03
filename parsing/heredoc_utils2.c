@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:29:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/12 13:55:08 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/03 12:09:39 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,29 @@ int	handle_empty_line(char **input, char *input_cpy, char *tmp)
 	return (1);
 }
 
-char	*handle_null(char *input)
+char	*handle_null(char *input, t_token_array *token_array,
+	char **holder, int *l)
 {
-	if (errno == ENOMEM)
+	if (is_heredoc[1])
+	{
+		is_heredoc[1] = 0;
+		is_heredoc[0] = 0;
+		free(input);
+		return (free_token_holder(holder, token_array, *l), NULL);
+	}
+	else if (!is_heredoc[1] && errno == ENOMEM)
 	{
 		write_error("readline: allocation failure!");
 		free(input);
-		return (NULL);
+		return (free_token_holder(holder, token_array, *l),
+			exit(1), NULL);
 	}
 	else
 		return (input);
 }
 
-char	*continue_heredoc(char *delimiter)
+char	*continue_heredoc(char *delimiter, t_token_array *token_array,
+	char **holder, int *l)
 {
     char	*tmp;
 	char	*input;
@@ -73,10 +83,10 @@ char	*continue_heredoc(char *delimiter)
 		{
 			dup2(stdin_fd, 0);
 			close(stdin_fd);
-			return (NULL);
+			return (handle_null(input, token_array, holder, l));
 		}
 		if (tmp == NULL)
-			return (handle_null(input));
+			return (handle_null(input, token_array, holder, l));
 		if (tmp[0] == '\0')
 		{
 			if (!handle_empty_line(&input, input, tmp))
@@ -86,12 +96,28 @@ char	*continue_heredoc(char *delimiter)
 				return (NULL);
 			}
 			else
-				continue;
+				continue ;
 		}
 		if (ft_strcmp(tmp, delimiter) == 0)
 			return (free(tmp), input);
 		if (!join_old_to_new(&input, tmp))
 			return (NULL);
-    }
+	}
 	return (input);
+}
+
+void	check_if_has_file(t_token_array *token_array, char **token,
+	t_token_vars *vars, char *tmp)
+{
+	if (vars->check)
+	{
+		free(*token);
+		if (vars->cmd_holder)
+			*token = ft_strdup(vars->cmd_holder);
+		else
+			*token = ft_strdup(tmp);
+		token_array[vars->x].type = CMD_T;
+	}
+	else
+		token_array[vars->x].type = HEREDOC_TOKEN;
 }

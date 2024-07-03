@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/06/06 18:06:21 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/03 10:37:45 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ char	*find_correct_path(char *cmd)
 	char	**paths;
 	char	*path;
 
-	path = NULL;
 	i = 0;
 	paths = ft_split(getenv("PATH"), ':'); //leaks
 	while (paths[i])
@@ -66,12 +65,16 @@ char	*find_correct_path(char *cmd)
 	return (path);
 }
 
-int execute_rest(char **cmds, char **envp)
+int execute_rest(char **cmds, char **envp, t_env_vars **head)
 {
 	int		status;
 	char	*path;
 	pid_t	pid;
+	t_env_vars	*tmp;
 
+	tmp = *head;
+	while(tmp->env_name[0] != '?')
+		tmp = tmp->next;
 	if (!ft_strchr(cmds[0], '/'))
 		path = find_correct_path(cmds[0]);
 	else
@@ -88,6 +91,18 @@ int execute_rest(char **cmds, char **envp)
 			}
 		}
 		wait(&status);
+		free(tmp->env_val);
+		if (WTERMSIG(status) > 0)
+			tmp->env_val = ft_itoa(128 + WTERMSIG(status)); // free later
+		else
+			tmp->env_val = ft_itoa(WEXITSTATUS(status)); // free later
+	}
+	else
+	{
+		write(2, "command not found\n", 18);
+		free(tmp->env_val);
+		tmp->env_val = ft_strdup("127");
+		return (0);
 	}
 	if (WEXITSTATUS(status) == 1)
 		return (-1);
@@ -98,15 +113,34 @@ int execute_rest(char **cmds, char **envp)
 
 int exec_command(char **cmds, char **envp, t_env_vars **head)
 {
+	t_env_vars	*tmp;
+
+	tmp = *head;
+	while (tmp->env_name[0] != '?')
+		tmp = tmp->next;
+	free(tmp->env_val);
+	tmp->env_val = ft_strdup("0");
 	if (!ft_strcmp(cmds[0], "cd"))
 	{    
-		if (cd_command(cmds[1]) == -1)
+		if (cd_command(cmds[1]) == 1)
+		{
+			free(tmp->env_val);
+			tmp->env_val = ft_strdup("1");
+			ft_close(&tmp, cmds, head);
+			free(cmds);
 			return (-1);
+		}
 	}
 	else if (!ft_strcmp(cmds[0], "pwd"))
 	{    
-		if (pwd_command() == -1)
+		if (pwd_command() == 1)
+		{
+			free(tmp->env_val);
+			tmp->env_val = ft_strdup("1");
+			ft_close(&tmp, cmds, head);
+			free(cmds);
 			return (-1);
+		}
 	}
 	else if (!ft_strcmp(cmds[0], "echo"))
 		echo_command(cmds, *head);
@@ -117,10 +151,14 @@ int exec_command(char **cmds, char **envp, t_env_vars **head)
 	else if (!ft_strcmp(cmds[0], "env"))
 		env_command(*head);
 	else if (!ft_strcmp(cmds[0], "exit"))
+	{
+		ft_close(&tmp, cmds, head);
+		free(cmds);
 		exit(0);
+	}
 	else
 	{
-		if (execute_rest(cmds, envp) == -1)
+		if (execute_rest(cmds, envp, head) == -1)
 			return (-1);
 	}
 	return (0);
