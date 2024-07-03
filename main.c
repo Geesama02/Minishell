@@ -6,11 +6,13 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/03 12:08:24 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/03 12:15:21 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_header.h"
+
+int is_heredoc[2];
 
 int	len(char **s)
 {

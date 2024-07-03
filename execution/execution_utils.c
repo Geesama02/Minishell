@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/03 10:37:45 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/03 12:15:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int execute_rest(char **cmds, char **envp, t_env_vars **head)
 		path = find_correct_path(cmds[0]);
 	else
 		path = cmds[0];
+	// printf("path = %s\n", path);
 	if (path)
 	{
 		pid = fork();
