@@ -24,6 +24,7 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <errno.h>
 #include <signal.h>
 
@@ -193,6 +194,7 @@ void			check_if_has_file(t_token_array *token_array, char **token,
 void			ft_close(char **cmds, t_env_vars **head);
 int				count_2d_array_elements(char **arr);
 void			free_cmds(char **cmds);
+void			free_envs(t_env_vars **head);
 void			free_envs(t_env_vars **head);
 
 

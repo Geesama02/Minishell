@@ -36,7 +36,7 @@ int execute_cmds_with_operators(t_token_tree *tree, t_env_vars **head)
 
 int    execute_tree(t_token_tree *tree, t_env_vars **head)
 {
-	static int	status;
+	int			status;
 	char		**cmds;
 
 	cmds = NULL;
@@ -63,5 +63,6 @@ int    execute_tree(t_token_tree *tree, t_env_vars **head)
 		execute_heredoc(tree->left, tree->right);
 	wait(&status);
 	free_cmds(cmds);
+	free(cmds);
 	return (0);
 }

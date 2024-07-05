@@ -63,8 +63,8 @@ void    create_sorted_lst(t_env_vars *node, t_env_vars **head)
 		*head = newnode;
 	if (prev)
 		prev->next = newnode;
-	newnode->env_name = node->env_name;
-	newnode->env_val = node->env_val;
+	newnode->env_name = ft_strdup(node->env_name); //leaks
+	newnode->env_val = ft_strdup(node->env_val); //leaks
 	newnode->next = NULL;
 }
 
@@ -75,10 +75,10 @@ t_env_vars  *display_envs_sorted(t_env_vars *head)
 	t_env_vars	*tmp;
 	t_env_vars	*s_head;
 
-	matches = 0;
-	ascii_nbr = 33;
 	tmp = NULL;
 	s_head = NULL;
+	matches = 0;
+	ascii_nbr = 33;
 	while (ascii_nbr <= 127)
 	{
 		tmp = head;
@@ -101,13 +101,15 @@ t_env_vars  *display_envs_sorted(t_env_vars *head)
 
 void    create_env(t_env_vars *node, t_env_vars *head, char *env)
 {
-	char    **envs;
+	char	**envs;
 
 	envs = ft_split(env, '='); //leaks
-	node->env_name = envs[0];
-	node->env_val = envs[1];
+	node->env_name = ft_strdup(envs[0]);
+	node->env_val = ft_strdup(envs[1]);
 	node->next = NULL;
-	// free_cmds(envs);
+	free_cmds(envs);
+	free(envs);
+	envs = NULL;
 	ft_lstadd(&head, node);
 }
 
@@ -149,6 +151,7 @@ void    export_without_arguments(t_env_vars *p_head)
 		}
 		s_head = s_head->next;
 	}
+	free_envs(&s_head);
 }
 
 void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)

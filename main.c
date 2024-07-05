@@ -135,7 +135,7 @@ int main(int argc, char **argv, char **envp)
 	rl_catch_signals = 0;
 	head = create_lst(envp);
 	define_signals();
-	atexit(a);
+	// atexit(a);
     while (1)
     {
 		// (void)envp;
