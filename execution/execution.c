@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/03 09:37:17 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/05 10:27:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,29 @@ int    execute_tree(t_token_tree *tree, t_env_vars **head)
 	static int	status;
 	char		**cmds;
 
+	cmds = NULL;
 	if (tree->type == REDIRECTION_I || tree->type == REDIRECTION_O)
 		execute_redirection(tree);
 	else if (!tree->right && !tree->left)
 	{
 		cmds = ft_split(tree->token, ' '); //leaks
 		if (exec_command(cmds, tree->envp, head) == -1)
+		{
+			free_cmds(cmds);
 			return (-1);
+		}
 	}
 	else if (tree->type == OPERATOR_T)
 	{
 		if (execute_cmds_with_operators(tree, head) == -1)
+		{
+			free_cmds(cmds);
 			return (-1);
+		}
 	}
 	else if (tree->type == HEREDOC)
 		execute_heredoc(tree->left, tree->right);
 	wait(&status);
+	free_cmds(cmds);
 	return (0);
 }

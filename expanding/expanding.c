@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/28 16:07:59 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/05 10:20:42 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,8 @@ t_env_vars  *create_lst(char **envp)
 	head = malloc(sizeof(t_env_vars)); //leaks
 	create_env(head, NULL, *envp);
 	newnode = malloc(sizeof(t_env_vars)); //leaks
-	newnode->env_name = "?";
-	newnode->env_val = ft_strdup("0");
+	newnode->env_name = ft_strdup("?");
+	newnode->env_val = ft_strdup("0"); //leaks
 	newnode->next = NULL;
 	ft_lstadd(&head, newnode);
 	envp++;
@@ -160,15 +160,16 @@ void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
 	i = 1;
 	tmp = *head;
 	env_name = NULL;
-	while(tmp->env_name[0] != '?')
+	while (tmp->env_name[0] != '?')
 		tmp = tmp->next;
 	while (i <= nbr_envs)
 	{
     	cmds = ft_split_one(tokens[i], '='); //leaks
 		if (ft_strchr(cmds[0], '+'))
 		{	
-			env_name = ft_strtrim(cmds[0], "+");
+			env_name = ft_strtrim(cmds[0], "+"); //leaks
 			append_env_var(*head, env_name, cmds[1]);
+			free(env_name);
 		}
 		else if (is_string(cmds[0]))
 		{
@@ -183,6 +184,8 @@ void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
 		}
 		i++;
 	}
+	// free_cmds(cmds);
+	// free(cmds);
 }
 
 void    print_env_variable(char **cmds, t_env_vars *head, int i)

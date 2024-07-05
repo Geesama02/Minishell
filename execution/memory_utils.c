@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 20:16:25 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/03 11:03:38 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/05 10:24:55 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,10 @@ void    free_envs(t_env_vars **head)
 	t_env_vars	*tmp;
 
 	tmp = NULL;
-	while (head && *head)
+	while (*head)
 	{
 		tmp = *head;
 		*head = (*head)->next;
-		if (*head && ft_strcmp((*head)->env_name, "?") == 0)
-			*head = (*head)->next;
 		free(tmp->env_name);
 		free(tmp->env_val);
 		free(tmp);
@@ -31,22 +29,32 @@ void    free_envs(t_env_vars **head)
 
 void	free_cmds(char **cmds)
 {
-	while (cmds && *cmds)
+	if (cmds)
 	{
-		free(*cmds);
-		cmds++;
+		while (*cmds)
+		{
+			printf("%s\n", *cmds);
+			free(*cmds);
+			cmds++;
+		}
 	}
 }
 
-void	ft_close(t_env_vars **tmp, char **cmds, t_env_vars **head)
+void	ft_close(char **cmds, t_env_vars **head)
 {
-	// (void)tmp;
-	// free((*tmp)->env_name);
-	if (tmp && *tmp)
-	{
-		free((*tmp)->env_val);
-		free(*tmp);	
-	}
 	free_cmds(cmds);
 	free_envs(head);
+}
+
+int	count_2d_array_elements(char **arr)
+{
+	int	counter;
+
+	counter = 0;
+	while (*arr)
+	{	
+		counter++;
+		arr++;
+	}
+	return (counter);
 }

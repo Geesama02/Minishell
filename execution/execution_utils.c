@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/03 12:15:44 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/05 10:13:25 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 char *add_slash(char *string)
 {
-	int i;
-	char *f_string;
+	int		i;
+	char	*f_string;
 
-	f_string = malloc((sizeof(char) * ft_strlen(string)) + 2); //leaks
 	i = 0;
+	f_string = malloc((sizeof(char) * ft_strlen(string)) + 2); //leaks
 	while (string[i])
 	{   
 		f_string[i] = string[i];
@@ -33,7 +33,7 @@ char *find_path(char **paths, char *cmd)
 {
 	int         i;
 	char        *path;
-	struct stat buffer;
+	struct stat	buffer;
 
 	path = NULL;
 	i = 0;
@@ -43,7 +43,10 @@ char *find_path(char **paths, char *cmd)
 		if (!stat(path, &buffer))
 			return (path);
 		else
+		{
+			free(path);
 			i++;
+		}
 	}
 	return (NULL);
 }
@@ -51,35 +54,41 @@ char *find_path(char **paths, char *cmd)
 char	*find_correct_path(char *cmd)
 {
 	int		i;
+	char	**paths_w;
 	char	**paths;
 	char	*path;
 
 	i = 0;
-	paths = ft_split(getenv("PATH"), ':'); //leaks
-	while (paths[i])
+	paths_w = ft_split(getenv("PATH"), ':'); //leaks
+	paths = malloc((sizeof(char *) * count_2d_array_elements(paths_w)) + 1);
+	while (paths_w[i])
 	{
-		paths[i] = add_slash(paths[i]); //leaks
+		paths[i] = add_slash(paths_w[i]); //leaks
 		i++;
 	}
+	paths[i] = NULL;
+	free_2d_array(paths_w);
+	free(paths_w);
 	path = find_path(paths, cmd); //leaks
+	free_2d_array(paths);
+	free(paths);
 	return (path);
 }
 
 int execute_rest(char **cmds, char **envp, t_env_vars **head)
 {
-	int		status;
-	char	*path;
-	pid_t	pid;
+	int			status;
+	char		*path;
+	pid_t		pid;
 	t_env_vars	*tmp;
 
 	tmp = *head;
-	while(tmp->env_name[0] != '?')
+	while (tmp->env_name[0] != '?')
 		tmp = tmp->next;
 	if (!ft_strchr(cmds[0], '/'))
 		path = find_correct_path(cmds[0]);
 	else
 		path = cmds[0];
-	// printf("path = %s\n", path);
 	if (path)
 	{
 		pid = fork();
@@ -97,6 +106,8 @@ int execute_rest(char **cmds, char **envp, t_env_vars **head)
 			tmp->env_val = ft_itoa(128 + WTERMSIG(status)); // free later
 		else
 			tmp->env_val = ft_itoa(WEXITSTATUS(status)); // free later
+		free(path);
+		free_cmds(cmds);
 	}
 	else
 	{
@@ -120,14 +131,14 @@ int exec_command(char **cmds, char **envp, t_env_vars **head)
 	while (tmp->env_name[0] != '?')
 		tmp = tmp->next;
 	free(tmp->env_val);
-	tmp->env_val = ft_strdup("0");
+	tmp->env_val = ft_strdup("0"); //leaks
 	if (!ft_strcmp(cmds[0], "cd"))
 	{    
 		if (cd_command(cmds[1]) == 1)
 		{
 			free(tmp->env_val);
 			tmp->env_val = ft_strdup("1");
-			ft_close(&tmp, cmds, head);
+			ft_close(cmds, head);
 			free(cmds);
 			return (-1);
 		}
@@ -138,7 +149,7 @@ int exec_command(char **cmds, char **envp, t_env_vars **head)
 		{
 			free(tmp->env_val);
 			tmp->env_val = ft_strdup("1");
-			ft_close(&tmp, cmds, head);
+			ft_close(cmds, head);
 			free(cmds);
 			return (-1);
 		}
@@ -153,7 +164,8 @@ int exec_command(char **cmds, char **envp, t_env_vars **head)
 		env_command(*head);
 	else if (!ft_strcmp(cmds[0], "exit"))
 	{
-		ft_close(&tmp, cmds, head);
+		write(1, "exit\n", 6);
+		ft_close(cmds, head);
 		free(cmds);
 		exit(0);
 	}

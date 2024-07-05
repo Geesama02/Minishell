@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/03 12:14:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/05 09:44:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <sys/wait.h> // to remove just for linux
 #include <errno.h>
 #include <signal.h>
 
@@ -108,7 +107,7 @@ char			*ft_strtrim(char const *s1, char const *set);
 int				check_cmd(char *str);
 int				cd_command(char *path);
 char			*remove__quotes(char *str);
-void 			print_tree(t_token_tree *root, int level);
+void 			print_tree(t_token_tree *root, int level); //delete later
 t_token_tree	*create_node(char *token, t_t_type type, char **envp, t_env_vars **head);
 t_token_array	*tokenizer(char **input, t_env_vars *head);
 void			*free_alloc(char **bigstr, int l);
@@ -191,7 +190,10 @@ int				tokenize(char **input, char *input_cpy, char **holder);
 void			handle_node_failure(t_stack *stack, t_token_tree **stack_tree,int tree_offset);
 void			check_if_has_file(t_token_array *token_array, char **token,
 		t_token_vars *vars, char *tmp);
-void			ft_close(t_env_vars **tmp, char **cmds, t_env_vars **head);
+void			ft_close(char **cmds, t_env_vars **head);
+int				count_2d_array_elements(char **arr);
+void			free_cmds(char **cmds);
+void			free_envs(t_env_vars **head);
 
 
 

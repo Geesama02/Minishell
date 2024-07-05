@@ -6,13 +6,11 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/03 12:15:21 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/05 10:28:25 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_header.h"
-
-int is_heredoc[2];
 
 int	len(char **s)
 {
@@ -44,11 +42,9 @@ int check_heredoc(char *input)
 	return (0);
 }
 
-
-
 void	print_stack(t_stack *stack, int len)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	printf("=====================\n");
@@ -91,10 +87,10 @@ void	*free_alloc(char **bigstr, int l)
 
 int	check_syntax(char *input)
 {
-	int i;
-	int quote;
-	int dquote;
-	int parenthesis;
+	int	i;
+	int	quote;
+	int	dquote;
+	int	parenthesis;
 
 	i = 0;
 	quote = 0;
@@ -119,7 +115,7 @@ int	check_syntax(char *input)
 	return (1);
 }
 
-void a()
+void	a()
 {
 	system("leaks minishell");
 }
@@ -153,27 +149,29 @@ int main(int argc, char **argv, char **envp)
 			{
 				write_error("readline: allocation failure!\n");
 				rl_clear_history();
-				ft_close(NULL, NULL, &head);
+				ft_close(NULL, &head);
 				exit(1);
 			}
 			else
 			{
-				ft_close(NULL, NULL, &head);
+				rl_clear_history();
 				write(0, "exit\n", 5);
+				ft_close(NULL, &head);
 				break;
 			}
 		}
         if (input[0] == '\0')
 		{
-			ft_close(NULL, NULL, &head);
+			rl_clear_history();
 			free(input);
+			ft_close(NULL, &head);
             continue;
 		}
         add_history(input);
 		if (check_syntax(input) == 0)
 		{
 			write_error("Error: parse error\n");
-			ft_close(NULL, NULL, &head);
+			ft_close(NULL, &head);
 			free(input);
 			continue;
 		}
@@ -200,7 +198,7 @@ int main(int argc, char **argv, char **envp)
 		// printf("======== Tree ========\n");
 		// print_tree(ast_tree, 0);
 		ast_tree->head = &head;
-		// execute_tree(ast_tree, ast_tree->head);
+		execute_tree(ast_tree, ast_tree->head);
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
 		is_heredoc[0] = 0;
