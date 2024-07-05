@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 20:16:25 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/05 10:24:55 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/05 15:21:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	free_cmds(char **cmds)
 	{
 		while (*cmds)
 		{
-			printf("%s\n", *cmds);
 			free(*cmds);
 			cmds++;
 		}

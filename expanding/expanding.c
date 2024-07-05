@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/05 10:20:42 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/05 15:21:30 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void    create_env(t_env_vars *node, t_env_vars *head, char *env)
 	node->env_name = envs[0];
 	node->env_val = envs[1];
 	node->next = NULL;
+	// free_cmds(envs);
 	ft_lstadd(&head, node);
 }
 
@@ -157,9 +158,10 @@ void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
 	int		i;
 	t_env_vars	*tmp;
 
+	cmds = NULL;
+	env_name = NULL;
 	i = 1;
 	tmp = *head;
-	env_name = NULL;
 	while (tmp->env_name[0] != '?')
 		tmp = tmp->next;
 	while (i <= nbr_envs)
@@ -182,10 +184,11 @@ void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
 			tmp->env_val = ft_strdup("1");
 			printf("export: `%s' : not a valid identifier\n", tokens[i]);
 		}
+		free_cmds(cmds);
+		free(cmds);
+		cmds = NULL;
 		i++;
 	}
-	// free_cmds(cmds);
-	// free(cmds);
 }
 
 void    print_env_variable(char **cmds, t_env_vars *head, int i)

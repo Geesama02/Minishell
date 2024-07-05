@@ -52,11 +52,11 @@ void    lst_add_element(char **cmds, t_env_vars **head, int i)
         prev->next = new_env;
     else if (!prev && i == 1)
         *head = new_env;
-    new_env->env_name = cmds[0];
+    new_env->env_name = ft_strdup(cmds[0]);
     if (ft_strchr(cmds[1], '$'))
         null_terminating(cmds[1]);
     if (*cmds[1])
-        new_env->env_val = cmds[1];
+        new_env->env_val = ft_strdup(cmds[1]);
     else
         new_env->env_val = NULL;
     new_env->next = NULL;

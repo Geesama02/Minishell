@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/05 10:18:49 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/05 15:22:56 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	export_command(char **tokens, t_env_vars **head)
 	if (!tokens[1])
 	{	
 		export_without_arguments(*head);
-		free(*tokens);
 		return ;
 	}
 	nbr_envs = count_env_vars(tokens);
