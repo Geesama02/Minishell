@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/05 15:18:01 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 09:21:05 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int main(int argc, char **argv, char **envp)
 	rl_catch_signals = 0;
 	head = create_lst(envp);
 	define_signals();
-	// atexit(a);
+	atexit(a);
     while (1)
     {
 		// (void)envp;
