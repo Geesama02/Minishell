@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/06 09:50:49 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 10:37:47 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,9 +137,11 @@ t_env_vars  *create_lst(char **envp)
 
 void    export_without_arguments(t_env_vars *p_head)
 {
+	t_env_vars	*tmp_h;
 	t_env_vars	*s_head;
 
 	s_head = display_envs_sorted(p_head);
+	tmp_h = s_head;
 	while (s_head)
 	{
 		if (s_head->env_name[0] != '?')
@@ -151,7 +153,7 @@ void    export_without_arguments(t_env_vars *p_head)
 		}
 		s_head = s_head->next;
 	}
-	free_envs(&s_head);
+	free_envs(&tmp_h);
 }
 
 void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
