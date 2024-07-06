@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/06 09:40:44 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 13:12:23 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int echo_command(char **cmds, t_env_vars *head)
 	// 	print_env_variable(cmds, head, i);
 	// else
 	print_echo_content(cmds, i, new_line);
-	free_cmds(cmds);
 	return (0);
 }
 

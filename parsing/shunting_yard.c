@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:01:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 12:10:22 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 12:54:53 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ t_stack	shunting_yard(t_token_array *tokens)
 		stack_push(&op_stack.token[op_stack.head - 1], &cmd_stack);
 		op_stack.head--;
 	}
+	cmd_stack.token[i].token = NULL;
 	free(tokens);
 	free(op_stack.token);
 	return (cmd_stack);

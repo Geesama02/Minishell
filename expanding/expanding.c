@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/06 10:37:47 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 12:13:32 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,6 @@ void    export_without_arguments(t_env_vars *p_head)
 {
 	t_env_vars	*tmp_h;
 	t_env_vars	*s_head;
-	t_env_vars	*tmp_h;
 
 	s_head = display_envs_sorted(p_head);
 	tmp_h = s_head;

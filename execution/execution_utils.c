@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/05 10:13:25 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 13:08:37 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,17 @@ char	*find_correct_path(char *cmd)
 
 	i = 0;
 	paths_w = ft_split(getenv("PATH"), ':'); //leaks
-	paths = malloc((sizeof(char *) * count_2d_array_elements(paths_w)) + 1);
+	paths = malloc(sizeof(char *) * (count_2d_array_elements(paths_w) + 1));
 	while (paths_w[i])
 	{
 		paths[i] = add_slash(paths_w[i]); //leaks
 		i++;
 	}
 	paths[i] = NULL;
-	free_2d_array(paths_w);
+	free_cmds(paths_w);
 	free(paths_w);
 	path = find_path(paths, cmd); //leaks
-	free_2d_array(paths);
+	free_cmds(paths);
 	free(paths);
 	return (path);
 }

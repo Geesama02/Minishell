@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/05 17:35:14 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 12:54:12 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <sys/wait.h>
 #include <errno.h>
 #include <signal.h>
 
@@ -42,46 +41,46 @@ typedef enum e_t_type
 } t_t_type;
 
 typedef struct	s_env_vars {
-	char *env_name;
-	char *env_val;
-	struct s_env_vars *next;
+	char				*env_name;
+	char				*env_val;
+	struct s_env_vars	*next;
 }				t_env_vars;
 
 typedef struct	s_tree_vars
 {
-	char	**envp;
-	t_env_vars **head;
+	char		**envp;
+	t_env_vars	**head;
 	// int	*tree_offset;
 } t_tree_vars;
 
 typedef struct s_token_vars
 {
-	int	l;
-	int	x;
-	int	check;
-	char	*cmd_holder;
-	t_env_vars *head;
+	int			l;
+	int			x;
+	int			check;
+	char		*cmd_holder;
+	t_env_vars	*head;
 } t_token_vars;
 
 typedef struct s_token_array
 {
-	char	*token;
+	char		*token;
 	t_t_type	type;
 } t_token_array;
 
 typedef struct s_stack
 {
 	t_token_array	*token;
-	int	head;
+	int				head;
 } t_stack;
 
 
 typedef struct s_token_tree
 {
-	int			id;
-	int			cmd_count;
-	char		*token;
-	t_t_type	type;
+	int					id;
+	int					cmd_count;
+	char				*token;
+	t_t_type			type;
 	struct s_token_tree	*left;
 	struct s_token_tree	*right;
 	char				**envp;
