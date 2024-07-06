@@ -138,8 +138,10 @@ t_env_vars  *create_lst(char **envp)
 void    export_without_arguments(t_env_vars *p_head)
 {
 	t_env_vars	*s_head;
+	t_env_vars	*tmp_h;
 
 	s_head = display_envs_sorted(p_head);
+	tmp_h = s_head;
 	while (s_head)
 	{
 		if (s_head->env_name[0] != '?')
@@ -151,7 +153,7 @@ void    export_without_arguments(t_env_vars *p_head)
 		}
 		s_head = s_head->next;
 	}
-	free_envs(&s_head);
+	free_envs(&tmp_h);
 }
 
 void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
