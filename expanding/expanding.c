@@ -139,6 +139,7 @@ void    export_without_arguments(t_env_vars *p_head)
 {
 	t_env_vars	*tmp_h;
 	t_env_vars	*s_head;
+	t_env_vars	*tmp_h;
 
 	s_head = display_envs_sorted(p_head);
 	tmp_h = s_head;
