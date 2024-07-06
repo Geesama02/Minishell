@@ -114,5 +114,6 @@ t_token_array	*tokenizer(char **input, t_env_vars *head)
 		return (NULL);
 	if (copy_to_array(token_array, holder, head) == 0)
 		return (NULL);
+	free(holder);
 	return (token_array);
 }
