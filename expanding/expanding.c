@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/06 12:13:32 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 17:13:34 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,8 +165,8 @@ void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
 
 	cmds = NULL;
 	env_name = NULL;
-	i = 1;
 	tmp = *head;
+	i = 1;
 	while (tmp->env_name[0] != '?')
 		tmp = tmp->next;
 	while (i <= nbr_envs)
@@ -180,14 +180,14 @@ void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
 		}
 		else if (is_string(cmds[0]))
 		{
-			search_for_env_var(head, cmds[0]);
+			search_for_env_var(head, cmds[0], 1);
 			lst_add_element(cmds, head, i);
 		}
 		else
 		{
 			free(tmp->env_val);
 			tmp->env_val = ft_strdup("1");
-			printf("export: `%s' : not a valid identifier\n", tokens[i]);
+			ft_printf_err("export: `%s' : not a valid identifier\n", tokens[i]);
 		}
 		free_cmds(cmds);
 		free(cmds);

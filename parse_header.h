@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 14:49:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 16:23:58 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char			*ft_strjoin(const char *s1, const char *s2);
 int				len(char **s);
 char			*ft_strtrim(char const *s1, char const *set);
 int				check_cmd(char *str);
-int				cd_command(char *path);
+int				cd_command(char *path, t_env_vars *head);
 char			*remove__quotes(char *str);
 void 			print_tree(t_token_tree *root, int level); //delete later
 t_token_tree	*create_node(char *token, t_t_type type, char **envp, t_env_vars **head);
@@ -167,7 +167,7 @@ void			ft_lstadd(t_env_vars **lst, t_env_vars *new);
 void			print_echo_content(char **cmds, int i, int new_line);
 void			replace_nodes_content(t_env_vars *node1, t_env_vars *node2);
 t_env_vars		*create_lst(char **envp);
-t_env_vars		*search_for_env_var(t_env_vars **head, char *env_name);
+t_env_vars		*search_for_env_var(t_env_vars **head, char *env_name, int remove);
 void			append_env_var(t_env_vars *head, char *env_name, char *to_append);
 char			*expand_vars(char *holder, t_env_vars *head);
 int				ft_isalpha(int c);

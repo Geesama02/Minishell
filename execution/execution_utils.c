@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/06 14:47:04 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 16:13:18 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +133,10 @@ int exec_command(char **cmds, char **envp, t_env_vars **head)
 	tmp->env_val = ft_strdup("0"); //leaks
 	if (!ft_strcmp(cmds[0], "cd"))
 	{    
-		if (cd_command(cmds[1]) == 1)
+		if (cd_command(cmds[1], *head) == 1)
 		{
 			free(tmp->env_val);
 			tmp->env_val = ft_strdup("1");
-			ft_close(cmds, head);
-			free(cmds);
 			return (-1);
 		}
 	}
@@ -148,8 +146,6 @@ int exec_command(char **cmds, char **envp, t_env_vars **head)
 		{
 			free(tmp->env_val);
 			tmp->env_val = ft_strdup("1");
-			ft_close(cmds, head);
-			free(cmds);
 			return (-1);
 		}
 	}

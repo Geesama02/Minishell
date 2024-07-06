@@ -14,18 +14,20 @@ void    append_env_var(t_env_vars *head, char *env_name, char *to_append)
     }
 }
 
-t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name)
+t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name, int remove)
 {
     t_env_vars *current;
 
     current = *head;
 	while (current && ft_strcmp(current->env_name, env_name))
 		current = current->next;
-	if (current)
+	if (current && remove)
 	{
         unset_command(head, current->env_name);
         return (current);
     }
+    else if (current && !remove)
+        return (current);
 	return (NULL);
 }
 
@@ -55,7 +57,7 @@ void    lst_add_element(char **cmds, t_env_vars **head, int i)
     new_env->env_name = ft_strdup(cmds[0]);
     if (ft_strchr(cmds[1], '$'))
         null_terminating(cmds[1]);
-    if (*cmds[1])
+    if (cmds[1])
         new_env->env_val = ft_strdup(cmds[1]);
     else
         new_env->env_val = NULL;

@@ -53,6 +53,7 @@ static void	*sec_alloc(char **bigstr, int l)
 	free(bigstr);
 	return (NULL);
 }
+
 static void	skip_c(char const *s, char c, int *i)
 {
 	while (s[*i] == c && !non_var_name(s[*i + 1]))

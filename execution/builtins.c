@@ -6,25 +6,34 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/06 14:45:05 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 16:33:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int cd_command(char *path)
+int cd_command(char *path, t_env_vars *head)
 {
-	if (!path || (path && !ft_strcmp(path, "~")))
+	struct stat	infos;
+	int			res;
+
+	res = stat(path, &infos);
+	if (!path)
 	{
-		if (chdir(getenv("HOME")) != 0)
+		if (!search_for_env_var(&head, "HOME", 0))
 		{
-			ft_printf_err("chdir() failed!!\n");
+			ft_printf_err("minishell: cd: HOME not set\n");
 			return (1);
 		}
+		else
+			chdir(search_for_env_var(&head, "HOME", 0)->env_val);
 	}
 	else if (chdir(path) != 0)
 	{
-		ft_printf_err("chdir() failed!!\n");
+		if (res == -1)
+			ft_printf_err("minishell: cd: %s: No such file or directory\n", path);
+		else if (S_ISREG(infos.st_mode))
+			ft_printf_err("minishell: cd: %s Not a directory\n", path);
 		return (1);
 	}
 	return (0);

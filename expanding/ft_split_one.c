@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 10:05:45 by maglagal          #+#    #+#             */
-/*   Updated: 2024/05/14 10:20:26 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 17:27:45 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,14 @@ char	**ft_split_one(char const *s, char c)
 	while (s[i] && s[i] != c)
 		p[z][j++] = s[i++];
 	p[z][j] = '\0';
-	i++;
-	j = 0;
-	p[++z] = (char *)malloc(word_length2(s, i) + 1);
-	while (s[i] && s[i] != ';')
-		p[z][j++] = s[i++];
+	if (s[i])
+	{
+		i++;
+		j = 0;
+		p[++z] = (char *)malloc(word_length2(s, i) + 1);
+		while (s[i] && s[i] != ';')
+			p[z][j++] = s[i++];
+	}
 	p[z][j] = '\0';
 	p[++z] = 0;
 	return (p);
