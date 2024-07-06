@@ -107,7 +107,6 @@ int execute_rest(char **cmds, char **envp, t_env_vars **head)
 		else
 			tmp->env_val = ft_itoa(WEXITSTATUS(status)); // free later
 		free(path);
-		free_cmds(cmds);
 	}
 	else
 	{
