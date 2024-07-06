@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstiter_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 13:49:10 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 17:52:37 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/07 14:46:21 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/08 20:22:36 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	if (lst == NULL || f == NULL)
+	t_list	*current;
+
+	if (!lst || !f)
 		return ;
-	while (lst != NULL)
+	current = lst;
+	while (current != 0)
 	{
-		f(lst->content);
-		lst = lst->next;
+		f(current->content);
+		current = current->next;
 	}
 }

@@ -3,31 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 16:27:09 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 14:55:37 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/04 12:57:29 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/10 18:16:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcpy(char *dst, 
-		const char *src, size_t dstsize)
+size_t	ft_strlcpy(char *dst, const char *src, 
+			size_t dstsize)
 {
 	size_t	i;
-	size_t	j;
+	char	*dest;
+	char	*sr;
 
-	j = 0;
 	i = 0;
-	while (src[j])
-		j++;
-	while (dstsize - 1 > i && src[i] && dstsize != 0)
+	dest = (char *)dst;
+	sr = (char *)src;
+	while (i < dstsize - 1 && sr[i] && dstsize != 0)
 	{
-		dst[i] = src[i];
+		dest[i] = sr[i];
 		i++;
 	}
-	if (dstsize > 0)
-		dst[i] = '\0';
-	return (j);
+	if (dstsize != 0)
+		dest[i] = '\0';
+	i = 0;
+	while (sr[i])
+		i++;
+	return (i);
 }

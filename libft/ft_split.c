@@ -3,88 +3,91 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 11:51:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 17:53:14 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/06 10:05:45 by maglagal          #+#    #+#             */
+/*   Updated: 2024/07/06 17:34:13 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	count_words(char const *s, char c)
+static size_t	count_words(char const *s, char const c)
 {
-	int	i;
-	int	count;
+	size_t	i;
+	size_t	counter;
 
 	i = 0;
-	count = 0;
-	if (c != s[i] && s[i])
-		count++;
+	counter = 0;
 	while (s[i])
 	{
-		if (s[i] == c && s[i + 1] && s[i + 1] != c)
-			count++;
-		i++;
+		while (s[i] == c)
+			i++;
+		if (s[i] && s[i] != c)
+		{
+			counter++;
+			while (s[i] && s[i] != c)
+				i++;
+		}
 	}
-	return (count);
+	return (counter);
 }
 
-static int	count_word(char const *s, char c, int i)
+static size_t	word_length(char const *s, char c, size_t i)
 {
-	int	len;
+	size_t	x;
 
-	len = 0;
-	while (s[i] != c && s[i])
+	x = 0;
+	while (s[i] && s[i] != c)
 	{
-		len++;
+		x++;
 		i++;
 	}
-	return (len);
+	return (x);
 }
 
-static void	*sec_alloc(char **bigstr, int l)
+static void	*freeing_memory(char **p, size_t z)
 {
-	while (l > 0)
+	while (z > 0)
 	{
-		l--;
-		free(bigstr[l]);
+		--z; 
+		free(p[z]);
 	}
-	free(bigstr);
+	free(p);
 	return (NULL);
 }
 
-static void	skip_c(char const *s, char c, int *i)
+static void	equal(char const *s, char c, size_t *ptr_i)
 {
-	while (s[*i] == c)
-		(*i)++;
+	while (s[(*ptr_i)] && s[(*ptr_i)] == c)
+		(*ptr_i)++;
 }
 
 char	**ft_split(char const *s, char c)
 {
-	int		i;
-	int		l;
-	int		n;
-	char	**str;
+	size_t	i;
+	size_t	z;
+	size_t	j;
+	char	**p;
 
-	i = 0;
-	l = 0;
 	if (!s)
 		return (NULL);
-	str = (char **)malloc((count_words(s, c) + 1) * sizeof(char *));
-	if (!str)
+	i = 0;
+	z = 0;
+	p = (char **)malloc(sizeof(char *) * (count_words(s, c) + 1));
+	if (!p)
 		return (NULL);
-	while (l < count_words(s, c))
+	while (z < count_words(s, c))
 	{
-		n = 0;
-		skip_c(s, c, &i);
-		str[l] = (char *)malloc(count_word(s, c, i) + 1);
-		if (!str[l])
-			return (sec_alloc(str, l));
-		while (s[i] != c && s[i])
-			str[l][n++] = s[i++];
-		str[l++][n] = '\0';
+		equal(s, c, &i);
+		p[z] = (char *)malloc(word_length(s, c, i) + 1);
+		if (!p[z])
+			return (freeing_memory(p, z));
+		j = 0;
+		while (s[i] && s[i] != c)
+			p[z][j++] = s[i++];
+		p[z++][j] = '\0';
 	}
-	str[l] = 0;
-	return (str);
+	p[z] = 0;
+	return (p);
 }

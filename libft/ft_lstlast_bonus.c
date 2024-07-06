@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 10:12:53 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 17:52:40 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/06 14:54:35 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/08 17:54:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 t_list	*ft_lstlast(t_list *lst)
 {
+	t_list	*current;
+
 	if (lst == NULL)
-		return (lst);
-	while (lst->next != NULL)
-		lst = lst->next;
-	return (lst);
+		return (NULL);
+	current = lst;
+	while (current->next != 0)
+		current = current->next;
+	return (current);
 }

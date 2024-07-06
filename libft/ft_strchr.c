@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 15:46:33 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 14:55:18 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/01 12:43:45 by maglagal          #+#    #+#             */
+/*   Updated: 2024/07/06 17:30:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,27 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	int				i;
-	unsigned char	c2;
+	size_t			i;
+	unsigned char	cc;
+	char			*p;
 
+	if (!s)
+		return (NULL);
 	i = 0;
-	c2 = (unsigned char)c;
+	cc = (unsigned char)c;
 	while (s[i])
 	{
-		if (c2 == s[i])
-			return ((char *)(s + i));
-		i++;
+		if (s[i] == cc)
+		{
+			p = (char *)s + i;
+			while (s[i])
+				i++;
+			return (p);
+		}
+		else
+			i++;
 	}
-	if (c2 == '\0')
-		return ((char *)(s + i));
-	return (NULL);
+	if (cc == '\0')
+		return ((char *)s + i);
+	return (0);
 }

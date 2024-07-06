@@ -3,49 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 20:57:50 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 17:51:11 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/02 10:45:57 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/10 17:44:51 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-static char	*ft_alloc(size_t j, unsigned int start, size_t len)
+static size_t	count_word(char const *s, unsigned int start, size_t len)
 {
-	char	*str;
+	size_t	i;
 
-	if (start < j && start + len != j + 1)
-		str = malloc(len + 1);
-	else if (start + len == j + 1)
-		str = malloc(len);
-	else
-		str = malloc(1);
-	return (str);
+	i = 0;
+	while (s[start] && i < len)
+	{
+		start++;
+		i++;
+	}
+	return (i);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*str;
 	size_t	i;
-	size_t	j;
+	char	*p;
 
-	i = 0;
 	if (!s)
 		return (NULL);
-	j = ft_strlen(s);
-	if (j < len)
-		len = j - start;
-	str = ft_alloc(j, start, len);
-	if (!str)
-		return (NULL);
-	while (len > i && start < j && s[i])
-	{
-		str[i] = s[start + i];
-		i++;
-	}
-	if (start + len != j + 1 || s[start] == '\0')
-		str[i] = '\0';
-	return (str);
+	i = 0;
+	if (len > ft_strlen(s) && start < ft_strlen(s))
+		p = malloc((sizeof(char)) * ((ft_strlen(s) - start) + 1));
+	else if (start >= ft_strlen(s) || len == 0)
+		p = malloc(1);
+	else
+		p = malloc((sizeof(char)) * ((count_word(s, start, len)) + 1));
+	if (!p)
+		return (0);
+	while (start < ft_strlen(s) && i < (unsigned int)len)
+		p[i++] = s[start++];
+	p[i] = '\0';
+	return (p);
 }

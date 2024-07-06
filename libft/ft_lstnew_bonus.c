@@ -3,23 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 20:50:06 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/14 11:25:10 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/06 13:54:57 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/10 15:49:10 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>	
 
 t_list	*ft_lstnew(void *content)
 {
-	t_list	*node;
+	t_list	*newn;
 
-	node = malloc(sizeof(t_list));
-	if (!node)
+	newn = (t_list *)malloc(sizeof(t_list));
+	if (!newn)
 		return (NULL);
-	node->content = content;
-	node->next = NULL;
-	return (node);
+	if (!content)
+		newn->content = NULL;
+	else
+		newn->content = content;
+	newn->next = (0); 
+	return (newn);
 }

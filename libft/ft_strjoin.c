@@ -3,39 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 09:25:44 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 17:53:23 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/02 11:23:20 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/10 20:28:22 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		i;
-	int		j;
-	int		s1_len;
-	int		s2_len;
-	char	*str;
+	size_t	i;
+	size_t	z;
+	char	*str1;
+	char	*str2;
+	char	*p;
 
-	i = 0;
-	j = 0;
 	if (!s1 || !s2)
 		return (NULL);
-	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
-	str = malloc(s1_len + s2_len + 1);
-	if (!str)
+	i = 0;
+	z = 0;
+	str1 = (char *)s1;
+	str2 = (char *)s2;
+	p = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!p)
 		return (NULL);
-	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	while (s2[j])
-		str[i++] = s2[j++];
-	str[i] = '\0';
-	return (str);
+	while (i < ft_strlen(s1))
+		p[i++] = str1[z++];
+	z = 0;
+	while (i < ft_strlen(s1) + ft_strlen(s2))
+		p[i++] = str2[z++];
+	p[i] = '\0';
+	return (p);
 }

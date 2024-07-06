@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 09:59:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 17:52:48 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/06 14:50:59 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/08 18:14:07 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,17 @@
 
 int	ft_lstsize(t_list *lst)
 {
-	int	i;
+	int		counter;
+	t_list	*current;
 
-	i = 0;
-	while (lst != NULL)
+	if (!lst)
+		return (0);
+	counter = 0;
+	current = lst;
+	while (current)
 	{
-		i++;
-		lst = lst->next;
+		counter++;
+		current = current->next;
 	}
-	return (i);
+	return (counter);
 }

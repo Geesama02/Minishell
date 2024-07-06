@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 19:15:05 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/14 11:25:07 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/10/31 19:16:50 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/10 13:50:51 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,26 @@
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	char	*str;
-	char	*dest;
+	char		*sr;
+	char		*dest;
+	size_t		i;
 
-	str = (char *)src;
+	i = 0;
 	dest = (char *)dst;
-	if (str == NULL && dest == NULL)
-		return (dst);
-	if (dest < str)
+	sr = (char *)src;
+	if (dest == sr)
+		return (dest);
+	if (dest > sr)
 	{
-		while (len-- > 0)
-			*dest++ = *str++;
+		while (len--)
+			dest[len] = sr[len];
 	}
 	else
 	{
-		while (len > 0)
+		while (i < len)
 		{
-			*(dest + len - 1) = *(str + len - 1);
-			len--;
+			dest[i] = sr[i];
+			i++;
 		}
 	}
 	return (dst);

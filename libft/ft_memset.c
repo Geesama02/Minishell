@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 12:44:21 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 14:54:57 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/10/31 11:50:16 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/10 21:16:58 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,14 @@
 
 void	*ft_memset(void *b, int c, size_t len)
 {
-	char	*str;
-	int		i;
+	size_t	i;
+	char	*p;
 
 	i = 0;
-	str = (char *)b;
-	while (len > 0)
+	p = (char *)b;
+	while (i < len)
 	{
-		str[i] = c;
-		len--;
+		*(p + i) = c;
 		i++;
 	}
 	return (b);

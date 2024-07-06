@@ -3,45 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 21:08:32 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 17:53:09 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/03 18:31:38 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/10 13:51:34 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	change_long(long n, int fd)
-{
-	char	c;
-
-	if (n < 0)
-	{
-		n = -n;
-		write(fd, "-", 1);
-		change_long(n, fd);
-	}
-	else if (n > 9)
-	{
-		change_long(n / 10, fd);
-		change_long(n % 10, fd);
-	}
-	else
-	{
-		c = n + 48;
-		write(fd, &c, 1);
-	}
-}
-
 void	ft_putnbr_fd(int n, int fd)
 {
-	if (n == -2147483647)
+	char	s;
+	long	ln;
+
+	ln = (long)n;
+	if (n < 0)
 	{
-		write(fd, "-2147483647", 11);
+		ln = -ln;
+		write(fd, "-", 1);
+	}
+	if (ln >= 10)
+	{
+		ft_putnbr_fd(ln / 10, fd);
+		ft_putnbr_fd(ln % 10, fd);
 	}
 	else
 	{
-		change_long(n, fd);
+		s = ln + '0';
+		ft_putchar_fd(s, fd);
 	}
 }

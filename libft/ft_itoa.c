@@ -3,62 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 14:19:45 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 17:52:24 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/03 16:36:37 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/10 17:45:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-static void	ft_putnbr(long n, int *i, char *str)
+static char	word_len(int n)
 {
-	char	c;
+	size_t	i;
 
-	if (n < 0)
+	i = 0;
+	if (n <= 0)
+		i += 1;
+	while (n != 0)
 	{
-		n = -n;
-		str[*i] = '-';
+		n = n / 10;
+		i++;
+	}
+	return (i);
+}
+
+static void	ft_putnbr(char *p, int n, int *i)
+{
+	long	ln;
+
+	ln = (long)n;
+	if (ln < 0)
+	{
+		p[(*i)] = '-';
 		(*i)++;
-		ft_putnbr(n, i, str);
+		ln = -ln;
 	}
-	else if (n > 9)
-	{
-		ft_putnbr(n / 10, i, str);
-		ft_putnbr(n % 10, i, str);
-	}
-	else
-	{
-		c = n + 48;
-		str[*i] = c;
-		(*i)++;
-	}
+	if (ln >= 10)
+		ft_putnbr(p, ln / 10, i);
+	p[(*i)] = (ln % 10) + '0';
+	(*i)++;
 }
 
 char	*ft_itoa(int n)
 {
-	char	*str;
-	int		len;
+	size_t	z;
+	size_t	length;
 	int		i;
-	int		new_n;
-	long	num;
+	char	*p;
 
+	z = 0;
 	i = 0;
-	len = 0;
-	new_n = n;
-	num = n;
-	while (new_n / 10 != 0)
-	{
-		len++;
-		new_n /= 10;
-	}
-	if (n < 0)
-		len++;
-	str = malloc(len + 2);
-	if (!str)
-		return (NULL);
-	ft_putnbr(num, &i, str);
-	str[i] = '\0';
-	return (str);
+	length = word_len(n);
+	p = malloc((sizeof(char) * length) + 1);
+	if (!p)
+		return (0);
+	ft_putnbr(p, n, &i);
+	p[length] = '\0';
+	return (p);
 }

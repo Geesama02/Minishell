@@ -3,28 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 18:36:55 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 17:52:07 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/02 10:15:46 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/10 13:48:56 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	char	*pntr;
 	size_t	i;
+	char	*p;
 
 	i = 0;
-	pntr = malloc(count * size);
-	if (!pntr)
-		return (NULL);
-	while (i < count * size)
-	{
-		pntr[i] = '\0';
-		i++;
-	}
-	return (pntr);
+	p = (char *)malloc(count * size);
+	if (!p)
+		return (0);
+	ft_memset(p, 0, count * size);
+	return (p);
 }

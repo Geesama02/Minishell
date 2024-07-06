@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 15:15:46 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 17:52:51 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/01 15:36:26 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/10 17:47:12 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,19 @@
 void	*ft_memchr(const void *s, int c, size_t n)
 {
 	size_t			i;
-	unsigned char	*str;
+	unsigned char	*p;
 
 	i = 0;
-	str = (unsigned char *)s;
-	while (n > i)
+	p = (unsigned char *)s;
+	while (i < n)
 	{
-		if ((unsigned char)c == *str)
-			return ((void *)(s + i));
-		str++;
-		i++;
+		if (p[i] == (unsigned char)c)
+		{
+			p += i;
+			return (p);
+		}
+		else
+			i++;
 	}
-	return (NULL);
+	return (0);
 }

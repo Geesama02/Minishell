@@ -3,34 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 16:21:31 by oait-laa          #+#    #+#             */
-/*   Updated: 2023/11/10 17:53:33 by oait-laa         ###   ########.fr       */
+/*   Created: 2023/11/01 17:17:50 by maglagal          #+#    #+#             */
+/*   Updated: 2023/11/10 17:44:20 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+static void	increment_i(size_t z, size_t *p_i)
+{
+	if (z == 0)
+		(*p_i)++;
+	else
+	{
+		if (z == 2)
+			(*p_i) += z - 1;
+		else
+			(*p_i) += z;
+	}
+}
+
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	size_t	i;
-	int		l;
+	size_t	z;
 
 	i = 0;
-	l = 0;
-	if (needle[0] == '\0')
-		return ((char *)(haystack));
-	while (len > i && haystack[i])
+	z = 0;
+	if (!haystack && needle && len == 0)
+		return (NULL);
+	if (ft_strlen(needle) == 0)
+		return ((char *)haystack);
+	while (haystack[i] && i + ft_strlen(needle) <= len)
 	{
-		l = 0;
-		while (haystack[i + l] == needle[l] && i + l < len)
-		{
-			if (needle[l + 1] == '\0')
-				return ((char *)haystack + i);
-			l++;
-		}
-		i++;
+		while (z < ft_strlen(needle) && haystack[i + z] == needle[z])
+			z++;
+		if (z == ft_strlen(needle))
+			return ((char *)(haystack + i));
+		increment_i(z, &i);
 	}
-	return (NULL);
+	return (0);
 }
