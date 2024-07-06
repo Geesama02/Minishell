@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/06 13:12:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 14:45:05 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int cd_command(char *path)
 	{
 		if (chdir(getenv("HOME")) != 0)
 		{
-			write(2, "chdir() failed!!\n", 18);
+			ft_printf_err("chdir() failed!!\n");
 			return (1);
 		}
 	}
 	else if (chdir(path) != 0)
 	{
-		write(2, "chdir() failed!!\n", 18);
+		ft_printf_err("chdir() failed!!\n");
 		return (1);
 	}
 	return (0);
@@ -36,7 +36,7 @@ int pwd_command()
 
 	if (!getcwd(buff, sizeof(buff)))
 	{
-		write(2, "getcwd() failed!!\n", 19);
+		ft_printf_err("getcwd() failed!!\n");
 		return (1);
 	}
 	else

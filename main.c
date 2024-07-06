@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 12:56:28 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 14:49:37 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@ int	len(char **s)
         s++;
     }
     return (i);
-}
-
-void	write_error(char *str)
-{
-	write(2, str, ft_strlen(str));
 }
 
 int check_heredoc(char *input)
@@ -147,7 +142,7 @@ int main(int argc, char **argv, char **envp)
 		{
 			if (errno == ENOMEM)
 			{
-				write_error("readline: allocation failure!\n");
+				ft_printf_err("%s", "readline: allocation failure!\n");
 				rl_clear_history();
 				ft_close(NULL, &head);
 				exit(1);
@@ -170,7 +165,7 @@ int main(int argc, char **argv, char **envp)
         add_history(input);
 		if (check_syntax(input) == 0)
 		{
-			write_error("Error: parse error\n");
+			ft_printf_err("Error: parse error\n");
 			ft_close(NULL, &head);
 			free(input);
 			continue;

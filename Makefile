@@ -9,18 +9,23 @@ SRC = main.c ft_split.c ft_strcmp.c parsing/fill_token.c ft_strtrim.c execution/
 	signals/new_prompt.c parsing/build_tree_utils.c execution/memory_utils.c
 OBJS = ${SRC:.c=.o}
 LIBFT = ./libft/libft.a
+FT_PRINTF = ./ft_printf/libftprintf.a
 LPATH = ../../.brew/opt/readline
 
 all : ${NAME}
 	make -C ./libft
 	make bonus -C ./libft
+	make -C ./ft_printf
 
 ${LIBFT} :
 	make -C ./libft
 	make bonus -C ./libft
 
-${NAME} : ${OBJS} ${LIBFT}
-	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -lreadline -L ${LPATH}/lib -o ${NAME}
+${FT_PRINTF} :
+	make -C ./ft_printf
+
+${NAME} : ${OBJS} ${LIBFT} ${FT_PRINTF}
+	${CC} ${CFLAGS} ${OBJS} ${LIBFT} ${FT_PRINTF} -lreadline -L ${LPATH}/lib -o ${NAME}
 
 %.o: %.c parse_header.h
 	${CC} ${CFLAGS} -I ${LPATH}/include -c -o $@ $<
@@ -28,10 +33,12 @@ ${NAME} : ${OBJS} ${LIBFT}
 clean :
 	rm -rf ${OBJS}
 	make clean -C ./libft
+	make clean -C ./ft_printf
 
 fclean : clean
 	rm -rf ${NAME}
 	make fclean -C ./libft
+	make fclean -C ./ft_printf
 
 re : fclean all
 

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 14:59:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 19:56:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 14:54:15 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char *wildcard(char *str)
 	free_2d_array(sep_str);
 	closedir(dir);
 	if (ft_strcmp(res, "") == 0)
-		write_error("No matches found\n");
+		ft_printf_err("No matches found\n");
 	return (res);
 }
 

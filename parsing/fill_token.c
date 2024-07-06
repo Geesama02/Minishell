@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 10:20:06 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/05 17:04:22 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/06 14:53:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*remove__quotes(char *str)
 		return (NULL);
 	if (unclosed_var(str, '\"') == 1 || unclosed_var(str, '\'') == 1)
 	{
-		write_error("Error: quotes not closed\n");
+		ft_printf_err("Error: quotes not closed\n");
 		return (NULL);
 	}
 	else if (has_quotes(str, '\"') == 0)

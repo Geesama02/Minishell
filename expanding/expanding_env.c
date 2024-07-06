@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:02:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/12 13:58:25 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 14:46:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ char	*get_extras_and_join(t_env_vars *head, char **words, int i)
 	}
 	else
 	{
-		printf("searched for %s\n", words[i]);
 		env_value = search_for_var(head, words[i]);
 		if (env_value)
 		{

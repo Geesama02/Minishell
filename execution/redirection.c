@@ -27,12 +27,12 @@ void    execute_redirection_out(t_token_tree *tree)
     fd_file = 0;
     pid = fork(); //fail
     if (pid == -1)
-        write(2, "fork() failed!!\n", 17); //fork() fail
+        ft_printf_err("fork() failed!!\n"); //fork() fail
     else if (pid == 0)
     {
         fd_file = open(tree->right->token, O_CREAT | O_RDWR | O_TRUNC, 00700); //fail
         if (fd_file == -1)
-            write(2, "open() failed!!\n", 17); //open() fail
+            ft_printf_err("open() failed!!\n"); //open() fail
         dup2(fd_file, 1); //fail
         close(fd_file); //fail
         execute_tree(tree->left, tree->head);

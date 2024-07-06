@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/06 13:08:37 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 14:47:04 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ char *find_path(char **paths, char *cmd)
 	char        *path;
 	struct stat	buffer;
 
-	path = NULL;
 	i = 0;
+	path = NULL;
 	while (paths[i])
 	{
 		path = ft_strjoin(paths[i], cmd); //leaks
@@ -96,7 +96,7 @@ int execute_rest(char **cmds, char **envp, t_env_vars **head)
 		{
 			if (execve(path, cmds, envp) == -1)
 			{
-				write(2, "execve() failed!!\n", 19); 
+				ft_printf_err("execve() failed!!\n");
 				exit(1);
 			}
 		}
@@ -110,10 +110,10 @@ int execute_rest(char **cmds, char **envp, t_env_vars **head)
 	}
 	else
 	{
-		write(2, "command not found\n", 18);
+		ft_printf_err("minishell: %s: command not found\n", cmds[0]);
 		free(tmp->env_val);
 		tmp->env_val = ft_strdup("127");
-		return (0);
+		return (-1);
 	}
 	if (WEXITSTATUS(status) == 1)
 		return (-1);

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 12:54:12 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/06 14:49:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct s_token_tree
 
 int is_heredoc[2];
 
-char			*get_next_line(int fd);
+int				ft_printf_err(const char *format, ...);
 void    		ft_putchar(char c);
 char			*ft_itoa(int n);
 void    		ft_putstr(char *str);
@@ -102,7 +102,6 @@ int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strjoin(const char *s1, const char *s2);
 int				len(char **s);
-void			write_error(char *str);
 char			*ft_strtrim(char const *s1, char const *set);
 int				check_cmd(char *str);
 int				cd_command(char *path);
