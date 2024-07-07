@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 16:23:58 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/07 16:06:49 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_token_tree
 
 int is_heredoc[2];
 
+int				ft_isalpha(int c);
 int				ft_printf_err(const char *format, ...);
 void    		ft_putchar(char c);
 char			*ft_itoa(int n);
@@ -194,6 +195,16 @@ int				count_2d_array_elements(char **arr);
 void			free_cmds(char **cmds);
 void			free_envs(t_env_vars **head);
 void			free_envs(t_env_vars **head);
+void			create_env(t_env_vars *node, t_env_vars *head, char *env);
+t_env_vars		*display_envs_sorted(t_env_vars *head);
+void			handle_builtins_failure(t_env_vars **head, t_env_vars *tmp);
+void			exit_command(char **cmds, t_env_vars **head);
+void			null_terminating(char *str);
+int				execute_using_execve(t_env_vars *tmp, char **cmds,
+		char *path, char **envp);
+int				define_exit_status(t_env_vars *tmp, char *exit_status);
+int				execute_rest(char **cmds, char **envp, t_env_vars **head);
+int				builtins_rest(char **cmds, char **envp, t_env_vars **head);
 
 
 

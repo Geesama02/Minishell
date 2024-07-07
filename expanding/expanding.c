@@ -6,133 +6,33 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/06 17:13:34 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/07 17:04:38 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void swap_nodes_content(t_env_vars *env1, t_env_vars *env2)
+void	lst_add_element(char **cmds, t_env_vars **head, int i)
 {
-	char	*tmpname;
-	char	*tmpval;
+	t_env_vars          *new_env;
+	t_env_vars          *prev;
 
-	tmpname = env2->env_name;
-	tmpval = env2->env_val;
-	env2->env_name = env1->env_name;
-	env2->env_val = env1->env_val;
-	env1->env_name = tmpname;
-	env1->env_val = tmpval;
-}
-
-void    sort_matched_envs(t_env_vars *head, int nbr_matched, int ascii_nbr)
-{
-	int         index;
-	int         i;
-	t_env_vars  *tmp_head;
-
-	i = 0;
-	index = 0;
-	tmp_head = NULL;
-	while (head && head->env_name[0] != ascii_nbr)
-		head = head->next;
-	while (i < nbr_matched)
-	{
-		tmp_head = head;
-		while (tmp_head && tmp_head->next)
-		{
-			while (tmp_head->env_name[index] == tmp_head->next->env_name[index])
-				index++;
-			if (tmp_head->env_name[index] > tmp_head->next->env_name[index])
-				swap_nodes_content(tmp_head, tmp_head->next);
-			tmp_head = tmp_head->next;
-			index = 0;
-		}
-		i++;
-	}
-}
-
-void    create_sorted_lst(t_env_vars *node, t_env_vars **head)
-{
-	t_env_vars	*newnode;
-	t_env_vars	*prev;
-
-	prev = get_last_node(*head);
-	newnode = malloc(sizeof(t_env_vars)); //leaks
-	if (!*head)
-		*head = newnode;
+	prev = NULL;
+	if (*head)
+		prev = get_last_node(*head);
+	new_env = malloc(sizeof(t_env_vars)); //leaks
 	if (prev)
-		prev->next = newnode;
-	newnode->env_name = ft_strdup(node->env_name); //leaks
-	newnode->env_val = ft_strdup(node->env_val); //leaks
-	newnode->next = NULL;
-}
-
-t_env_vars  *display_envs_sorted(t_env_vars *head)
-{
-	int			matches;
-	int			ascii_nbr;
-	t_env_vars	*tmp;
-	t_env_vars	*s_head;
-
-	tmp = NULL;
-	s_head = NULL;
-	matches = 0;
-	ascii_nbr = 33;
-	while (ascii_nbr <= 127)
-	{
-		tmp = head;
-		while (tmp)
-		{
-			if (tmp->env_name[0] == ascii_nbr)
-			{
-				create_sorted_lst(tmp, &s_head);
-				matches++;
-			}
-			tmp = tmp->next;
-		}
-		if (matches > 1)
-			sort_matched_envs(s_head, matches, ascii_nbr);
-		matches = 0;
-		ascii_nbr++;
-	}
-	return (s_head);
-}
-
-void    create_env(t_env_vars *node, t_env_vars *head, char *env)
-{
-	char	**envs;
-
-	envs = ft_split(env, '='); //leaks
-	node->env_name = ft_strdup(envs[0]);
-	node->env_val = ft_strdup(envs[1]);
-	node->next = NULL;
-	free_cmds(envs);
-	free(envs);
-	envs = NULL;
-	ft_lstadd(&head, node);
-}
-
-t_env_vars  *create_lst(char **envp)
-{
-	t_env_vars	*head;
-	t_env_vars	*newnode;
-
-	head = malloc(sizeof(t_env_vars)); //leaks
-	create_env(head, NULL, *envp);
-	newnode = malloc(sizeof(t_env_vars)); //leaks
-	newnode->env_name = ft_strdup("?");
-	newnode->env_val = ft_strdup("0"); //leaks
-	newnode->next = NULL;
-	ft_lstadd(&head, newnode);
-	envp++;
-	while (*envp)
-	{
-		newnode = malloc(sizeof(t_env_vars)); //leaks
-		create_env(newnode, head, *envp);
-		envp++;
-	}
-	return (head);
+		prev->next = new_env;
+	else if (!prev && i == 1)
+		*head = new_env;
+	new_env->env_name = ft_strdup(cmds[0]);
+	if (ft_strchr(cmds[1], '$'))
+		null_terminating(cmds[1]);
+	if (cmds[1])
+		new_env->env_val = ft_strdup(cmds[1]);
+	else
+		new_env->env_val = NULL;
+	new_env->next = NULL;
 }
 
 void    export_without_arguments(t_env_vars *p_head)
@@ -156,52 +56,63 @@ void    export_without_arguments(t_env_vars *p_head)
 	free_envs(&tmp_h);
 }
 
+int	add_or_append(char **cmds, t_env_vars **head,
+	char **tokens, int i)
+{
+	char		*env_name;
+	t_env_vars	*tmp;
+
+	tmp = search_for_env_var(head, "?", 0);
+	if (ft_strchr(cmds[0], '+'))
+	{	
+		env_name = ft_strtrim(cmds[0], "+"); //leaks
+		if (!env_name)
+			return (free_cmds(cmds), ft_close(tokens, head), exit(1), -1);
+		append_env_var(*head, env_name, cmds[1]);
+		free(env_name);
+	}
+	else if (ft_isalpha(cmds[0][0]) && is_string(cmds[0]))
+	{
+		search_for_env_var(head, cmds[0], 1);
+		lst_add_element(cmds, head, i);
+	}
+	else
+	{
+		define_exit_status(tmp, "1");
+		ft_printf_err("export: `%s' : not a valid identifier\n", tokens[i]);
+	}
+	return (0);
+}
+
 void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
 {
 	char	**cmds;
-	char *env_name;
+	char	*env_name;
 	int		i;
-	t_env_vars	*tmp;
 
+	i = 1;
 	cmds = NULL;
 	env_name = NULL;
-	tmp = *head;
-	i = 1;
-	while (tmp->env_name[0] != '?')
-		tmp = tmp->next;
 	while (i <= nbr_envs)
 	{
-    	cmds = ft_split_one(tokens[i], '='); //leaks
-		if (ft_strchr(cmds[0], '+'))
-		{	
-			env_name = ft_strtrim(cmds[0], "+"); //leaks
-			append_env_var(*head, env_name, cmds[1]);
-			free(env_name);
-		}
-		else if (is_string(cmds[0]))
-		{
-			search_for_env_var(head, cmds[0], 1);
-			lst_add_element(cmds, head, i);
-		}
-		else
-		{
-			free(tmp->env_val);
-			tmp->env_val = ft_strdup("1");
-			ft_printf_err("export: `%s' : not a valid identifier\n", tokens[i]);
-		}
+    	cmds = ft_split_one(tokens[i], '=');
+		if (!cmds)
+			return (ft_close(tokens, head), exit(1));
+		if (add_or_append(cmds, head, tokens, i) == -1)
+			return (free(cmds), exit(1));
 		free_cmds(cmds);
 		free(cmds);
 		i++;
 	}
 }
 
-void    print_env_variable(char **cmds, t_env_vars *head, int i)
+void	print_env_variable(char **cmds, t_env_vars *head, int i)
 {
-	char    *env_n;
+	char	*env_n;
 
 	while (cmds[i] && ft_strchr(cmds[i], '$'))
 	{
-		env_n = ft_strtrim(cmds[i], "$");
+		env_n = ft_strtrim(cmds[i], "$"); //leaks
 		while (head && head->env_name && ft_strcmp(head->env_name, env_n))
 			head = head->next;
 		if (head && head->env_name)

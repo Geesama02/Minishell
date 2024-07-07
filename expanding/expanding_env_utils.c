@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_env_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 16:33:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/06/02 10:43:50 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/07 13:13:23 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char *expand_vars(char *holder, t_env_vars *head)
 	if (*holder != '$')
 		i++;
 	free(holder);
-	while(words[i])
+	while (words[i])
 	{
 		if (!get_extras_and_join(head, words, i))
 			return (free(result), NULL);

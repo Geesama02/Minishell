@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/06 16:33:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/07 17:00:09 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int cd_command(char *path, t_env_vars *head)
 		if (!search_for_env_var(&head, "HOME", 0))
 		{
 			ft_printf_err("minishell: cd: HOME not set\n");
-			return (1);
+			return (-1);
 		}
 		else
 			chdir(search_for_env_var(&head, "HOME", 0)->env_val);
@@ -34,7 +34,7 @@ int cd_command(char *path, t_env_vars *head)
 			ft_printf_err("minishell: cd: %s: No such file or directory\n", path);
 		else if (S_ISREG(infos.st_mode))
 			ft_printf_err("minishell: cd: %s Not a directory\n", path);
-		return (1);
+		return (-1);
 	}
 	return (0);
 }
@@ -46,7 +46,7 @@ int pwd_command()
 	if (!getcwd(buff, sizeof(buff)))
 	{
 		ft_printf_err("getcwd() failed!!\n");
-		return (1);
+		return (-1);
 	}
 	else
 	{    
@@ -69,9 +69,6 @@ int echo_command(char **cmds, t_env_vars *head)
 		new_line = 0;
 		i++;
 	}
-	// if (cmds[i] && ft_strchr(cmds[i], '$'))
-	// 	print_env_variable(cmds, head, i);
-	// else
 	print_echo_content(cmds, i, new_line);
 	return (0);
 }
@@ -117,14 +114,3 @@ void	unset_command(t_env_vars **head, char *cmd)
 		}
 	}
 }
-
-void    env_command(t_env_vars *env_vars)
-{
-	while (env_vars)
-	{
-		if (env_vars->env_val && env_vars->env_name[0] != '?')
-			printf("%s=%s\n", env_vars->env_name, env_vars->env_val);
-		env_vars = env_vars->next;
-	}
-}
-

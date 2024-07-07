@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 17:39:47 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/07 15:44:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int	len(char **s)
 {
-    int i = 0;
+    int i;
+
+	i = 0;
     while (*s)
     {
         i++;
@@ -130,7 +132,7 @@ int main(int argc, char **argv, char **envp)
 	rl_catch_signals = 0;
 	head = create_lst(envp);
 	define_signals();
-	// atexit(a);
+	atexit(a);
     while (1)
     {
 		// (void)envp;

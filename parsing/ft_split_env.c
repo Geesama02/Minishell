@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_split_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:51:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/29 15:56:12 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/07 13:05:19 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_header.h"
+#include "../parse_header.h"
 
 // static int	check_inside_quotes(char const *s, int i, char c)
 // {
