@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/08 17:25:36 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:35:01 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,8 @@ int				is_string(char *str);
 void			export_without_arguments(t_env_vars *head);
 void			add_env_var(char **tokens, int nbr_envs, t_env_vars **head);
 t_env_vars		*get_last_node(t_env_vars *head);
-void			lst_add_element(char **cmds, t_env_vars **head, int i);
+void			lst_add_element(char **tokens, char **cmds,
+		t_env_vars **head, int i);
 int				join_strings(char **s1, char *s2);
 int				handle_wildcard(char **str);
 int				free_2d_array(char **array);
