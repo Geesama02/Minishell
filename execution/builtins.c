@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/07 17:00:09 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/08 13:18:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,16 @@ void	unset_command(t_env_vars **head, char *cmd)
 	tmp = *head;
 	if (tmp && !ft_strcmp(tmp->env_name, cmd))
 	{    
-		tmp->env_name = NULL;
-		tmp->env_val = NULL;
 		if (tmp->next)
 			*head = tmp->next;
 		else
 			*head = NULL;
+		free(tmp->env_name);
+		free(tmp->env_val);
 		free(tmp);
+		tmp->env_name = NULL;
+		tmp->env_val = NULL;
+		tmp = NULL;
 	}
 	else
 	{
