@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:33:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/08 13:17:48 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:20:27 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,12 @@ void    ft_putstr(char *str)
 
 void    replace_nodes_content(t_env_vars *node1, t_env_vars *node2)
 {
-    node1->env_name = node2->env_name;
-    node1->env_val = node2->env_val;
+    free(node1->env_name);
+    free(node1->env_val);
+    node1->env_name = ft_strdup(node2->env_name);
+    node1->env_val = ft_strdup(node2->env_val);
     node1->next = node2->next;
+    free(node2->env_name);
+    free(node2->env_val);
     free(node2);
 }

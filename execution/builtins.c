@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/08 13:18:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:25:23 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,7 @@ void	unset_command(t_env_vars **head, char *cmd)
 			*head = tmp->next;
 		else
 			*head = NULL;
-		free(tmp->env_name);
-		free(tmp->env_val);
-		free(tmp);
-		tmp->env_name = NULL;
-		tmp->env_val = NULL;
-		tmp = NULL;
+		free_node(tmp);
 	}
 	else
 	{
@@ -111,8 +106,8 @@ void	unset_command(t_env_vars **head, char *cmd)
 		if (tmp->next && tmp->next->next)
 			replace_nodes_content(tmp->next, tmp->next->next);
 		else
-		{	
-			free(tmp->next);
+		{
+			free_node(tmp->next);
 			tmp->next = NULL;
 		}
 	}

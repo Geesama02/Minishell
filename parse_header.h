@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/08 13:07:44 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:25:36 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,7 @@ int				execute_using_execve(t_env_vars *tmp, char **cmds,
 int				define_exit_status(t_env_vars *tmp, char *exit_status);
 int				execute_rest(char **cmds, char **envp, t_env_vars **head);
 int				builtins_rest(char **cmds, char **envp, t_env_vars **head);
+void			free_node(t_env_vars *node);
 
 
 
