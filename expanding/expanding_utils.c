@@ -6,15 +6,15 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/07 13:49:08 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/09 10:23:23 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void	append_env_var(t_env_vars *head, char *env_name, char *to_append)
+int	append_env_var(t_env_vars *head, char *env_name, char *to_append)
 {
-	char    *new_env_val;
+	char	*new_env_val;
 
 	new_env_val = NULL;
 	while (head && ft_strcmp(head->env_name, env_name))
@@ -22,8 +22,11 @@ void	append_env_var(t_env_vars *head, char *env_name, char *to_append)
 	if (head)
 	{
 		new_env_val = ft_strjoin(head->env_val, to_append); //leaks
+		if (!new_env_val)
+			return (free(env_name), -1);
 		head->env_val = new_env_val;
 	}
+	return (0);
 }
 
 t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name, int remove)
