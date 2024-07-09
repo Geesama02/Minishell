@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:01:23 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/09 10:18:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/09 12:33:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ void    create_sorted_lst(t_env_vars *node, t_env_vars **head)
 	if (prev)
 		prev->next = newnode;
 	newnode->env_name = ft_strdup(node->env_name); //leaks
-	if (!newnode->env_name)
-		return (free(newnode), free_envs(head));
+	if (!newnode->env_name && errno == ENOMEM)
+		return (free(newnode));
 	newnode->env_val = ft_strdup(node->env_val); //leaks
-	if (!newnode->env_val)
-		return (free(newnode), free(newnode->env_name), free_envs(head));
+	if (!newnode->env_val && errno == ENOMEM)
+		return (free(newnode), free(newnode->env_name));
 	newnode->next = NULL;
 }
 
@@ -106,13 +106,13 @@ void    create_env(t_env_vars *node, t_env_vars *head, char *env)
 	char	**envs;
 
 	envs = ft_split(env, '='); //leaks
-	if (!envs)
+	if (!envs && errno == ENOMEM)
 		return (free(node));
 	node->env_name = ft_strdup(envs[0]); //leaks
-	if (!node->env_name)
+	if (!node->env_name && errno == ENOMEM)
 		return (free_cmds(envs), free(node));
 	node->env_val = ft_strdup(envs[1]); //leaks
-	if (!node->env_val)
+	if (!node->env_val && errno == ENOMEM)
 		return (free_cmds(envs), free(node->env_name), free(node));
 	node->next = NULL;
 	free_cmds(envs);

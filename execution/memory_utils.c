@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 20:16:25 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/09 10:49:53 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/09 11:56:05 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	ft_close(char **cmds, t_env_vars **head)
 	free_cmds(cmds);
 	free(cmds);
 	free_envs(head);
-	free(head);
 }
 
 int	count_2d_array_elements(char **arr)

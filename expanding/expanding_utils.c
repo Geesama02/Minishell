@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/09 10:23:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/09 12:19:56 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	append_env_var(t_env_vars *head, char *env_name, char *to_append)
 	if (head)
 	{
 		new_env_val = ft_strjoin(head->env_val, to_append); //leaks
-		if (!new_env_val)
+		if (!new_env_val && errno == ENOMEM)
 			return (free(env_name), -1);
 		head->env_val = new_env_val;
 	}

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/07 16:57:26 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/09 12:19:14 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int    execute_tree(t_token_tree *tree, t_env_vars **head)
 	else if (!tree->right && !tree->left)
 	{
 		cmds = ft_split(tree->token, ' '); //leaks
-		if (!cmds)
+		if (!cmds && errno == ENOMEM)
 			return (free_envs(head), -1);
 		if (exec_command(cmds, tree->envp, head) == -1)
 			return (free_cmds(cmds), free(cmds), -1);

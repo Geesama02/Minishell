@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/09 10:08:58 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/09 12:19:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	define_exit_status(t_env_vars *tmp, char *exit_status)
 {
 	free(tmp->env_val);
 	tmp->env_val = ft_strdup(exit_status);
-	if (!tmp->env_val)
+	if (!tmp->env_val && errno == ENOMEM)
 		return (-1);
 	return (0);
 }
