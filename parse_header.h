@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/09 10:32:39 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:09:13 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,10 @@ int is_heredoc[2];
 int				ft_isalpha(int c);
 int				ft_printf_err(const char *format, ...);
 void    		ft_putchar(char c);
+char			*ft_strtrim(char const *s1, char const *set);
 char			*ft_itoa(int n);
 void    		ft_putstr(char *str);
 char			*ft_strdup(const char *s1);
-char			*ft_strtrim(char const *s1, char const *set);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t			ft_strlen(const char *s);
 char			**ft_split(char const *s, char c);
@@ -103,7 +103,6 @@ int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strjoin(const char *s1, const char *s2);
 int				len(char **s);
-char			*ft_strtrim(char const *s1, char const *set);
 int				check_cmd(char *str);
 int				cd_command(char *path, t_env_vars *head);
 char			*remove__quotes(char *str);
@@ -113,7 +112,7 @@ t_token_array	*tokenizer(char **input, t_env_vars *head);
 void			*free_alloc(char **bigstr, int l);
 int				is_inside_quotes(char const *s, int i);
 int				pwd_command();
-int				echo_command(char **cmds, t_env_vars *head);
+int				echo_command(char **cmds);
 void			export_command(char **tokens, t_env_vars **head);
 int				is_op(char *input);
 int				count_token_len(char *input);
@@ -206,7 +205,8 @@ int				define_exit_status(t_env_vars *tmp, char *exit_status);
 int				execute_rest(char **cmds, char **envp, t_env_vars **head);
 int				builtins_rest(char **cmds, char **envp, t_env_vars **head);
 void			free_node(t_env_vars *node);
-
+int				home_case(t_env_vars *head);
+int				oldpwd_case(t_env_vars *head);
 
 
 

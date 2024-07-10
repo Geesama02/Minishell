@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/07 15:43:16 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:12:28 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ char	*find_correct_path(char **cmds, t_env_vars **head)
 
 int execute_rest(char **cmds, char **envp, t_env_vars **head)
 {
-	int			status;
 	char		*path;
 	t_env_vars	*tmp;
 
@@ -98,12 +97,15 @@ int execute_rest(char **cmds, char **envp, t_env_vars **head)
 	else
 		path = cmds[0];
 	if (path)
-		status = execute_using_execve(tmp, cmds, path, envp);
+	{	
+		if (execute_using_execve(tmp, cmds, path, envp) == -1)
+			return (-1);
+	}
 	else
 	{
 		ft_printf_err("minishell: %s: command not found\n", cmds[0]);
 		if (define_exit_status(tmp, "127") == -1)
-			return (free_envs(head), -1);
+			return (-1);
 	}
 	free(path);
 	return (0);

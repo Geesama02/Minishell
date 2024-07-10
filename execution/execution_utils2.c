@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/09 12:19:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:21:49 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ int	execute_using_execve(t_env_vars *tmp, char **cmds,
 	{
 		if (execve(path, cmds, envp) == -1)
 		{
-			ft_printf_err("execve() failed!!\n");
+			ft_printf_err("%s\n", strerror(errno));
+			if (errno == EACCES)
+				exit(126);
 			exit(1);
 		}
 	}
@@ -33,17 +35,17 @@ int	execute_using_execve(t_env_vars *tmp, char **cmds,
 		tmp->env_val = ft_itoa(128 + WTERMSIG(status)); // free later
 	else
 		tmp->env_val = ft_itoa(WEXITSTATUS(status)); // free later
-	if (WEXITSTATUS(status) == 1)
+	if (WEXITSTATUS(status))
 		return (-1);
 	if (WTERMSIG(status) == SIGQUIT)
 		write(1, "Quit: 3\n", 9);
-	return (status);
+	return (0);
 }
 
 int	builtins_rest(char **cmds, char **envp, t_env_vars **head)
 {
 	if (!ft_strcmp(cmds[0], "echo"))
-		echo_command(cmds, *head);
+		echo_command(cmds);
 	else if (!ft_strcmp(cmds[0], "export"))
 		export_command(cmds, head);
 	else if (!ft_strcmp(cmds[0], "unset"))
