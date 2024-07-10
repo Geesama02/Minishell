@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/09 17:12:28 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/10 11:19:26 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,10 @@ char *find_path(char **paths, char *cmd)
 
 char	*find_correct_path(char **cmds, t_env_vars **head)
 {
-	int		i;
 	char	**paths_w;
 	char	**paths;
 	char	*path;
 
-	i = 0;
 	paths_w = ft_split(getenv("PATH"), ':'); //leaks
 	if (!paths_w)
 		return (ft_close(cmds, head), exit(1), NULL);

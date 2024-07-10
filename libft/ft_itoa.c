@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 16:36:37 by maglagal          #+#    #+#             */
-/*   Updated: 2023/11/10 17:45:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/10 11:20:25 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,10 @@ static void	ft_putnbr(char *p, int n, int *i)
 
 char	*ft_itoa(int n)
 {
-	size_t	z;
 	size_t	length;
 	int		i;
 	char	*p;
 
-	z = 0;
 	i = 0;
 	length = word_len(n);
 	p = malloc((sizeof(char) * length) + 1);

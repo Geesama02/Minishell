@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/09 12:28:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/10 11:17:14 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,9 @@ void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
 {
 	int		i;
 	char	**cmds;
-	char	*env_name;
 
 	i = 1;
 	cmds = NULL;
-	env_name = NULL;
 	while (i <= nbr_envs)
 	{
     	cmds = ft_split_one(tokens[i], '=');
