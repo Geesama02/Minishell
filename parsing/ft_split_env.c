@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:51:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/07 13:05:19 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:13:23 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,10 @@ static int	count_words(char const *s, char c)
 
 	i = 0;
 	count = 0;
-	// if (c != s[i] && s[i] && !check_inside_quotes(s, i, '\'') && !check_inside_quotes(s, i, '\"'))
-	// 	count++;
 	if (c != s[i] && s[i])
 		count++;
 	while (s[i])
 	{
-		// if (s[i] == c)
-		// {
-		// 	printf("s[i]: %d|\n", s[i] == c);
-		// 	printf("s[i + 1]: %d|\n", s[i + 1] != c);
-		// 	printf("s[i + 1]: %d|\n", s[i + 1] == 0);
-		// 	printf("check_inside_quotes: %d\n", !check_inside_quotes(s, i, '\''));
-		// 	printf("check_inside_quotes: %d\n", !check_inside_quotes(s, i, '\"'));
-		// 	printf("cond: %d\n", s[i] == c && s[i + 1] && s[i + 1] != c && !check_inside_quotes(s, i, '\'') && !check_inside_quotes(s, i, '\"'));
-		// }
 		if (s[i] == c && s[i + 1] && s[i + 1] != c && !is_inside_quotes(s, i) && !is_inside_quotes(s, i))
 		{
 			count++;
@@ -88,7 +77,7 @@ static void	skip_c(char const *s, char c, int *i)
 		(*i)++;
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split_qt(char const *s, char c)
 {
 	int		i;
 	int		l;

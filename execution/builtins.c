@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/09 11:06:53 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/11 14:46:17 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,9 @@ int echo_command(char **cmds, t_env_vars *head)
 		new_line = 0;
 		i++;
 	}
-	print_echo_content(cmds, i, new_line);
-	return (0);
+	if (print_echo_content(cmds, i, new_line) == 0)
+		return (0);
+	return (1);
 }
 
 void	export_command(char **tokens, t_env_vars **head)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 14:54:05 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:13:47 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	handle_wildcard(char **str)
 {
 	char	**sep_str;
 
-	sep_str = ft_split(*str, ' ');
+	sep_str = ft_split_qt(*str, ' ');
 	if (!sep_str)
 		return (0);
 	free(*str);

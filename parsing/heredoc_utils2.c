@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:29:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 14:54:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/11 12:41:44 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ char	*continue_heredoc(char *delimiter, t_token_array *token_array,
 	char	*input;
 	int		stdin_fd;
 
+	if (!delimiter)
+		return (NULL);
 	is_heredoc[0] = 1;
 	stdin_fd = dup(0);
 	input = ft_strdup("");

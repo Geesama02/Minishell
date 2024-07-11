@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:33:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/08 17:20:27 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/11 14:45:36 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,23 @@ void    ft_putchar(char c)
     write(1, &c, 1);
 }
 
-void    print_echo_content(char **cmds, int i, int new_line)
+int    print_echo_content(char **cmds, int i, int new_line)
 {
+	char	*tmp;
+	
     while (cmds[i])
     {
-        ft_putstr(cmds[i]);
+		tmp = ignore_quotes(&cmds[i]);
+		if (!tmp)
+			return (0);
+        ft_putstr(tmp);
         if (cmds[i + 1])
             ft_putchar(' ');
         i++;
     }
     if (new_line)
 		ft_putchar('\n');
+	return (1);
 }
 
 void    ft_putstr(char *str)

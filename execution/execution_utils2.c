@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/09 12:19:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/11 15:01:40 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int	execute_using_execve(t_env_vars *tmp, char **cmds,
 int	builtins_rest(char **cmds, char **envp, t_env_vars **head)
 {
 	if (!ft_strcmp(cmds[0], "echo"))
-		echo_command(cmds, *head);
+	{
+		if(echo_command(cmds, *head) == 0)
+			return (-2);
+	}
 	else if (!ft_strcmp(cmds[0], "export"))
 		export_command(cmds, head);
 	else if (!ft_strcmp(cmds[0], "unset"))

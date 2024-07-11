@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 12:07:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/03 12:13:41 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/11 17:02:24 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,25 +39,89 @@ int	has_more_cmds(char *str)
 	return (0);
 }
 
-char	*ignore_quotes(char *str)
+int	count_str_len(char *str)
 {
 	int	i;
-	int	len;
+	int	count;
 
 	i = 0;
-	len = ft_strlen(str) - 1;
-	while (str[len] == ' ')
+	count = 0;
+	while (str[i])
 	{
-		str[len] = '\0';
+		if (str[i] == '\'')
+		{
+			i++;
+			while(str[i] != '\'' && str[i])
+			{
+				count++;
+				i++;
+			}
+			i++;
+			continue;
+		}
+		else if (str[i] == '\"')
+		{
+			i++;
+			while(str[i] != '\"' && str[i])
+			{
+				count++;
+				i++;
+			}
+			i++;
+			continue;
+		}
+		else
+			count++;
+		i++;
+	}
+	return (count);
+}
+void skip_quotes(char *str_original, char *new)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str_original[i])
+	{
+		if (str_original[i] == '\'')
+		{
+			i++;
+			while(str_original[i] != '\'' && str_original[i])
+				new[j++] = str_original[i++];
+		}
+		else if (str_original[i] == '\"')
+		{
+			i++;
+			while(str_original[i] != '\"' && str_original[i])
+				new[j++] = str_original[i++];
+		}
+		else
+			new[j++] = str_original[i];
+		i++;
+	}
+	new[j] = '\0';
+}
+
+char	*ignore_quotes(char **str)
+{
+	int	len;
+	char *tmp;
+
+	len = ft_strlen(*str) - 1;
+	while (*(*str + len) == ' ')
+	{
+		*(*str + len) = '\0';
 		len--;
 	}
-	if (str[len] == '\"' || str[len] == '\'')
-		str[len] = '\0';
-	while (str[i] == ' ')
-		i++;
-	if (str[i] == '\"' || str[i] == '\'')
-		str++;
-	return (str);
+	tmp = malloc(count_str_len(*str) + 1);
+	if (!tmp)
+		return (NULL);
+	skip_quotes(*str, tmp);
+	free(*str);
+	*str = tmp;
+	return (*str);
 }
 
 char	*ft_split_first(char *str)

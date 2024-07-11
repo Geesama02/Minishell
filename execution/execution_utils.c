@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/07 15:43:16 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/11 15:02:32 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*find_correct_path(char **cmds, t_env_vars **head)
 	char	*path;
 
 	i = 0;
-	paths_w = ft_split(getenv("PATH"), ':'); //leaks
+	paths_w = ft_split_qt(getenv("PATH"), ':'); //leaks
 	if (!paths_w)
 		return (ft_close(cmds, head), exit(1), NULL);
 	paths = malloc(sizeof(char *) * (count_2d_array_elements(paths_w) + 1));
@@ -132,7 +132,7 @@ int exec_command(char **cmds, char **envp, t_env_vars **head)
 			return (-1);
 		}
 	}
-	else if (builtins_rest(cmds, envp, head) == -1)
-		return (-1);
+	else
+		return (builtins_rest(cmds, envp, head));
 	return (0);
 }
