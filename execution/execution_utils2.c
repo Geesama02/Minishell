@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/11 15:01:40 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/11 18:41:46 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ int	execute_using_execve(t_env_vars *tmp, char **cmds,
 	{
 		if (execve(path, cmds, envp) == -1)
 		{
-			ft_printf_err("execve() failed!!\n");
+			ft_printf_err("%s\n", strerror(errno));
+			if (errno == EACCES)
+				exit(126);
 			exit(1);
 		}
 	}
@@ -33,18 +35,18 @@ int	execute_using_execve(t_env_vars *tmp, char **cmds,
 		tmp->env_val = ft_itoa(128 + WTERMSIG(status)); // free later
 	else
 		tmp->env_val = ft_itoa(WEXITSTATUS(status)); // free later
-	if (WEXITSTATUS(status) == 1)
+	if (WEXITSTATUS(status))
 		return (-1);
 	if (WTERMSIG(status) == SIGQUIT)
 		write(1, "Quit: 3\n", 9);
-	return (status);
+	return (0);
 }
 
 int	builtins_rest(char **cmds, char **envp, t_env_vars **head)
 {
 	if (!ft_strcmp(cmds[0], "echo"))
 	{
-		if(echo_command(cmds, *head) == 0)
+		if(echo_command(cmds) == 0)
 			return (-2);
 	}
 	else if (!ft_strcmp(cmds[0], "export"))

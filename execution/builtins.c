@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/11 14:46:17 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/11 18:40:21 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,25 @@
 
 int cd_command(char *path, t_env_vars *head)
 {
-	struct stat	infos;
-	int			res;
-
-	res = stat(path, &infos);
-	if (!path)
-	{
-		if (!search_for_env_var(&head, "HOME", 0))
-		{
-			ft_printf_err("minishell: cd: HOME not set\n");
+	if (!path || !ft_strcmp(path, "~"))
+	{	
+		if (home_case(head) == -1)
 			return (-1);
-		}
-		else
-			chdir(search_for_env_var(&head, "HOME", 0)->env_val);
 	}
-	else if (chdir(path) != 0)
+	else if (!ft_strcmp(path, "-"))
+	{	
+		if (oldpwd_case(head))
+			return (-1);
+	}
+	else
 	{
-		if (res == -1)
+		chdir(path);
+		if (errno == ENOENT)
 			ft_printf_err("minishell: cd: %s: No such file or directory\n", path);
-		else if (S_ISREG(infos.st_mode))
+		else if (errno == ENOTDIR)
 			ft_printf_err("minishell: cd: %s Not a directory\n", path);
+		else if (errno)
+			ft_printf_err("chdir failed!!\n");
 		return (-1);
 	}
 	return (0);
@@ -45,7 +44,7 @@ int pwd_command()
 
 	if (!getcwd(buff, sizeof(buff)))
 	{
-		ft_printf_err("getcwd() failed!!\n");
+		ft_printf_err("%s\n", strerror(errno));
 		return (-1);
 	}
 	else
@@ -56,11 +55,10 @@ int pwd_command()
 	return (0);
 }
 
-int echo_command(char **cmds, t_env_vars *head)
+int echo_command(char **cmds)
 {
 	int		i;
 	int		new_line;
-	(void)head;
 
 	i = 1;
 	new_line = 1;
@@ -106,7 +104,7 @@ void	unset_command(t_env_vars **head, char *cmd)
 			tmp = tmp->next;
 		if (tmp->next && tmp->next->next)
 			replace_nodes_content(tmp->next, tmp->next->next);
-		else
+		else if (tmp->next && !tmp->next->next)
 		{
 			free_node(tmp->next);
 			tmp->next = NULL;

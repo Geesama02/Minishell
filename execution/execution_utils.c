@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/11 15:02:32 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/11 18:40:55 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,11 @@ char *find_path(char **paths, char *cmd)
 
 char	*find_correct_path(char **cmds, t_env_vars **head)
 {
-	int		i;
 	char	**paths_w;
 	char	**paths;
 	char	*path;
 
-	i = 0;
-	paths_w = ft_split_qt(getenv("PATH"), ':'); //leaks
+	paths_w = ft_split(getenv("PATH"), ':'); //leaks
 	if (!paths_w)
 		return (ft_close(cmds, head), exit(1), NULL);
 	paths = malloc(sizeof(char *) * (count_2d_array_elements(paths_w) + 1));
@@ -88,7 +86,6 @@ char	*find_correct_path(char **cmds, t_env_vars **head)
 
 int execute_rest(char **cmds, char **envp, t_env_vars **head)
 {
-	int			status;
 	char		*path;
 	t_env_vars	*tmp;
 
@@ -98,12 +95,15 @@ int execute_rest(char **cmds, char **envp, t_env_vars **head)
 	else
 		path = cmds[0];
 	if (path)
-		status = execute_using_execve(tmp, cmds, path, envp);
+	{	
+		if (execute_using_execve(tmp, cmds, path, envp) == -1)
+			return (-1);
+	}
 	else
 	{
 		ft_printf_err("minishell: %s: command not found\n", cmds[0]);
 		if (define_exit_status(tmp, "127") == -1)
-			return (free_envs(head), -1);
+			return (-1);
 	}
 	free(path);
 	return (0);

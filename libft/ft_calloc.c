@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:15:46 by maglagal          #+#    #+#             */
-/*   Updated: 2023/11/10 13:48:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/10 11:20:17 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	size_t	i;
 	char	*p;
 
-	i = 0;
 	p = (char *)malloc(count * size);
 	if (!p)
 		return (0);
