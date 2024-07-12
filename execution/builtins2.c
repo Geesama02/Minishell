@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/09 16:59:05 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/10 11:41:05 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,22 @@ int	oldpwd_case(t_env_vars *head)
 		ft_printf_err("minishell: cd: OLDPWD not set\n");
 		return (-1);
 	}
+	return (0);
+}
+
+int	check_minus_n(char *echo_flag)
+{
+	if (*echo_flag == '-')
+	{
+		echo_flag++;
+		while (*echo_flag)
+		{
+			if (*echo_flag != 'n')
+				return (-1);
+			echo_flag++;
+		}
+	}
+	else if (*echo_flag != '-')
+		return (-1);
 	return (0);
 }

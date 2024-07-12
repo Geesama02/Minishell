@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/09 17:09:13 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:09:16 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_token_tree
 
 int is_heredoc[2];
 
+int				ft_atoi(const char *str);
 int				ft_isalpha(int c);
 int				ft_printf_err(const char *format, ...);
 void    		ft_putchar(char c);
@@ -164,7 +165,6 @@ int				handle_heredoc(t_token_array *token_array, char **holder, int *i, t_token
 void			*handle_other_tokens(t_token_array *token_array, char **holder, int *i, t_token_vars *vars);
 int				free_token_holder(char **holder, t_token_array *token_array, int i);
 void			ft_lstadd(t_env_vars **lst, t_env_vars *new);
-void			print_echo_content(char **cmds, int i, int new_line);
 void			replace_nodes_content(t_env_vars *node1, t_env_vars *node2);
 t_env_vars		*create_lst(char **envp);
 t_env_vars		*search_for_env_var(t_env_vars **head, char *env_name, int remove);
@@ -207,6 +207,7 @@ int				builtins_rest(char **cmds, char **envp, t_env_vars **head);
 void			free_node(t_env_vars *node);
 int				home_case(t_env_vars *head);
 int				oldpwd_case(t_env_vars *head);
+int				check_minus_n(char *echo_flag);
 
 
 
