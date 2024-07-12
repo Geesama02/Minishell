@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_env_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 16:33:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/07 13:13:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:00:30 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ char *expand_vars(char *holder, t_env_vars *head)
 	words = ft_env_split(holder, '$');
 	if (!words)
 		return (free(holder), free(result), NULL);
+	if (!words[0])
+		return (free_2d_array(words), free(result), holder);
 	if (*holder != '$')
 		i++;
 	free(holder);

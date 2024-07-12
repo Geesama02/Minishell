@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/10 15:13:47 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:41:12 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,10 @@ int	scan_syntax(char **holder)
 	j = 0;
 	while (holder[j])
 		j++;
-	if (is_operand(holder[0]) || is_operand(holder[j - 1]))
-		return (ft_printf_err("Error: parse error\n"), 0);
+	if (is_operand(holder[0]))
+		return (ft_printf_err("Minishell: syntax error near unexpected token `%s'\n", holder[0]), 0);
+	else if (is_operand(holder[j - 1]))
+		return (ft_printf_err("Minishell: syntax error near unexpected token `%s'\n", holder[j - 1]), 0);
 	while (holder[i] != NULL)
 	{
 		if (has_wildcard(holder[i]))
@@ -59,7 +61,7 @@ int	scan_syntax(char **holder)
 				return (0);
 		}
 		if (holder[i + 1] && is_operand(holder[i]) && is_operand(holder[i + 1]))
-			return (ft_printf_err("Error: parse error\n"), 0);
+			return (ft_printf_err("Minishell: syntax error near unexpected token `%s'\n", holder[i + 1]), 0);
 		i++;
 	}
 	return (1);
@@ -91,7 +93,7 @@ int	free_2d_array(char **array)
 		free(array[i]);
 		i++;
 	}
-	// free(array);
+	free(array);
 	return (0);
 }
 

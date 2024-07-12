@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:51:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/10 15:13:23 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/12 14:42:34 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static int	count_words(char const *s, char c)
 		}
 		i++;
 	}
+	if (count == 0)
+		count++;
 	return (count);
 }
 
