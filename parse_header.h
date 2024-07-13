@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 13:40:30 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/13 16:30:09 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,7 @@ int is_heredoc[2];
 
 void			ft_putstr_fd(char *s, int fd);
 int				ft_atoi(const char *str);
-int				ft_isalpha(int c);
-int				ft_printf_err(const char *format, ...);
+int				ft_isalpha_quotes(int c);
 void    		ft_putchar(char c);
 char			*ft_strtrim(char const *s1, char const *set);
 char			*ft_itoa(int n);

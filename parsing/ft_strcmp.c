@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:51:52 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/12 14:33:08 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/13 13:52:48 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_header.h"
+#include "../parse_header.h"
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
