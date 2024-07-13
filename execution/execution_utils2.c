@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 09:21:34 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 13:21:07 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	execute_using_execve(t_env_vars *tmp, char **cmds,
 	{
 		if (execve(path, cmds, envp) == -1)
 		{
-			print_err(strerror(errno), NULL, NULL);
 			if (errno == EACCES)
 				exit(126);
 			exit(1);
@@ -46,7 +45,7 @@ int	builtins_rest(char **cmds, char **envp, t_env_vars **head)
 {
 	if (!ft_strcmp(cmds[0], "echo"))
 	{
-		if(echo_command(cmds) == 0)
+		if (echo_command(cmds) == 0)
 			return (-2);
 	}
 	else if (!ft_strcmp(cmds[0], "export"))
@@ -67,9 +66,18 @@ int	builtins_rest(char **cmds, char **envp, t_env_vars **head)
 
 int	define_exit_status(t_env_vars *tmp, char *exit_status)
 {
-	free(tmp->env_val);
+	if (tmp->env_val)
+		free(tmp->env_val);
 	tmp->env_val = ft_strdup(exit_status);
 	if (!tmp->env_val && errno == ENOMEM)
 		return (-1);
 	return (0);
+}
+
+int	ft_isalpha_quotes(int c)
+{
+	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c == 34)
+		return (1);
+	else
+		return (0);
 }
