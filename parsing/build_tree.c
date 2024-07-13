@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/11 16:23:21 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:11:24 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,9 @@ t_token_tree	*build_tree(t_stack *stack, char **envp, t_env_vars **head)
 	i = 1;
 	free(stack->token);
 	root = stack_tree[0];
+	// printf("head -> %d\n", stack->head);
+	// printf("stack -> %s\n", stack_tree[1]->token);
+	// printf("stack -> %s\n", stack_tree[2]->token);
 	free(stack_tree);
 	set_ids(root, &i);
 	set_count(root, i);

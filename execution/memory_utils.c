@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 20:16:25 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/12 10:27:01 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:21:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,22 @@ void    free_envs(t_env_vars **head)
 
 void	free_cmds(char **cmds)
 {
+	int i;
+
+	i = 0;
 	if (cmds)
 	{
-		while (*cmds)
+		while (cmds[i])
 		{
-			free(*cmds);
-			cmds++;
+			free(cmds[i]);
+			i++;
 		}
 	}
 }
 
 void	ft_close(char **cmds, t_env_vars **head)
 {
-	free_cmds(cmds);
-	free(cmds);
+	free_2d_array(cmds);
 	free_envs(head);
 }
 

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 09:01:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:18:19 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,21 +95,25 @@ int	check_syntax(char *input)
 	parenthesis = 0;
 	while (input[i])
 	{
-		if (input[i] == ')' && parenthesis != 1 && is_inside_quotes(input, i) == 0)
-			return (0);
+		if (input[i] == ')' && parenthesis == 0 && is_inside_quotes(input, i) == 0)
+			return (')');
 		if (input[i] == '(' && is_inside_quotes(input, i) == 0)
-			parenthesis = !parenthesis;
+			parenthesis++;
 		if (input[i] == ')' && is_inside_quotes(input, i) == 0)
-			parenthesis = !parenthesis;
+			parenthesis--;
 		if (input[i] == '\'' && dquote == 0)
 			quote = !quote;
 		if (input[i] == '\"' && quote == 0)
 			dquote = !dquote;
 		i++;
 	}
-	if (dquote || quote || parenthesis)
-		return (0);
-	return (1);
+	if (dquote)
+		return ('\"');
+	if (quote)
+		return ('\'');
+	if (parenthesis)
+		return ('(');
+	return (0);
 }
 
 void	a()
@@ -159,13 +163,13 @@ int main(int argc, char **argv, char **envp)
 		}
         if (input[0] == '\0')
 		{
-			rl_clear_history();
+			// rl_clear_history();
 			free(input);
-			ft_close(NULL, &head);
+			// ft_close(NULL, &head);
             continue;
 		}
         add_history(input);
-		if (check_syntax(input) == 0)
+		if (check_syntax(input) > 0)
 		{
 			print_err("Error: parse error\n", NULL, NULL);
 			ft_close(NULL, &head);
@@ -193,6 +197,7 @@ int main(int argc, char **argv, char **envp)
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
 		// printf("======== Tree ========\n");
+		// printf("tree -> %s\n", ast_tree->token);
 		// print_tree(ast_tree, 0);
 		ast_tree->head = &head;
 		execute_tree(ast_tree, ast_tree->head);
