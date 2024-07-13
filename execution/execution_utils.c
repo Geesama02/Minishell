@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 09:21:28 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:14:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int execute_rest(char **cmds, char **envp, t_env_vars **head)
 	return (0);
 }
 
-int exec_command(char **cmds, char **envp, t_env_vars **head)
+int exec_command(char **cmds, char **envp, t_env_vars **head, int child)
 {
 	t_env_vars	*tmp;
 
@@ -133,6 +133,6 @@ int exec_command(char **cmds, char **envp, t_env_vars **head)
 		}
 	}
 	else
-		return (builtins_rest(cmds, envp, head));
+		return (builtins_rest(cmds, envp, head, child));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 09:04:24 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 16:26:54 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,31 +80,14 @@ void	export_command(char **tokens, t_env_vars **head)
 	add_env_var(tokens, nbr_envs, head);
 }
 
-void	unset_command(t_env_vars **head, char *cmd)
+void	unset_command(t_env_vars **head, char **cmds)
 {
-	t_env_vars	*tmp;
+	int	i;
 
-	tmp = *head;
-	if (!ft_isalpha(cmd[0]))
-		print_err("minishell: unset: ", cmd, ": is not a valid identifier\n");
-	else if (tmp && !ft_strcmp(tmp->env_name, cmd))
-	{    
-		if (tmp->next)
-			*head = tmp->next;
-		else
-			*head = NULL;
-		free_node(tmp);
-	}
-	else
+	i = 0;
+	while (cmds[i])
 	{
-		while (tmp && tmp->next && ft_strcmp(tmp->next->env_name, cmd))
-			tmp = tmp->next;
-		if (tmp->next && tmp->next->next)
-			replace_nodes_content(tmp->next, tmp->next->next);
-		else if (tmp->next && !tmp->next->next)
-		{
-			free_node(tmp->next);
-			tmp->next = NULL;
-		}
+		delete_env(head, cmds[i]);
+		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 13:21:07 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 16:26:07 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	execute_using_execve(t_env_vars *tmp, char **cmds,
 	return (0);
 }
 
-int	builtins_rest(char **cmds, char **envp, t_env_vars **head)
+int	builtins_rest(char **cmds, char **envp, t_env_vars **head, int child)
 {
 	if (!ft_strcmp(cmds[0], "echo"))
 	{
@@ -51,11 +51,11 @@ int	builtins_rest(char **cmds, char **envp, t_env_vars **head)
 	else if (!ft_strcmp(cmds[0], "export"))
 		export_command(cmds, head);
 	else if (!ft_strcmp(cmds[0], "unset"))
-		unset_command(head, cmds[1]);
+		unset_command(head, cmds);
 	else if (!ft_strcmp(cmds[0], "env"))
 		env_command(*head);
 	else if (!ft_strcmp(cmds[0], "exit"))
-		exit_command(cmds, head);
+		exit_command(cmds, head, child);
 	else
 	{
 		if (execute_rest(cmds, envp, head) == -1)

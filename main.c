@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 11:04:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 17:09:25 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ int main(int argc, char **argv, char **envp)
 		if (check_syntax(input) > 0)
 		{
 			print_err("Error: parse error\n", NULL, NULL);
-			ft_close(NULL, &head);
+			// ft_close(NULL, &head);
 			free(input);
 			continue;
 		}
@@ -200,7 +200,7 @@ int main(int argc, char **argv, char **envp)
 		// printf("tree -> %s\n", ast_tree->token);
 		// print_tree(ast_tree, 0);
 		ast_tree->head = &head;
-		execute_tree(ast_tree, ast_tree->head);
+		execute_tree(ast_tree, ast_tree->head, 1);
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
 		is_heredoc[0] = 0;

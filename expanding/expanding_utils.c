@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 13:15:47 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 16:27:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name, int remove)
 		current = current->next;
 	if (current && remove)
 	{
-		unset_command(head, current->env_name);
+		unset_command(head, &current->env_name);
 		return (current);
 	}
 	else if (current && !remove)

@@ -21,7 +21,7 @@ void    execute_heredoc(t_token_tree *cmd, t_token_tree *content)
     dup2(stdout_fd, 1);
     close(stdout_fd);
     close(fds[1]);
-    execute_tree(cmd, cmd->head);
+    execute_tree(cmd, cmd->head, 1);
     dup2(stdin_fd, 0);
     close(fds[0]);
     close(stdin_fd);

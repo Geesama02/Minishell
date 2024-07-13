@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 11:18:18 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:24:04 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	execute_redirection_in(t_token_tree *tree)
 		}
 		dup2(fd_file, 0); //fail
 		close(fd_file); //fail
-		execute_tree(tree->left, tree->head);
+		execute_tree(tree->left, tree->head, pid);
 		exit(0);
 	}
 	wait(&status);
@@ -50,15 +50,16 @@ void	execute_redirection_out(t_token_tree *tree)
 	else if (pid == 0)
 	{
 		stdout_cp = dup(1);
-		fd_file = open(tree->right->token, O_CREAT | O_RDWR | O_TRUNC, 00700); //fail
+		fd_file = open(tree->right->token, O_EXCL | O_CREAT | O_RDWR | O_TRUNC, 00700); //fail
 		if (fd_file == -1)
 		{
 			print_err("open() failed!!\n", NULL, NULL); //open() fail
+			printf("%s\n", strerror(errno));
 			exit(1);
 		}
 		dup2(fd_file, 1);
 		close(fd_file);
-		execute_tree(tree->left, tree->head);
+		execute_tree(tree->left, tree->head, pid);
 		dup2(stdout_cp, 1);
 		close(stdout_cp);
 		exit(0);
@@ -84,7 +85,7 @@ void	execute_redirection_append(t_token_tree *tree)
 		}
 		dup2(fd_file, 1);
 		close(fd_file);
-		execute_tree(tree->left, tree->head);
+		execute_tree(tree->left, tree->head, pid);
 		dup2(stdout_cp, 1);
 		close(stdout_cp);
 		exit(0);

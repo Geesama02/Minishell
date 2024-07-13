@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 13:45:45 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 14:54:14 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ void	export_without_arguments(t_env_vars *p_head)
 		if (s_head->env_name[0] != '?')
 		{
 			if (s_head->env_val)
-			{
 				printf("declare -x %s=\"%s\"\n", s_head->env_name, s_head->env_val);
-			}
 			else
 				printf("declare -x %s\n", s_head->env_name);
 		}
@@ -59,8 +57,8 @@ void	create_newenv(char **tokens, t_env_vars **head, char **cmds,
 void	lst_add_element(char **tokens, char **cmds, t_env_vars **head,
 	int i)
 {
-	t_env_vars          *new_env;
-	t_env_vars          *prev;
+	t_env_vars	*new_env;
+	t_env_vars	*prev;
 
 	if (*head)
 		prev = get_last_node(*head);

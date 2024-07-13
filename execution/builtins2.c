@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 09:05:39 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:07:57 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ void    env_command(t_env_vars *env_vars)
 	}
 }
 
-void    exit_command(char **cmds, t_env_vars **head)
+void    exit_command(char **cmds, t_env_vars **head, int child)
 {
-    write(1, "exit\n", 6);
+	if (child)
+    	write(1, "exit\n", 6);
     ft_close(cmds, head);
     exit(0);
 }
