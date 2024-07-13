@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 08:59:37 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 13:40:30 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,8 @@ int				home_case(t_env_vars *head);
 int				oldpwd_case(t_env_vars *head);
 int				check_minus_n(char *echo_flag);
 void			print_err(char *string1, char *string2, char *string3);
-
+int				has_multi_redirections(t_token_array *token_array);
+void			switch_multi_redirections(t_token_array *token_array);
 
 
 // delete later

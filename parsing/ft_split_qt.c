@@ -1,30 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split_env.c                                     :+:      :+:    :+:   */
+/*   ft_split_qt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:51:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/12 14:42:34 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/13 13:52:15 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
-
-// static int	check_inside_quotes(char const *s, int i, char c)
-// {
-// 	int	inside;
-
-// 	inside = 0;
-// 	while (i >= 0)
-// 	{
-// 		if (s[i] == c)
-// 			inside = !inside;
-// 		i--;
-// 	}
-// 	return (inside);
-// }
 
 static int	count_words(char const *s, char c)
 {

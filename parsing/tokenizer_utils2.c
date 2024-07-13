@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 09:21:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:37:25 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int	scan_syntax(char **holder)
 	while (holder[j])
 		j++;
 	if (is_operand(holder[0]))
-		return (print_err("Minishell: syntax error near unexpected token " , holder[0], " \n"), 0);
+		return (print_err("Minishell: syntax error near unexpected token `" , holder[0], "' \n"), 0);
 	else if (is_operand(holder[j - 1]))
-		return (print_err("Minishell: syntax error near unexpected token ", holder[j - 1], " \n"), 0);
+		return (print_err("Minishell: syntax error near unexpected token `", holder[j - 1], "' \n"), 0);
 	while (holder[i] != NULL)
 	{
 		if (has_wildcard(holder[i]))
@@ -61,7 +61,7 @@ int	scan_syntax(char **holder)
 				return (0);
 		}
 		if (holder[i + 1] && is_operand(holder[i]) && is_operand(holder[i + 1]))
-			return (print_err("Minishell: syntax error near unexpected token ", holder[i + 1], " \n"), 0);
+			return (print_err("Minishell: syntax error near unexpected token `", holder[i + 1], "' \n"), 0);
 		i++;
 	}
 	return (1);
