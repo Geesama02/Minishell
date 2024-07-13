@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 12:07:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 14:37:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 14:52:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,18 +94,19 @@ void skip_quotes(char *str_original, char *new)
 		if (str_original[i] == '\'')
 		{
 			i++;
-			while(str_original[i] != '\'' && str_original[i])
+			while (str_original[i] && str_original[i] != '\'')
 				new[j++] = str_original[i++];
 		}
 		else if (str_original[i] == '\"')
 		{
 			i++;
-			while(str_original[i] != '\"' && str_original[i])
+			while (str_original[i] && str_original[i] != '\"')
 				new[j++] = str_original[i++];
 		}
 		else
 			new[j++] = str_original[i];
-		i++;
+		if (str_original[i])
+			i++;
 	}
 	new[j] = '\0';
 }
