@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/11 17:08:20 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:07:24 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	execute_redirection_in(t_token_tree *tree)
 		fd_file = open(tree->right->token, O_RDONLY, 00700); //fail
 		if (errno == ENOENT)
 		{
-			ft_printf_err("minishell: %s: No such file or directory\n", tree->right->token);
+			print_err("minishell: ", tree->right->token," : No such file or directory\n");
 			exit(1);
 		}
 		dup2(fd_file, 0); //fail
@@ -46,13 +46,13 @@ void    execute_redirection_out(t_token_tree *tree)
 
 	pid = fork(); //fail
 	if (pid == -1)
-		ft_printf_err("fork() failed!!\n"); //fork() fail
+		print_err("fork() failed!!\n", NULL, NULL); //fork() fail
 	else if (pid == 0)
 	{
 		stdout_cp = dup(1);
 		fd_file = open(tree->right->token, O_CREAT | O_RDWR | O_TRUNC, 00700); //fail
 		if (fd_file == -1)
-			ft_printf_err("open() failed!!\n"); //open() fail
+			print_err("open() failed!!\n", NULL, NULL); //open() fail
 		dup2(fd_file, 1);
 		close(fd_file);
 		execute_tree(tree->left, tree->head);

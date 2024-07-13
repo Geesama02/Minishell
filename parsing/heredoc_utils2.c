@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:29:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 14:54:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:08:48 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*handle_null(char *input, t_token_array *token_array,
 	}
 	else if (!is_heredoc[1] && errno == ENOMEM)
 	{
-		ft_printf_err("readline: allocation failure!");
+		print_err("readline: allocation failure!", NULL, NULL);
 		free(input);
 		return (free_token_holder(holder, token_array, *l),
 			exit(1), NULL);
@@ -71,6 +71,8 @@ char	*continue_heredoc(char *delimiter, t_token_array *token_array,
 	char	*input;
 	int		stdin_fd;
 
+	if (!delimiter)
+		return (NULL);
 	is_heredoc[0] = 1;
 	stdin_fd = dup(0);
 	input = ft_strdup("");

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 10:20:06 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 14:53:44 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:08:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*remove__quotes(char *str)
 		return (NULL);
 	if (unclosed_var(str, '\"') == 1 || unclosed_var(str, '\'') == 1)
 	{
-		ft_printf_err("Error: quotes not closed\n");
+		print_err("Error: quotes not closed\n", NULL, NULL);
 		return (NULL);
 	}
 	else if (has_quotes(str, '\"') == 0)

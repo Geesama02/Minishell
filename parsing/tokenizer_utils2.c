@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 14:54:05 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:09:10 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	scan_syntax(char **holder)
 	while (holder[j])
 		j++;
 	if (is_operand(holder[0]) || is_operand(holder[j - 1]))
-		return (ft_printf_err("Error: parse error\n"), 0);
+		return (print_err("Error: parse error\n", NULL, NULL), 0);
 	while (holder[i] != NULL)
 	{
 		if (has_wildcard(holder[i]))
@@ -59,7 +59,7 @@ int	scan_syntax(char **holder)
 				return (0);
 		}
 		if (holder[i + 1] && is_operand(holder[i]) && is_operand(holder[i + 1]))
-			return (ft_printf_err("Error: parse error\n"), 0);
+			return (print_err("Error: parse error\n", NULL, NULL), 0);
 		i++;
 	}
 	return (1);
@@ -99,7 +99,7 @@ int	handle_wildcard(char **str)
 {
 	char	**sep_str;
 
-	sep_str = ft_split(*str, ' ');
+	sep_str = ft_split_qt(*str, ' ');
 	if (!sep_str)
 		return (0);
 	free(*str);

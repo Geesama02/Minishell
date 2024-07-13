@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 CC = cc
 NAME = minishell
 SRC = main.c parsing/ft_split_env.c ft_strcmp.c parsing/fill_token.c execution/builtins.c parsing/create_ast.c \
@@ -10,23 +10,18 @@ SRC = main.c parsing/ft_split_env.c ft_strcmp.c parsing/fill_token.c execution/b
 	execution/builtins_failure.c execution/builtins2.c execution/execution_utils2.c
 OBJS = ${SRC:.c=.o}
 LIBFT = ./libft/libft.a
-FT_PRINTF = ./ft_printf_err/libftprintf.a
 LPATH = ../../.brew/opt/readline
 
 all : ${NAME}
 	make -C ./libft
 	make bonus -C ./libft
-	make -C ./ft_printf_err
 
 ${LIBFT} :
 	make -C ./libft
 	make bonus -C ./libft
 
-${FT_PRINTF} :
-	make -C ./ft_printf_err
-
-${NAME} : ${OBJS} ${LIBFT} ${FT_PRINTF}
-	${CC} ${CFLAGS} ${OBJS} ${LIBFT} ${FT_PRINTF} -lreadline -L ${LPATH}/lib -o ${NAME}
+${NAME} : ${OBJS} ${LIBFT}
+	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -lreadline -L ${LPATH}/lib -o ${NAME}
 
 %.o: %.c parse_header.h
 	${CC} ${CFLAGS} -I ${LPATH}/include -c -o $@ $<
@@ -34,12 +29,10 @@ ${NAME} : ${OBJS} ${LIBFT} ${FT_PRINTF}
 clean :
 	rm -rf ${OBJS}
 	make clean -C ./libft
-	make clean -C ./ft_printf_err
 
 fclean : clean
 	rm -rf ${NAME}
 	make fclean -C ./libft
-	make fclean -C ./ft_printf_err
 
 re : fclean all
 

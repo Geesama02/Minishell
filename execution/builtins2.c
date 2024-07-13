@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/10 11:41:05 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:05:39 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ int	home_case(t_env_vars *head)
 	if (home_path)
 	{	
 		if (chdir(home_path->env_val) != 0)
-			return (ft_printf_err("%s\n", strerror(errno)), -1);
+			return (print_err(strerror(errno), NULL, NULL), -1);
 	}
 	else
 	{
-		ft_printf_err("minishell: cd: HOME not set\n");
+		print_err("minishell: cd: HOME not set\n", NULL, NULL);
 		return (-1);
 	}
 	return (0);
@@ -55,12 +55,12 @@ int	oldpwd_case(t_env_vars *head)
 	if (oldpwd && oldpwd->env_val)
 	{
 		if (chdir(oldpwd->env_val) != 0)
-			return (ft_printf_err("%s\n", strerror(errno)), -1);
+			return (print_err(strerror(errno), NULL, NULL), -1);
 		printf("%s\n", oldpwd->env_val);
 	}
 	else
 	{
-		ft_printf_err("minishell: cd: OLDPWD not set\n");
+		print_err("minishell: cd: OLDPWD not set\n", NULL, NULL);
 		return (-1);
 	}
 	return (0);

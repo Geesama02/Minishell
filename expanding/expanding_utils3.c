@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_utils3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:01:23 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/09 12:33:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:13:47 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void    create_env(t_env_vars *node, t_env_vars *head, char *env)
 {
 	char	**envs;
 
-	envs = ft_split(env, '='); //leaks
+	envs = ft_split_qt(env, '='); //leaks
 	if (!envs && errno == ENOMEM)
 		return (free(node));
 	node->env_name = ft_strdup(envs[0]); //leaks

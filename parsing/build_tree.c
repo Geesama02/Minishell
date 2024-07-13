@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 12:54:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/11 16:23:21 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,14 @@ int	make_nodes(t_stack *stack, int i, t_token_tree **stack_tree,
 	}
 	return (1);
 }
+void	set_address(t_token_tree *root, t_token_tree **address)
+{
+	if (!root)
+		return ;
+	root->tree_head_address = *address;
+	set_address(root->left, address);
+	set_address(root->right, address);
+}
 
 t_token_tree	*build_tree(t_stack *stack, char **envp, t_env_vars **head)
 {
@@ -104,5 +112,6 @@ t_token_tree	*build_tree(t_stack *stack, char **envp, t_env_vars **head)
 	free(stack_tree);
 	set_ids(root, &i);
 	set_count(root, i);
+	set_address(root, &root);
 	return (root);
 }

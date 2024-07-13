@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/10 14:32:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:06:03 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	execute_using_execve(t_env_vars *tmp, char **cmds,
 	{
 		if (execve(path, cmds, envp) == -1)
 		{
-			ft_printf_err("%s\n", strerror(errno));
+			print_err(strerror(errno), NULL, NULL);
 			if (errno == EACCES)
 				exit(126);
 			exit(1);
@@ -45,7 +45,10 @@ int	execute_using_execve(t_env_vars *tmp, char **cmds,
 int	builtins_rest(char **cmds, char **envp, t_env_vars **head)
 {
 	if (!ft_strcmp(cmds[0], "echo"))
-		echo_command(cmds);
+	{
+		if(echo_command(cmds) == 0)
+			return (-2);
+	}
 	else if (!ft_strcmp(cmds[0], "export"))
 		export_command(cmds, head);
 	else if (!ft_strcmp(cmds[0], "unset"))

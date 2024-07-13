@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/12 09:58:01 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:00:27 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int execute_rest(char **cmds, char **envp, t_env_vars **head)
 	}
 	else
 	{
-		ft_printf_err("minishell: %s: command not found\n", cmds[0]);
+		print_err("minishell: ", cmds[0], ": command not found\n");
 		define_exit_status(tmp, "127");
 		return (-1);
 	}
@@ -132,7 +132,7 @@ int exec_command(char **cmds, char **envp, t_env_vars **head)
 			return (-1);
 		}
 	}
-	else if (builtins_rest(cmds, envp, head) == -1)
-		return (-1);
+	else
+		return (builtins_rest(cmds, envp, head));
 	return (0);
 }

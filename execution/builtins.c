@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/10 12:08:32 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:04:24 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ int cd_command(char *path, t_env_vars *head)
 	{
 		chdir(path);
 		if (errno == ENOENT)
-			ft_printf_err("minishell: cd: %s: No such file or directory\n", path);
+			print_err("minishell: cd: ", path, " : No such file or directory\n");
 		else if (errno == ENOTDIR)
-			ft_printf_err("minishell: cd: %s Not a directory\n", path);
+			print_err("minishell: cd: ", path, " Not a directory\n");
 		else if (errno)
-			ft_printf_err("chdir failed!!\n");
+			print_err("chdir failed!!\n", NULL, NULL);
 		return (-1);
 	}
 	return (0);
@@ -44,7 +44,7 @@ int pwd_command()
 
 	if (!getcwd(buff, sizeof(buff)))
 	{
-		ft_printf_err("%s\n", strerror(errno));
+		print_err(strerror(errno), NULL, NULL);
 		return (-1);
 	}
 	else
@@ -62,24 +62,9 @@ int echo_command(char **cmds)
 
 	i = 1;
 	new_line = 1;
-    while (cmds[i])
-    {
-        while (cmds[i] && cmds[i + 1] && !check_minus_n(cmds[i]))
-	    {
-		    new_line = 0;
-		    i++;
-	    }
-        if (cmds[i])
-			ft_putstr(ignore_quotes(cmds[i]));
-		else
-			return (0);
-        if (cmds[i + 1])
-            ft_putchar(' ');
-        if (new_line)
-		    ft_putchar('\n');
-        i++;
-    }
-	return (0);
+	if (print_echo_content(cmds, i, new_line) == 0)
+		return (0);
+	return (1);
 }
 
 void	export_command(char **tokens, t_env_vars **head)
@@ -100,7 +85,9 @@ void	unset_command(t_env_vars **head, char *cmd)
 	t_env_vars	*tmp;
 
 	tmp = *head;
-	if (tmp && !ft_strcmp(tmp->env_name, cmd))
+	if (!ft_isalpha(cmd[0]))
+		print_err("minishell: unset: ", cmd, ": is not a valid identifier\n");
+	else if (tmp && !ft_strcmp(tmp->env_name, cmd))
 	{    
 		if (tmp->next)
 			*head = tmp->next;

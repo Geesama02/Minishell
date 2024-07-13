@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/10 11:17:14 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:07:54 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,26 @@ void    export_without_arguments(t_env_vars *p_head)
 	free_envs(&tmp_h);
 }
 
+void create_newenv(char **tokens, t_env_vars **head, char **cmds,
+	t_env_vars *new_env)
+{
+	new_env->env_name = ft_strdup(cmds[0]);
+	if (!new_env->env_name && errno == ENOMEM)
+		return (ft_close(tokens, head), free_cmds(cmds), exit(1));
+	if (ft_strchr(cmds[1], '$'))
+		null_terminating(cmds[1]);
+	if (cmds[1])
+	{
+		new_env->env_val = ft_strdup(cmds[1]); //leaks
+		if (!new_env->env_val && errno == ENOMEM)
+			return (ft_close(tokens, head), free_cmds(cmds), exit(1));
+		ignore_quotes(&new_env->env_val);
+	}
+	else
+		new_env->env_val = NULL;
+	new_env->next = NULL;
+}
+
 void	lst_add_element(char **tokens, char **cmds, t_env_vars **head,
 	int i)
 {
@@ -50,20 +70,7 @@ void	lst_add_element(char **tokens, char **cmds, t_env_vars **head,
 		prev->next = new_env;
 	else if (!prev && i == 1)
 		*head = new_env;
-	new_env->env_name = ft_strdup(cmds[0]); //leaks
-	if (!new_env->env_name && errno == ENOMEM)
-		return (ft_close(tokens, head), free_cmds(cmds), exit(1));
-	if (ft_strchr(cmds[1], '$'))
-		null_terminating(cmds[1]);
-	if (cmds[1])
-	{
-		new_env->env_val = ft_strdup(cmds[1]); //leaks
-		if (!new_env->env_val && errno == ENOMEM)
-			return (ft_close(tokens, head), free_cmds(cmds), exit(1));
-	}
-	else
-		new_env->env_val = NULL;
-	new_env->next = NULL;
+	create_newenv(tokens, head, cmds, new_env);
 }
 
 int	add_or_append(char **cmds, t_env_vars **head,
@@ -90,7 +97,7 @@ int	add_or_append(char **cmds, t_env_vars **head,
 	else
 	{
 		define_exit_status(tmp, "1");
-		ft_printf_err("export: `%s' : not a valid identifier\n", tokens[i]);
+		print_err("export: ", tokens[i], " : not a valid identifier\n");
 	}
 	return (0);
 }

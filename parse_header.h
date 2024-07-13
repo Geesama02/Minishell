@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/10 15:09:16 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/13 08:59:37 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_token_tree
 {
 	int					id;
 	int					cmd_count;
+	struct s_token_tree	*tree_head_address;
 	char				*token;
 	t_t_type			type;
 	struct s_token_tree	*left;
@@ -89,6 +90,7 @@ typedef struct s_token_tree
 
 int is_heredoc[2];
 
+void			ft_putstr_fd(char *s, int fd);
 int				ft_atoi(const char *str);
 int				ft_isalpha(int c);
 int				ft_printf_err(const char *format, ...);
@@ -99,6 +101,7 @@ void    		ft_putstr(char *str);
 char			*ft_strdup(const char *s1);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t			ft_strlen(const char *s);
+char			**ft_split_qt(char const *s, char c);
 char			**ft_split(char const *s, char c);
 int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strchr(const char *s, int c);
@@ -155,7 +158,7 @@ int				count_heredoc_len(char *input);
 char			*continue_heredoc(char *delimiter, t_token_array *token_array, char **holder, int *l);
 char			*ft_split_first(char *str);
 int				has_more_cmds(char *str);
-char			*ignore_quotes(char *str);
+char			*ignore_quotes(char **str);
 char			*handle_extra_cmd(t_token_array *token_array, char **holder, int *check, int i);
 char			*handle_multi_heredoc(t_token_array *token_array, char **holder, t_token_vars *vars, int i);
 void			*handle_first_heredoc(t_token_array *token_array, char **holder, int *l, int i);
@@ -165,6 +168,7 @@ int				handle_heredoc(t_token_array *token_array, char **holder, int *i, t_token
 void			*handle_other_tokens(t_token_array *token_array, char **holder, int *i, t_token_vars *vars);
 int				free_token_holder(char **holder, t_token_array *token_array, int i);
 void			ft_lstadd(t_env_vars **lst, t_env_vars *new);
+int				print_echo_content(char **cmds, int i, int new_line);
 void			replace_nodes_content(t_env_vars *node1, t_env_vars *node2);
 t_env_vars		*create_lst(char **envp);
 t_env_vars		*search_for_env_var(t_env_vars **head, char *env_name, int remove);
@@ -208,6 +212,7 @@ void			free_node(t_env_vars *node);
 int				home_case(t_env_vars *head);
 int				oldpwd_case(t_env_vars *head);
 int				check_minus_n(char *echo_flag);
+void			print_err(char *string1, char *string2, char *string3);
 
 
 

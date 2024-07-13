@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:33:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/10 11:58:10 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/12 14:59:09 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,36 @@
 void    ft_putchar(char c)
 {
     write(1, &c, 1);
+}
+
+int    print_echo_content(char **cmds, int i, int new_line)
+{
+	char	*tmp;
+	
+    while (cmds[i])
+    {
+        new_line = 1;
+        while (cmds[i] && !check_minus_n(cmds[i]))
+        {
+            new_line = 0;
+            i++;
+        }
+        if (cmds[i])
+        {
+            tmp = ignore_quotes(&cmds[i]);
+            if (!tmp)
+                return (0);
+            ft_putstr(tmp);
+            if (cmds[i + 1])
+                ft_putchar(' ');
+            i++;
+        }
+        else
+            break;
+    }
+    if (new_line)
+		ft_putchar('\n');
+	return (1);
 }
 
 void    ft_putstr(char *str)
