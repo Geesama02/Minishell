@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 16:30:09 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/14 11:29:16 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,7 @@ int				check_minus_n(char *echo_flag);
 void			print_err(char *string1, char *string2, char *string3);
 int				has_multi_redirections(t_token_array *token_array);
 void			switch_multi_redirections(t_token_array *token_array);
+int				check_redirections_extras(t_token_array *token_array);
 
 
 // delete later

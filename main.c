@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 16:27:39 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/14 18:00:33 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,6 @@ int main(int argc, char **argv, char **envp)
 			while (tmp->env_name[0] != '?')
 				tmp = tmp->next;
 			define_exit_status(tmp, "258");
-			// ft_close(NULL, &head);
 			free(input);
 			continue;
 		}
@@ -201,8 +200,7 @@ int main(int argc, char **argv, char **envp)
 		// 	printf("token ==> %s -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
 		// 	i++;
 		// }
-		// printf("has_redirecitons = %d\n", has_multi_redirections(token_array));
-		
+				
 		postfix_stack = shunting_yard(token_array);
 		ast_tree = build_tree(&postfix_stack, envp, &head);
 		// printf("left -> %s\n", ast_tree->left->token);
