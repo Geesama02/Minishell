@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 17:09:25 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/15 09:00:05 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,12 @@ char	*print_type(t_t_type type)
 		return ("PARETHESIS_C");
 	if (type == CMD_T)
 		return ("CMD_T");
+	if (type == REDIRECTION_A)
+		return ("REDIRECTION_A");
+	if (type == REDIRECTION_I)
+		return ("REDIRECTION_I");
+	if (type == REDIRECTION_O)
+		return ("REDIRECTION_O");
 	return ("NULL");
 }
 
@@ -82,7 +88,7 @@ void	*free_alloc(char **bigstr, int l)
 	return (NULL);
 }
 
-int	check_syntax(char *input)
+char	*check_syntax(char *input)
 {
 	int	i;
 	int	quote;
@@ -96,7 +102,7 @@ int	check_syntax(char *input)
 	while (input[i])
 	{
 		if (input[i] == ')' && parenthesis == 0 && is_inside_quotes(input, i) == 0)
-			return (')');
+			return (")");
 		if (input[i] == '(' && is_inside_quotes(input, i) == 0)
 			parenthesis++;
 		if (input[i] == ')' && is_inside_quotes(input, i) == 0)
@@ -108,12 +114,12 @@ int	check_syntax(char *input)
 		i++;
 	}
 	if (dquote)
-		return ('\"');
+		return ("\"");
 	if (quote)
-		return ('\'');
+		return ("\'");
 	if (parenthesis)
-		return ('(');
-	return (0);
+		return ("(");
+	return (NULL);
 }
 
 void	a()
@@ -169,9 +175,14 @@ int main(int argc, char **argv, char **envp)
             continue;
 		}
         add_history(input);
-		if (check_syntax(input) > 0)
+		if (check_syntax(input))
 		{
-			print_err("Error: parse error\n", NULL, NULL);
+			print_err("Minishell: syntax error near unexpected token `" , check_syntax(input), "' \n");
+			t_env_vars *tmp;
+			tmp = head;
+			while (tmp->env_name[0] != '?')
+				tmp = tmp->next;
+			define_exit_status(tmp, "258");
 			// ft_close(NULL, &head);
 			free(input);
 			continue;

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 16:27:18 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/15 08:59:14 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,9 +211,10 @@ void			free_node(t_env_vars *node);
 int				home_case(t_env_vars *head);
 int				oldpwd_case(t_env_vars *head);
 int				check_minus_n(char *echo_flag);
-void			print_err(char *string1, char *string2, char *string3);
 void			delete_env(t_env_vars **head, char *cmd);
-
+void			print_err(char *string1, char *string2, char *string3);
+int				has_multi_redirections(t_token_array *token_array);
+void			switch_multi_redirections(t_token_array *token_array);
 
 
 // delete later
