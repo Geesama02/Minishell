@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/15 12:02:31 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/15 16:02:08 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,12 +194,12 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		}
 		// free(input);
-		int i = 0;
-		while(token_array[i].token)
-		{
-			printf("token ==> %s -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
-			i++;
-		}
+		// int i = 0;
+		// while(token_array[i].token)
+		// {
+		// 	printf("token ==> %s -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
+		// 	i++;
+		// }
 				
 		postfix_stack = shunting_yard(token_array);
 		ast_tree = build_tree(&postfix_stack, envp, &head);
