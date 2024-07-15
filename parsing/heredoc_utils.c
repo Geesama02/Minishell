@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:53:25 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/14 10:38:39 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/15 09:03:00 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,12 @@ int	fill_heredoc(t_token_array *token_array,
 	else
 	{
 		if (!handle_first_heredoc(token_array, holder, &vars->l, i))
+		{
+			free_token_holder(holder, token_array, vars->l);
+			// free(vars->input);
+			// exit(1);
 			return (0);
-		// {
-		// 	free_token_holder(holder, token_array, vars->l);
-		// 	// free(vars->input);
-		// 	// exit(1);
-		// 	return (0);
-		// }
+		}
 		vars->x = vars->l;
 		if (vars->cmd_holder)
 		{

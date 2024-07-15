@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/14 10:42:12 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/15 09:02:52 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ t_token_array	*tokenizer(char **input, t_env_vars *head)
 		return (NULL);
 	if (copy_to_array(token_array, holder, head) == 0)
 		return (NULL);
+	check_redirections_extras(token_array);
 	if (has_multi_redirections(token_array))
 		switch_multi_redirections(token_array);
 	return (token_array);
