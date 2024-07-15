@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 16:27:59 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/15 09:58:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name, int remove)
 	return (NULL);
 }
 
-void	null_terminating(char *str)
+void	null_terminating(char *str, char c)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] && str[i] != '$')
+	while (str[i] && str[i] != c)
 		i++;
 	str[i] = '\0';
 }

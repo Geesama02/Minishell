@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/15 09:01:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/15 09:59:13 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ void			create_env(t_env_vars *node, t_env_vars *head, char *env);
 t_env_vars		*display_envs_sorted(t_env_vars *head);
 void			handle_builtins_failure(t_env_vars **head, t_env_vars *tmp);
 void			exit_command(char **cmds, t_env_vars **head, int child);
-void			null_terminating(char *str);
+void			null_terminating(char *str, char c);
 int				execute_using_execve(t_env_vars *tmp, char **cmds,
 		char *path, char **envp);
 int				define_exit_status(t_env_vars *tmp, char *exit_status);

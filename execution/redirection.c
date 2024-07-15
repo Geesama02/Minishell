@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 17:13:22 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/15 10:03:29 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@ void	execute_redirection_in(t_token_tree *tree)
 	pid_t		pid;
 	t_env_vars	*tmp;
 
+	null_terminating(tree->right->token, ' ');
 	pid = fork(); //fail
 	if (!pid)
 	{
-		fd_file = open(tree->right->token, O_RDONLY, 00700); //fail
-		if (errno == ENOENT)
+		
+		fd_file = open(tree->right->token, O_TRUNC | O_RDONLY, S_IRWXU); //fail
+		if (fd_file == -1 && errno == ENOENT)
 		{
-			print_err("minishell: ", tree->right->token," : No such file or directory\n");
+			print_err("minishell: ", tree->right->token, ": No such file or directory\n");
 			exit(1);
 		}
 		dup2(fd_file, 0); //fail
@@ -44,18 +46,16 @@ void	execute_redirection_out(t_token_tree *tree)
 	int		stdout_cp;
 	pid_t	pid;
 
+	null_terminating(tree->right->token, ' ');
 	pid = fork(); //fail
 	if (pid == -1)
 		print_err("fork() failed!!\n", NULL, NULL); //fork() fail
 	else if (pid == 0)
 	{
 		stdout_cp = dup(1);
-		fd_file = open(tree->right->token, O_CREAT | O_RDWR | O_TRUNC, 00700); //fail
-		if (fd_file == -1)
-		{
-			print_err("open() failed!!\n", NULL, NULL); //open() fail
-			exit(1);
-		}
+		fd_file = open(tree->right->token, O_EXCL | O_CREAT | O_RDWR | O_TRUNC, 00700); //fail
+		if (fd_file == -1 && errno == EEXIST)
+			fd_file = open(tree->right->token, O_WRONLY, S_IRWXU);
 		dup2(fd_file, 1);
 		close(fd_file);
 		execute_tree(tree->left, tree->head, pid);
@@ -72,6 +72,7 @@ void	execute_redirection_append(t_token_tree *tree)
 	int		stdout_cp;
 	pid_t	pid;
 
+	null_terminating(tree->right->token, ' ');
 	pid = fork();
 	if (!pid)
 	{
