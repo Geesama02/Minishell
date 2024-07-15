@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 14:59:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 09:08:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/15 11:55:11 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ int	handle_hidden_files(DIR *dir, struct dirent **dir_content, char **sep_str, c
 
 char *wildcard(char *str)
 {
-	DIR *dir;
-	struct dirent *dir_content;
-	char **sep_str;
-	char *res;
+	DIR				*dir;
+	struct dirent	*dir_content;
+	char			**sep_str;
+	char			*res;
 	
 	res = ft_strdup("");
 	sep_str = ft_split_qt(str, '*');

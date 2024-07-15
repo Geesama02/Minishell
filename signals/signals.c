@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:49:24 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 11:53:57 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/15 14:43:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	handle_new_prompt(int signum)
 {
 	if (signum == SIGINT)
 	{
+		is_heredoc[1] = 1;
 		if (is_heredoc[0] == 1)
 		{
-			is_heredoc[1] = 1;
 			close(0);
 			return ;
 		}
