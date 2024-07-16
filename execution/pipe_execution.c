@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:21:44 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 15:06:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 08:40:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	define_exit_status_pipes(t_token_tree *node, int status)
 
 	if (node->id == node->cmd_count)
 	{
-		tmp = search_for_env_var(node->head, "?", 0);
+		tmp = search_for_env_var(node->head, "?", 0, node);
 		exit_status = ft_itoa(status);
 		define_exit_status(tmp, exit_status);
 	}
@@ -57,7 +57,7 @@ int	execute_right_pipe(t_token_tree *right, int fds[2], int stdout_fd, int stdin
 		dup2(stdout_fd, 1); //fail
 	if (execute_tree(right, right->head, 0) == -1)
 	{
-		tmp = search_for_env_var(right->head, "?", 0);
+		tmp = search_for_env_var(right->head, "?", 0, right);
 		exit(ft_atoi(tmp->env_val));
 	}
 	close(stdin_fd); //fail

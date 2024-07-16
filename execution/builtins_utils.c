@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:33:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 16:25:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/15 17:25:11 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void    ft_putchar(char c)
     write(1, &c, 1);
 }
 
-void    delete_env(t_env_vars **head, char *cmd)
+void    delete_env(t_env_vars **head, char *cmd, t_token_tree *tree, char **cmds)
 {
     t_env_vars	*tmp;
 
@@ -37,7 +37,7 @@ void    delete_env(t_env_vars **head, char *cmd)
 		while (tmp && tmp->next && ft_strcmp(tmp->next->env_name, cmd))
 			tmp = tmp->next;
 		if (tmp->next && tmp->next->next)
-			replace_nodes_content(tmp->next, tmp->next->next);
+			replace_nodes_content(tmp->next, tmp->next->next, tree, cmds);
 		else if (tmp->next && !tmp->next->next)
 		{
 			free_node(tmp->next);
@@ -93,11 +93,13 @@ void    ft_putstr(char *str)
     }
 }
 
-void    replace_nodes_content(t_env_vars *node1, t_env_vars *node2)
+void    replace_nodes_content(t_env_vars *node1, t_env_vars *node2, t_token_tree *tree, char **cmds)
 {
     free(node1->env_name);
     free(node1->env_val);
     node1->env_name = ft_strdup(node2->env_name);
+    if (!node1->env_name)
+        return (ft_close(cmds, tree->head), free_tree(tree), exit(1));
     node1->env_val = ft_strdup(node2->env_val);
     node1->next = node2->next;
     free(node2->env_name);

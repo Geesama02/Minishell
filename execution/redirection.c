@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/15 10:51:09 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 09:16:04 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	execute_redirection_in(t_token_tree *tree)
 		exit(0);
 	}
 	wait(&status);
-	tmp = search_for_env_var(tree->head, "?", 0);
+	tmp = search_for_env_var(tree->head, "?", 0, tree);
 	define_exit_status(tmp, ft_itoa(WEXITSTATUS(status)));
 }
 

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/15 09:59:13 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 09:19:56 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ char			*ft_strchr(const char *s, int c);
 char			*ft_strjoin(const char *s1, const char *s2);
 int				len(char **s);
 int				check_cmd(char *str);
-int				cd_command(char *path, t_env_vars *head);
+int				cd_command(char *path, t_env_vars *head, t_token_tree *tree);
 char			*remove__quotes(char *str);
 void 			print_tree(t_token_tree *root, int level); //delete later
 t_token_tree	*create_node(char *token, t_t_type type, char **envp, t_env_vars **head);
@@ -115,24 +115,26 @@ t_token_array	*tokenizer(char **input, t_env_vars *head);
 void			*free_alloc(char **bigstr, int l);
 int				is_inside_quotes(char const *s, int i);
 int				pwd_command();
-int				echo_command(char **cmds);
-void			export_command(char **tokens, t_env_vars **head);
+void			echo_command(t_token_tree *tree, char **cmds);
+void			export_command(char **tokens, t_env_vars **head, t_token_tree *tree);
 int				is_op(char *input);
 int				count_token_len(char *input);
 char			*get_token(char **input, int num, char *str);
 int 			count_cmds(char *input);
-int				handle_tokens(char **input, char *input_cpy, char **holder, int i);
+int				handle_tokens(char **input, char *input_cpy,
+		char **holder, int i);
 int				handle_cmd(char **input, char *input_cpy, char **holder, int i);
 t_stack			shunting_yard(t_token_array *tokens);
 int				count_array(t_token_array *tokens);
 t_token_tree	*build_tree(t_stack *stack, char **envp, t_env_vars **head);
 int				count_env_vars(char **tokens);
-void			unset_command(t_env_vars **head, char **cmds);
+void			unset_command(t_env_vars **head, char **cmds, t_token_tree *tree);
 void			env_command(t_env_vars *env_vars);
 char			**ft_split_one(char const *s, char c);
 t_t_type		set_token_type(char *token);
 void			execute_pipe(t_token_tree *left, t_token_tree *right);
-int				exec_command(char **cmds, char **envp, t_env_vars **head, int child);
+int				exec_command(t_token_tree *tree, char **cmds,
+		t_env_vars **head, int child);
 int				exec_normal_commands(t_token_tree *tree);
 int				scan_syntax(char **holder);
 int				unclosed_var(char *str, char c);
@@ -143,8 +145,10 @@ int				has_wildcard(char *str);
 int				execute_tree(t_token_tree *tree, t_env_vars **head, int child);
 void			execute_redirection(t_token_tree *tree);
 int				is_string(char *str);
-void			export_without_arguments(t_env_vars *head);
-void			add_env_var(char **tokens, int nbr_envs, t_env_vars **head);
+void			export_without_arguments(t_env_vars *head, char **tokens,
+		t_token_tree *tree);
+void			add_env_var(char **tokens, int nbr_envs,
+		t_env_vars **head, t_token_tree *tree);
 t_env_vars		*get_last_node(t_env_vars *head);
 void			lst_add_element(char **tokens, char **cmds,
 		t_env_vars **head, int i);
@@ -168,9 +172,9 @@ void			*handle_other_tokens(t_token_array *token_array, char **holder, int *i, t
 int				free_token_holder(char **holder, t_token_array *token_array, int i);
 void			ft_lstadd(t_env_vars **lst, t_env_vars *new);
 int				print_echo_content(char **cmds, int i, int new_line);
-void			replace_nodes_content(t_env_vars *node1, t_env_vars *node2);
+void			replace_nodes_content(t_env_vars *node1, t_env_vars *node2, t_token_tree *tree, char **cmds);
 t_env_vars		*create_lst(char **envp);
-t_env_vars		*search_for_env_var(t_env_vars **head, char *env_name, int remove);
+t_env_vars		*search_for_env_var(t_env_vars **head, char *env_name, int remove, t_token_tree *tree);
 int				append_env_var(t_env_vars *head, char *env_name, char *to_append);
 char			*expand_vars(char *holder, t_env_vars *head);
 int				ft_isalpha(int c);
@@ -198,20 +202,20 @@ void			free_cmds(char **cmds);
 void			free_envs(t_env_vars **head);
 void			free_envs(t_env_vars **head);
 void			create_env(t_env_vars *node, t_env_vars *head, char *env);
-t_env_vars		*display_envs_sorted(t_env_vars *head);
+t_env_vars		*display_envs_sorted(t_env_vars *head, char **tokens, t_token_tree *tree);
 void			handle_builtins_failure(t_env_vars **head, t_env_vars *tmp);
 void			exit_command(char **cmds, t_env_vars **head, int child);
 void			null_terminating(char *str, char c);
 int				execute_using_execve(t_env_vars *tmp, char **cmds,
 		char *path, char **envp);
 int				define_exit_status(t_env_vars *tmp, char *exit_status);
-int				execute_rest(char **cmds, char **envp, t_env_vars **head);
-int				builtins_rest(char **cmds, char **envp, t_env_vars **head, int child);
+int				execute_rest(char **cmds, char **envp, t_env_vars **head, t_token_tree *tree);
+int				builtins_rest(t_token_tree *tree, char **cmds, t_env_vars **head, int child);
 void			free_node(t_env_vars *node);
-int				home_case(t_env_vars *head);
-int				oldpwd_case(t_env_vars *head);
+int				home_case(t_env_vars *head, t_token_tree *tree);
+int				oldpwd_case(t_env_vars *head, t_token_tree *tree);
 int				check_minus_n(char *echo_flag);
-void			delete_env(t_env_vars **head, char *cmd);
+void			delete_env(t_env_vars **head, char *cmd, t_token_tree *tree, char **cmds);
 void			print_err(char *string1, char *string2, char *string3);
 int				has_multi_redirections(t_token_array *token_array);
 void			switch_multi_redirections(t_token_array *token_array);

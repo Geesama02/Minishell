@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_utils3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:01:23 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/10 15:13:47 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/15 16:53:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void    sort_matched_envs(t_env_vars *head, int nbr_matched, int ascii_nbr)
 	}
 }
 
-void    create_sorted_lst(t_env_vars *node, t_env_vars **head)
+void    create_sorted_lst(t_env_vars *node, t_env_vars **head, char **tokens, t_token_tree *tree)
 {
 	t_env_vars  *newnode;
 	t_env_vars  *prev;
@@ -65,14 +65,15 @@ void    create_sorted_lst(t_env_vars *node, t_env_vars **head)
 		prev->next = newnode;
 	newnode->env_name = ft_strdup(node->env_name); //leaks
 	if (!newnode->env_name && errno == ENOMEM)
-		return (free(newnode));
+		return (free(newnode), ft_close(tokens, head), free_tree(tree), exit(1));
 	newnode->env_val = ft_strdup(node->env_val); //leaks
 	if (!newnode->env_val && errno == ENOMEM)
-		return (free(newnode), free(newnode->env_name));
+		return (free(newnode), free(newnode->env_name),
+			ft_close(tokens, head), free_tree(tree), exit(1));
 	newnode->next = NULL;
 }
 
-t_env_vars  *display_envs_sorted(t_env_vars *head)
+t_env_vars  *display_envs_sorted(t_env_vars *head, char **tokens, t_token_tree *tree)
 {
 	int			matches;
 	int         ascii_nbr;
@@ -89,7 +90,7 @@ t_env_vars  *display_envs_sorted(t_env_vars *head)
 		{
 			if (tmp->env_name[0] == ascii_nbr)
 			{
-				create_sorted_lst(tmp, &s_head);
+				create_sorted_lst(tmp, &s_head, tokens, tree);
 				matches++;
 			}
 			tmp = tmp->next;

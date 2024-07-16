@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/15 09:58:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 08:39:47 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	append_env_var(t_env_vars *head, char *env_name, char *to_append)
 	return (0);
 }
 
-t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name, int remove)
+t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name,
+		int remove, t_token_tree *tree)
 {
 	t_env_vars  *current;
 
@@ -38,7 +39,7 @@ t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name, int remove)
 		current = current->next;
 	if (current && remove)
 	{
-		unset_command(head, &current->env_name);
+		unset_command(head, &current->env_name, tree);
 		return (current);
 	}
 	else if (current && !remove)

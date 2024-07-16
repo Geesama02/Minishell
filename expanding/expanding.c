@@ -6,18 +6,18 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/15 09:58:58 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 08:40:25 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void	export_without_arguments(t_env_vars *p_head)
+void	export_without_arguments(t_env_vars *p_head, char **tokens, t_token_tree *tree)
 {
 	t_env_vars	*tmp_h;
 	t_env_vars	*s_head;
 
-	s_head = display_envs_sorted(p_head);
+	s_head = display_envs_sorted(p_head, tokens, tree);
 	tmp_h = s_head;
 	while (s_head)
 	{
@@ -72,49 +72,51 @@ void	lst_add_element(char **tokens, char **cmds, t_env_vars **head,
 	create_newenv(tokens, head, cmds, new_env);
 }
 
-int	add_or_append(char **cmds, t_env_vars **head,
+int	add_or_append(char **cmds, t_token_tree *tree,
 	char **tokens, int i)
 {
-	char		*env_name;
-	t_env_vars	*tmp;
+	char	*env_name;
 
-	tmp = search_for_env_var(head, "?", 0);
 	if (ft_strchr(cmds[0], '+'))
 	{
 		env_name = ft_strtrim(cmds[0], "+"); //leaks
 		if (!env_name && errno == ENOMEM)
-			return (free_cmds(cmds), ft_close(tokens, head), exit(1), -1);
-		if (append_env_var(*head, env_name, cmds[1]) == -1)
-			return (-1);
+			return (free_cmds(cmds), ft_close(tokens, tree->head),
+				free_tree(tree), exit(1), -1);
+		if (append_env_var(*tree->head, env_name, cmds[1]) == -1)
+			return (free(cmds), ft_close(tokens, tree->head),
+				free_tree(tree), exit(1), -1);
 		free(env_name);
 	}
 	else if (ft_isalpha_quotes(cmds[0][0]) && is_string(cmds[0]))
 	{
-		search_for_env_var(head, cmds[0], 1);
-		lst_add_element(tokens, cmds, head, i);
+		search_for_env_var(tree->head, cmds[0], 1, tree);
+		lst_add_element(tokens, cmds, tree->head, i);
 	}
 	else
-	{
-		define_exit_status(tmp, "1");
-		print_err("export: ", tokens[i], " : not a valid identifier\n");
-	}
+		return (-1);
 	return (0);
 }
 
-void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head)
+void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head, t_token_tree *tree)
 {
 	int		i;
 	char	**cmds;
+	t_env_vars	*tmp;
 
 	i = 1;
 	cmds = NULL;
+	tmp = search_for_env_var(tree->head, "?", 0, tree);
 	while (i <= nbr_envs)
 	{
     	cmds = ft_split_one(tokens[i], '=');
-		if (!cmds)
-			return (ft_close(tokens, head), exit(1));
-		if (add_or_append(cmds, head, tokens, i) == -1)
-			return ;
+		if (!cmds && errno == ENOMEM)
+			return (ft_close(tokens, head), free_tree(tree), exit(1));
+		if (add_or_append(cmds, tree, tokens, i) == -1)
+		{
+			define_exit_status(tmp, "1");
+			print_err("export: ", tokens[i], " : not a valid identifier\n");
+		}
 		free_cmds(cmds);
 		free(cmds);
 		i++;

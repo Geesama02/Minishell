@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/13 15:14:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 09:18:08 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ char	*find_correct_path(char **cmds, t_env_vars **head)
 	return (path);
 }
 
-int execute_rest(char **cmds, char **envp, t_env_vars **head)
+int execute_rest(char **cmds, char **envp, t_env_vars **head, t_token_tree *tree)
 {
 	char		*path;
 	t_env_vars	*tmp;
 
 	path = NULL;
-	tmp = search_for_env_var(head, "?", 0);
+	tmp = search_for_env_var(head, "?", 0, tree);
 	if (!ft_strchr(cmds[0], '/'))
 		path = find_correct_path(cmds, head);
 	else
@@ -109,18 +109,19 @@ int execute_rest(char **cmds, char **envp, t_env_vars **head)
 	return (0);
 }
 
-int exec_command(char **cmds, char **envp, t_env_vars **head, int child)
+int exec_command(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
 {
 	t_env_vars	*tmp;
 
-	tmp = search_for_env_var(head, "?", 0);
+	tmp = search_for_env_var(head, "?", 0, tree);
 	if (define_exit_status(tmp, "0") == -1)
 		return (free_envs(head), -1);
 	if (!ft_strcmp(cmds[0], "cd"))
 	{    
-		if (cd_command(cmds[1], *head) == -1)
+		if (cd_command(cmds[1], *head, tree) == -1)
 		{	
-			handle_builtins_failure(head, tmp);
+			if (define_exit_status(tmp, "1") == -1)
+				return (ft_close(cmds, head), free_tree(tree), exit(1), -1);
 			return (-1);
 		}
 	}
@@ -133,6 +134,6 @@ int exec_command(char **cmds, char **envp, t_env_vars **head, int child)
 		}
 	}
 	else
-		return (builtins_rest(cmds, envp, head, child));
+		return (builtins_rest(tree, cmds, head, child));
 	return (0);
 }
