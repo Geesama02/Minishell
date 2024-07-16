@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/16 14:39:24 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 15:20:07 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,7 @@ void			print_err(char *string1, char *string2, char *string3);
 int				has_multi_redirections(t_token_array *token_array);
 void			switch_multi_redirections(t_token_array *token_array);
 int				check_redirections_extras(t_token_array *token_array);
+char			**ignore_quotes_2d_array(char **strs);
 
 
 // delete later
