@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 09:20:40 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 09:36:53 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void    exit_command(char **cmds, t_env_vars **head, int child)
 
 int	home_case(t_env_vars *head, t_token_tree *tree)
 {
-	t_env_vars *home_path;
+	t_env_vars	*home_path;
 
 	home_path = search_for_env_var(&head, "HOME", 0, tree);
 	if (home_path)
