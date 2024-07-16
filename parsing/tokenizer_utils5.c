@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 09:44:22 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/14 18:00:51 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/16 11:21:37 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 int is_redirection(t_t_type type)
 {
 	return (type == REDIRECTION_A || type == REDIRECTION_I || type == REDIRECTION_O);
+}
+
+int is_redirection_heredoc(char *str)
+{
+	return (set_token_type(str) == REDIRECTION_I
+		|| set_token_type(str) == REDIRECTION_O
+		|| set_token_type(str) == REDIRECTION_A
+		|| set_token_type(str) == HEREDOC);
 }
 
 int	has_redirection_extras(char *str)
@@ -55,7 +63,7 @@ int	check_redirections_extras(t_token_array *token_array)
 		i++;
 	while (i >= 0)
 	{
-		if (i >= 0 && is_redirection(token_array[i].type)
+		if (i > 0 && is_redirection(token_array[i].type)
 			&& has_redirection_extras(token_array[i + 1].token))
 		{
 			extra = ft_split_first(token_array[i + 1].token);

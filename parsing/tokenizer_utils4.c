@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:49:36 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/15 14:58:45 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/16 11:49:23 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void switch_multi_redirections(t_token_array *token_array)
 			tmp_i = get_redirection(&token_array[i], tmp_i, REDIRECTION_I, REDIRECTION_I);
 			i++;
 		}
-		if (tmp_a_o)
+		if (tmp_a_o && i > 0)
 			swap_redirections(tmp_a_o - 1, find_redirection_double(token_array, l, i) - 1);
 		swap_redirections(tmp_a_o, find_redirection_double(token_array, l, i));
 		swap_redirections(tmp_i, find_redirection(token_array, REDIRECTION_I, l, i));

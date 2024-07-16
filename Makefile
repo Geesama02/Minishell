@@ -6,8 +6,8 @@ SRC = main.c execution/function_protections.c parsing/ft_split_qt.c parsing/ft_e
 	parsing/build_tree.c expanding/expanding_utils.c expanding/expanding_utils2.c expanding/expanding_utils3.c expanding/ft_split_one.c expanding/wildcard_utils.c execution/pipe_execution.c execution/execution_utils.c \
 	execution/redirection.c expanding/wildcard_utils2.c parsing/heredoc.c parsing/heredoc_utils.c parsing/heredoc_utils2.c parsing/tokenizer_utils3.c \
 	execution/builtins_utils.c expanding/expanding_env.c expanding/expanding_env_utils.c execution/heredoc_execution.c \
-	signals/signals.c parsing/build_tree_utils.c execution/memory_utils.c parsing/tokenizer_utils4.c parsing/tokenizer_utils5.c \
-	execution/builtins_failure.c execution/builtins2.c execution/execution_utils2.c
+	signals/signals.c parsing/build_tree_utils.c execution/memory_utils.c parsing/tokenizer_utils4.c parsing/tokenizer_utils5.c parsing/tokenizer_utils6.c \
+	execution/builtins_failure.c execution/builtins2.c execution/execution_utils2.c 
 OBJS = ${SRC:.c=.o}
 LIBFT = ./libft/libft.a
 LPATH = ../../.brew/opt/readline

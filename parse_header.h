@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/16 15:20:07 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 17:58:17 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,11 @@ int				has_multi_redirections(t_token_array *token_array);
 void			switch_multi_redirections(t_token_array *token_array);
 int				check_redirections_extras(t_token_array *token_array);
 char			**ignore_quotes_2d_array(char **strs);
-
+int 			is_redirection(t_t_type type);
+int 			is_redirection_heredoc(char *str);
+int				must_reorder(t_token_array *token_array);
+int				reorder_tokens(t_token_array **token_array);
+void			free_token_array(t_token_array *token_array);
 
 // delete later
 char *print_type(t_t_type type);
