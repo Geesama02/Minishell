@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 16:30:38 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/16 11:24:58 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	scan_syntax(char **holder)
 	j = 0;
 	while (holder[j])
 		j++;
-	if (is_operand(holder[0]))
+	if (set_token_type(holder[0]) == OPERATOR_T)
 		return (print_err("Minishell: syntax error near unexpected token `" , holder[0], "' \n"), 0);
 	else if (is_operand(holder[j - 1]))
 		return (print_err("Minishell: syntax error near unexpected token `", holder[j - 1], "' \n"), 0);
@@ -60,7 +60,9 @@ int	scan_syntax(char **holder)
 			if (handle_wildcard(&holder[i]) == 0)
 				return (0);
 		}
-		if (holder[i + 1] && is_operand(holder[i]) && is_operand(holder[i + 1]))
+		if (holder[i + 1] && ((set_token_type(holder[i]) == OPERATOR_T
+			&& set_token_type(holder[i + 1]) == OPERATOR_T)
+			|| (is_redirection_heredoc(holder[i]) && is_operand(holder[i + 1]))))
 			return (print_err("Minishell: syntax error near unexpected token `", holder[i + 1], "' \n"), 0);
 		i++;
 	}
