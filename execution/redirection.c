@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 09:28:08 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:18:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	execute_redirection_in(t_token_tree *tree)
 	if (!pid)
 	{
 		
-		fd_file = open(tree->right->token, O_RDONLY, S_IRWXU); //fail
+		fd_file = open(ignore_quotes(&tree->right->token), O_RDONLY, S_IRWXU); //fail
 		if (fd_file == -1 && errno == ENOENT)
 		{
 			print_err("minishell: ", tree->right->token, ": No such file or directory\n");
@@ -53,7 +53,7 @@ void	execute_redirection_out(t_token_tree *tree)
 	else if (pid == 0)
 	{
 		stdout_cp = dup(1);
-		fd_file = open(tree->right->token, O_CREAT | O_RDWR | O_TRUNC, S_IRWXU); //fail
+		fd_file = open(ignore_quotes(&tree->right->token), O_CREAT | O_RDWR | O_TRUNC, S_IRWXU); //fail
 		if (fd_file == -1)
 		{	
 			print_err("open() failed!!\n", NULL, NULL);
@@ -80,7 +80,7 @@ void	execute_redirection_append(t_token_tree *tree)
 	if (!pid)
 	{
 		stdout_cp = dup(1);
-		fd_file = open(tree->right->token, O_CREAT | O_RDWR | O_APPEND, 00700);
+		fd_file = open(ignore_quotes(&tree->right->token), O_CREAT | O_RDWR | O_APPEND, 00700);
 		if (fd_file == -1)
 		{
 			print_err("open() failed!!\n", NULL, NULL);
