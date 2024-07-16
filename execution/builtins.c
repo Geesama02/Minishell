@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 09:21:59 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:30:07 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	echo_command(t_token_tree *tree, char **cmds)
 	i = 1;
 	new_line = 1;
 	if (print_echo_content(cmds, i, new_line) == 0)
-		return (ft_close(cmds, tree->head), free_tree(tree), exit(1));
+		return (ft_close(cmds, tree->head, tree), exit(1));
 }
 
 void	export_command(char **tokens, t_env_vars **head, t_token_tree *tree)

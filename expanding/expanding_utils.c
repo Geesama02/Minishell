@@ -6,25 +6,28 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 08:39:47 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:31:17 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int	append_env_var(t_env_vars *head, char *env_name, char *to_append)
+int	append_env_var(char *env_name, char *to_append, char **cmds, t_token_tree *tree)
 {
-	char	*new_env_val;
+	t_env_vars	*tmp;
+	char		*new_env_val;
 
+	tmp = *tree->head;
 	new_env_val = NULL;
-	while (head && ft_strcmp(head->env_name, env_name))
-		head = head->next;
-	if (head)
+	while (tmp && ft_strcmp(tmp->env_name, env_name))
+		tmp = tmp->next;
+	if (tmp)
 	{
-		new_env_val = ft_strjoin(head->env_val, to_append); //leaks
+		new_env_val = ft_strjoin(tmp->env_val, to_append); //leaks
 		if (!new_env_val && errno == ENOMEM)
-			return (free(env_name), -1);
-		head->env_val = new_env_val;
+			return (free(env_name), ft_close(cmds, tree->head, tree),
+				exit(1), -1);
+		tmp->env_val = new_env_val;
 	}
 	return (0);
 }

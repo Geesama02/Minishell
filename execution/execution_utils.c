@@ -6,13 +6,13 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 09:43:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:42:07 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void	add_slash(char **paths_w, char **paths)
+void	add_slash(char **paths_w, char **paths, char **cmds, t_token_tree *tree)
 {
 	int		i;
 	int		j;
@@ -22,7 +22,10 @@ void	add_slash(char **paths_w, char **paths)
 	while (paths_w[i])
 	{
 		j = 0;
-		paths[i] = malloc(sizeof(char) * (ft_strlen(paths_w[i]) + 2));
+		paths[i] = malloc(sizeof(char) * (ft_strlen(paths_w[i]) + 2)); //leaks
+		if (!paths[i])
+			return (free_2d_array(paths), free_2d_array(paths_w),
+				ft_close(cmds, tree->head, tree), exit(1));
 		while (paths_w[i][j])
 		{
 			paths[i][j] = paths_w[i][j];
@@ -34,7 +37,7 @@ void	add_slash(char **paths_w, char **paths)
 	}
 }
 
-char *find_path(char **paths, char *cmd)
+char *find_path(char **paths, char *cmd, char **cmds, t_token_tree *tree)
 {
 	int			i;
 	char		*path;
@@ -46,7 +49,8 @@ char *find_path(char **paths, char *cmd)
 	{
 		path = ft_strjoin(paths[i], cmd); //leaks
 		if (!path)
-			return (free_cmds(paths), NULL);
+			return (free_2d_array(paths), free(paths), ft_close(cmds, tree->head, tree),
+				exit(1), NULL);
 		if (!stat(path, &buffer))
 			return (path);
 		else
@@ -58,7 +62,7 @@ char *find_path(char **paths, char *cmd)
 	return (NULL);
 }
 
-char	*find_correct_path(char **cmds, t_env_vars **head)
+char	*find_correct_path(char **cmds, t_token_tree *tree)
 {
 	char	**paths_w;
 	char	**paths;
@@ -66,38 +70,35 @@ char	*find_correct_path(char **cmds, t_env_vars **head)
 
 	paths_w = ft_split(getenv("PATH"), ':'); //leaks
 	if (!paths_w)
-		return (ft_close(cmds, head), exit(1), NULL);
+		return (ft_close(cmds, tree->head, tree), exit(1), NULL);
 	paths = malloc(sizeof(char *) * (count_2d_array_elements(paths_w) + 1));
 	if (!paths)
-		return (free_cmds(paths_w), ft_close(cmds, head),
+		return (free_2d_array(paths_w), ft_close(cmds, tree->head, tree),
 			exit(1), NULL);
 	paths[count_2d_array_elements(paths_w)] = NULL;
-	add_slash(paths_w, paths);
-	path = find_path(paths, cmds[0]);
+	add_slash(paths_w, paths, cmds, tree);
+	path = find_path(paths, cmds[0], cmds, tree);
 	if (!path)
-		return (free_cmds(paths), free_cmds(paths_w),
-			free(paths), free(paths_w), NULL);
-	free_cmds(paths_w);
-	free_cmds(paths);
-	free(paths_w);
-	free(paths);
+		return (free_2d_array(paths), free_2d_array(paths_w), NULL);
+	free_2d_array(paths_w);
+	free_2d_array(paths);
 	return (path);
 }
 
-int execute_rest(char **cmds, char **envp, t_env_vars **head, t_token_tree *tree)
+int	execute_rest(char **cmds, t_token_tree *tree)
 {
 	char		*path;
 	t_env_vars	*tmp;
 
 	path = NULL;
-	tmp = search_for_env_var(head, "?", 0, tree);
+	tmp = search_for_env_var(tree->head, "?", 0, tree);
 	if (!ft_strchr(cmds[0], '/'))
-		path = find_correct_path(cmds, head);
+		path = find_correct_path(cmds, tree);
 	else
 		path = cmds[0];
 	if (path)
 	{
-		if (execute_using_execve(tmp, cmds, path, envp) == -1)
+		if (execute_using_execve(tmp, cmds, path, tree->envp) == -1)
 			return (-1);
 	}
 	else
@@ -121,7 +122,7 @@ int exec_command(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
 		if (cd_command(cmds[1], *head, tree) == -1)
 		{	
 			if (define_exit_status(tmp, "1") == -1)
-				return (ft_close(cmds, head), free_tree(tree), exit(1), -1);
+				return (ft_close(cmds, head, tree), exit(1), -1);
 			return (-1);
 		}
 	}

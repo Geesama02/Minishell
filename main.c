@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/16 09:34:20 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:35:10 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,14 +156,14 @@ int main(int argc, char **argv, char **envp)
 			{
 				print_err("readline: allocation failure!\n", NULL, NULL);
 				rl_clear_history();
-				ft_close(NULL, &head);
+				ft_close(NULL, &head, NULL);
 				exit(1);
 			}
 			else
 			{
 				rl_clear_history();
 				write(0, "exit\n", 5);
-				ft_close(NULL, &head);
+				ft_close(NULL, &head, NULL);
 				break;
 			}
 		}

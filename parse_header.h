@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/16 09:19:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:38:22 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void			add_env_var(char **tokens, int nbr_envs,
 		t_env_vars **head, t_token_tree *tree);
 t_env_vars		*get_last_node(t_env_vars *head);
 void			lst_add_element(char **tokens, char **cmds,
-		t_env_vars **head, int i);
+		t_token_tree *head, int i);
 int				join_strings(char **s1, char *s2);
 int				handle_wildcard(char **str);
 int				free_2d_array(char **array);
@@ -175,7 +175,7 @@ int				print_echo_content(char **cmds, int i, int new_line);
 void			replace_nodes_content(t_env_vars *node1, t_env_vars *node2, t_token_tree *tree, char **cmds);
 t_env_vars		*create_lst(char **envp);
 t_env_vars		*search_for_env_var(t_env_vars **head, char *env_name, int remove, t_token_tree *tree);
-int				append_env_var(t_env_vars *head, char *env_name, char *to_append);
+int				append_env_var(char *env_name, char *to_append, char **cmds, t_token_tree *tree);
 char			*expand_vars(char *holder, t_env_vars *head);
 int				ft_isalpha(int c);
 char			**ft_env_split(char const *s, char c);
@@ -196,20 +196,19 @@ int				tokenize(char **input, char *input_cpy, char **holder);
 void			handle_node_failure(t_stack *stack, t_token_tree **stack_tree,int tree_offset);
 void			check_if_has_file(t_token_array *token_array, char **token,
 		t_token_vars *vars, char *tmp);
-void			ft_close(char **cmds, t_env_vars **head);
+void			ft_close(char **cmds, t_env_vars **head, t_token_tree *tree);
 int				count_2d_array_elements(char **arr);
-void			free_cmds(char **cmds);
 void			free_envs(t_env_vars **head);
 void			free_envs(t_env_vars **head);
-void			create_env(t_env_vars *node, t_env_vars *head, char *env);
+int				create_env(t_env_vars *node, t_env_vars *head, char *env);
 t_env_vars		*display_envs_sorted(t_env_vars *head, char **tokens, t_token_tree *tree);
 void			handle_builtins_failure(t_env_vars **head, t_env_vars *tmp);
-void			exit_command(char **cmds, t_env_vars **head, int child);
+void			exit_command(char **cmds, t_env_vars **head, int child, t_token_tree *tree);
 void			null_terminating(char *str, char c);
 int				execute_using_execve(t_env_vars *tmp, char **cmds,
 		char *path, char **envp);
 int				define_exit_status(t_env_vars *tmp, char *exit_status);
-int				execute_rest(char **cmds, char **envp, t_env_vars **head, t_token_tree *tree);
+int				execute_rest(char **cmds, t_token_tree *tree);
 int				builtins_rest(t_token_tree *tree, char **cmds, t_env_vars **head, int child);
 void			free_node(t_env_vars *node);
 int				home_case(t_env_vars *head, t_token_tree *tree);

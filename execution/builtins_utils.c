@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:33:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/15 17:25:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:29:50 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void    replace_nodes_content(t_env_vars *node1, t_env_vars *node2, t_token_tree
     free(node1->env_val);
     node1->env_name = ft_strdup(node2->env_name);
     if (!node1->env_name)
-        return (ft_close(cmds, tree->head), free_tree(tree), exit(1));
+        return (ft_close(cmds, tree->head, tree), exit(1));
     node1->env_val = ft_strdup(node2->env_val);
     node1->next = node2->next;
     free(node2->env_name);

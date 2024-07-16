@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:01:23 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/15 16:53:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:32:30 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,19 @@ void    create_sorted_lst(t_env_vars *node, t_env_vars **head, char **tokens, t_
 
 	prev = get_last_node(*head);
 	newnode = malloc(sizeof(t_env_vars)); //leaks
+	if (!newnode)
+		return (ft_close(tokens, head, tree), exit(1));
 	if (!*head)
 		*head = newnode;
 	if (prev)
 		prev->next = newnode;
 	newnode->env_name = ft_strdup(node->env_name); //leaks
 	if (!newnode->env_name && errno == ENOMEM)
-		return (free(newnode), ft_close(tokens, head), free_tree(tree), exit(1));
+		return (free(newnode), ft_close(tokens, head, tree), exit(1));
 	newnode->env_val = ft_strdup(node->env_val); //leaks
 	if (!newnode->env_val && errno == ENOMEM)
 		return (free(newnode), free(newnode->env_name),
-			ft_close(tokens, head), free_tree(tree), exit(1));
+			ft_close(tokens, head, tree), exit(1));
 	newnode->next = NULL;
 }
 
@@ -102,22 +104,22 @@ t_env_vars  *display_envs_sorted(t_env_vars *head, char **tokens, t_token_tree *
 	return (s_head);
 }
 
-void    create_env(t_env_vars *node, t_env_vars *head, char *env)
+int	create_env(t_env_vars *node, t_env_vars *head, char *env)
 {
 	char	**envs;
 
 	envs = ft_split_qt(env, '='); //leaks
 	if (!envs && errno == ENOMEM)
-		return (free(node));
+		return (free(node), -1);
 	node->env_name = ft_strdup(envs[0]); //leaks
 	if (!node->env_name && errno == ENOMEM)
-		return (free_cmds(envs), free(node));
+		return (free_2d_array(envs), free(node), -1);
 	node->env_val = ft_strdup(envs[1]); //leaks
 	if (!node->env_val && errno == ENOMEM)
-		return (free_cmds(envs), free(node->env_name), free(node));
+		return (free_2d_array(envs), free(node->env_name), free(node), -1);
 	node->next = NULL;
-	free_cmds(envs);
-	free(envs);
+	free_2d_array(envs);
 	envs = NULL;
 	ft_lstadd(&head, node);
+	return (0);
 }
