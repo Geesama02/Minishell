@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:33:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 12:29:50 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 14:52:15 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void    delete_env(t_env_vars **head, char *cmd, t_token_tree *tree, char **cmds
 	{
 		while (tmp && tmp->next && ft_strcmp(tmp->next->env_name, cmd))
 			tmp = tmp->next;
-		if (tmp->next && tmp->next->next)
+		if (tmp && tmp->next && tmp->next->next)
 			replace_nodes_content(tmp->next, tmp->next->next, tree, cmds);
-		else if (tmp->next && !tmp->next->next)
+		else if (tmp && tmp->next && !tmp->next->next)
 		{
 			free_node(tmp->next);
 			tmp->next = NULL;

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 12:30:07 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 14:52:42 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	unset_command(t_env_vars **head, char **cmds, t_token_tree *tree)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	while (cmds[i])
 	{
 		delete_env(head, cmds[i], tree, cmds);
