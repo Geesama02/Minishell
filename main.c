@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/16 17:56:14 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/16 17:58:01 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	len(char **s)
 
 int check_heredoc(char *input)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (input[i])
@@ -156,14 +156,14 @@ int main(int argc, char **argv, char **envp)
 			{
 				print_err("readline: allocation failure!\n", NULL, NULL);
 				rl_clear_history();
-				ft_close(NULL, &head);
+				ft_close(NULL, &head, NULL);
 				exit(1);
 			}
 			else
 			{
 				rl_clear_history();
 				write(0, "exit\n", 5);
-				ft_close(NULL, &head);
+				ft_close(NULL, &head, NULL);
 				break;
 			}
 		}
@@ -185,6 +185,13 @@ int main(int argc, char **argv, char **envp)
 			define_exit_status(tmp, "258");
 			free(input);
 			continue;
+		}
+		if (is_heredoc[1] == 1)
+		{
+			t_env_vars *tmp2;
+			tmp2 = head;
+			tmp2 = search_for_env_var(&head, "?", 0, NULL);
+			define_exit_status(tmp2, "1");
 		}
 		token_array = tokenizer(&input, head);
 		if (!token_array)

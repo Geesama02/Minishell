@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/15 15:11:59 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 15:15:28 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,6 @@ int execute_cmds_with_operators(t_token_tree *tree, t_env_vars **head, int child
 	return (0);
 }
 
-int	execute_cmd(t_token_tree *tree, t_env_vars **head, char **cmds, int child)
-{
-	int	res;
-
-	res = exec_command(cmds, tree->envp, head, child);
-	if (res == -1)
-		return (free_cmds(cmds), free(cmds), -1);
-	if (res == -2)
-		return (free_envs(head), free_cmds(cmds), free(cmds), free_tree(tree->tree_head_address), exit(1), -1);
-	return (0);
-}
-
 int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 {
 	int		status;
@@ -59,19 +47,19 @@ int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 	{
 		cmds = ft_split_qt(tree->token, ' '); //leaks
 		if (!cmds && errno == ENOMEM)
-			return (free_envs(head), -1);
-		if (execute_cmd(tree, head, cmds, child) == -1)
-			return (-1);
+			return (free_envs(head), free_tree(tree), exit(1), -1);
+		cmds = ignore_quotes_2d_array(cmds);
+		if (exec_command(tree, cmds, head, child) == -1)
+			return (free_2d_array(cmds), -1);
 	}
 	else if (tree->type == OPERATOR_T)
 	{
 		if (execute_cmds_with_operators(tree, head, child) == -1)
-			return (free_cmds(cmds), free(cmds), -1);
+			return (free_2d_array(cmds) -1);
 	}
 	else if (tree->type == HEREDOC)
 		execute_heredoc(tree->left, tree->right);
 	wait(&status);
-	free_cmds(cmds);
-	free(cmds);
+	free_2d_array(cmds);
 	return (0);
 }

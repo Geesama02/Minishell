@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:19:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/14 18:24:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:17:27 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void    execute_heredoc(t_token_tree *cmd, t_token_tree *content)
 		return (free_tree(cmd), free_tree(content), exit(1));
 	while (cmds[i])
 	{
-		stat(cmds[i], &ss);
+		stat(ignore_quotes(&cmds[i]), &ss);
 		if (S_ISREG(ss.st_mode) || S_ISDIR(ss.st_mode))
 			dir_or_file = 1;
 		i++;

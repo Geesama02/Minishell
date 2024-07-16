@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/15 14:37:09 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 15:20:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,21 @@ int	execute_using_execve(t_env_vars *tmp, char **cmds,
 	return (0);
 }
 
-int	builtins_rest(char **cmds, char **envp, t_env_vars **head, int child)
+int	builtins_rest(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
 {
 	if (!ft_strcmp(cmds[0], "echo"))
-	{
-		if (echo_command(cmds) == 0)
-			return (-2);
-	}
+		echo_command(tree, cmds);
 	else if (!ft_strcmp(cmds[0], "export"))
-		export_command(cmds, head);
+		export_command(cmds, head, tree);
 	else if (!ft_strcmp(cmds[0], "unset"))
-		unset_command(head, cmds);
+		unset_command(head, cmds, tree);
 	else if (!ft_strcmp(cmds[0], "env"))
 		env_command(*head);
 	else if (!ft_strcmp(cmds[0], "exit"))
-		exit_command(cmds, head, child);
+		exit_command(cmds, head, child, tree);
 	else
 	{
-		if (execute_rest(cmds, envp, head) == -1)
+		if (execute_rest(cmds, tree) == -1)
 			return (-1);
 	}
 	return (0);
