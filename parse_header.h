@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/16 17:58:17 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/17 10:02:35 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,10 +221,10 @@ int				check_redirections_extras(t_token_array *token_array);
 char			**ignore_quotes_2d_array(char **strs);
 int 			is_redirection(t_t_type type);
 int 			is_redirection_heredoc(char *str);
-int				must_reorder(t_token_array *token_array);
-int				reorder_tokens(t_token_array **token_array);
+int				must_reorder(char **holder);
+int				reorder_tokens(char ***holder);
 void			free_token_array(t_token_array *token_array);
-
+int				count_len(char **holder);
 // delete later
 char *print_type(t_t_type type);
 
