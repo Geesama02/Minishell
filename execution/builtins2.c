@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 12:37:25 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 16:48:36 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ void    exit_command(char **cmds, t_env_vars **head, int child, t_token_tree *tr
     exit(0);
 }
 
-int	home_case(t_env_vars *head, t_token_tree *tree)
+int	home_case(t_env_vars *head)
 {
 	t_env_vars	*home_path;
 
-	home_path = search_for_env_var(&head, "HOME", 0, tree);
+	home_path = search_for_env_var(&head, "HOME");
 	if (home_path)
 	{	
 		if (chdir(home_path->env_val) != 0)
@@ -48,11 +48,11 @@ int	home_case(t_env_vars *head, t_token_tree *tree)
 	return (0);
 }
 
-int	oldpwd_case(t_env_vars *head, t_token_tree *tree)
+int	oldpwd_case(t_env_vars *head)
 {
 	t_env_vars	*oldpwd;
 
-	oldpwd = search_for_env_var(&head, "OLDPWD", 0, tree);
+	oldpwd = search_for_env_var(&head, "OLDPWD");
 	if (oldpwd && oldpwd->env_val)
 	{
 		if (chdir(oldpwd->env_val) != 0)

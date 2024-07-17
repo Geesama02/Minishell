@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 18:10:46 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 16:49:48 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 	t_env_vars	*tmp;
 
 	path = NULL;
-	tmp = search_for_env_var(tree->head, "?", 0, tree);
+	tmp = search_for_env_var(tree->head, "?");
 	if (!ft_strchr(cmds[0], '/'))
 		path = find_correct_path(cmds, tree);
 	else
@@ -115,26 +115,18 @@ int exec_command(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
 {
 	t_env_vars	*tmp;
 
-	tmp = search_for_env_var(head, "?", 0, tree);
+	tmp = search_for_env_var(head, "?");
 	if (define_exit_status(tmp, "0") == -1)
 		return (free_envs(head), -1);
 	if (!ft_strcmp(cmds[0], "cd"))
-	{    
-		if (cd_command(cmds[1], *head, tree) == -1)
-		{	
-			if (define_exit_status(tmp, "1") == -1)
-				return (ft_close(cmds, head, tree), exit(1), -1);
-			return (-1);
-		}
+	{
+		if (cd_command(cmds[1], *head) == -1)
+			return (handle_builtins_failure(tree, cmds));
 	}
 	else if (!ft_strcmp(cmds[0], "pwd"))
 	{    
 		if (pwd_command() == -1)
-		{
-			if (define_exit_status(tmp, "1") == -1)
-				return (ft_close(cmds, head, tree), exit(1), -1);
-			return (-1);
-		}
+			return (handle_builtins_failure(tree, cmds));
 	}
 	else
 		return (builtins_rest(tree, cmds, head, child));

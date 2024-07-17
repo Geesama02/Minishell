@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/17 10:15:12 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 16:48:00 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,10 @@ void	lst_add_element(char **tokens, char **cmds, t_token_tree *tree,
 int	add_or_append(char **cmds, t_token_tree *tree,
 	char **tokens, int i)
 {
-	char	*env_name;
+	char		*env_name;
+	t_env_vars	*prev;
 
+	prev = NULL;
 	if (ft_strchr(cmds[0], '+'))
 	{
 		env_name = ft_strtrim(cmds[0], "+"); //leaks
@@ -88,15 +90,21 @@ int	add_or_append(char **cmds, t_token_tree *tree,
 	}
 	else if (ft_isalpha_quotes(cmds[0][0]) && is_string(cmds[0]))
 	{
-		search_for_env_var(tree->head, cmds[0], 1, tree);
-		lst_add_element(tokens, cmds, tree, i);
+		prev = search_for_env_var(tree->head, cmds[0]);
+		if (prev)
+		{
+			free(prev->env_val);
+			prev->env_val = ft_strdup(cmds[1]);
+		}
+		else
+			lst_add_element(tokens, cmds, tree, i);
 	}
 	else
 		return (-1);
 	return (0);
 }
 
-void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head, t_token_tree *tree)
+int	add_env_var(char **tokens, int nbr_envs, t_env_vars **head, t_token_tree *tree)
 {
 	int		i;
 	char	**cmds;
@@ -104,18 +112,20 @@ void	add_env_var(char **tokens, int nbr_envs, t_env_vars **head, t_token_tree *t
 
 	i = 1;
 	cmds = NULL;
-	tmp = search_for_env_var(tree->head, "?", 0, tree);
+	tmp = search_for_env_var(tree->head, "?");
 	while (i <= nbr_envs)
 	{
     	cmds = ft_split_one(tokens[i], '=');
 		if (!cmds && errno == ENOMEM)
-			return (ft_close(tokens, head, tree), exit(1));
+			return (ft_close(tokens, head, tree), exit(1), -1);
 		if (add_or_append(cmds, tree, tokens, i) == -1)
 		{
 			define_exit_status(tmp, "1");
-			print_err("export: `", tokens[i], "' : not a valid identifier\n");
+			return (print_err("export: `", tokens[i],
+				"' : not a valid identifier\n"), -1);
 		}
 		free_2d_array(cmds);
 		i++;
 	}
+	return (0);
 }

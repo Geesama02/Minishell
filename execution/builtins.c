@@ -6,22 +6,22 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/17 10:14:37 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 16:52:50 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int cd_command(char *path, t_env_vars *head, t_token_tree *tree)
+int cd_command(char *path, t_env_vars *head)
 {
 	if (!path || !ft_strcmp(path, "~"))
 	{	
-		if (home_case(head, tree) == -1)
+		if (home_case(head) == -1)
 			return (-1);
 	}
 	else if (!ft_strcmp(path, "-"))
 	{	
-		if (oldpwd_case(head, tree))
+		if (oldpwd_case(head) == -1)
 			return (-1);
 	}
 	else
@@ -66,27 +66,31 @@ void	echo_command(t_token_tree *tree, char **cmds)
 		return (ft_close(cmds, tree->head, tree), exit(1));
 }
 
-void	export_command(char **tokens, t_env_vars **head, t_token_tree *tree)
+int	export_command(char **cmds, t_env_vars **head, t_token_tree *tree)
 {
 	int	nbr_envs;
 
-	if (!tokens[1])
+	if (!cmds[1])
 	{	
-		export_without_arguments(*head, tokens, tree);
-		return ;
+		export_without_arguments(*head, cmds, tree);
+		return (0);
 	}
-	nbr_envs = count_env_vars(tokens);
-	add_env_var(tokens, nbr_envs, head, tree);
+	nbr_envs = count_env_vars(cmds);
+	if (add_env_var(cmds, nbr_envs, head, tree) == -1)
+		return (-1);
+	return (0);
 }
 
-void	unset_command(t_env_vars **head, char **cmds, t_token_tree *tree)
+int	unset_command(t_env_vars **head, char **cmds, t_token_tree *tree)
 {
 	int	i;
 
 	i = 1;
 	while (cmds[i])
 	{
-		delete_env(head, cmds[i], tree, cmds);
+		if (delete_env(head, cmds[i], tree, cmds) == -1)
+			return (-1);
 		i++;
 	}
+	return (0);
 }
