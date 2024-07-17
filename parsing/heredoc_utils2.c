@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:29:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/14 10:22:22 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/17 13:41:21 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,17 @@ char	*continue_heredoc(char *delimiter, t_token_array *token_array,
 				continue ;
 		}
 		if (ft_strcmp(tmp, delimiter) == 0)
+		{
+			close(stdin_fd);
 			return (free(tmp), input);
+		}
 		if (!join_old_to_new(&input, tmp))
+		{
+			close(stdin_fd);
 			return (NULL);
+		}
 	}
+	close(stdin_fd);
 	return (input);
 }
 

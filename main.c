@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/16 18:11:50 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 14:48:13 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ int main(int argc, char **argv, char **envp)
 	rl_catch_signals = 0;
 	head = create_lst(envp);
 	define_signals();
-	// atexit(a);
+	atexit(a);
     while (1)
     {
 		// (void)envp;
@@ -207,7 +207,6 @@ int main(int argc, char **argv, char **envp)
 		// 	printf("token ==> %s -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
 		// 	i++;
 		// }
-				
 		postfix_stack = shunting_yard(token_array);
 		ast_tree = build_tree(&postfix_stack, envp, &head);
 		// printf("left -> %s\n", ast_tree->left->token);

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:03:52 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 10:41:09 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 14:42:20 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,6 @@ void	*handle_other_tokens(t_token_array *token_array, char **holder,
 			exit(1), NULL);
 	token_array[vars->l].type = set_token_type(holder[*i]);
 	(*i)++;
-	if (has_vars(token_array[vars->l].token))
-	{
-		token_array[vars->l].token = expand_vars(token_array[vars->l].token,
-				vars->head);
-		if (!token_array[vars->l].token)
-			return (free_token_holder(holder, token_array, vars->l),
-				exit(1), NULL);
-	}
 	vars->l++;
 	return (NULL);
 }

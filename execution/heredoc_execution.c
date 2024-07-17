@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:19:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 16:17:27 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 14:17:08 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,44 +35,27 @@ void	write_to_pipe(t_token_tree *content)
 void	execute_heredoc_content(t_token_tree *content, t_token_tree *cmd)
 {
 	int		fds[2];
-	int		stdout_fd;
-	int		stdin_fd;
+	int		stdout_cp;
+	int		stdin_cp;
 
-	stdout_fd = dup(1);
-	stdin_fd = dup(0);
+	stdout_cp = dup(1);
+	stdin_cp = dup(0);
 	pipe(fds);
 	dup2(fds[1], 1);
-	dup2(fds[0], 0);
-	write_to_pipe(content);
-	dup2(stdout_fd, 1);
-	close(stdout_fd);
 	close(fds[1]);
-	execute_tree(cmd, cmd->head, 1);
-	dup2(stdin_fd, 0);
-	close(stdin_fd);
+	write_to_pipe(content);
+	dup2(stdout_cp, 1);
+	close(stdout_cp);
+	dup2(fds[0], 0);
 	close(fds[0]);
+	execute_tree(cmd, cmd->head, 1);
+	dup2(stdin_cp, 0);
+	close(stdin_cp);
 }
 
 void    execute_heredoc(t_token_tree *cmd, t_token_tree *content)
-{	
-	int			i;
-	int			dir_or_file;
-	char		**cmds;
-	struct stat	ss;
-
-	i = 0;
-	dir_or_file = 0;
-	cmds = ft_split(content->token, ' ');
-	if (!cmds)
-		return (free_tree(cmd), free_tree(content), exit(1));
-	while (cmds[i])
-	{
-		stat(ignore_quotes(&cmds[i]), &ss);
-		if (S_ISREG(ss.st_mode) || S_ISDIR(ss.st_mode))
-			dir_or_file = 1;
-		i++;
-	}
-	if (content->token || dir_or_file)
+{
+	if (content->type == CMD_T)
 		execute_heredoc_file(cmd, content);
 	else
 		execute_heredoc_content(content, cmd);

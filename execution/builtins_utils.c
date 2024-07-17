@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:33:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 15:01:50 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 10:14:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void    delete_env(t_env_vars **head, char *cmd, t_token_tree *tree, char **cmds
 
 	tmp = *head;
 	if (!ft_isalpha(cmd[0]))
-		print_err("minishell: unset: ", cmd, ": is not a valid identifier\n");
+		print_err("minishell: unset: `", cmd, "': is not a valid identifier\n");
 	else if (tmp && !ft_strcmp(tmp->env_name, cmd))
 	{    
 		if (tmp->next)

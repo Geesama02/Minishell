@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 12:07:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 14:52:44 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 10:31:53 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ char	*ignore_quotes(char **str)
 	int	len;
 	char *tmp;
 
+	if (!*str)
+		return (NULL);
 	len = ft_strlen(*str) - 1;
 	while (*(*str + len) == ' ')
 	{

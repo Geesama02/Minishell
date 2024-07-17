@@ -6,11 +6,22 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 15:15:28 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 14:50:45 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
+
+void	check_expand(t_token_tree *tree)
+{
+	if (has_vars(tree->token))
+	{
+		tree->token = expand_vars(tree->token, *tree->head);
+		if (!tree->token)
+			return (ft_close(NULL, tree->head, tree),
+				exit(1), -1);
+	}
+}
 
 int execute_cmds_with_operators(t_token_tree *tree, t_env_vars **head, int child)
 {
@@ -45,6 +56,7 @@ int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 		execute_redirection(tree);
 	else if (!tree->right && !tree->left)
 	{
+		check_expand(tree);
 		cmds = ft_split_qt(tree->token, ' '); //leaks
 		if (!cmds && errno == ENOMEM)
 			return (free_envs(head), free_tree(tree), exit(1), -1);
