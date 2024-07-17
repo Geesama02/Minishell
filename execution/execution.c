@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/17 15:10:07 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/17 17:34:56 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 		if (!cmds && errno == ENOMEM)
 			return (free_envs(head), free_tree(tree), exit(1), -1);
 		cmds = ignore_quotes_2d_array(cmds);
-		if (exec_command(tree, cmds, head, child) == -1)
+		if (cmds && exec_command(tree, cmds, head, child) == -1)
 			return (free_2d_array(cmds), -1);
 	}
 	else if (tree->type == OPERATOR_T)
