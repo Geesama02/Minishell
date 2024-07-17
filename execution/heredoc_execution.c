@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_execution.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:19:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 16:17:27 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 11:41:19 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void    execute_heredoc(t_token_tree *cmd, t_token_tree *content)
 			dir_or_file = 1;
 		i++;
 	}
-	if (content->token || dir_or_file)
+	if (content->type == CMD_T || dir_or_file)
 		execute_heredoc_file(cmd, content);
 	else
 		execute_heredoc_content(content, cmd);

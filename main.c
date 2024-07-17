@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/16 17:58:01 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/17 11:53:51 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,10 +201,11 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		}
 		// free(input);
+		// printf("pid -> %d\n", getpid());
 		// int i = 0;
 		// while(token_array[i].token)
 		// {
-		// 	printf("token ==> %s -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
+		// 	printf("token ==> |%s| -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
 		// 	i++;
 		// }
 				

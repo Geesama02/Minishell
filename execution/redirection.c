@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 16:18:59 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/16 18:34:42 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	execute_redirection_in(t_token_tree *tree)
 		}
 		dup2(fd_file, 0); //fail
 		close(fd_file); //fail
-		execute_tree(tree->left, tree->head, pid);
+		if (tree->left->token[0] != 0)
+			execute_tree(tree->left, tree->head, pid);
 		exit(0);
 	}
 	wait(&status);
@@ -61,7 +62,8 @@ void	execute_redirection_out(t_token_tree *tree)
 		}
 		dup2(fd_file, 1);
 		close(fd_file);
-		execute_tree(tree->left, tree->head, pid);
+		if (tree->left->token[0] != 0)
+			execute_tree(tree->left, tree->head, pid);
 		dup2(stdout_cp, 1);
 		close(stdout_cp);
 		exit(0);
@@ -88,7 +90,8 @@ void	execute_redirection_append(t_token_tree *tree)
 		}
 		dup2(fd_file, 1);
 		close(fd_file);
-		execute_tree(tree->left, tree->head, pid);
+		if (tree->left->token[0] != 0)
+			execute_tree(tree->left, tree->head, pid);
 		dup2(stdout_cp, 1);
 		close(stdout_cp);
 		exit(0);

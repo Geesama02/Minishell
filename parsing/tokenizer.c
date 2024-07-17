@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/16 17:55:51 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/17 11:40:05 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	copy_to_array(t_token_array *token_array,
 	if (*holder == NULL)
 		return (free_token_holder(holder, token_array, i), 0);
 	if (scan_syntax(holder) == 0)
-		return (free_token_holder(holder, token_array, i));
+		return (free_token_holder(holder, token_array, i));;
 	while (holder[i] != NULL)
 	{
 		if (set_token_type(holder[i]) == HEREDOC)
@@ -103,19 +103,19 @@ t_token_array	*tokenizer(char **input, t_env_vars *head)
 	char			**holder;
 	char			*input_cpy;
 
-	token_array = malloc(sizeof(t_token_array) * (count_cmds(*input) + 1));
-	if (!token_array)
-		return (free(*input), exit(1), NULL);
 	holder = malloc(sizeof(char *) * (count_cmds(*input) + 1));
 	if (!holder)
-		return (free(*input), free(token_array), exit(1), NULL);
+		return (free(*input), exit(1), NULL);
 	input_cpy = *input;
 	if (!tokenize(input, input_cpy, holder))
 		return (NULL);
+	if(must_reorder(holder))
+		reorder_tokens(&holder);
+	token_array = malloc(sizeof(t_token_array) * (count_len(holder) + 1));
+	if (!token_array)
+		return (free_2d_array(holder), exit(1), NULL);
 	if (copy_to_array(token_array, holder, head) == 0)
 		return (NULL);
-	if(must_reorder(token_array))
-		reorder_tokens(&token_array);
 	check_redirections_extras(token_array);
 	switch_multi_redirections(token_array);
 	return (token_array);

@@ -6,94 +6,83 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:43:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/16 17:51:00 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/17 10:14:58 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int	must_reorder(t_token_array *token_array)
+int	must_reorder(char **holder)
 {
 	int	i;
 
 	i = 0;
-	while (token_array[i].token)
+	while (holder[i])
 	{
-		if (is_redirection(token_array[i].type) && (i == 0 || token_array[i - 1].type == OPERATOR_T))
+		if (is_redirection_heredoc(holder[i]) && (i == 0 || set_token_type(holder[i - 1]) == OPERATOR_T))
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-void	fill_new_token(t_token_array *tmp, char *extra, int n, int l)
-{
-	if (l == n)
-	{
-		tmp[l].token = extra;
-		tmp[l].type = CMD_T;
-	}
-}
-
-int	count_len(t_token_array *token_array)
+int	count_len(char **holder)
 {
 	int	i;
 
 	i = 0;
-	while(token_array[i].token)
+	while(holder[i])
 		i++;
 	return (i);
 }
 
-t_token_array	*realloc_tokens(t_token_array *token_array, int n, char *extra)
+char	**realloc_tokens(char **holder, int n, char *extra)
 {
-	t_token_array *tmp;
+	char **tmp;
 	int	c;
 	int l;
 	int	i;
 
-	c = count_len(token_array);
+	c = count_len(holder);
 	i = 0;
 	l = 0;
-	tmp = malloc(sizeof(t_token_array) * (c + 2));
+	tmp = malloc(sizeof(char *) * (c + 2));
 	if (!tmp)
 		return (NULL);
-	while (token_array[i].token)
+	while (holder[i])
 	{
-		fill_new_token(tmp, extra, n, l);
-		if (l != n)
-		{
-			tmp[l].token = token_array[i].token;
-			tmp[l].type = token_array[i++].type;
-		}
+		if (l == n)
+			tmp[l] = extra;
+		else
+			tmp[l] = holder[i++];
 		l++;
 	}
-	tmp[l].token = NULL;
-	free(token_array);
+	tmp[l] = NULL;
+	free(holder);
 	return (tmp);
 }
 
-int	reorder_tokens(t_token_array **token_array)
+int	reorder_tokens(char ***holder)
 {
 	int	i;
 	char	*tmp_holder;
-	t_token_array *tmp;
-	t_token_array *holder;
+	char **tmp;
+	char **new_holder;
 
 	i = 0;
-	holder = *token_array;
-	while (holder[i].token)
+	new_holder = *holder;
+	while (new_holder[i])
 	{
-		if (is_redirection(holder[i].type) && (i == 0 || holder[i - 1].type == OPERATOR_T))
+		if (is_redirection_heredoc(new_holder[i]) && (i == 0 || set_token_type(new_holder[i - 1]) == OPERATOR_T))
 		{
-			tmp_holder = ft_split_first(holder[i + 1].token);
+			tmp_holder = ft_split_first(new_holder[i + 1]);
 			if (!tmp_holder)
-				return (free_token_array(*token_array), exit(1), 0);
-			tmp = realloc_tokens(holder, i, tmp_holder);
+				return (free_2d_array(*holder), exit(1), 0);
+			tmp = realloc_tokens(new_holder, i, tmp_holder);
 			if (!tmp)
-				return (free(tmp_holder), free_token_array(*token_array), exit(1), 0);
-			holder = tmp;
-			*token_array = holder;
+				return (free(tmp_holder),  exit(1), 0);
+			new_holder = tmp;
+			*holder = new_holder;
 		}
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 15:15:28 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 11:40:46 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 		execute_redirection(tree);
 	else if (!tree->right && !tree->left)
 	{
+		
 		cmds = ft_split_qt(tree->token, ' '); //leaks
 		if (!cmds && errno == ENOMEM)
 			return (free_envs(head), free_tree(tree), exit(1), -1);
