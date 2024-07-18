@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/17 18:43:55 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/18 10:02:20 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ int	free_token_holder(char **holder, t_token_array *token_array, int i)
 		j++;
 	}
 	free(holder);
-	i--;
-	while (token_array[i].token && i >= 0)
+	if (i > 0)
+		i--;
+	while (i >= 0 && token_array[i].token)
 	{
 		free(token_array[i].token);
 		i--;
@@ -78,8 +79,6 @@ int	copy_to_array(t_token_array *token_array,
 	vars.head = head;
 	if (*holder == NULL)
 		return (free_token_holder(holder, token_array, i), 0);
-	if (scan_syntax(holder) == 0)
-		return (free_token_holder(holder, token_array, i));;
 	while (holder[i] != NULL)
 	{
 		if (set_token_type(holder[i]) == HEREDOC)
@@ -109,6 +108,8 @@ t_token_array	*tokenizer(char **input, t_env_vars *head)
 	input_cpy = *input;
 	if (!tokenize(input, input_cpy, holder))
 		return (NULL);
+	if (scan_syntax(holder) == 0)
+		return (free_2d_array(holder), NULL);
 	if(must_reorder(holder))
 		reorder_tokens(&holder);
 	token_array = malloc(sizeof(t_token_array) * (count_len(holder) + 1));
