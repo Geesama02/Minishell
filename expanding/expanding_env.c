@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:02:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/12 14:53:06 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:24:15 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ char	*get_extras_and_join(t_env_vars *head, char **words, int i)
 			word_tmp = ft_strdup(env_value);
 			if (!word_tmp)
 				return (free_2d_array(words), NULL);
+			free(words[i]);
 			words[i] = word_tmp;
 		}
 		else

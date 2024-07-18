@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/16 11:24:58 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/17 17:59:34 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ int	scan_syntax(char **holder)
 		}
 		if (holder[i + 1] && ((set_token_type(holder[i]) == OPERATOR_T
 			&& set_token_type(holder[i + 1]) == OPERATOR_T)
-			|| (is_redirection_heredoc(holder[i]) && is_operand(holder[i + 1]))))
+			|| (is_redirection_heredoc(holder[i]) && is_operand(holder[i + 1]))
+			|| (set_token_type(holder[i]) == PARETHESIS_O && i != 0 && set_token_type(holder[i - 1]) != OPERATOR_T)
+			|| (set_token_type(holder[i]) == PARETHESIS_C && !is_operand(holder[i + 1]))))
 			return (print_err("Minishell: syntax error near unexpected token `", holder[i + 1], "' \n"), 0);
 		i++;
 	}
