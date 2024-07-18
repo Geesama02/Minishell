@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:43:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/17 18:02:41 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:28:11 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,19 @@ int	count_len(char **holder)
 	while(holder[i])
 		i++;
 	return (i);
+}
+
+char *ft_split_first_token(char *str)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (str[i] && str[i] != ' ')
+		i++;
+	str[i] = '\0';
+	tmp = ft_strdup(str + i + 1);
+	return (tmp);
 }
 
 char	**realloc_tokens(char **holder, int n, char *extra)
@@ -75,7 +88,7 @@ int	reorder_tokens(char ***holder)
 	{
 		if (is_redirection_heredoc(new_holder[i]) && (i == 0 || set_token_type(new_holder[i - 1]) == OPERATOR_T))
 		{
-			tmp_holder = ft_split_first(new_holder[i + 1]);
+			tmp_holder = ft_split_first_token(new_holder[i + 1]);
 			if (!tmp_holder)
 				return (free_2d_array(*holder), exit(1), 0);
 			tmp = realloc_tokens(new_holder, i, tmp_holder);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:03:52 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/17 14:42:20 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/18 13:52:44 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ char	*get_extra_chars(char *holder)
 	i = 0;
 	while (holder[i])
 	{
-		if (holder[0] == '?')
+		if (holder[0] == '?' || holder[0] == '@' || holder[0] == '\"' || holder[0] == '\'')
 			return (holder + 1);
-		if (non_var_name(holder[i]))
+		if (non_var_name(holder, i))
 			return (holder + i);
 		i++;
 	}

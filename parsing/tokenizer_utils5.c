@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 09:44:22 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/16 11:21:37 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:24:28 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	free_token_array(t_token_array *token_array)
 	}
 	free(token_array);
 }
+
+
 
 int	check_redirections_extras(t_token_array *token_array)
 {

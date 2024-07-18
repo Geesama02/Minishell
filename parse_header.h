@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/17 16:49:39 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:15:58 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ int				ft_isalpha(int c);
 char			**ft_env_split(char const *s, char c);
 int				ft_isdigit(int c);
 int				is_operand(char *str);
-int				non_var_name(char c);
+int				non_var_name(char *str, int i);
 char			*join_var_with_extras(t_env_vars *head, char **words, int i, char *extras);
 char			*search_for_var(t_env_vars *head, char *env_name);
 char			*get_extras_and_join(t_env_vars *head, char **words, int i);

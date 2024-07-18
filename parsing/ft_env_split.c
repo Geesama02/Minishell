@@ -23,7 +23,7 @@ static int	count_words(char const *s, char c)
 		count++;
 	while (s[i])
 	{
-		if (s[i] == c && s[i + 1] && !non_var_name(s[i + 1]) && s[i + 1] != c)
+		if (s[i] == c && s[i + 1] && !non_var_name((char *)s, i + 1) && s[i + 1] != c)
 			count++;
 		i++;
 	}
@@ -35,7 +35,7 @@ static int	count_word(char const *s, char c, int i)
 	int	len;
 
 	len = 0;
-	while ((s[i] != c || (s[i] == c && non_var_name(s[i + 1]))) && s[i])
+	while ((s[i] != c || (s[i] == c && non_var_name((char *)s, i + 1))) && s[i])
 	{
 		len++;
 		i++;
@@ -56,7 +56,7 @@ static void	*sec_alloc(char **bigstr, int l)
 
 static void	skip_c(char const *s, char c, int *i)
 {
-	while (s[*i] == c && !non_var_name(s[*i + 1]))
+	while (s[*i] == c && !non_var_name((char *)s, *i + 1))
 		(*i)++;
 }
 
@@ -81,7 +81,7 @@ char	**ft_env_split(char const *s, char c)
 		str[l] = (char *)malloc(count_word(s, c, i) + 1);
 		if (!str[l])
 			return (sec_alloc(str, l));
-		while ((s[i] != c || (s[i] == c && non_var_name(s[i + 1]))) && s[i])
+		while ((s[i] != c || (s[i] == c && non_var_name((char *)s, i + 1))) && s[i])
 			str[l][n++] = s[i++];
 		str[l++][n] = '\0';
 	}
