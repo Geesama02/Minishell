@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 12:07:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/17 10:31:53 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/18 10:40:42 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ char	*ignore_quotes(char **str)
 	if (!*str)
 		return (NULL);
 	len = ft_strlen(*str) - 1;
-	while (*(*str + len) == ' ')
+	while (len >= 0 &&*(*str + len) == ' ')
 	{
 		*(*str + len) = '\0';
 		len--;

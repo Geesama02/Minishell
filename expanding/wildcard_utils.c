@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 14:59:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/15 11:55:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/18 10:22:55 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ char *wildcard(char *str)
 	free_2d_array(sep_str);
 	closedir(dir);
 	if (ft_strcmp(res, "") == 0)
-		print_err("No matches found\n", NULL, NULL);
+	{
+		free(res);
+		res = ft_strdup(str);
+	}
 	return (res);
 }
 

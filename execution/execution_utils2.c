@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/17 15:55:52 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/18 10:31:51 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	execute_using_execve(t_env_vars *tmp, char **cmds,
 		}
 	}
 	wait(&status);
+	free(path);
 	free(tmp->env_val);
 	if (WTERMSIG(status) > 0)
 		tmp->env_val = ft_itoa(128 + WTERMSIG(status)); // free later
