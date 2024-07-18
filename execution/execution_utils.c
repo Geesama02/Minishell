@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/18 10:30:20 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:05:17 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,11 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 	if (!ft_strchr(cmds[0], '/'))
 		path = find_correct_path(cmds, tree);
 	else
-		path = cmds[0];
+	{
+		path = ft_strdup(cmds[0]);
+		if (!path)
+			return (ft_close(cmds, tree->head, tree), -1);
+	}
 	if (path)
 	{
 		if (execute_using_execve(tmp, cmds, path, tree->envp) == -1)
