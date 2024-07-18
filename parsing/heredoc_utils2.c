@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:29:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/17 13:41:21 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/17 18:18:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,13 @@ char	*handle_null(char *input, t_token_array *token_array,
 		is_heredoc[1] = 0;
 		is_heredoc[0] = 0;
 		free(input);
-		return (free_token_holder(holder, token_array, *l), NULL);
+		int i = 0;
+		while (token_array[i].token)
+		{	
+			free(token_array[i].token);
+			i++;
+		}
+		return (NULL);
 	}
 	else if (!is_heredoc[1] && errno == ENOMEM)
 	{
