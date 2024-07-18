@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:33:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/18 11:52:44 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:41:50 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int delete_env(t_env_vars **head, char *cmd, t_token_tree *tree, char **cmds)
 
 int    print_echo_content(char **cmds, int i, int new_line)
 {
-	char	*tmp;
-	
     while (cmds[i])
     {
         new_line = 1;
@@ -61,10 +59,7 @@ int    print_echo_content(char **cmds, int i, int new_line)
         }
         if (cmds[i])
         {
-            tmp = ignore_quotes(&cmds[i]);
-            if (!tmp)
-                return (0);
-            ft_putstr(tmp);
+            ft_putstr(cmds[i]);
             if (cmds[i + 1])
                 ft_putchar(' ');
             i++;

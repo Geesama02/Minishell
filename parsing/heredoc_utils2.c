@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:29:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/17 18:36:18 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/18 09:00:08 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,13 @@ char	*handle_null(char *input, t_token_array *token_array,
 		is_heredoc[1] = 0;
 		is_heredoc[0] = 0;
 		free(input);
+		return (NULL);
+		int i = 0;
+		while (token_array[i].token)
+		{	
+			free(token_array[i].token);
+			i++;
+		}
 		return (NULL);
 	}
 	else if (!is_heredoc[1] && errno == ENOMEM)
