@@ -6,21 +6,23 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/18 12:02:07 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/18 17:07:54 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void	check_expand(t_token_tree *tree)
+int	check_expand(t_token_tree *tree)
 {
 	if (has_vars(tree->token))
 	{
 		tree->token = expand_vars(tree->token, *tree->head);
 		if (!tree->token)
 			return (ft_close(NULL, tree->head, tree),
-				exit(1));
+				exit(1), -1);
+		return (0);
 	}
+	return (1);
 }
 
 int execute_cmds_with_operators(t_token_tree *tree, t_env_vars **head, int child)

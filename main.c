@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/18 12:53:27 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/18 17:02:39 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,10 +161,13 @@ int main(int argc, char **argv, char **envp)
 			}
 			else
 			{
+				int exit_s;
+				t_env_vars *tmp = search_for_env_var(&head, "?");
+				exit_s = ft_atoi(tmp->env_val);
 				rl_clear_history();
 				write(0, "exit\n", 5);
 				ft_close(NULL, &head, NULL);
-				break;
+				exit(exit_s);
 			}
 		}
         if (input[0] == '\0')
@@ -214,11 +217,11 @@ int main(int argc, char **argv, char **envp)
 		// printf("right -> %s\n", ast_tree->right->token);
 		// printf("========= stack =========\n");
 		// print_stack(&postfix_stack, postfix_stack.head);
-		printf("======== Tree ========\n");
+		// printf("======== Tree ========\n");
 		// printf("tree -> %s\n", ast_tree->token);
-		print_tree(ast_tree, 0);
+		// print_tree(ast_tree, 0);
 		ast_tree->head = &head;
-		// execute_tree(ast_tree, ast_tree->head, 1);
+		execute_tree(ast_tree, ast_tree->head, 1);
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
 		is_heredoc[0] = 0;

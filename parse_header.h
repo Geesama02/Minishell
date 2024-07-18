@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/18 12:05:38 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/18 17:05:28 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ int				reorder_tokens(char ***holder);
 void			free_token_array(t_token_array *token_array);
 int				count_len(char **holder);
 int				handle_builtins_failure(t_token_tree *tree, char **cmds);
-void			check_expand(t_token_tree *tree);
+int				check_expand(t_token_tree *tree);
 
 // delete later
 char *print_type(t_t_type type);

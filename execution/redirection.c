@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/18 12:52:12 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/18 17:09:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,18 @@ void	expand_files(t_token_tree *tree)
 	old_filename = ft_strdup(tree->token);
 	if (!old_filename)
 		return (print_err("malloc failed!!\n", NULL, NULL), exit(3));
-	check_expand(tree);
-	if (tree->token[0] == 0)
-		return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
-			), exit(1));
-	cmds = ft_split(tree->token, ' ');
-	if (!cmds)
-		return (print_err("malloc failed!!\n", NULL, NULL), exit(3));
-	if (count_2d_array_elements(cmds) > 1)
-		return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
-			), exit(1));
-	printf("token -> %s\n", tree->token);
+	if (check_expand(tree) == 0)
+	{
+		if (tree->token[0] == 0)
+			return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
+				), exit(1));
+		cmds = ft_split(tree->token, ' ');
+		if (!cmds)
+			return (print_err("malloc failed!!\n", NULL, NULL), exit(3));
+		if (count_2d_array_elements(cmds) > 1)
+			return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
+				), exit(1));
+	}
 }
 
 void	execute_redirection_in(t_token_tree *tree)
