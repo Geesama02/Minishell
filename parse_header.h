@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/18 16:41:43 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:22:44 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int				scan_syntax(char **holder);
 int				unclosed_var(char *str, char c);
 t_t_type		set_token_type(char *token);
 void			free_tree(t_token_tree *root);
-char			*wildcard(char *str);
+char			*wildcard(char **str, int i);
 int				has_wildcard(char *str);
 int				execute_tree(t_token_tree *tree, t_env_vars **head, int child);
 void			execute_redirection(t_token_tree *tree);
