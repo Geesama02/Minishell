@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/19 09:07:39 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/19 12:42:05 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	expand_files(t_token_tree *tree)
 	cmds = ft_split(tree->token, ' ');
 	if (!cmds)
 		return (print_err("malloc failed!!\n", NULL, NULL), exit(3));
-	// if (count_2d_array_elements(cmds) > 1)
-	// 	return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
-	// 		), exit(1));
+	if (count_2d_array_elements(cmds) > 1)
+		return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
+			), exit(1));
 	printf("token -> %s\n", tree->token);
 }
 
@@ -40,7 +40,7 @@ void	execute_redirection_in(t_token_tree *tree)
 	pid_t		pid;
 	t_env_vars	*tmp;
 
-	null_terminating(tree->right->token, ' ');
+	// null_terminating(tree->right->token, ' ');
 	pid = fork(); //fail
 	if (!pid)
 	{
@@ -72,7 +72,7 @@ void	execute_redirection_out(t_token_tree *tree)
 	pid_t	pid;
 	t_env_vars *tmp;
 
-	null_terminating(tree->right->token, ' ');
+	// null_terminating(tree->right->token, ' ');
 	pid = fork(); //fail
 	if (pid == -1)
 		print_err("fork() failed!!\n", NULL, NULL); //fork() fail
@@ -109,7 +109,7 @@ void	execute_redirection_append(t_token_tree *tree)
 	pid_t	pid;
 	t_env_vars *tmp;
 
-	null_terminating(tree->right->token, ' ');
+	// null_terminating(tree->right->token, ' ');
 	pid = fork();
 	if (!pid)
 	{

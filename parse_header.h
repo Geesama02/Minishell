@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 10:22:44 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/19 11:51:47 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int				scan_syntax(char **holder);
 int				unclosed_var(char *str, char c);
 t_t_type		set_token_type(char *token);
 void			free_tree(t_token_tree *root);
-char			*wildcard(char **str, int i);
+char			*wildcard(char **str, int i, char *operator);
 int				has_wildcard(char *str);
 int				execute_tree(t_token_tree *tree, t_env_vars **head, int child);
 void			execute_redirection(t_token_tree *tree);
@@ -153,9 +153,9 @@ t_env_vars		*get_last_node(t_env_vars *head);
 void			lst_add_element(char **tokens, char **cmds,
 		t_token_tree *head, int i);
 int				join_strings(char **s1, char *s2);
-int				handle_wildcard(char **str);
+int				handle_wildcard(char **str, char *operator);
 int				free_2d_array(char **array);
-int				join_wildcard(char **sep_str, char **str);
+int				join_wildcard(char **sep_str, char **str, char *operator);
 int				filter_files(struct dirent *dir_content, char **sep_str, char *str, char **res);
 int				count_heredoc_len(char *input);
 char			*continue_heredoc(char *delimiter, t_token_array *token_array, char **holder, int *l);
@@ -227,6 +227,7 @@ void			free_token_array(t_token_array *token_array);
 int				count_len(char **holder);
 int				handle_builtins_failure(t_token_tree *tree, char **cmds);
 void			check_expand(t_token_tree *tree);
+int 			count_wildcard(char *str);
 
 // delete later
 char *print_type(t_t_type type);

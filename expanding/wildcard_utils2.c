@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:11:11 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/22 19:56:16 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/19 11:21:01 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,20 @@ int check_first_chars(struct dirent *dir_content, char **sep_str, char *str, int
 	return (sep_str[i] == NULL
 			|| (ft_strncmp(sep_str[0], dir_content->d_name, ft_strlen(sep_str[0])) != 0
 			&& str[0] != '*'));
+}
+
+int count_wildcard(char *str)
+{
+	int	i;
+	
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == ' ' && str[i + 1])
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	filter_files(struct dirent *dir_content, char **sep_str, char *str, char **res)
