@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/17 16:47:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/19 11:00:18 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,16 @@ void	ft_lstadd(t_env_vars **lst, t_env_vars *new)
 	while (current && current->next != 0)
 		current = current->next;
 	current->next = new;
+}
+
+void	null_terminating_rev(char *string)
+{
+	size_t len;
+
+	len = ft_strlen(string);
+	while (len >= 0 && string[len - 1] == ' ')
+	{
+		string[len - 1] = '\0';
+		len--;
+	}
 }

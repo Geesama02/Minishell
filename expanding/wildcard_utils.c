@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 14:59:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/18 10:22:55 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:24:24 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	handle_hidden_files(DIR *dir, struct dirent **dir_content, char **sep_str, c
 	return (0);
 }
 
-char *wildcard(char *str)
+char *wildcard(char **str, int i)
 {
 	DIR				*dir;
 	struct dirent	*dir_content;
@@ -48,7 +48,7 @@ char *wildcard(char *str)
 	char			*res;
 	
 	res = ft_strdup("");
-	sep_str = ft_split_qt(str, '*');
+	sep_str = ft_split_qt(str[i], '*');
 	if (!sep_str)
 		return (free(res), exit(1), NULL);
 	dir = opendir(".");
@@ -57,18 +57,21 @@ char *wildcard(char *str)
 	dir_content = readdir(dir);
 	while (dir_content != NULL)
 	{
-		if (handle_hidden_files(dir, &dir_content, sep_str, str))
+		if (handle_hidden_files(dir, &dir_content, sep_str, str[i]))
 			continue;
-		filter_files(dir_content, sep_str, str, &res);
+		filter_files(dir_content, sep_str, str[i], &res);
 		dir_content = readdir(dir);
 	}
 	free_2d_array(sep_str);
 	closedir(dir);
+	// if (i > 0)
+	// 	printf("before -> %s\n", str[i - 1]);
 	if (ft_strcmp(res, "") == 0)
 	{
 		free(res);
-		res = ft_strdup(str);
+		res = ft_strdup(str[i]);
 	}
+	// printf("res -> %s\n", res);
 	return (res);
 }
 
@@ -82,7 +85,7 @@ int	join_wildcard(char **sep_str, char **str)
 	{
 		if (has_wildcard(sep_str[i]))
 		{
-			wildcard_holder = wildcard(sep_str[i]);
+			wildcard_holder = wildcard(sep_str, i);
 			if (wildcard_holder && *wildcard_holder == '\0')
 				return (free(wildcard_holder), free_2d_array(sep_str));
 			if (!wildcard_holder || !join_strings(str, wildcard_holder)

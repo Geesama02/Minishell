@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/18 10:24:04 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/19 09:44:29 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ int	scan_syntax(char **holder)
 	{
 		if (has_wildcard(holder[i]))
 		{
-			if (handle_wildcard(&holder[i]) == 0)
+			if (i > 0 && handle_wildcard(&holder[i]) == 0)
+				return (0);
+			else if (i == 0 && handle_wildcard(&holder[i]) == 0)
 				return (0);
 		}
 		if (holder[i + 1] && ((set_token_type(holder[i]) == OPERATOR_T

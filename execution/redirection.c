@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/18 17:12:44 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/19 11:45:30 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,15 @@
 
 void	expand_files(t_token_tree *tree)
 {
-	char **cmds;
 	char *old_filename;
 
 	old_filename = ft_strdup(tree->token);
 	if (!old_filename)
 		return (print_err("malloc failed!!\n", NULL, NULL), exit(3));
-	if (check_expand(tree) == 0)
-	{
-		if (tree->token[0] == 0)
-			return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
-				), exit(1));
-		cmds = ft_split(tree->token, ' ');
-		if (!cmds)
-			return (print_err("malloc failed!!\n", NULL, NULL), exit(3));
-		if (count_2d_array_elements(cmds) > 1)
-			return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
-				), exit(1));
-	}
+	check_expand(tree);
+	if (tree->token[0] == 0)
+		return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
+			), exit(1));
 }
 
 void	execute_redirection_in(t_token_tree *tree)
@@ -41,7 +32,7 @@ void	execute_redirection_in(t_token_tree *tree)
 	pid_t		pid;
 	t_env_vars	*tmp;
 
-	null_terminating(tree->right->token, ' ');
+	null_terminating_rev(tree->right->token);
 	pid = fork(); //fail
 	if (!pid)
 	{
@@ -73,8 +64,7 @@ void	execute_redirection_out(t_token_tree *tree)
 	pid_t	pid;
 	t_env_vars *tmp;
 
-	printf("file -> %s\n", tree->right->token);
-	null_terminating(tree->right->token, ' ');
+	null_terminating_rev(tree->right->token);
 	pid = fork(); //fail
 	if (pid == -1)
 		print_err("fork() failed!!\n", NULL, NULL); //fork() fail
@@ -111,7 +101,7 @@ void	execute_redirection_append(t_token_tree *tree)
 	pid_t	pid;
 	t_env_vars *tmp;
 
-	null_terminating(tree->right->token, ' ');
+	null_terminating_rev(tree->right->token);
 	pid = fork();
 	if (!pid)
 	{

@@ -6,15 +6,48 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:19:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/17 14:55:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/19 12:24:26 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
+int	add_space_cmd(t_token_tree *cmd)
+{
+	char	*token;
+	size_t	len;
+	int		i;
+
+	i = 0;
+	token = ft_strdup(cmd->token);
+	if (!token)
+		return (-1);
+	len = ft_strlen(cmd->token);
+	if (len >= 0 && cmd->token[len] != ' ')
+	{	
+		free(cmd->token);
+		cmd->token = malloc((sizeof(char) * ft_strlen(token)) + 2);
+		if (!cmd->token)
+			return (-1);
+		while (token[i])
+		{
+			cmd->token[i] = token[i];
+			i++;
+		}
+		cmd->token[i] = ' ';
+		cmd->token[i + 1] = '\0';
+	}
+	free(token);
+	return (0);
+}
+
 void	execute_heredoc_file(t_token_tree *cmd, t_token_tree *content)
 {
-	cmd->token = ft_strjoin(cmd->token, content->token);
+	char *prev_cmd;
+
+	prev_cmd = cmd->token;
+	cmd->token = ft_strjoin(prev_cmd, content->token);
+	free(prev_cmd);
 	if (!cmd->token)
 		return (free_tree(cmd), free_tree(content), exit(1));
 	execute_tree(cmd, cmd->head, 1);
@@ -55,6 +88,9 @@ void	execute_heredoc_content(t_token_tree *content, t_token_tree *cmd)
 
 void    execute_heredoc(t_token_tree *cmd, t_token_tree *content)
 {
+	if (add_space_cmd(cmd) == -1)
+		return (free_tree(cmd), free_tree(content),
+			free_envs(cmd->head), exit(1));
 	if (content->type == CMD_T)
 		execute_heredoc_file(cmd, content);
 	else
