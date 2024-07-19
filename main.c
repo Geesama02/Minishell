@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 12:33:59 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:57:54 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ int main(int argc, char **argv, char **envp)
 	t_token_tree		*ast_tree;
 	t_env_vars			*head;
 	char				*input;
+	int					childs[99];
 
 	(void)argc;
 	(void)argv;
@@ -161,10 +162,15 @@ int main(int argc, char **argv, char **envp)
 			}
 			else
 			{
+				int	exit_s;
+				t_env_vars *tmp = search_for_env_var(&head, "?");
+				exit_s = ft_atoi(tmp->env_val);
 				rl_clear_history();
 				write(0, "exit\n", 5);
 				ft_close(NULL, &head, NULL);
-				break;
+				if (is_heredoc[1] == 1)
+					exit(1);
+				exit(exit_s);
 			}
 		}
         if (input[0] == '\0')
@@ -188,7 +194,7 @@ int main(int argc, char **argv, char **envp)
 		}
 		if (is_heredoc[1] == 1)
 		{
-			t_env_vars *tmp2;
+			t_env_vars	*tmp2;
 			tmp2 = head;
 			tmp2 = search_for_env_var(&head, "?");
 			define_exit_status(tmp2, "1");
@@ -202,12 +208,12 @@ int main(int argc, char **argv, char **envp)
 		}
 		// free(input);
 		// printf("pid -> %d\n", getpid());
-		int i = 0;
-		while(token_array[i].token)
-		{
-			printf("token ==> |%s| -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
-			i++;
-		}
+		// int i = 0;
+		// while(token_array[i].token)
+		// {
+		// 	printf("token ==> |%s| -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
+		// 	i++;
+		// }
 		postfix_stack = shunting_yard(token_array);
 		ast_tree = build_tree(&postfix_stack, envp, &head);
 		// printf("left -> %s\n", ast_tree->left->token);
@@ -218,6 +224,7 @@ int main(int argc, char **argv, char **envp)
 		// printf("tree -> %s\n", ast_tree->token);
 		// print_tree(ast_tree, 0);
 		ast_tree->head = &head;
+		ast_tree->childs_p = childs;
 		execute_tree(ast_tree, ast_tree->head, 1);
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);

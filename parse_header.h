@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 11:51:47 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:56:18 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_token_tree
 	struct s_token_tree	*right;
 	char				**envp;
 	t_env_vars			**head;
+	int					*childs_p;
 } t_token_tree;
 
 int is_heredoc[2];
@@ -226,8 +227,11 @@ int				reorder_tokens(char ***holder);
 void			free_token_array(t_token_array *token_array);
 int				count_len(char **holder);
 int				handle_builtins_failure(t_token_tree *tree, char **cmds);
-void			check_expand(t_token_tree *tree);
+int				check_expand(t_token_tree *tree);
 int 			count_wildcard(char *str);
+void			null_terminating_rev(char *string);
+int				has_quotes(char *str, char c);
+int				invalid_option_error(char **tokens, int i);
 
 // delete later
 char *print_type(t_t_type type);
