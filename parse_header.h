@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/18 17:05:28 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:11:04 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_token_tree
 	struct s_token_tree	*right;
 	char				**envp;
 	t_env_vars			**head;
+	int					*childs_p;
 } t_token_tree;
 
 int is_heredoc[2];
@@ -181,7 +182,7 @@ int				ft_isalpha(int c);
 char			**ft_env_split(char const *s, char c);
 int				ft_isdigit(int c);
 int				is_operand(char *str);
-int				non_var_name(char c);
+int				non_var_name(char *str, int i);
 char			*join_var_with_extras(t_env_vars *head, char **words, int i, char *extras);
 char			*search_for_var(t_env_vars *head, char *env_name);
 char			*get_extras_and_join(t_env_vars *head, char **words, int i);

@@ -6,16 +6,17 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:02:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/18 10:52:01 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:28:01 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int	non_var_name(char c)
+int	non_var_name(char *str, int i)
 {
-	return (!ft_isalpha(c) && c != '_' && c != '?'
-		&& c != '-' && c != '@' && !ft_isdigit(c));
+	return (!ft_isalpha(str[i]) && str[i] != '_' && (str[i] != '?' || ft_isalpha(str[i - 1]))
+		&& str[i] != '-' && (str[i] != '@' || ft_isalpha(str[i - 1])) && !ft_isdigit(str[i]) && (str[i] != '\"' || ft_isalpha(str[i - 1]))
+		&& (str[i] != '\'' || ft_isalpha(str[i - 1])));
 }
 
 char *join_var(char **words, int i, char *env_value, char *tmp)

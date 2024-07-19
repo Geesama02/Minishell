@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/18 17:02:39 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:15:20 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ int main(int argc, char **argv, char **envp)
 	t_token_tree		*ast_tree;
 	t_env_vars			*head;
 	char				*input;
+	int					childs[99];
 
 	(void)argc;
 	(void)argv;
@@ -167,6 +168,8 @@ int main(int argc, char **argv, char **envp)
 				rl_clear_history();
 				write(0, "exit\n", 5);
 				ft_close(NULL, &head, NULL);
+				if (is_heredoc[1] == 1)
+					exit(1);
 				exit(exit_s);
 			}
 		}
@@ -221,6 +224,7 @@ int main(int argc, char **argv, char **envp)
 		// printf("tree -> %s\n", ast_tree->token);
 		// print_tree(ast_tree, 0);
 		ast_tree->head = &head;
+		ast_tree->childs_p = childs;
 		execute_tree(ast_tree, ast_tree->head, 1);
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);

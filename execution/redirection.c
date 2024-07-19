@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/18 17:09:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/18 17:12:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	execute_redirection_out(t_token_tree *tree)
 	pid_t	pid;
 	t_env_vars *tmp;
 
+	printf("file -> %s\n", tree->right->token);
 	null_terminating(tree->right->token, ' ');
 	pid = fork(); //fail
 	if (pid == -1)
