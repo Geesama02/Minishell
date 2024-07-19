@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:21:44 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/19 10:30:44 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/19 16:59:16 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,7 @@ void    execute_pipe(t_token_tree *left, t_token_tree *right)
 	int		stdout_fd;
 	int		stdin_fd;
 	int		status;
-	int		i;
 
-	i = 0;
 	stdout_fd = dup(1); //fail
 	stdin_fd = dup(0); //fail
 	pipe(fds); //fail
