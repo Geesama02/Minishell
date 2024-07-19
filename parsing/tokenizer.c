@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 10:23:24 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:54:35 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,19 @@ int	copy_to_array(t_token_array *token_array,
 	if (vars.x != -1)
 		vars.l++;
 	token_array[vars.l].token = NULL;
+	i = 0;
+	while (token_array[i].token)
+	{
+		if (has_wildcard(token_array[i].token))
+		{
+			// printf("origin -> %p\n", token_array[i].token);
+			if (i > 0 && handle_wildcard(&token_array[i].token, token_array[i - 1].token) == 0)
+				return (0);
+			else if (i == 0 && handle_wildcard(&token_array[i].token, "") == 0)
+				return (0);
+		}
+		i++;
+	}
 	free_2d_array(holder);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/19 15:27:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:16:37 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	expand_filenames(t_token_tree *tree)
 	if (has_quotes(tree->token, '\'') && has_quotes(tree->token, '\"'))
 	{
 		cmds = ft_split(tree->token, ' ');
+		if (!cmds)
+			return (print_err("malloc failed!!\n", NULL, NULL), ft_close(NULL,
+				tree->head, tree), exit(3));
 		if (count_2d_array_elements(cmds) > 1)
 			return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
 				), free_2d_array(cmds), exit(1));
@@ -61,8 +64,9 @@ void	execute_redirection_in(t_token_tree *tree)
 	wait(&status);
 	if (WEXITSTATUS(status) == 3)
 		return (ft_close(NULL, tree->head, tree), exit(1));
-	define_exit_status(search_for_env_var(tree->head, "?"),
-		ft_itoa(WEXITSTATUS(status)));
+	char *exit_s = ft_itoa(WEXITSTATUS(status));
+	define_exit_status(search_for_env_var(tree->head, "?"), exit_s);
+	free(exit_s);
 }
 
 void	execute_redirection_out(t_token_tree *tree)
@@ -97,8 +101,9 @@ void	execute_redirection_out(t_token_tree *tree)
 	wait(&status);
 	if (WEXITSTATUS(status) == 3)
 		return (ft_close(NULL, tree->head, tree), exit(1));
-	define_exit_status(search_for_env_var(tree->head, "?"),
-		ft_itoa(WEXITSTATUS(status)));
+	char *exit_s = ft_itoa(WEXITSTATUS(status));
+	define_exit_status(search_for_env_var(tree->head, "?"), exit_s);
+	free(exit_s);
 }
 
 void	execute_redirection_append(t_token_tree *tree)
@@ -131,8 +136,9 @@ void	execute_redirection_append(t_token_tree *tree)
 	wait(&status);
 	if (WEXITSTATUS(status) == 3)
 		return (ft_close(NULL, tree->head, tree), exit(1));
-	define_exit_status(search_for_env_var(tree->head, "?"),
-		ft_itoa(WEXITSTATUS(status)));
+	char *exit_s = ft_itoa(WEXITSTATUS(status));
+	define_exit_status(search_for_env_var(tree->head, "?"), exit_s);
+	free(exit_s);
 }
 
 void	execute_redirection(t_token_tree *tree)

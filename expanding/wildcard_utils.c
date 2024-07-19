@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 14:59:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 10:24:24 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/19 11:54:38 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	handle_hidden_files(DIR *dir, struct dirent **dir_content, char **sep_str, c
 	return (0);
 }
 
-char *wildcard(char **str, int i)
+char *wildcard(char **str, int i, char *operator)
 {
 	DIR				*dir;
 	struct dirent	*dir_content;
@@ -64,18 +64,22 @@ char *wildcard(char **str, int i)
 	}
 	free_2d_array(sep_str);
 	closedir(dir);
-	// if (i > 0)
-	// 	printf("before -> %s\n", str[i - 1]);
+	if (i == 0 && is_redirection(set_token_type(operator)) && count_wildcard(res))
+	{
+		free(res);
+		res = ft_strdup("");
+		print_err("minishell: ", str[i], ": ambiguous redirect\n");
+		return (res);
+	}
 	if (ft_strcmp(res, "") == 0)
 	{
 		free(res);
 		res = ft_strdup(str[i]);
 	}
-	// printf("res -> %s\n", res);
 	return (res);
 }
 
-int	join_wildcard(char **sep_str, char **str)
+int	join_wildcard(char **sep_str, char **str, char *operator)
 {
 	int i;
 	char *wildcard_holder;
@@ -85,7 +89,7 @@ int	join_wildcard(char **sep_str, char **str)
 	{
 		if (has_wildcard(sep_str[i]))
 		{
-			wildcard_holder = wildcard(sep_str, i);
+			wildcard_holder = wildcard(sep_str, i, operator);
 			if (wildcard_holder && *wildcard_holder == '\0')
 				return (free(wildcard_holder), free_2d_array(sep_str));
 			if (!wildcard_holder || !join_strings(str, wildcard_holder)

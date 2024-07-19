@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 09:44:29 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:54:26 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ int	scan_syntax(char **holder)
 		return (print_err("Minishell: syntax error near unexpected token `", holder[j - 1], "' \n"), 0);
 	while (holder[i] != NULL)
 	{
-		if (has_wildcard(holder[i]))
-		{
-			if (i > 0 && handle_wildcard(&holder[i]) == 0)
-				return (0);
-			else if (i == 0 && handle_wildcard(&holder[i]) == 0)
-				return (0);
-		}
+		// if (has_wildcard(holder[i]))
+		// {
+		// 	if (i > 0 && handle_wildcard(&holder[i], holder[i - 1]) == 0)
+		// 		return (0);
+		// 	else if (i == 0 && handle_wildcard(&holder[i], "") == 0)
+		// 		return (0);
+		// }
 		if (holder[i + 1] && ((set_token_type(holder[i]) == OPERATOR_T
 			&& set_token_type(holder[i + 1]) == OPERATOR_T)
 			|| (is_redirection_heredoc(holder[i]) && is_operand(holder[i + 1]))
@@ -103,7 +103,7 @@ int	free_2d_array(char **array)
 	return (0);
 }
 
-int	handle_wildcard(char **str)
+int	handle_wildcard(char **str, char *operator)
 {
 	char	**sep_str;
 
@@ -114,7 +114,7 @@ int	handle_wildcard(char **str)
 	*str = ft_strdup("");
 	if (!*str)
 		return (free_2d_array(sep_str), 0);
-	if (!join_wildcard(sep_str, str))
+	if (!join_wildcard(sep_str, str, operator))
 		return (0);
 	free_2d_array(sep_str);
 	return (1);
