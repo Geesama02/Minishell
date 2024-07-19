@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 11:00:36 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/19 16:41:45 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,8 @@ int				count_len(char **holder);
 int				handle_builtins_failure(t_token_tree *tree, char **cmds);
 int				check_expand(t_token_tree *tree);
 void			null_terminating_rev(char *string);
+int				has_quotes(char *str, char c);
+int				invalid_option_error(char **tokens, int i);
 
 // delete later
 char *print_type(t_t_type type);

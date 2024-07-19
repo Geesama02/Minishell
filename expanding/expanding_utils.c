@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/19 11:00:18 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/19 16:30:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,15 @@ int	is_string(char *str)
 {
 	int i;
 
-	i = 0;
+	i = 1;
 	while (str[i])
 	{
-		if ((str[i] >= 65 && str[i] <= 90) 
-			|| (str[i] >= 97 && str[i] <= 122)
-			|| str[i] == 34)
-			i++;
-		else
+		if (str[i] == '\"' || str[i] == '\''
+			|| str[i] == ';' || str[i] == ':'
+			|| str[i] == '|' || str[i] == '-')
 			return (0);
+		else
+			i++;
 	}
 	return (1);
 }

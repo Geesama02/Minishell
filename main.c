@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 12:24:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/19 15:21:04 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int main(int argc, char **argv, char **envp)
 			}
 			else
 			{
-				int exit_s;
+				int	exit_s;
 				t_env_vars *tmp = search_for_env_var(&head, "?");
 				exit_s = ft_atoi(tmp->env_val);
 				rl_clear_history();
@@ -194,7 +194,7 @@ int main(int argc, char **argv, char **envp)
 		}
 		if (is_heredoc[1] == 1)
 		{
-			t_env_vars *tmp2;
+			t_env_vars	*tmp2;
 			tmp2 = head;
 			tmp2 = search_for_env_var(&head, "?");
 			define_exit_status(tmp2, "1");
