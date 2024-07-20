@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/20 10:29:29 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/20 17:14:40 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ int main(int argc, char **argv, char **envp)
 	rl_catch_signals = 0;
 	head = create_lst(envp);
 	define_signals();
+	ft_bzero(childs, 99);
 	// atexit(a);
     while (1)
     {
@@ -208,14 +209,14 @@ int main(int argc, char **argv, char **envp)
 		}
 		// free(input);
 		// printf("pid -> %d\n", getpid());
-		int i = 0;
-		while(token_array[i].token)
-		{
-			printf("token ==> %s -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
-			i++;
-		}
+		// int i = 0;
+		// while(token_array[i].token)
+		// {
+		// 	printf("token ==> %s -> type ==> %s\n", token_array[i].token, print_type(token_array[i].type));
+		// 	i++;
+		// }
 		postfix_stack = shunting_yard(token_array);
-		ast_tree = build_tree(&postfix_stack, envp, &head);
+		ast_tree = build_tree(&postfix_stack, envp, &head, childs);
 		// printf("left -> %s\n", ast_tree->left->token);
 		// printf("right -> %s\n", ast_tree->right->token);
 		// printf("========= stack =========\n");
@@ -224,8 +225,13 @@ int main(int argc, char **argv, char **envp)
 		// printf("tree -> %s\n", ast_tree->token);
 		// print_tree(ast_tree, 0);
 		ast_tree->head = &head;
-		ast_tree->childs_p = childs;
 		execute_tree(ast_tree, ast_tree->head, 1);
+		// int i = 0;
+		// while (childs[i])
+		// {	
+		// 	printf("child %d -> %d\n", i, childs[i]);
+		// 	i++;
+		// }
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
 		is_heredoc[0] = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 17:56:18 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/20 17:10:56 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,12 @@ typedef struct s_token_tree
 	struct s_token_tree	*right;
 	char				**envp;
 	t_env_vars			**head;
-	int					*childs_p;
+	int					*childs;
 } t_token_tree;
 
 int is_heredoc[2];
 
+void			ft_bzero(void *s, size_t n);
 void			ft_putstr_fd(char *s, int fd);
 int				ft_atoi(const char *str);
 int				ft_isalpha_quotes(int c);
@@ -112,7 +113,7 @@ int				check_cmd(char *str);
 int				cd_command(char *path, t_env_vars *head);
 char			*remove__quotes(char *str);
 void 			print_tree(t_token_tree *root, int level); //delete later
-t_token_tree	*create_node(char *token, t_t_type type, char **envp, t_env_vars **head);
+t_token_tree	*create_node(char *token, t_t_type type, char **envp, t_env_vars **head, int *childs_pids);
 t_token_array	*tokenizer(char **input, t_env_vars *head);
 void			*free_alloc(char **bigstr, int l);
 int				is_inside_quotes(char const *s, int i);
@@ -128,7 +129,8 @@ int				handle_tokens(char **input, char *input_cpy,
 int				handle_cmd(char **input, char *input_cpy, char **holder, int i);
 t_stack			shunting_yard(t_token_array *tokens);
 int				count_array(t_token_array *tokens);
-t_token_tree	*build_tree(t_stack *stack, char **envp, t_env_vars **head);
+t_token_tree	*build_tree(t_stack *stack, char **envp,
+		t_env_vars **head, int *childs);
 int				count_env_vars(char **tokens);
 int				unset_command(t_env_vars **head, char **cmds, t_token_tree *tree);
 void			env_command(t_env_vars *env_vars);
@@ -232,6 +234,7 @@ int 			count_wildcard(char *str);
 void			null_terminating_rev(char *string);
 int				has_quotes(char *str, char c);
 int				invalid_option_error(char **tokens, int i);
+void			safe_close(int fd, t_token_tree *node);
 
 // delete later
 char *print_type(t_t_type type);

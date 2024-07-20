@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/18 17:02:42 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/20 18:25:42 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 {
 	char		*path;
 	t_env_vars	*tmp;
+	struct stat	buff;
 
 	path = NULL;
 	tmp = search_for_env_var(tree->head, "?");
@@ -99,6 +100,9 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 		path = ft_strdup(cmds[0]);
 		if (!path)
 			return (ft_close(cmds, tree->head, tree), -1);
+		stat(path, &buff);
+		if (S_ISDIR(buff.st_mode))
+			return (print_err("minishell: ", path, ": is a directory\n"), -1);
 	}
 	if (path)
 	{

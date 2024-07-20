@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/20 10:35:23 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/20 15:22:24 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	set_count(t_token_tree *root, int count)
 }
 
 int	handle_non_cmd(t_token_array token, t_token_tree **stack_tree,
-	int *tree_offset, t_tree_vars vars)
+	int *tree_offset, t_tree_vars vars, int *childs)
 {
 	t_token_tree	*tmp_right;
 	t_token_tree	*tmp_left;
@@ -46,7 +46,7 @@ int	handle_non_cmd(t_token_array token, t_token_tree **stack_tree,
 	tmp_left = stack_tree[*tree_offset - 2];
 	*tree_offset -= 2;
 	stack_tree[*tree_offset] = create_node(token.token,
-			token.type, vars.envp, vars.head);
+			token.type, vars.envp, vars.head, childs);
 	if (!stack_tree[*tree_offset])
 		return (0);
 	stack_tree[*tree_offset]->right = tmp_right;
@@ -56,7 +56,7 @@ int	handle_non_cmd(t_token_array token, t_token_tree **stack_tree,
 }
 
 int	make_nodes(t_stack *stack, int i, t_token_tree **stack_tree,
-	t_tree_vars tree_vars)
+	t_tree_vars tree_vars, int *childs)
 {
 	int	tree_offset;
 
@@ -67,7 +67,7 @@ int	make_nodes(t_stack *stack, int i, t_token_tree **stack_tree,
 			|| stack->token[i].type == HEREDOC_TOKEN)
 		{
 			stack_tree[tree_offset] = create_node(stack->token[i].token,
-					stack->token[i].type, tree_vars.envp, tree_vars.head);
+					stack->token[i].type, tree_vars.envp, tree_vars.head, childs);
 			if (!stack_tree[tree_offset])
 				return (handle_node_failure(stack, stack_tree, tree_offset), 0);
 			tree_offset++;
@@ -75,7 +75,7 @@ int	make_nodes(t_stack *stack, int i, t_token_tree **stack_tree,
 		else if (tree_offset > 1)
 		{
 			if (!handle_non_cmd(stack->token[i], stack_tree,
-					&tree_offset, tree_vars))
+					&tree_offset, tree_vars, childs))
 				return (handle_node_failure(stack, stack_tree, tree_offset), 0);
 		}
 		i++;
@@ -91,7 +91,8 @@ void	set_address(t_token_tree *root, t_token_tree **address)
 	set_address(root->right, address);
 }
 
-t_token_tree	*build_tree(t_stack *stack, char **envp, t_env_vars **head)
+t_token_tree	*build_tree(t_stack *stack, char **envp,
+		t_env_vars **head, int *childs)
 {
 	int				i;
 	t_token_tree	**stack_tree;
@@ -104,10 +105,9 @@ t_token_tree	*build_tree(t_stack *stack, char **envp, t_env_vars **head)
 	i = 0;
 	tree_vars.envp = envp;
 	tree_vars.head = head;
-	if (!make_nodes(stack, i, stack_tree, tree_vars))
+	if (!make_nodes(stack, i, stack_tree, tree_vars, childs))
 		return (exit(1), NULL);
 	i = 1;
-	printf("head -> %d\n", stack->head);
 	free(stack->token);
 	root = stack_tree[0];
 	// printf("stack -> %s\n", stack_tree[1]->token);

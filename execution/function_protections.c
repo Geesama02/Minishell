@@ -6,21 +6,21 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 16:53:19 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/19 16:43:58 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/20 17:10:46 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-// int safe_close(int fd, t_token_tree *node)
-// {
-//     if (close(fd) == -1)
-//     {    
-//         print_err("close() failed!!\n", NULL, NULL);
-//         return (-1);
-//     }
-//     return (0);
-// }
+void    safe_close(int fd, t_token_tree *node)
+{
+    if (close(fd) == -1)
+    { 
+        ft_close(NULL, node->head, node->tree_head_address);
+        print_err("close() failed!!\n", NULL, NULL);
+        exit(1);
+    }
+}
 
 char    **ignore_quotes_2d_array(char **strs)
 {
