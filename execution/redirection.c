@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/19 18:16:37 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/20 09:24:13 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ void	expand_filenames(t_token_tree *tree)
 	old_filename = ft_strdup(tree->token);
 	if (!old_filename)
 		return (print_err("malloc failed!!\n", NULL, NULL), ft_close(NULL,
-			tree->head, tree), exit(3));
+			tree->head, tree), free(old_filename), exit(3));
 	check_expand(tree);
 	if (tree->token[0] == 0)
 		return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
-			), exit(1));
+			), free(old_filename), exit(1));
+	free(old_filename);
 	if (has_quotes(tree->token, '\'') && has_quotes(tree->token, '\"'))
 	{
 		cmds = ft_split(tree->token, ' ');
