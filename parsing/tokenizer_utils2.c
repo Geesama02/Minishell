@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 17:54:26 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/20 10:38:38 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,12 @@ int	scan_syntax(char **holder)
 		return (print_err("Minishell: syntax error near unexpected token `", holder[j - 1], "' \n"), 0);
 	while (holder[i] != NULL)
 	{
-		// if (has_wildcard(holder[i]))
-		// {
-		// 	if (i > 0 && handle_wildcard(&holder[i], holder[i - 1]) == 0)
-		// 		return (0);
-		// 	else if (i == 0 && handle_wildcard(&holder[i], "") == 0)
-		// 		return (0);
-		// }
 		if (holder[i + 1] && ((set_token_type(holder[i]) == OPERATOR_T
 			&& set_token_type(holder[i + 1]) == OPERATOR_T)
 			|| (is_redirection_heredoc(holder[i]) && is_operand(holder[i + 1]))
 			|| (set_token_type(holder[i]) == PARETHESIS_O && i != 0 && set_token_type(holder[i - 1]) != OPERATOR_T)
-			|| (set_token_type(holder[i]) == PARETHESIS_C && !is_operand(holder[i + 1]))))
+			|| (set_token_type(holder[i]) == PARETHESIS_C && !is_operand(holder[i + 1]))
+			|| (set_token_type(holder[i]) == PARETHESIS_O && set_token_type(holder[i + 1]) == PARETHESIS_C)))
 			return (print_err("Minishell: syntax error near unexpected token `", holder[i + 1], "' \n"), 0);
 		i++;
 	}

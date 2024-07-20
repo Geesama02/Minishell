@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 09:44:22 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 09:51:14 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/20 10:45:10 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int	check_redirections_extras(t_token_array *token_array)
 	i = 0;
 	while (token_array[i].token)
 		i++;
+	if (i > 0)
+		i--;
 	while (i >= 0)
 	{
 		if (i > 0 && is_redirection(token_array[i].type)
