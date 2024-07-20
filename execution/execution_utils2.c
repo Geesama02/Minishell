@@ -70,8 +70,7 @@ int	builtins_rest(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
 
 int	define_exit_status(t_env_vars *tmp, char *exit_status)
 {
-	if (tmp->env_val)
-		free(tmp->env_val);
+	free(tmp->env_val);
 	tmp->env_val = ft_strdup(exit_status);
 	if (!tmp->env_val && errno == ENOMEM)
 		return (-1);

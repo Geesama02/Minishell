@@ -135,8 +135,7 @@ void			env_command(t_env_vars *env_vars);
 char			**ft_split_one(char const *s, char c);
 t_t_type		set_token_type(char *token);
 void			execute_pipe(t_token_tree *left, t_token_tree *right);
-int				exec_command(t_token_tree *tree, char **cmds,
-		t_env_vars **head, int child);
+int				exec_command(t_token_tree *tree, char **cmds, int child);
 int				exec_normal_commands(t_token_tree *tree);
 int				scan_syntax(char **holder);
 int				unclosed_var(char *str, char c);
