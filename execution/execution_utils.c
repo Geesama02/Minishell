@@ -114,16 +114,16 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 	return (0);
 }
 
-int exec_command(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
+int exec_command(t_token_tree *tree, char **cmds, int child)
 {
 	t_env_vars	*tmp;
 
-	tmp = search_for_env_var(head, "?");
+	tmp = search_for_env_var(tree->head, "?");
 	if (define_exit_status(tmp, "0") == -1)
-		return (free_envs(head), -1);
+		return (free_envs(tree->head), -1);
 	if (!ft_strcmp(cmds[0], "cd"))
 	{
-		if (cd_command(cmds[1], *head) == -1)
+		if (cd_command(cmds[1], *tree->head) == -1)
 			return (handle_builtins_failure(tree, cmds));
 	}
 	else if (!ft_strcmp(cmds[0], "pwd"))
@@ -132,6 +132,6 @@ int exec_command(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
 			return (handle_builtins_failure(tree, cmds));
 	}
 	else
-		return (builtins_rest(tree, cmds, head, child));
+		return (builtins_rest(tree, cmds, tree->head, child));
 	return (0);
 }

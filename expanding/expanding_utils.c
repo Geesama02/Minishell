@@ -90,7 +90,7 @@ void	ft_lstadd(t_env_vars **lst, t_env_vars *new)
 
 void	null_terminating_rev(char *string)
 {
-	size_t len;
+	int	len;
 
 	len = ft_strlen(string);
 	while (len >= 0 && string[len - 1] == ' ')

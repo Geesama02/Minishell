@@ -63,7 +63,7 @@ int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 		if (!cmds && errno == ENOMEM)
 			return (free_envs(head), free_tree(tree), exit(1), -1);
 		cmds = ignore_quotes_2d_array(cmds);
-		if (cmds && exec_command(tree, cmds, head, child) == -1)
+		if (cmds && exec_command(tree, cmds, child) == -1)
 			return (free_2d_array(cmds), -1);
 		free_2d_array(cmds);
 	}

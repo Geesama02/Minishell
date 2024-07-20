@@ -24,7 +24,7 @@ void	expand_filenames(t_token_tree *tree)
 	check_expand(tree);
 	if (tree->token[0] == 0)
 		return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
-			), free(old_filename), exit(1));
+			), free(old_filename), ft_close(NULL, tree->head, tree), exit(1));
 	free(old_filename);
 	if (has_quotes(tree->token, '\'') && has_quotes(tree->token, '\"'))
 	{
@@ -54,12 +54,14 @@ void	execute_redirection_in(t_token_tree *tree)
 		if (fd_file == -1 && errno == ENOENT)
 		{
 			print_err("minishell: ", tree->right->token, ": No such file or directory\n");
+			ft_close(NULL, tree->head, tree);
 			exit(1);
 		}
 		dup2(fd_file, 0); //fail
 		close(fd_file); //fail
 		if (tree->left->token[0] != '\0')
 			execute_tree(tree->left, tree->head, pid);
+		ft_close(NULL, tree->head, tree);
 		exit(0);
 	}
 	wait(&status);
@@ -89,6 +91,7 @@ void	execute_redirection_out(t_token_tree *tree)
 		if (fd_file == -1)
 		{
 			print_err("open() failed!!\n", NULL, NULL);
+			ft_close(NULL, tree->head, tree);
 			exit(1);
 		}
 		dup2(fd_file, 1);
@@ -97,6 +100,7 @@ void	execute_redirection_out(t_token_tree *tree)
 			execute_tree(tree->left, tree->head, pid);
 		dup2(stdout_cp, 1);
 		close(stdout_cp);
+		ft_close(NULL, tree->head, tree);
 		exit(0);
 	}
 	wait(&status);
@@ -124,6 +128,7 @@ void	execute_redirection_append(t_token_tree *tree)
 		if (fd_file == -1)
 		{
 			print_err("open() failed!!\n", NULL, NULL);
+			ft_close(NULL, tree->head, tree);
 			exit(1);
 		}
 		dup2(fd_file, 1);
@@ -132,6 +137,7 @@ void	execute_redirection_append(t_token_tree *tree)
 			execute_tree(tree->left, tree->head, pid);
 		dup2(stdout_cp, 1);
 		close(stdout_cp);
+		ft_close(NULL, tree->head, tree);
 		exit(0);
 	}
 	wait(&status);
