@@ -20,11 +20,12 @@ void	expand_filenames(t_token_tree *tree)
 	old_filename = ft_strdup(tree->token);
 	if (!old_filename)
 		return (print_err("malloc failed!!\n", NULL, NULL), ft_close(NULL,
-			tree->head, tree), exit(3));
+			tree->head, tree), free(old_filename), exit(3));
 	check_expand(tree);
 	if (tree->token[0] == 0)
 		return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
-			), exit(1));
+			), free(old_filename), exit(1));
+	free(old_filename);
 	if (has_quotes(tree->token, '\'') && has_quotes(tree->token, '\"'))
 	{
 		cmds = ft_split(tree->token, ' ');

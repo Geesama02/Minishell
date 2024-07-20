@@ -15,7 +15,7 @@
 int	add_space_cmd(t_token_tree *cmd)
 {
 	char	*token;
-	size_t	len;
+	int		len;
 	int		i;
 
 	i = 0;
