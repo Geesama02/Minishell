@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/20 17:10:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/21 10:19:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,13 @@ typedef struct s_token_tree
 
 int is_heredoc[2];
 
+void			ft_putchar_fd(char c, int fd);
 void			ft_bzero(void *s, size_t n);
 void			ft_putstr_fd(char *s, int fd);
 int				ft_atoi(const char *str);
 int				ft_isalpha_quotes(int c);
-void    		ft_putchar(char c);
 char			*ft_strtrim(char const *s1, char const *set);
 char			*ft_itoa(int n);
-void    		ft_putstr(char *str);
 char			*ft_strdup(const char *s1);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t			ft_strlen(const char *s);
@@ -235,6 +234,16 @@ void			null_terminating_rev(char *string);
 int				has_quotes(char *str, char c);
 int				invalid_option_error(char **tokens, int i);
 void			safe_close(int fd, t_token_tree *node);
+void			delete_env_head(t_env_vars *tmp, t_env_vars **head);
+void			delete_env_inside(t_env_vars *tmp, char *cmd,
+		char **cmds, t_token_tree *tree);
+char			*file_isdir_case(char **cmds,
+		t_token_tree *tree, char *path);
+void			handle_fork_failure(t_token_tree *tree);
+void			expand_filenames(t_token_tree *tree);
+void			execute_redirec_in(t_token_tree *tree, int pid);
+void			execute_redirec_out(t_token_tree *tree, int pid);
+void			execute_redirec_append(t_token_tree *tree, int pid);
 
 // delete later
 char *print_type(t_t_type type);

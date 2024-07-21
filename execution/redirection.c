@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/20 09:24:13 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/21 10:19:27 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,109 +41,58 @@ void	expand_filenames(t_token_tree *tree)
 
 void	execute_redirection_in(t_token_tree *tree)
 {
-	int			fd_file;
 	int			status;
 	pid_t		pid;
+	char		*exit_s;
 
 	// null_terminating_rev(tree->right->token);
-	pid = fork(); //fail
+	pid = fork();
+	if (pid == -1)
+		return (print_err("fork() failed!!\n", NULL, NULL));
 	if (!pid)
-	{
-		expand_filenames(tree->right);
-		fd_file = open(ignore_quotes(&tree->right->token), O_RDONLY, S_IRWXU); //fail
-		if (fd_file == -1 && errno == ENOENT)
-		{
-			print_err("minishell: ", tree->right->token, ": No such file or directory\n");
-			ft_close(NULL, tree->head, tree);
-			exit(1);
-		}
-		dup2(fd_file, 0); //fail
-		close(fd_file); //fail
-		if (tree->left->token[0] != '\0')
-			execute_tree(tree->left, tree->head, pid);
-		ft_close(NULL, tree->head, tree);
-		exit(0);
-	}
+		execute_redirec_in(tree, pid);
 	wait(&status);
 	if (WEXITSTATUS(status) == 3)
 		return (ft_close(NULL, tree->head, tree), exit(1));
-	char *exit_s = ft_itoa(WEXITSTATUS(status));
+	exit_s = ft_itoa(WEXITSTATUS(status));
 	define_exit_status(search_for_env_var(tree->head, "?"), exit_s);
 	free(exit_s);
 }
 
 void	execute_redirection_out(t_token_tree *tree)
 {
-	int		fd_file;
-	int		stdout_cp;
 	int		status;
 	pid_t	pid;
+	char	*exit_s;
 
 	// null_terminating_rev(tree->right->token);
-	pid = fork(); //fail
+	pid = fork();
 	if (pid == -1)
-		print_err("fork() failed!!\n", NULL, NULL); //fork() fail
+		return (print_err("fork() failed!!\n", NULL, NULL));
 	else if (pid == 0)
-	{
-		expand_filenames(tree->right);
-		stdout_cp = dup(1);
-		fd_file = open(ignore_quotes(&tree->right->token), O_CREAT | O_RDWR | O_TRUNC, S_IRWXU); //fail
-		if (fd_file == -1)
-		{
-			print_err("open() failed!!\n", NULL, NULL);
-			ft_close(NULL, tree->head, tree);
-			exit(1);
-		}
-		dup2(fd_file, 1);
-		close(fd_file);
-		if (tree->left->token[0] != '\0')
-			execute_tree(tree->left, tree->head, pid);
-		dup2(stdout_cp, 1);
-		close(stdout_cp);
-		ft_close(NULL, tree->head, tree);
-		exit(0);
-	}
+		execute_redirec_out(tree, pid);
 	wait(&status);
 	if (WEXITSTATUS(status) == 3)
 		return (ft_close(NULL, tree->head, tree), exit(1));
-	char *exit_s = ft_itoa(WEXITSTATUS(status));
+	exit_s = ft_itoa(WEXITSTATUS(status));
 	define_exit_status(search_for_env_var(tree->head, "?"), exit_s);
 	free(exit_s);
 }
 
 void	execute_redirection_append(t_token_tree *tree)
 {
-	int		fd_file;
-	int		stdout_cp;
 	int		status;
 	pid_t	pid;
+	char	*exit_s;
 
 	// null_terminating_rev(tree->right->token);
 	pid = fork();
 	if (!pid)
-	{
-		expand_filenames(tree->right);
-		stdout_cp = dup(1);
-		fd_file = open(ignore_quotes(&tree->right->token), O_CREAT | O_RDWR | O_APPEND, 00700);
-		if (fd_file == -1)
-		{
-			print_err("open() failed!!\n", NULL, NULL);
-			ft_close(NULL, tree->head, tree);
-			exit(1);
-		}
-		dup2(fd_file, 1);
-		close(fd_file);
-		if (tree->left->token[0] != 0)
-			execute_tree(tree->left, tree->head, pid);
-		dup2(stdout_cp, 1);
-		close(stdout_cp);
-		ft_close(NULL, tree->head, tree);
-		exit(0);
-	}
+		execute_redirec_append(tree, pid);
 	wait(&status);
 	if (WEXITSTATUS(status) == 3)
 		return (ft_close(NULL, tree->head, tree), exit(1));
-	char *exit_s = ft_itoa(WEXITSTATUS(status));
+	exit_s = ft_itoa(WEXITSTATUS(status));
 	define_exit_status(search_for_env_var(tree->head, "?"), exit_s);
 	free(exit_s);
 }

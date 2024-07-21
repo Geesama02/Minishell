@@ -1,7 +1,7 @@
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 CC = cc
 NAME = minishell
-SRC = main.c execution/function_protections.c parsing/ft_split_qt.c parsing/ft_env_split.c parsing/ft_strcmp.c parsing/fill_token.c execution/builtins.c parsing/create_ast.c \
+SRC = main.c execution/redirection_utils.c execution/unset_utils.c execution/function_protections.c parsing/ft_split_qt.c parsing/ft_env_split.c parsing/ft_strcmp.c parsing/fill_token.c execution/builtins.c parsing/create_ast.c \
 	execution/execution.c expanding/expanding.c parsing/tokenizer.c parsing/tokenizer_utils.c parsing/tokenizer_utils2.c parsing/shunting_yard.c parsing/shunting_yard_utils.c \
 	parsing/build_tree.c expanding/expanding_utils.c expanding/expanding_utils2.c expanding/expanding_utils3.c expanding/ft_split_one.c expanding/wildcard_utils.c execution/pipe_execution.c execution/execution_utils.c \
 	execution/redirection.c expanding/wildcard_utils2.c parsing/heredoc.c parsing/heredoc_utils.c parsing/heredoc_utils2.c parsing/tokenizer_utils3.c \

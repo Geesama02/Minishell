@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/20 18:18:17 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/21 09:47:28 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,17 @@ int	ft_isalpha_quotes(int c)
 		return (1);
 	else
 		return (0);
+}
+
+char	*file_isdir_case(char **cmds, t_token_tree *tree, char *path)
+{
+	struct stat	buff;
+
+	path = ft_strdup(cmds[0]);
+	if (!path)
+		return (ft_close(cmds, tree->head, tree), NULL);
+	stat(path, &buff);
+	if (S_ISDIR(buff.st_mode))
+		return (free(path), print_err("minishell: ", path, ": is a directory\n"), NULL);
+	return (path);
 }
