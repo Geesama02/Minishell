@@ -3,21 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   shunting_yard.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:01:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/06 12:54:53 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/20 11:11:26 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void	stack_push(t_token_array *token, t_stack *stack)
+int	stack_push(t_token_array *token, t_stack *stack)
 {
 	stack->token[stack->head].token = ft_strdup(token->token);
+	if (!stack->token[stack->head].token)
+		return (0);
 	stack->token[stack->head].type = token->type;
 	free(token->token);
 	stack->head++;
+	return (1);
 }
 
 int	precedence_prio(char *token)
