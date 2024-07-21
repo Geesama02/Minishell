@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/21 10:21:49 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/21 11:23:22 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ int main(int argc, char **argv, char **envp)
 	head = create_lst(envp);
 	define_signals();
 	ft_bzero(childs, 99);
-	atexit(a);
+	// atexit(a);
     while (1)
     {
 		// (void)envp;
