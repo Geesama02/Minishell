@@ -6,13 +6,13 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/19 16:54:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/21 10:33:47 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void	replace_value(t_env_vars *prev, char **cmds, char **tokens,
+void	check_exesting(t_env_vars *prev, char **cmds, char **tokens,
 	t_token_tree *tree)
 {
 	free(prev->env_val);
@@ -102,7 +102,7 @@ int	add_or_append(char **cmds, t_token_tree *tree,
 	{
 		prev = search_for_env_var(tree->head, cmds[0]);
 		if (prev)
-			replace_value(prev, cmds, tokens, tree);
+			check_exesting(prev, cmds, tokens, tree);
 		else
 			lst_add_element(tokens, cmds, tree, i);
 	}
@@ -129,9 +129,9 @@ int	add_env_var(char **tokens, int nbr_envs, t_env_vars **head, t_token_tree *tr
 		{
 			define_exit_status(tmp, "1");
 			if (tokens[i][0] == '-')
-				return (invalid_option_error(tokens, i));
+				return (free_2d_array(cmds), invalid_option_error(tokens, i));
 			return (print_err("export: `", tokens[i],
-				"': not a valid identifier\n"), -1);
+				"': not a valid identifier\n"), free_2d_array(cmds), -1);
 		}
 		free_2d_array(cmds);
 		i++;

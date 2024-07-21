@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/21 11:55:26 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/21 11:59:49 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	check_expand(t_token_tree *tree)
 	return (1);
 }
 
-int execute_cmds_with_operators(t_token_tree *tree, t_env_vars **head, int child)
+int execute_cmds_with_operators_heredoc(t_token_tree *tree, t_env_vars **head, int child)
 {
 	if (!ft_strcmp(tree->token, "&&"))
 	{
@@ -44,12 +44,13 @@ int execute_cmds_with_operators(t_token_tree *tree, t_env_vars **head, int child
 	}
 	else if (!ft_strcmp(tree->token, "|"))
 		execute_pipe(tree->left, tree->right);
+	else if (tree->type == HEREDOC)
+		execute_heredoc(tree->left, tree->right);
 	return (0);
 }
 
 int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 {
-	int		status;
 	char	**cmds;
 
 	cmds = NULL;
@@ -61,19 +62,17 @@ int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 		check_expand(tree);
 		cmds = ft_split_qt(tree->token, ' '); //leaks
 		if (!cmds && errno == ENOMEM)
-			return (free_envs(head), free_tree(tree), exit(1), -1);
+			return (ft_close(NULL, tree->head, tree), exit(1), -1);
 		cmds = ignore_quotes_2d_array(cmds);
 		if (cmds && exec_command(tree, cmds, child) == -1)
 			return (free_2d_array(cmds), -1);
 		free_2d_array(cmds);
 	}
-	else if (tree->type == OPERATOR_T)
+	else if (tree->type == OPERATOR_T || tree->type == HEREDOC)
 	{
-		if (execute_cmds_with_operators(tree, head, child) == -1)
-			return (free_2d_array(cmds) -1);
+		if (execute_cmds_with_operators_heredoc(tree, head, child) == -1)
+			return (-1);
 	}
-	else if (tree->type == HEREDOC)
-		execute_heredoc(tree->left, tree->right);
-	wait(&status);
+	wait(NULL);
 	return (0);
 }

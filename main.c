@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/20 17:42:16 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/21 11:58:59 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,8 @@ int main(int argc, char **argv, char **envp)
 	rl_catch_signals = 0;
 	head = create_lst(envp);
 	define_signals();
-	// atexit(a);
+	ft_bzero(childs, 99);
+	atexit(a);
     while (1)
     {
 		// (void)envp;
@@ -215,7 +216,7 @@ int main(int argc, char **argv, char **envp)
 		// 	i++;
 		// }
 		postfix_stack = shunting_yard(token_array);
-		ast_tree = build_tree(&postfix_stack, envp, &head);
+		ast_tree = build_tree(&postfix_stack, envp, &head, childs);
 		// printf("left -> %s\n", ast_tree->left->token);
 		// printf("right -> %s\n", ast_tree->right->token);
 		// printf("========= stack =========\n");
@@ -224,8 +225,13 @@ int main(int argc, char **argv, char **envp)
 		// printf("tree -> %s\n", ast_tree->token);
 		// print_tree(ast_tree, 0);
 		ast_tree->head = &head;
-		ast_tree->childs_p = childs;
 		execute_tree(ast_tree, ast_tree->head, 1);
+		// int i = 0;
+		// while (childs[i])
+		// {	
+		// 	printf("child %d -> %d\n", i, childs[i]);
+		// 	i++;
+		// }
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
 		is_heredoc[0] = 0;
