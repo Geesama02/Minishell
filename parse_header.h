@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/21 10:19:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/21 11:59:42 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void			replace_nodes_content(t_env_vars *node1, t_env_vars *node2, t_token_tree 
 t_env_vars		*create_lst(char **envp);
 t_env_vars		*search_for_env_var(t_env_vars **head, char *env_name);
 int				append_env_var(char *env_name, char *to_append, char **cmds, t_token_tree *tree);
-char			*expand_vars(char *holder, t_env_vars *head);
+char			*expand_vars(char *holder, t_t_type type, t_env_vars *head);
 int				ft_isalpha(int c);
 char			**ft_env_split(char const *s, char c);
 int				ft_isdigit(int c);
@@ -233,6 +233,7 @@ int 			count_wildcard(char *str);
 void			null_terminating_rev(char *string);
 int				has_quotes(char *str, char c);
 int				invalid_option_error(char **tokens, int i);
+char			**ft_env_split_no_qt(char const *s, char c);
 void			safe_close(int fd, t_token_tree *node);
 void			delete_env_head(t_env_vars *tmp, t_env_vars **head);
 void			delete_env_inside(t_env_vars *tmp, char *cmd,

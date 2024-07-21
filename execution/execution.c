@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/21 11:29:01 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/21 13:09:03 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	check_expand(t_token_tree *tree)
 {
 	if (has_vars(tree->token))
 	{
-		tree->token = expand_vars(tree->token, *tree->head);
+		tree->token = expand_vars(tree->token, tree->type, *tree->head);
 		if (!tree->token)
 			return (ft_close(NULL, tree->head, tree),
 				exit(1), -1);

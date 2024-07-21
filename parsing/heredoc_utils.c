@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:53:25 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/18 08:59:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/21 11:55:11 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	handle_heredoc(t_token_array *token_array,
 		&& has_vars_no_quotes(token_array[vars->l].token))
 	{
 		token_array[vars->l].token = expand_vars(token_array[vars->l].token,
-				vars->head);
+				token_array[vars->l].type, vars->head);
 		if (!token_array[vars->l].token)
 			return (free_token_holder(holder, token_array, vars->l),
 				exit(1), 0);
@@ -127,7 +127,7 @@ int	handle_heredoc(t_token_array *token_array,
 	else if (has_vars(token_array[vars->l].token))
 	{
 		token_array[vars->l].token = expand_vars(token_array[vars->l].token,
-				vars->head);
+				token_array[vars->l].type, vars->head);
 		if (!token_array[vars->l].token)
 			return (free_token_holder(holder, token_array, vars->l),
 				exit(1), 0);

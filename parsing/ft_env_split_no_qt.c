@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env_split.c                                :+:      :+:    :+:   */
+/*   ft_env_split_no_qt.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 11:51:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/05/30 14:55:04 by oait-laa         ###   ########.fr       */
+/*   Created: 2024/07/21 11:50:33 by oait-laa          #+#    #+#             */
+/*   Updated: 2024/07/21 11:55:43 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	count_words(char const *s, char c)
 		count++;
 	while (s[i])
 	{
-		if (s[i] == c && s[i + 1] && !non_var_name((char *)s, i + 1) && inside_single_quotes((char *)s, i + 1) == 0 && s[i + 1] != c)
+		if (s[i] == c && s[i + 1] && !non_var_name((char *)s, i + 1) && s[i + 1] != c)
 			count++;
 		i++;
 	}
@@ -35,7 +35,7 @@ static int	count_word(char const *s, char c, int i)
 	int	len;
 
 	len = 0;
-	while (s[i] && (s[i] != c || (s[i] == c && non_var_name((char *)s, i + 1)) || (s[i] == c && inside_single_quotes((char *)s, i))))
+	while (s[i] && (s[i] != c || (s[i] == c && non_var_name((char *)s, i + 1))))
 	{
 		len++;
 		i++;
@@ -56,11 +56,11 @@ static void	*sec_alloc(char **bigstr, int l)
 
 static void	skip_c(char const *s, char c, int *i)
 {
-	while (s[*i] == c && !non_var_name((char *)s, *i + 1) && inside_single_quotes((char *)s, *i) == 0)
+	while (s[*i] == c && !non_var_name((char *)s, *i + 1))
 		(*i)++;
 }
 
-char	**ft_env_split(char const *s, char c)
+char	**ft_env_split_no_qt(char const *s, char c)
 {
 	int		i;
 	int		l;
@@ -81,7 +81,7 @@ char	**ft_env_split(char const *s, char c)
 		str[l] = (char *)malloc(count_word(s, c, i) + 1);
 		if (!str[l])
 			return (sec_alloc(str, l));
-		while ((s[i] != c || (s[i] == c && non_var_name((char *)s, i + 1)) || (s[i] == c && inside_single_quotes((char *)s, i))) && s[i])
+		while ((s[i] != c || (s[i] == c && non_var_name((char *)s, i + 1))) && s[i])
 			str[l][n++] = s[i++];
 		str[l++][n] = '\0';
 	}

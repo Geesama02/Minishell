@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/19 15:20:29 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/21 14:24:45 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,21 @@ int	oldpwd_case(t_env_vars *head)
 
 int	check_minus_n(char *echo_flag)
 {
-	if (*echo_flag == '-')
+	int	i;
+
+	i = 1;
+	if (!echo_flag)
+		return (-1);
+	if (echo_flag[i])
 	{
-		echo_flag++;
-		while (*echo_flag)
+		while (echo_flag[i])
 		{
-			if (*echo_flag != 'n')
+			if (echo_flag[i] != 'n')
 				return (-1);
-			echo_flag++;
+			i++;
 		}
 	}
-	else if (*echo_flag != '-')
+	else
 		return (-1);
 	return (0);
 }
