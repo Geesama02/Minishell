@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_env_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 16:33:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/21 11:57:52 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:20:34 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	*join_all_vars(char **words, char **result)
 {
 	int		i;
 	char	*tmp;
-	
+
 	i = 0;
 	while (words[i])
 	{
@@ -32,8 +32,8 @@ void	*join_all_vars(char **words, char **result)
 
 int	inside_single_quotes(char *s, int i)
 {
-	int quote;
-	int dquote;
+	int	quote;
+	int	dquote;
 	int	j;
 
 	quote = 0;
@@ -55,15 +55,16 @@ int	inside_single_quotes(char *s, int i)
 int	get_quotes_count(char *str)
 {
 	int	i;
-	int j;
-	int count;
+	int	j;
+	int	count;
 
 	i = 0;
 	count = 0;
 	j = 0;
 	while (str[i])
 	{
-		while((str[i] != '$' || (str[i] == '$' && non_var_name((char *)str, i + 1))) && str[i])
+		while ((str[i] != '$' || (str[i] == '$'
+					&& non_var_name((char *)str, i + 1))) && str[i])
 			i++;
 		j++;
 		if (str[i] == '$' && inside_single_quotes(str, i) && str[i + 1] != '$')
@@ -74,38 +75,11 @@ int	get_quotes_count(char *str)
 	return (count);
 }
 
-// int	*get_single_quotes_position(char *str)
-// {
-// 	int	i;
-// 	int j;
-// 	int	*ints;
-// 	int	l;
-
-// 	i = 0;
-// 	j = 0;
-// 	l = 0;
-// 	ints = malloc(sizeof(int) * (get_quotes_count(str) + 1));
-// 	if (!ints)
-// 		return (NULL);
-// 	while (str[i])
-// 	{
-// 		while((str[i] != '$' || (str[i] == '$' && non_var_name((char *)str, i + 1))) && str[i])
-// 			i++;
-// 		j++;
-// 		if (str[i] == '$' && inside_single_quotes(str, i) && str[i + 1] != '$')
-// 			ints[l++] = j;
-// 		if (str[i])
-// 			i++;
-// 	}
-// 	ints[l] = 0;
-// 	return (ints);
-// }
-
-char *expand_vars(char *holder, t_t_type type, t_env_vars *head)
+char	*expand_vars(char *holder, t_t_type type, t_env_vars *head)
 {
-	int	i;
-	char **words;
-	char *result;
+	int		i;
+	char	**words;
+	char	*result;
 
 	i = 0;
 	result = ft_strdup("");
@@ -137,9 +111,9 @@ char *expand_vars(char *holder, t_t_type type, t_env_vars *head)
 int	has_vars(char *str)
 {
 	int	i;
-	
+
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == '$' && inside_single_quotes(str, i) == 0)
 			return (1);
@@ -148,7 +122,7 @@ int	has_vars(char *str)
 	return (0);
 }
 
-char *search_for_var(t_env_vars *head, char *env_name)
+char	*search_for_var(t_env_vars *head, char *env_name)
 {
 	t_env_vars	*tmp;
 

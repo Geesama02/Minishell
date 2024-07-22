@@ -6,13 +6,14 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 14:51:00 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:21:49 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int	append_env_var(char *env_name, char *to_append, char **cmds, t_token_tree *tree)
+int	append_env_var(char *env_name, char *to_append, char **cmds,
+		t_token_tree *tree)
 {
 	t_env_vars	*tmp;
 	char		*new_env_val;
@@ -23,7 +24,7 @@ int	append_env_var(char *env_name, char *to_append, char **cmds, t_token_tree *t
 		tmp = tmp->next;
 	if (tmp)
 	{
-		new_env_val = ft_strjoin(tmp->env_val, to_append); //leaks
+		new_env_val = ft_strjoin(tmp->env_val, to_append);
 		if (!new_env_val && errno == ENOMEM)
 			return (free(env_name), ft_close(cmds, tree->head, tree),
 				exit(1), -1);
@@ -34,7 +35,7 @@ int	append_env_var(char *env_name, char *to_append, char **cmds, t_token_tree *t
 
 t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name)
 {
-	t_env_vars  *current;
+	t_env_vars	*current;
 
 	if (head)
 	{
@@ -59,7 +60,7 @@ void	null_terminating(char *str, char c)
 
 int	is_string(char *str)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (str[i])

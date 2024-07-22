@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 10:05:45 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/06 17:27:45 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:37:40 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,27 @@ static void	*freeing_memory(char **p, size_t z)
 {
 	while (z > 0)
 	{
-		--z; 
+		--z;
 		free(p[z]);
 	}
 	free(p);
 	return (NULL);
+}
+
+int	fill_rest(char const *s, char **p, int i, size_t *p_z)
+{
+	int	j;
+
+	j = 0;
+	if (s[i])
+	{
+		i++;
+		j = 0;
+		p[++(*p_z)] = (char *)malloc(word_length2(s, i) + 1);
+		while (s[i] && s[i] != ';')
+			p[*p_z][j++] = s[i++];
+	}
+	return (j);
 }
 
 char	**ft_split_one(char const *s, char c)
@@ -71,14 +87,7 @@ char	**ft_split_one(char const *s, char c)
 	while (s[i] && s[i] != c)
 		p[z][j++] = s[i++];
 	p[z][j] = '\0';
-	if (s[i])
-	{
-		i++;
-		j = 0;
-		p[++z] = (char *)malloc(word_length2(s, i) + 1);
-		while (s[i] && s[i] != ';')
-			p[z][j++] = s[i++];
-	}
+	j += fill_rest(s, p, i, &z);
 	p[z][j] = '\0';
 	p[++z] = 0;
 	return (p);

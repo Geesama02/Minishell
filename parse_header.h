@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/22 12:17:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:34:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,8 @@ void			execute_redirec_append(t_token_tree *tree, int pid);
 void			safe_dup2(t_token_tree *node, int old_fd, int new_fd);
 void			eof_pressed(t_env_vars **head);
 int				exit_execve(int status, t_env_vars **head, char *path);
+void			create_newenv(char **tokens, t_env_vars **head, char **cmds,
+					t_env_vars *new_env);
 
 // delete later
 char			*print_type(t_t_type type);
