@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/21 11:27:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 10:14:01 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	expand_filenames(t_token_tree *tree)
 	old_filename = ft_strdup(tree->token);
 	if (!old_filename)
 		return (print_err("malloc failed!!\n", NULL, NULL), ft_close(NULL,
-			tree->head, tree), free(old_filename), exit(3));
+				tree->head, tree), free(old_filename), exit(3));
 	check_expand(tree);
 	if (has_wildcard(tree->token))
 		handle_wildcard(&tree->token, "");
@@ -33,10 +33,10 @@ void	expand_filenames(t_token_tree *tree)
 		cmds = ft_split(tree->token, ' ');
 		if (!cmds)
 			return (print_err("malloc failed!!\n", NULL, NULL), ft_close(NULL,
-				tree->head, tree), exit(3));
+					tree->head, tree), exit(3));
 		if (count_2d_array_elements(cmds) > 1)
-			return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
-				), free_2d_array(cmds), exit(1));
+			return (print_err("minishell: ", old_filename,
+					": ambiguous redirect\n"), free_2d_array(cmds), exit(1));
 		free_2d_array(cmds);
 	}
 }
@@ -47,7 +47,6 @@ void	execute_redirection_in(t_token_tree *tree)
 	pid_t		pid;
 	char		*exit_s;
 
-	// null_terminating_rev(tree->right->token);
 	pid = fork();
 	if (pid == -1)
 		return (print_err("fork() failed!!\n", NULL, NULL));
@@ -67,7 +66,6 @@ void	execute_redirection_out(t_token_tree *tree)
 	pid_t	pid;
 	char	*exit_s;
 
-	// null_terminating_rev(tree->right->token);
 	pid = fork();
 	if (pid == -1)
 		return (print_err("fork() failed!!\n", NULL, NULL));
@@ -87,7 +85,6 @@ void	execute_redirection_append(t_token_tree *tree)
 	pid_t	pid;
 	char	*exit_s;
 
-	// null_terminating_rev(tree->right->token);
 	pid = fork();
 	if (!pid)
 		execute_redirec_append(tree, pid);

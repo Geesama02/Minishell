@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:21:44 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/21 10:10:29 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 12:28:15 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,26 @@ void	define_exit_status_pipes(t_token_tree *node, int status)
 		tmp = search_for_env_var(node->head, "?");
 		exit_status = ft_itoa(status);
 		define_exit_status(tmp, exit_status);
+		free(exit_status);
 	}
 }
 
-void    reset_and_close_all_fds(int stdout_fd, int stdin_fd, int fds[2], t_token_tree *node)
+void	reset_and_close_all_fds(int stdout_fd, int stdin_fd,
+		int fds[2], t_token_tree *node)
 {
-	dup2(stdout_fd, 1); //fail
-	dup2(stdin_fd, 0); //fail
+	safe_dup2(node, stdout_fd, 1);
+	safe_dup2(node, stdin_fd, 0);
 	safe_close(fds[1], node);
 	safe_close(fds[0], node);
 	safe_close(stdout_fd, node);
 	safe_close(stdin_fd, node);
 }
 
-int execute_left_pipe(t_token_tree *left, int fds[2], int stdout_fd, int stdin_fd)
+int	execute_left_pipe(t_token_tree *left, int fds[2],
+		int stdout_fd, int stdin_fd)
 {
 	safe_close(fds[0], left);
-	dup2(fds[1], 1); //fail
+	safe_dup2(left, fds[1], 1);
 	safe_close(fds[1], left);
 	if (execute_tree(left, left->head, 0) == -1)
 	{
@@ -51,17 +54,18 @@ int execute_left_pipe(t_token_tree *left, int fds[2], int stdout_fd, int stdin_f
 	exit(0);
 }
 
-int	execute_right_pipe(t_token_tree *right, int fds[2], int stdout_fd, int stdin_fd)
+int	execute_right_pipe(t_token_tree *right, int fds[2],
+		int stdout_fd, int stdin_fd)
 {
 	int			exit_s;
 	t_env_vars	*tmp;
 
 	tmp = NULL;
 	safe_close(fds[1], right);
-	dup2(fds[0], 0); //fail
+	safe_dup2(right, fds[0], 0);
 	safe_close(fds[0], right);
 	if (right->id == right->cmd_count)
-		dup2(stdout_fd, 1); //fail
+		safe_dup2(right, stdout_fd, 1);
 	if (execute_tree(right, right->head, 0) == -1)
 	{
 		tmp = search_for_env_var(right->head, "?");
@@ -75,7 +79,7 @@ int	execute_right_pipe(t_token_tree *right, int fds[2], int stdout_fd, int stdin
 	exit(0);
 }
 
-void    execute_pipe(t_token_tree *left, t_token_tree *right)
+void	execute_pipe(t_token_tree *left, t_token_tree *right)
 {
 	pid_t			c_pid;
 	int				fds[2];
@@ -83,9 +87,11 @@ void    execute_pipe(t_token_tree *left, t_token_tree *right)
 	int				stdin_fd;
 	int				status;
 
-	stdout_fd = dup(1); //fail
-	stdin_fd = dup(0); //fail
-	pipe(fds); //fail
+	stdout_fd = dup(1);
+	stdin_fd = dup(0);
+	if (pipe(fds) == -1)
+		return (print_err("pipe() failed!!\n", NULL, NULL),
+			ft_close(NULL, left->head, left->tree_head_address));
 	c_pid = fork();
 	if (c_pid == -1)
 		return (handle_fork_failure(left));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/20 09:57:05 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:59:38 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ t_token_array	*tokenizer(char **input, t_env_vars *head)
 		return (NULL);
 	if (scan_syntax(holder) == 0)
 		return (free_2d_array(holder), NULL);
-	if(must_reorder(holder))
+	if (must_reorder(holder))
 		reorder_tokens(&holder);
 	token_array = malloc(sizeof(t_token_array) * (count_len(holder) + 1));
 	if (!token_array)

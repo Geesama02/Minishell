@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:53:25 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/21 11:55:11 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:26:48 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,7 @@ int	handle_heredoc(t_token_array *token_array,
 {
 	vars->cmd_holder = set_extra_cmd(token_array, holder, *i, vars);
 	if (!fill_heredoc(token_array, holder, *i, vars))
-	{
 		return (0);
-	}
 	free(vars->cmd_holder);
 	if (token_array[vars->l].type == HEREDOC_TOKEN
 		&& has_vars_no_quotes(token_array[vars->l].token))

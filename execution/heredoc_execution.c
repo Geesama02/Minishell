@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:19:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/19 12:24:26 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 09:58:49 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	add_space_cmd(t_token_tree *cmd)
 		return (-1);
 	len = ft_strlen(cmd->token);
 	if (len >= 0 && cmd->token[len] != ' ')
-	{	
+	{
 		free(cmd->token);
 		cmd->token = malloc((sizeof(char) * ft_strlen(token)) + 2);
 		if (!cmd->token)
@@ -43,7 +43,7 @@ int	add_space_cmd(t_token_tree *cmd)
 
 void	execute_heredoc_file(t_token_tree *cmd, t_token_tree *content)
 {
-	char *prev_cmd;
+	char	*prev_cmd;
 
 	prev_cmd = cmd->token;
 	cmd->token = ft_strjoin(prev_cmd, content->token);
@@ -86,7 +86,7 @@ void	execute_heredoc_content(t_token_tree *content, t_token_tree *cmd)
 	close(stdin_cp);
 }
 
-void    execute_heredoc(t_token_tree *cmd, t_token_tree *content)
+void	execute_heredoc(t_token_tree *cmd, t_token_tree *content)
 {
 	if (add_space_cmd(cmd) == -1)
 		return (free_tree(cmd), free_tree(content),

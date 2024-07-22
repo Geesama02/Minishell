@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:52:13 by maglagal          #+#    #+#             */
-/*   Updated: 2023/11/10 17:44:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 10:16:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ char	*ft_strtrim(char const *s1, char const *set)
 	start = 0;
 	p = NULL;
 	end = ft_strlen(s1);
-	while (s1[start] && ft_strchr(set, s1[start]) != 0) 
+	while (s1[start] && ft_strchr(set, s1[start]) != 0)
 		start++;
-	while (end > 0 && ft_strchr(set, s1[end - 1]) != 0) 
+	while (end > 0 && ft_strchr(set, s1[end - 1]) != 0)
 		end--;
 	p = allocation(p, start, end);
 	if (!p)

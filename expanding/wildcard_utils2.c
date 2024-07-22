@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:11:11 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 11:21:01 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:58:36 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int	filter_files(struct dirent *dir_content, char **sep_str, char *str, char **r
 		}
 		else if (check_first_chars(dir_content, sep_str, str, i))
 			break;
-		else if (ft_strncmp(sep_str[i], dir_content->d_name + j, ft_strlen(sep_str[i])) == 0)
+		else if (ft_strncmp(sep_str[i], dir_content->d_name + j,
+				ft_strlen(sep_str[i])) == 0)
 			j += ft_strlen(sep_str[i++]);
 		else
 			j++;

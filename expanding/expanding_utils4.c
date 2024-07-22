@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   expanding_utils4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/04 12:57:29 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 10:16:31 by maglagal         ###   ########.fr       */
+/*   Created: 2024/07/22 11:57:37 by maglagal          #+#    #+#             */
+/*   Updated: 2024/07/22 11:58:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../parse_header.h"
 
-size_t	ft_strlcpy(char *dst, const char *src,
-			size_t dstsize)
+void    null_terminating_rev(char *string)
 {
-	size_t	i;
-	char	*dest;
-	char	*sr;
+	int	len;
 
-	i = 0;
-	dest = (char *)dst;
-	sr = (char *)src;
-	while (i < dstsize - 1 && sr[i] && dstsize != 0)
+	len = ft_strlen(string);
+	while (len >= 0 && string[len - 1] == ' ')
 	{
-		dest[i] = sr[i];
-		i++;
+		string[len - 1] = '\0';
+		len--;
 	}
-	if (dstsize != 0)
-		dest[i] = '\0';
-	i = 0;
-	while (sr[i])
-		i++;
-	return (i);
 }

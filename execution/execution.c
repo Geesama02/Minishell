@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/21 13:09:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 09:57:14 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	check_expand(t_token_tree *tree)
 	return (1);
 }
 
-int execute_cmds_with_operators_heredoc(t_token_tree *tree, t_env_vars **head, int child)
+int	execute_cmds_with_operators_heredoc(t_token_tree *tree, t_env_vars **head,
+		int child)
 {
 	if (!ft_strcmp(tree->token, "&&"))
 	{
@@ -49,6 +50,26 @@ int execute_cmds_with_operators_heredoc(t_token_tree *tree, t_env_vars **head, i
 	return (0);
 }
 
+int	execute_one_command(t_token_tree *tree, int child)
+{
+	char	**cmds;
+
+	cmds = NULL;
+	check_expand(tree);
+	if (has_wildcard(tree->token))
+		handle_wildcard(&tree->token, "");
+	cmds = ft_split_qt(tree->token, ' ');
+	if (!cmds && errno == ENOMEM)
+		return (ft_close(NULL, tree->head, tree), exit(1), -1);
+	cmds = ignore_quotes_2d_array(cmds);
+	if (!cmds && errno == ENOMEM)
+		return (ft_close(NULL, tree->head, tree), exit(1), -1);
+	if (cmds && exec_command(tree, cmds, child) == -1)
+		return (free_2d_array(cmds), -1);
+	free_2d_array(cmds);
+	return (0);
+}
+
 int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 {
 	char	**cmds;
@@ -59,16 +80,8 @@ int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 		execute_redirection(tree);
 	else if (!tree->right && !tree->left)
 	{
-		check_expand(tree);
-		if (has_wildcard(tree->token))
-			handle_wildcard(&tree->token, "");
-		cmds = ft_split_qt(tree->token, ' '); //leaks
-		if (!cmds && errno == ENOMEM)
-			return (ft_close(NULL, tree->head, tree), exit(1), -1);
-		cmds = ignore_quotes_2d_array(cmds);
-		if (cmds && exec_command(tree, cmds, child) == -1)
-			return (free_2d_array(cmds), -1);
-		free_2d_array(cmds);
+		if (execute_one_command(tree, child) == -1)
+			return (-1);
 	}
 	else if (tree->type == OPERATOR_T || tree->type == HEREDOC)
 	{

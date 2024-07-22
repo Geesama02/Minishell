@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:29:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/18 09:00:08 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 10:23:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ int	handle_empty_line(char **input, char *input_cpy, char *tmp)
 char	*handle_null(char *input, t_token_array *token_array,
 	char **holder, int *l)
 {
-	if (is_heredoc[1])
+	if (g_is_heredoc[1])
 	{
-		is_heredoc[1] = 0;
-		is_heredoc[0] = 0;
+		g_is_heredoc[1] = 0;
+		g_is_heredoc[0] = 0;
 		free(input);
 		return (NULL);
 		int i = 0;
@@ -60,7 +60,7 @@ char	*handle_null(char *input, t_token_array *token_array,
 		}
 		return (NULL);
 	}
-	else if (!is_heredoc[1] && errno == ENOMEM)
+	else if (!g_is_heredoc[1] && errno == ENOMEM)
 	{
 		print_err("readline: allocation failure!", NULL, NULL);
 		free(input);
@@ -80,7 +80,7 @@ char	*continue_heredoc(char *delimiter, t_token_array *token_array,
 
 	if (!delimiter)
 		return (NULL);
-	is_heredoc[0] = 1;
+	g_is_heredoc[0] = 1;
 	stdin_fd = dup(0);
 	input = ft_strdup("");
 	if (!input)

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/19 16:30:35 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 11:58:22 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,14 @@ t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name)
 {
 	t_env_vars  *current;
 
-	current = *head;
-	while (current && ft_strcmp(current->env_name, env_name))
-		current = current->next;
-	if (current)
-		return (current);
+	if (head)
+	{
+		current = *head;
+		while (current && ft_strcmp(current->env_name, env_name))
+			current = current->next;
+		if (current)
+			return (current);
+	}
 	return (NULL);
 }
 
@@ -86,16 +89,4 @@ void	ft_lstadd(t_env_vars **lst, t_env_vars *new)
 	while (current && current->next != 0)
 		current = current->next;
 	current->next = new;
-}
-
-void	null_terminating_rev(char *string)
-{
-	int	len;
-
-	len = ft_strlen(string);
-	while (len >= 0 && string[len - 1] == ' ')
-	{
-		string[len - 1] = '\0';
-		len--;
-	}
 }
