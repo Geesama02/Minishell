@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 11:58:22 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 14:51:00 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ void	ft_lstadd(t_env_vars **lst, t_env_vars *new)
 {
 	t_env_vars	*current;
 
-	if (!lst || !new)
-		return ;
 	if (*lst == NULL || new == NULL)
 	{
 		*lst = new;

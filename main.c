@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/22 12:20:57 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 14:52:01 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,9 +140,7 @@ int main(int argc, char **argv, char **envp)
 	g_is_heredoc[0] = 0;
 	g_is_heredoc[1] = 0;
 	rl_catch_signals = 0;
-	head = NULL;
-	if (envp[0])
-		head = create_lst(envp);
+	head = create_lst(envp);
 	define_signals();
 	atexit(a);
     while (1)

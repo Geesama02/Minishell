@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:01:23 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/16 12:32:30 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 14:48:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,18 +108,17 @@ int	create_env(t_env_vars *node, t_env_vars *head, char *env)
 {
 	char	**envs;
 
-	envs = ft_split_qt(env, '='); //leaks
+	envs = ft_split_qt(env, '=');
 	if (!envs && errno == ENOMEM)
 		return (free(node), -1);
-	node->env_name = ft_strdup(envs[0]); //leaks
+	node->env_name = ft_strdup(envs[0]);
 	if (!node->env_name && errno == ENOMEM)
 		return (free_2d_array(envs), free(node), -1);
-	node->env_val = ft_strdup(envs[1]); //leaks
+	node->env_val = ft_strdup(envs[1]);
 	if (!node->env_val && errno == ENOMEM)
 		return (free_2d_array(envs), free(node->env_name), free(node), -1);
 	node->next = NULL;
 	free_2d_array(envs);
-	envs = NULL;
 	ft_lstadd(&head, node);
 	return (0);
 }

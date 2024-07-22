@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 11:51:34 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 13:53:25 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	add_slash(char **paths_w, char **paths, char **cmds, t_token_tree *tree)
 
 	i = 0;
 	j = 0;
-	while (paths_w[i])
+	while (paths_w && paths_w[i])
 	{
 		j = 0;
 		paths[i] = malloc(sizeof(char) * (ft_strlen(paths_w[i]) + 2));
@@ -64,15 +64,19 @@ char	*find_path(char **paths, char *cmd, char **cmds, t_token_tree *tree)
 
 char	*find_correct_path(char **cmds, t_token_tree *tree)
 {
-	char	**paths_w;
-	char	**paths;
-	char	*path;
+	t_env_vars	*path_env;
+	char		**paths_w;
+	char		**paths;
+	char		*path;
 
-	paths_w = ft_split(getenv("PATH"), ':');
-	if (!paths_w)
+	paths_w = NULL;
+	path_env = search_for_env_var(tree->head, "PATH");
+	if (path_env)
+		paths_w = ft_split(path_env->env_val, ':');
+	if (!paths_w && errno == ENOMEM)
 		return (ft_close(cmds, tree->head, tree), exit(1), NULL);
 	paths = malloc(sizeof(char *) * (count_2d_array_elements(paths_w) + 1));
-	if (!paths)
+	if (!paths && errno == ENOMEM)
 		return (free_2d_array(paths_w), ft_close(cmds, tree->head, tree),
 			exit(1), NULL);
 	paths[count_2d_array_elements(paths_w)] = NULL;

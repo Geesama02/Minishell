@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:57:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 10:51:06 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 14:48:08 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ t_env_vars *create_head(char **envp)
 	head = malloc(sizeof(t_env_vars)); //leaks
 	if (!head && errno == ENOMEM)
 		return (exit(1), NULL);
-	create_env(head, NULL, *envp);
+	if (create_env(head, NULL, *envp) == -1)
+		return (free(head), exit(1), NULL);
 	return (head);
 }
 
@@ -46,6 +47,8 @@ t_env_vars  *create_lst(char **envp)
 	t_env_vars	*head;
 	t_env_vars	*newnode;
 
+	if (!envp[0])
+		envp++;
 	head = create_head(envp);
 	create_exit_status(head);
 	envp++;
