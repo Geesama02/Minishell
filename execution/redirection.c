@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 10:14:01 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 11:38:25 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	expand_filenames(t_token_tree *tree)
 	old_filename = ft_strdup(tree->token);
 	if (!old_filename)
 		return (print_err("malloc failed!!\n", NULL, NULL), ft_close(NULL,
-				tree->head, tree), free(old_filename), exit(3));
+				tree->head, tree), free(old_filename), exit(1));
 	check_expand(tree);
 	if (has_wildcard(tree->token))
 		handle_wildcard(&tree->token, "");
@@ -43,60 +43,23 @@ void	expand_filenames(t_token_tree *tree)
 
 void	execute_redirection_in(t_token_tree *tree)
 {
-	int			status;
-	pid_t		pid;
-	char		*exit_s;
-
-	pid = fork();
-	if (pid == -1)
-		return (print_err("fork() failed!!\n", NULL, NULL));
-	if (!pid)
-		execute_redirec_in(tree, pid);
-	wait(&status);
-	if (WEXITSTATUS(status) == 3)
-		return (ft_close(NULL, tree->head, tree), exit(1));
-	exit_s = ft_itoa(WEXITSTATUS(status));
-	define_exit_status(search_for_env_var(tree->head, "?"), exit_s);
-	free(exit_s);
+	if (execute_redirec_in(tree) == -1)
+		define_exit_status(search_for_env_var(tree->head, "?"), "1");
 }
 
 void	execute_redirection_out(t_token_tree *tree)
 {
-	int		status;
-	pid_t	pid;
-	char	*exit_s;
-
-	pid = fork();
-	if (pid == -1)
-		return (print_err("fork() failed!!\n", NULL, NULL));
-	else if (pid == 0)
-		execute_redirec_out(tree, pid);
-	wait(&status);
-	if (WEXITSTATUS(status) == 3)
-		return (ft_close(NULL, tree->head, tree), exit(1));
-	exit_s = ft_itoa(WEXITSTATUS(status));
-	define_exit_status(search_for_env_var(tree->head, "?"), exit_s);
-	free(exit_s);
+	if (execute_redirec_out(tree) == -1)
+		define_exit_status(search_for_env_var(tree->head, "?"), "1");
 }
 
 void	execute_redirection_append(t_token_tree *tree)
 {
-	int		status;
-	pid_t	pid;
-	char	*exit_s;
-
-	pid = fork();
-	if (!pid)
-		execute_redirec_append(tree, pid);
-	wait(&status);
-	if (WEXITSTATUS(status) == 3)
-		return (ft_close(NULL, tree->head, tree), exit(1));
-	exit_s = ft_itoa(WEXITSTATUS(status));
-	define_exit_status(search_for_env_var(tree->head, "?"), exit_s);
-	free(exit_s);
+	if (execute_redirec_append(tree) == -1)
+		define_exit_status(search_for_env_var(tree->head, "?"), "1");
 }
 
-void	execute_redirection(t_token_tree *tree)
+int	execute_redirection(t_token_tree *tree)
 {
 	if (tree->type == REDIRECTION_O)
 		execute_redirection_out(tree);
@@ -104,4 +67,5 @@ void	execute_redirection(t_token_tree *tree)
 		execute_redirection_in(tree);
 	else if (tree->type == REDIRECTION_A)
 		execute_redirection_append(tree);
+	return (0);
 }

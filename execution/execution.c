@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 09:57:14 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 11:21:13 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 	cmds = NULL;
 	if (tree->type == REDIRECTION_I || tree->type == REDIRECTION_O
 		|| tree->type == REDIRECTION_A)
-		execute_redirection(tree);
+	{
+		if (execute_redirection(tree) == -1)
+			return (-1);
+	}
 	else if (!tree->right && !tree->left)
 	{
 		if (execute_one_command(tree, child) == -1)

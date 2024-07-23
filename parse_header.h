@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 12:27:40 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:11:57 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,7 @@ t_stack			shunting_yard(t_token_array *tokens);
 int				count_array(t_token_array *tokens);
 t_token_tree	*build_tree(t_stack *stack, char **envp, t_env_vars **head);
 int				count_env_vars(char **tokens);
-int				unset_command(t_env_vars **head, char **cmds,
-					t_token_tree *tree);
+int				unset_command(char **cmds, t_token_tree *tree);
 void			env_command(t_env_vars *env_vars);
 char			**ft_split_one(char const *s, char c);
 t_t_type		set_token_type(char *token);
@@ -145,7 +144,7 @@ void			free_tree(t_token_tree *root);
 char			*wildcard(char **str, int i, char *operator);
 int				has_wildcard(char *str);
 int				execute_tree(t_token_tree *tree, t_env_vars **head, int child);
-void			execute_redirection(t_token_tree *tree);
+int				execute_redirection(t_token_tree *tree);
 int				is_string(char *str);
 void			export_without_arguments(t_env_vars *head, char **tokens,
 					t_token_tree *tree);
@@ -232,8 +231,7 @@ void			free_node(t_env_vars *node);
 int				home_case(t_env_vars *head);
 int				oldpwd_case(t_env_vars *head);
 int				check_minus_n(char *echo_flag);
-int				delete_env(t_env_vars **head, char *cmd,
-					t_token_tree *tree, char **cmds);
+int				delete_env(char *cmd, t_token_tree *tree, char **cmds);
 void			print_err(char *string1, char *string2, char *string3);
 int				has_multi_redirections(t_token_array *token_array);
 void			switch_multi_redirections(t_token_array *token_array);
@@ -260,9 +258,9 @@ char			*file_isdir_case(char **cmds,
 					t_token_tree *tree, char *path);
 void			handle_fork_failure(t_token_tree *tree);
 void			expand_filenames(t_token_tree *tree);
-void			execute_redirec_in(t_token_tree *tree, int pid);
-void			execute_redirec_out(t_token_tree *tree, int pid);
-void			execute_redirec_append(t_token_tree *tree, int pid);
+int				execute_redirec_in(t_token_tree *tree);
+int				execute_redirec_out(t_token_tree *tree);
+int				execute_redirec_append(t_token_tree *tree);
 void			safe_dup2(t_token_tree *node, int old_fd, int new_fd);
 void			eof_pressed(t_env_vars **head);
 int				exit_execve(int status, t_env_vars **head, char *path);
@@ -279,6 +277,7 @@ t_token_array	*get_redirection(t_token_array *token_array
 int				get_to_last_token(t_token_array *token_array);
 int				check_for_wildcard(t_token_array *token_array);
 void			init_token_vars(t_token_vars *vars, t_env_vars *head);
+int				changing_current_directory(char *path, t_env_vars *head);
 
 // delete later
 char			*print_type(t_t_type type);
