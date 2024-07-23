@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 15:27:17 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:20:54 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,9 @@ int	add_env_var(char **tokens, int nbr_envs, t_env_vars **head,
 {
 	int			i;
 	char		**cmds;
-	t_env_vars	*tmp;
 
 	i = 1;
 	cmds = NULL;
-	tmp = search_for_env_var(tree->head, "?");
 	while (i <= nbr_envs)
 	{
 		cmds = ft_split_one(tokens[i], '=');
@@ -112,9 +110,7 @@ int	add_env_var(char **tokens, int nbr_envs, t_env_vars **head,
 			return (ft_close(tokens, head, tree), exit(1), -1);
 		if (add_or_append(cmds, tree, tokens, i) == -1)
 		{
-			define_exit_status(tmp, "1");
-			if (tokens[i][0] == '-')
-				return (free_2d_array(cmds), invalid_option_error(tokens, i));
+			define_exit_status(*head, "1");
 			return (print_err("export: `", tokens[i],
 					"': not a valid identifier\n"), free_2d_array(cmds), -1);
 		}

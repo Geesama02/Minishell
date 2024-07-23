@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 16:53:19 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 10:01:42 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:19:45 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,6 @@ char	**ignore_quotes_2d_array(char **strs)
 		i++;
 	}
 	return (strs);
-}
-
-int	invalid_option_error(char **tokens, int i)
-{
-	print_err("minishell: export: ", NULL, NULL);
-	ft_putchar_fd(tokens[i][0], 2);
-	ft_putchar_fd(tokens[i][1], 2);
-	print_err(": invalid option\nexport: usage: ",
-		"export [-nf] [name[=value] ...] or export -p\n", NULL);
-	return (-1);
 }
 
 void	handle_fork_failure(t_token_tree *tree)

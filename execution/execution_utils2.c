@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 10:42:48 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:37:57 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ int	execute_using_execve(t_token_tree *tree, char **cmds,
 {
 	pid_t		pid;
 	int			status;
-	t_env_vars	*tmp;
 
-	tmp = search_for_env_var(tree->head, "?");
 	pid = fork();
 	if (pid == -1)
 		return (handle_fork_failure(tree), -1);
@@ -51,7 +49,7 @@ int	builtins_rest(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
 			return (handle_builtins_failure(tree, cmds));
 	}
 	else if (!ft_strcmp(cmds[0], "env"))
-			env_command(*head);
+		env_command(*head);
 	else if (!ft_strcmp(cmds[0], "exit"))
 		exit_command(cmds, head, child, tree);
 	else
@@ -62,8 +60,11 @@ int	builtins_rest(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
 	return (0);
 }
 
-int	define_exit_status(t_env_vars *tmp, char *exit_status)
+int	define_exit_status(t_env_vars *head, char *exit_status)
 {
+	t_env_vars	*tmp;
+
+	tmp = search_for_env_var(&head, "?");
 	if (tmp)
 	{
 		free(tmp->env_val);

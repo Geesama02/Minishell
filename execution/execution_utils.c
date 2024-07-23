@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 18:29:35 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 13:50:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,8 @@ char	*find_correct_path(char **cmds, t_token_tree *tree)
 int	execute_rest(char **cmds, t_token_tree *tree)
 {
 	char		*path;
-	t_env_vars	*tmp;
 
 	path = NULL;
-	tmp = search_for_env_var(tree->head, "?");
 	if (!ft_strchr(cmds[0], '/') && search_for_env_var(tree->head, "PATH"))
 		path = find_correct_path(cmds, tree);
 	else
@@ -112,7 +110,7 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 	else
 	{
 		print_err("minishell: ", cmds[0], ": command not found\n");
-		define_exit_status(tmp, "127");
+		define_exit_status(*tree->head, "127");
 		return (-1);
 	}
 	return (0);
@@ -120,10 +118,7 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 
 int	exec_command(t_token_tree *tree, char **cmds, int child)
 {
-	t_env_vars	*tmp;
-
-	tmp = search_for_env_var(tree->head, "?");
-	if (define_exit_status(tmp, "0") == -1)
+	if (define_exit_status(*tree->head, "0") == -1)
 		return (free_envs(tree->head), -1);
 	if (!ft_strcmp(cmds[0], "cd"))
 	{

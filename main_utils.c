@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 10:46:53 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 11:43:57 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:52:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,60 @@ void    eof_pressed(t_env_vars **head)
 	if (g_is_heredoc[1] == 1)
 		exit(1);
 	exit(exit_s);
+}
+
+char	*check_syntax(char *input)
+{
+	int	i;
+	int	quote;
+	int	dquote;
+	int	parenthesis;
+
+	i = 0;
+	quote = 0;
+	dquote = 0;
+	parenthesis = 0;
+	while (input[i])
+	{
+		if (input[i] == ')' && parenthesis == 0 && is_inside_quotes(input, i) == 0)
+			return (")");
+		if (input[i] == '(' && is_inside_quotes(input, i) == 0)
+			parenthesis++;
+		if (input[i] == ')' && is_inside_quotes(input, i) == 0)
+			parenthesis--;
+		if (input[i] == '\'' && dquote == 0)
+			quote = !quote;
+		if (input[i] == '\"' && quote == 0)
+			dquote = !dquote;
+		i++;
+	}
+	if (dquote)
+		return ("\"");
+	if (quote)
+		return ("\'");
+	if (parenthesis)
+		return ("(");
+	return (NULL);
+}
+
+int	syntax_error_check(t_env_vars *head, char *input)
+{
+	if (check_syntax(input))
+		return (syntax_error_message(head, input), -1);
+	return (1);	
+}
+
+void	syntax_error_message(t_env_vars *head, char *input)
+{
+	print_err("Minishell: syntax error near unexpected token `" , check_syntax(input), "' \n");
+	define_exit_status(head, "258");
+	free(input);
+}
+
+void	readline_allocation_failure(t_env_vars *head)
+{
+	print_err("readline: allocation failure!\n", NULL, NULL);
+	rl_clear_history();
+	ft_close(NULL, &head, NULL);
+	exit(1);
 }

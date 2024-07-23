@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 11:38:25 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 13:52:27 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,19 @@ void	expand_filenames(t_token_tree *tree)
 void	execute_redirection_in(t_token_tree *tree)
 {
 	if (execute_redirec_in(tree) == -1)
-		define_exit_status(search_for_env_var(tree->head, "?"), "1");
+		define_exit_status(*tree->head, "1");
 }
 
 void	execute_redirection_out(t_token_tree *tree)
 {
 	if (execute_redirec_out(tree) == -1)
-		define_exit_status(search_for_env_var(tree->head, "?"), "1");
+		define_exit_status(*tree->head, "1");
 }
 
 void	execute_redirection_append(t_token_tree *tree)
 {
 	if (execute_redirec_append(tree) == -1)
-		define_exit_status(search_for_env_var(tree->head, "?"), "1");
+		define_exit_status(*tree->head, "1");
 }
 
 int	execute_redirection(t_token_tree *tree)

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 10:35:26 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:38:10 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	changing_current_directory(char *path, t_env_vars *head)
 	chdir(path);
 	if (errno == ENOENT)
 		return (print_err("minishell: cd: ", path,
-			" : No such file or directory\n"), -1);
+				" : No such file or directory\n"), -1);
 	else if (errno == ENOTDIR)
 		return (print_err("minishell: cd: ", path, " Not a directory\n"), -1);
 	else if (errno)

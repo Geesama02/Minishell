@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:21:44 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 09:40:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 13:51:48 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 void	define_exit_status_pipes(t_token_tree *node, int status)
 {
-	t_env_vars	*tmp;
 	char		*exit_status;
 
 	if (node->id == node->cmd_count)
 	{
-		tmp = search_for_env_var(node->head, "?");
 		exit_status = ft_itoa(status);
-		define_exit_status(tmp, exit_status);
+		define_exit_status(*node->head, exit_status);
 		free(exit_status);
 	}
 }

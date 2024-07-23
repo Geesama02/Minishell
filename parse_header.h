@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 11:11:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 13:50:14 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ void			exit_command(char **cmds, t_env_vars **head, int child,
 void			null_terminating(char *str, char c);
 int				execute_using_execve(t_token_tree *tree, char **cmds,
 					char *path, char **envp);
-int				define_exit_status(t_env_vars *tmp, char *exit_status);
+int				define_exit_status(t_env_vars *head, char *exit_status);
 int				execute_rest(char **cmds, t_token_tree *tree);
 int				builtins_rest(t_token_tree *tree, char **cmds,
 					t_env_vars **head, int child);
@@ -267,6 +267,10 @@ int				exit_execve(int status, t_env_vars **head, char *path);
 void			create_newenv(char **tokens, t_env_vars **head, char **cmds,
 					t_env_vars *new_env);
 int				changing_current_directory(char *path, t_env_vars *head);
+int				syntax_error_check(t_env_vars *head, char *input);
+void			syntax_error_message(t_env_vars *head, char *input);
+void			readline_allocation_failure(t_env_vars *head);
+char			*check_syntax(char *input);
 
 // delete later
 char			*print_type(t_t_type type);
