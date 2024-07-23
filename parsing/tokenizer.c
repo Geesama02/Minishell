@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 13:48:15 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:26:18 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,7 @@ int	copy_to_array(t_token_array *token_array,
 	t_token_vars	vars;
 
 	i = 0;
-	vars.l = 0;
-	vars.x = -1;
-	vars.check = 0;
-	vars.head = head;
+	init_token_vars(&vars, head);
 	if (*holder == NULL)
 		return (free_token_holder(holder, token_array, i), 0);
 	while (holder[i] != NULL)
@@ -94,17 +91,8 @@ int	copy_to_array(t_token_array *token_array,
 	token_array[vars.l].token = NULL;
 	i = 0;
 	free_2d_array(holder);
-	while (token_array[i].token)
-	{
-		if (has_wildcard(token_array[i].token))
-		{
-			if (i > 0 && handle_wildcard(&token_array[i].token, token_array[i - 1].token) == 0)
-				return (free_token_array(token_array), 0);
-			else if (i == 0 && handle_wildcard(&token_array[i].token, "") == 0)
-				return (free_token_array(token_array), 0);
-		}
-		i++;
-	}
+	if (!check_for_wildcard(token_array))
+		return (0);
 	return (1);
 }
 
@@ -120,7 +108,7 @@ t_token_array	*tokenizer(char **input, t_env_vars *head)
 	input_cpy = *input;
 	if (!tokenize(input, input_cpy, holder))
 		return (NULL);
-	if (scan_syntax(holder) == 0)		
+	if (scan_syntax(holder) == 0)
 		return (define_exit_status(head, "258"), free_2d_array(holder), NULL);
 	if (must_reorder(holder))
 		reorder_tokens(&holder);

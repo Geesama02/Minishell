@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 13:50:14 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:35:46 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <dirent.h>
 # include <fcntl.h>
 # include <sys/stat.h>
-# include <sys/wait.h>
 # include <errno.h>
 # include <signal.h>
 
@@ -266,13 +265,22 @@ void			eof_pressed(t_env_vars **head);
 int				exit_execve(int status, t_env_vars **head, char *path);
 void			create_newenv(char **tokens, t_env_vars **head, char **cmds,
 					t_env_vars *new_env);
+void			set_address(t_token_tree *root, t_token_tree **address);
+int				init_heredoc(char *delimiter, char **input, int *stdin_fd);
+void			check_between_quotes(char *str, int *i, int *count, char quote);
+int				is_bad_syntax(char **holder, int i);
+void			set_redirections(t_token_array *token_array,
+					t_token_array **tmp_a_o, t_token_array **tmp_i);
+t_token_array	*get_redirection(t_token_array *token_array,
+					t_token_array *tmp, t_t_type type, t_t_type type2);
+int				get_to_last_token(t_token_array *token_array);
+int				check_for_wildcard(t_token_array *token_array);
+void			init_token_vars(t_token_vars *vars, t_env_vars *head);
 int				changing_current_directory(char *path, t_env_vars *head);
 int				syntax_error_check(t_env_vars *head, char *input);
 void			syntax_error_message(t_env_vars *head, char *input);
 void			readline_allocation_failure(t_env_vars *head);
 char			*check_syntax(char *input);
-
-// delete later
-char			*print_type(t_t_type type);
+char			*return_type(int dquote, int quote, int parenthesis);
 
 #endif

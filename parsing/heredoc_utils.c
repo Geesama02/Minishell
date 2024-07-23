@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:53:25 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/21 17:26:48 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 10:08:41 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,17 @@ char	*handle_multi_heredoc(t_token_array *token_array,
 	if (!tmp)
 		return (NULL);
 	free(token_array[vars->x].token);
+	token = continue_heredoc(ignore_quotes(&holder[i + 1]),
+			token_array, holder, &vars->l);
+	if (!token)
+		return (free(tmp), NULL);
 	if (vars->cmd_holder && token_array[vars->x].type == CMD_T)
 	{
-		token = continue_heredoc(ignore_quotes(&holder[i + 1]), token_array, holder, &vars->l);
-		if (!token)
-			return (free(tmp), NULL);
 		free(token);
 		token = ft_strjoin(tmp, vars->cmd_holder);
 	}
 	else
-	{
-		token = continue_heredoc(ignore_quotes(&holder[i + 1]), token_array, holder, &vars->l);
-		if (!token)
-			return (free(tmp), NULL);
 		check_if_has_file(token_array, &token, vars, tmp);
-	}
 	free(tmp);
 	return (token);
 }
@@ -49,7 +45,8 @@ void	*handle_first_heredoc(t_token_array *token_array,
 		return (NULL);
 	token_array[*l].type = HEREDOC;
 	(*l)++;
-	token_array[*l].token = continue_heredoc(ignore_quotes(&holder[i + 1]), token_array, holder, l);
+	token_array[*l].token = continue_heredoc(ignore_quotes(&holder[i + 1]),
+			token_array, holder, l);
 	if (!token_array[*l].token)
 		return (NULL);
 	token_array[*l].type = HEREDOC_TOKEN;
@@ -79,7 +76,7 @@ int	fill_heredoc(t_token_array *token_array,
 {
 	if (vars->x != -1)
 	{
-		token_array[vars->x].token = handle_multi_heredoc(token_array, 
+		token_array[vars->x].token = handle_multi_heredoc(token_array,
 				holder, vars, i);
 		if (!token_array[vars->x].token)
 			return (free_token_holder(holder, token_array, vars->l),
@@ -88,10 +85,7 @@ int	fill_heredoc(t_token_array *token_array,
 	else
 	{
 		if (!handle_first_heredoc(token_array, holder, &vars->l, i))
-		{
-			free_token_holder(holder, token_array, vars->l);
-			return (0);
-		}
+			return (free_token_holder(holder, token_array, vars->l), 0);
 		vars->x = vars->l;
 		if (vars->cmd_holder)
 		{

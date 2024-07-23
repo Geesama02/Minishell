@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 14:59:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/21 18:13:38 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:57:29 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	join_strings(char **s1, char *s2)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = *s1;
 	*s1 = ft_strjoin(*s1, s2);
@@ -27,12 +27,13 @@ int	join_strings(char **s1, char *s2)
 	return (1);
 }
 
-int	handle_hidden_files(DIR *dir, struct dirent **dir_content, char **sep_str, char *str)
+int	handle_hidden_files(DIR *dir, struct dirent **dir_content
+	, char **sep_str, char *str)
 {
 	if (ft_strncmp((*dir_content)->d_name, ".", 2) == 0
 		|| ft_strncmp((*dir_content)->d_name, "..", 3) == 0
 		|| ((*dir_content)->d_name[0] == '.'
-		&& (sep_str[0] == NULL || str[0] != '.')))
+			&& (sep_str[0] == NULL || str[0] != '.')))
 	{
 		*dir_content = readdir(dir);
 		return (1);
@@ -40,13 +41,31 @@ int	handle_hidden_files(DIR *dir, struct dirent **dir_content, char **sep_str, c
 	return (0);
 }
 
-char *wildcard(char **str, int i, char *operator)
+char	*check_for_ambiguous(char *str, char **res, char *operator, int i)
+{
+	if (i == 0 && is_redirection(set_token_type(operator))
+		&& count_wildcard(*res))
+	{
+		free(*res);
+		*res = ft_strdup("");
+		print_err("minishell: ", str, ": ambiguous redirect\n");
+		return (*res);
+	}
+	if (ft_strcmp(*res, "") == 0)
+	{
+		free(*res);
+		*res = ft_strdup(str);
+	}
+	return (*res);
+}
+
+char	*wildcard(char **str, int i, char *operator)
 {
 	DIR				*dir;
 	struct dirent	*dir_content;
 	char			**sep_str;
 	char			*res;
-	
+
 	res = ft_strdup("");
 	sep_str = ft_split_qt(str[i], '*');
 	if (!sep_str)
@@ -58,32 +77,21 @@ char *wildcard(char **str, int i, char *operator)
 	while (dir_content != NULL)
 	{
 		if (handle_hidden_files(dir, &dir_content, sep_str, str[i]))
-			continue;
+			continue ;
 		filter_files(dir_content, sep_str, str[i], &res);
 		dir_content = readdir(dir);
 	}
 	free_2d_array(sep_str);
 	closedir(dir);
-	if (i == 0 && is_redirection(set_token_type(operator)) && count_wildcard(res))
-	{
-		free(res);
-		res = ft_strdup("");
-		print_err("minishell: ", str[i], ": ambiguous redirect\n");
-		return (res);
-	}
-	if (ft_strcmp(res, "") == 0)
-	{
-		free(res);
-		res = ft_strdup(str[i]);
-	}
+	check_for_ambiguous(str[i], &res, operator, i);
 	return (res);
 }
 
 int	join_wildcard(char **sep_str, char **str, char *operator)
 {
-	int i;
-	char *wildcard_holder;
-	
+	int		i;
+	char	*wildcard_holder;
+
 	i = 0;
 	while (sep_str[i])
 	{

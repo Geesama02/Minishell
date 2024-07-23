@@ -6,25 +6,11 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 15:18:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:29:00 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_header.h"
-
-int check_heredoc(char *input)
-{
-	int	i;
-
-	i = 0;
-	while (input[i])
-	{
-		if (ft_strncmp(input + i, "<<", 2) == 0)
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 void	*free_alloc(char **bigstr, int l)
 {
@@ -45,12 +31,12 @@ void	null_input(t_env_vars *head)
 		eof_pressed(&head);
 }
 
-int	tokenize_and_build_tree(char *input, t_env_vars **head,
+int	tokenize_and_build_execute_tree(char *input, t_env_vars **head,
 	char **envp)
 {
-	t_token_array		*token_array;
-	t_token_tree		*ast_tree;
-	t_stack				postfix_stack;
+	t_token_array	*token_array;
+	t_token_tree	*ast_tree;
+	t_stack			postfix_stack;
 
 	token_array = tokenizer(&input, *head);
 	if (!token_array)
@@ -67,7 +53,7 @@ int	tokenize_and_build_tree(char *input, t_env_vars **head,
 
 t_env_vars	*initialize_main_variables(char **envp)
 {
-	t_env_vars *head;
+	t_env_vars	*head;
 
 	g_is_heredoc[0] = 0;
 	g_is_heredoc[1] = 0;
@@ -76,36 +62,30 @@ t_env_vars	*initialize_main_variables(char **envp)
 	return (head);
 }
 
-void	a()
+int	main(int argc, char **argv, char **envp)
 {
-	system("leaks minishell");
-}
-
-int main(int argc, char **argv, char **envp)
-{
-	t_env_vars			*head;
-	char				*input;
+	t_env_vars	*head;
+	char		*input;
 
 	(void)argc;
 	(void)argv;
 	head = initialize_main_variables(envp);
 	rl_catch_signals = 0;
-	atexit(a);
-    while (1)
-    {
-        input = readline("Minishell$ ");
-        if (input == NULL)
+	while (1)
+	{
+		input = readline("Minishell$ ");
+		if (input == NULL)
 			null_input(head);
-        if (input[0] == '\0' || syntax_error_check(head, input) == -1)
+		if (input[0] == '\0' || syntax_error_check(head, input) == -1)
 		{
 			free(input);
-            continue;
+			continue ;
 		}
-        add_history(input);
+		add_history(input);
 		if (g_is_heredoc[1] == 1)
 			define_exit_status(head, "1");
-		if (tokenize_and_build_tree(input, &head, envp) == -1)
-			continue;
-    }
-    return (0);
+		if (tokenize_and_build_execute_tree(input, &head, envp) == -1)
+			continue ;
+	}
+	return (0);
 }

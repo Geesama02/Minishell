@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_ast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:48:47 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/21 14:32:16 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 09:52:33 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,15 @@ t_token_tree	*create_node(char *token, t_t_type type,
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
+}
+
+void	set_address(t_token_tree *root, t_token_tree **address)
+{
+	if (!root)
+		return ;
+	root->tree_head_address = *address;
+	set_address(root->left, address);
+	set_address(root->right, address);
 }
 
 void	print_tree(t_token_tree *root, int level)

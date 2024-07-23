@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_env_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 16:33:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/22 15:20:34 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:39:01 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,19 @@ int	get_quotes_count(char *str)
 	return (count);
 }
 
+int	start_expanding(char **words, int i, char **result, t_env_vars *head)
+{
+	while (words[i])
+	{
+		if (!get_extras_and_join(head, words, i))
+			return (free(*result), 0);
+		i++;
+	}
+	if (!join_all_vars(words, result))
+		return (0);
+	return (1);
+}
+
 char	*expand_vars(char *holder, t_t_type type, t_env_vars *head)
 {
 	int		i;
@@ -96,40 +109,8 @@ char	*expand_vars(char *holder, t_t_type type, t_env_vars *head)
 	if (*holder != '$')
 		i++;
 	free(holder);
-	while (words[i])
-	{
-		if (!get_extras_and_join(head, words, i))
-			return (free(result), NULL);
-		i++;
-	}
-	if (!join_all_vars(words, &result))
+	if (!start_expanding(words, i, &result, head))
 		return (NULL);
 	free_2d_array(words);
 	return (result);
-}
-
-int	has_vars(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$' && inside_single_quotes(str, i) == 0)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char	*search_for_var(t_env_vars *head, char *env_name)
-{
-	t_env_vars	*tmp;
-
-	tmp = head;
-	while (tmp && ft_strcmp(tmp->env_name, env_name) != 0)
-		tmp = tmp->next;
-	if (!tmp)
-		return (NULL);
-	return (tmp->env_val);
 }

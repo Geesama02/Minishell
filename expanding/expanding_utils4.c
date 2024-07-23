@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_utils4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 11:57:37 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 15:34:00 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:38:48 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,30 @@ void	lst_add_element(char **tokens, char **cmds, t_token_tree *tree,
 	else if (!prev && i == 1)
 		*tree->head = new_env;
 	create_newenv(tokens, tree->head, cmds, new_env);
+}
+
+int	has_vars(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' && inside_single_quotes(str, i) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+char	*search_for_var(t_env_vars *head, char *env_name)
+{
+	t_env_vars	*tmp;
+
+	tmp = head;
+	while (tmp && ft_strcmp(tmp->env_name, env_name) != 0)
+		tmp = tmp->next;
+	if (!tmp)
+		return (NULL);
+	return (tmp->env_val);
 }

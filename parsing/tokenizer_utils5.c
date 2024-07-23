@@ -6,18 +6,19 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 09:44:22 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/20 10:45:10 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/23 12:12:32 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int is_redirection(t_t_type type)
+int	is_redirection(t_t_type type)
 {
-	return (type == REDIRECTION_A || type == REDIRECTION_I || type == REDIRECTION_O);
+	return (type == REDIRECTION_A || type == REDIRECTION_I
+		|| type == REDIRECTION_O);
 }
 
-int is_redirection_heredoc(char *str)
+int	is_redirection_heredoc(char *str)
 {
 	return (set_token_type(str) == REDIRECTION_I
 		|| set_token_type(str) == REDIRECTION_O
@@ -52,19 +53,13 @@ void	free_token_array(t_token_array *token_array)
 	free(token_array);
 }
 
-
-
 int	check_redirections_extras(t_token_array *token_array)
 {
-	int	i;
+	int		i;
 	char	*extra;
 	char	*tmp;
 
-	i = 0;
-	while (token_array[i].token)
-		i++;
-	if (i > 0)
-		i--;
+	i = get_to_last_token(token_array);
 	while (i >= 0)
 	{
 		if (i > 0 && is_redirection(token_array[i].type)
@@ -76,7 +71,8 @@ int	check_redirections_extras(t_token_array *token_array)
 			tmp = token_array[i - 1].token;
 			token_array[i - 1].token = ft_strjoin(tmp, extra);
 			if (!token_array[i - 1].token)
-				return (free(tmp), free(extra), free_token_array(token_array), exit(1), 0);
+				return (free(tmp), free(extra),
+					free_token_array(token_array), exit(1), 0);
 			free(tmp);
 			free(extra);
 		}

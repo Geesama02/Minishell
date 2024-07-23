@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:11:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/21 15:50:49 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 09:53:10 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,6 @@ int	make_nodes(t_stack *stack, int i, t_token_tree **stack_tree,
 	}
 	return (1);
 }
-void	set_address(t_token_tree *root, t_token_tree **address)
-{
-	if (!root)
-		return ;
-	root->tree_head_address = *address;
-	set_address(root->left, address);
-	set_address(root->right, address);
-}
 
 t_token_tree	*build_tree(t_stack *stack, char **envp,
 		t_env_vars **head)
@@ -110,9 +102,7 @@ t_token_tree	*build_tree(t_stack *stack, char **envp,
 	i = 1;
 	free(stack->token);
 	root = stack_tree[0];
-	// printf("stack -> %s\n", stack_tree[1]->token);
-	// printf("stack -> %s\n", stack_tree[2]->token);
-	free(stack_tree); 
+	free(stack_tree);
 	set_ids(root, &i);
 	set_count(root, i);
 	set_address(root, &root);

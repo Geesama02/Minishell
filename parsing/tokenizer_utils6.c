@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:43:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 10:22:37 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/23 12:16:16 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	must_reorder(char **holder)
 	i = 0;
 	while (holder[i])
 	{
-		if (is_redirection_heredoc(holder[i]) && (i == 0 || set_token_type(holder[i - 1]) == OPERATOR_T))
+		if (is_redirection_heredoc(holder[i])
+			&& (i == 0 || set_token_type(holder[i - 1]) == OPERATOR_T))
 			return (1);
 		i++;
 	}
@@ -31,30 +32,30 @@ int	count_len(char **holder)
 	int	i;
 
 	i = 0;
-	while(holder[i])
+	while (holder[i])
 		i++;
 	return (i);
 }
 
-// char *ft_split_first_token(char *str)
-// {
-// 	int		i;
-// 	char	*tmp;
-
-// 	i = 0;
-// 	while (str[i] && str[i] != ' ')
-// 		i++;
-// 	str[i] = '\0';
-// 	tmp = ft_strdup(str + i + 1);
-// 	return (tmp);
-// }
+int	is_bad_syntax(char **holder, int i)
+{
+	return (holder[i + 1] && ((set_token_type(holder[i]) == OPERATOR_T
+				&& set_token_type(holder[i + 1]) == OPERATOR_T)
+			|| (is_redirection_heredoc(holder[i]) && is_operand(holder[i + 1]))
+			|| (set_token_type(holder[i]) == PARETHESIS_O && i != 0
+				&& set_token_type(holder[i - 1]) != OPERATOR_T)
+			|| (set_token_type(holder[i]) == PARETHESIS_C
+				&& !is_operand(holder[i + 1]))
+			|| (set_token_type(holder[i]) == PARETHESIS_O
+				&& set_token_type(holder[i + 1]) == PARETHESIS_C)));
+}
 
 char	**realloc_tokens(char **holder, int n, char *extra)
 {
-	char **tmp;
-	int	c;
-	int l;
-	int	i;
+	char	**tmp;
+	int		c;
+	int		l;
+	int		i;
 
 	c = count_len(holder);
 	i = 0;
@@ -77,23 +78,24 @@ char	**realloc_tokens(char **holder, int n, char *extra)
 
 int	reorder_tokens(char ***holder)
 {
-	int	i;
+	int		i;
 	char	*tmp_holder;
-	char **tmp;
-	char **new_holder;
+	char	**tmp;
+	char	**new_holder;
 
 	i = 0;
 	new_holder = *holder;
 	while (new_holder[i])
 	{
-		if (is_redirection_heredoc(new_holder[i]) && (i == 0 || set_token_type(new_holder[i - 1]) == OPERATOR_T))
+		if (is_redirection_heredoc(new_holder[i])
+			&& (i == 0 || set_token_type(new_holder[i - 1]) == OPERATOR_T))
 		{
 			tmp_holder = ft_split_first(new_holder[i + 1]);
 			if (!tmp_holder)
 				return (free_2d_array(*holder), exit(1), 0);
 			tmp = realloc_tokens(new_holder, i, tmp_holder);
 			if (!tmp)
-				return (free(tmp_holder),  exit(1), 0);
+				return (free(tmp_holder), exit(1), 0);
 			new_holder = tmp;
 			*holder = new_holder;
 		}

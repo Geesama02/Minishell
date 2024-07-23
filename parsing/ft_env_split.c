@@ -23,7 +23,8 @@ static int	count_words(char const *s, char c)
 		count++;
 	while (s[i])
 	{
-		if (s[i] == c && s[i + 1] && !non_var_name((char *)s, i + 1) && inside_single_quotes((char *)s, i + 1) == 0 && s[i + 1] != c)
+		if (s[i] == c && s[i + 1] && !non_var_name((char *)s, i + 1)
+			&& inside_single_quotes((char *)s, i + 1) == 0 && s[i + 1] != c)
 			count++;
 		i++;
 	}
@@ -35,7 +36,8 @@ static int	count_word(char const *s, char c, int i)
 	int	len;
 
 	len = 0;
-	while (s[i] && (s[i] != c || (s[i] == c && non_var_name((char *)s, i + 1)) || (s[i] == c && inside_single_quotes((char *)s, i))))
+	while (s[i] && (s[i] != c || (s[i] == c && non_var_name((char *)s, i + 1))
+			|| (s[i] == c && inside_single_quotes((char *)s, i))))
 	{
 		len++;
 		i++;
@@ -54,9 +56,11 @@ static void	*sec_alloc(char **bigstr, int l)
 	return (NULL);
 }
 
-static void	skip_c(char const *s, char c, int *i)
+static void	skip_c(char const *s, char c, int *i, int *n)
 {
-	while (s[*i] == c && !non_var_name((char *)s, *i + 1) && inside_single_quotes((char *)s, *i) == 0)
+	*n = 0;
+	while (s[*i] == c && !non_var_name((char *)s, *i + 1)
+		&& inside_single_quotes((char *)s, *i) == 0)
 		(*i)++;
 }
 
@@ -76,12 +80,12 @@ char	**ft_env_split(char const *s, char c)
 		return (NULL);
 	while (l < count_words(s, c))
 	{
-		n = 0;
-		skip_c(s, c, &i);
+		skip_c(s, c, &i, &n);
 		str[l] = (char *)malloc(count_word(s, c, i) + 1);
 		if (!str[l])
 			return (sec_alloc(str, l));
-		while ((s[i] != c || (s[i] == c && non_var_name((char *)s, i + 1)) || (s[i] == c && inside_single_quotes((char *)s, i))) && s[i])
+		while ((s[i] != c || (s[i] == c && non_var_name((char *)s, i + 1))
+				|| (s[i] == c && inside_single_quotes((char *)s, i))) && s[i])
 			str[l][n++] = s[i++];
 		str[l++][n] = '\0';
 	}

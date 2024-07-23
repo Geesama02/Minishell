@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:51:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/13 13:52:15 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/23 10:01:14 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,8 @@ static int	count_words(char const *s, char c)
 		count++;
 	while (s[i])
 	{
-		if (s[i] == c && s[i + 1] && s[i + 1] != c && !is_inside_quotes(s, i) && !is_inside_quotes(s, i))
-		{
+		if (s[i] == c && s[i + 1] && s[i + 1] != c && !is_inside_quotes(s, i))
 			count++;
-		}
 		i++;
 	}
 	if (count == 0)
@@ -39,8 +37,7 @@ static int	count_word(char const *s, char c, int i)
 	int	len;
 
 	len = 0;
-	while (s[i] && (s[i] != c || (s[i] == c && is_inside_quotes(s, i))
-			|| (s[i] == c && is_inside_quotes(s, i))))
+	while (s[i] && (s[i] != c || (s[i] == c && is_inside_quotes(s, i))))
 	{
 		len++;
 		i++;
@@ -61,7 +58,7 @@ static void	*sec_alloc(char **bigstr, int l)
 
 static void	skip_c(char const *s, char c, int *i)
 {
-	while (s[*i] == c && s[*i] && !is_inside_quotes(s, *i) && !is_inside_quotes(s, *i))
+	while (s[*i] == c && s[*i] && !is_inside_quotes(s, *i))
 		(*i)++;
 }
 
@@ -86,8 +83,7 @@ char	**ft_split_qt(char const *s, char c)
 		str[l] = (char *)malloc(count_word(s, c, i) + 1);
 		if (!str[l])
 			return (sec_alloc(str, l));
-		while (s[i] && (s[i] != c || (s[i] == c && is_inside_quotes(s, i))
-				|| (s[i] == c && is_inside_quotes(s, i))))
+		while (s[i] && (s[i] != c || (s[i] == c && is_inside_quotes(s, i))))
 			str[l][n++] = s[i++];
 		str[l++][n] = '\0';
 	}

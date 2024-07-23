@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:29:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/22 10:23:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 12:08:56 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,17 @@ int	handle_empty_line(char **input, char *input_cpy, char *tmp)
 char	*handle_null(char *input, t_token_array *token_array,
 	char **holder, int *l)
 {
+	int	i;
+
+	i = 0;
 	if (g_is_heredoc[1])
 	{
 		g_is_heredoc[1] = 0;
 		g_is_heredoc[0] = 0;
 		free(input);
 		return (NULL);
-		int i = 0;
 		while (token_array[i].token)
-		{	
+		{
 			free(token_array[i].token);
 			i++;
 		}
@@ -74,47 +76,28 @@ char	*handle_null(char *input, t_token_array *token_array,
 char	*continue_heredoc(char *delimiter, t_token_array *token_array,
 	char **holder, int *l)
 {
-    char	*tmp;
+	char	*tmp;
 	char	*input;
 	int		stdin_fd;
 
-	if (!delimiter)
+	if (!init_heredoc(delimiter, &input, &stdin_fd))
 		return (NULL);
-	g_is_heredoc[0] = 1;
-	stdin_fd = dup(0);
-	input = ft_strdup("");
-	if (!input)
-		return (NULL);
-    while (1)
+	while (1)
 	{
 		tmp = readline("> ");
 		if (tmp == NULL)
-		{
-			dup2(stdin_fd, 0);
-			close(stdin_fd);
-			return (handle_null(input, token_array, holder, l));
-		}
+			return (dup2(stdin_fd, 0), close(stdin_fd),
+				handle_null(input, token_array, holder, l));
+		if (ft_strcmp(tmp, delimiter) == 0)
+			return (close(stdin_fd), free(tmp), input);
 		if (tmp[0] == '\0')
 		{
 			if (!handle_empty_line(&input, input, tmp))
-			{
-				dup2(stdin_fd, 0);
-				close(stdin_fd);
-				return (NULL);
-			}
-			else
-				continue ;
-		}
-		if (ft_strcmp(tmp, delimiter) == 0)
-		{
-			close(stdin_fd);
-			return (free(tmp), input);
+				return (dup2(stdin_fd, 0), close(stdin_fd), NULL);
+			continue ;
 		}
 		if (!join_old_to_new(&input, tmp))
-		{
-			close(stdin_fd);
-			return (NULL);
-		}
+			return (close(stdin_fd), NULL);
 	}
 	close(stdin_fd);
 	return (input);
