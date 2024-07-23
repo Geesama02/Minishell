@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 09:37:37 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 10:34:18 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,7 @@ int	cd_command(char *path, t_env_vars *head)
 			return (-1);
 	}
 	else
-	{
-		chdir(path);
-		if (errno == ENOENT)
-			print_err("minishell: cd: ", path,
-				" : No such file or directory\n");
-		else if (errno == ENOTDIR)
-			print_err("minishell: cd: ", path, " Not a directory\n");
-		else if (errno)
-			print_err("chdir failed!!\n", NULL, NULL);
-		return (-1);
-	}
+		return (changing_current_directory(path, head));
 	return (0);
 }
 
@@ -82,14 +72,14 @@ int	export_command(char **cmds, t_env_vars **head, t_token_tree *tree)
 	return (0);
 }
 
-int	unset_command(t_env_vars **head, char **cmds, t_token_tree *tree)
+int	unset_command(char **cmds, t_token_tree *tree)
 {
 	int	i;
 
 	i = 1;
 	while (cmds[i])
 	{
-		if (delete_env(head, cmds[i], tree, cmds) == -1)
+		if (delete_env(cmds[i], tree, cmds) == -1)
 			return (-1);
 		i++;
 	}

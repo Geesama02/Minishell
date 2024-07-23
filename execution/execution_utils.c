@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 13:53:25 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 18:29:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 
 	path = NULL;
 	tmp = search_for_env_var(tree->head, "?");
-	if (!ft_strchr(cmds[0], '/'))
+	if (!ft_strchr(cmds[0], '/') && search_for_env_var(tree->head, "PATH"))
 		path = find_correct_path(cmds, tree);
 	else
 	{

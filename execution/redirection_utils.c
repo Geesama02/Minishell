@@ -6,39 +6,41 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 10:11:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 10:42:09 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 11:45:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void	execute_redirec_in(t_token_tree *tree, int pid)
+int	execute_redirec_in(t_token_tree *tree)
 {
 	int		fd_file;
+	int		fd_stdin;
 	char	*filename_wq;
 
+	fd_stdin = dup(0);
 	expand_filenames(tree->right);
 	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
-			ft_close(NULL, tree->head, tree), exit(3));
+			ft_close(NULL, tree->head, tree), exit(1), -1);
 	fd_file = open(filename_wq, O_RDONLY, S_IRWXU);
 	if (fd_file == -1 && errno == ENOENT)
 	{
 		print_err("minishell: ", tree->right->token,
 			": No such file or directory\n");
-		ft_close(NULL, tree->head, tree);
-		exit(1);
+		return (-1);
 	}
 	safe_dup2(tree, fd_file, 0);
 	safe_close(fd_file, tree);
 	if (tree->left->token[0] != '\0')
-		execute_tree(tree->left, tree->head, pid);
-	ft_close(NULL, tree->head, tree);
-	exit(0);
+		execute_tree(tree->left, tree->head, 1);
+	safe_dup2(tree, fd_stdin, 0);
+	safe_close(fd_stdin, tree);
+	return (0);
 }
 
-void	execute_redirec_out(t_token_tree *tree, int pid)
+int	execute_redirec_out(t_token_tree *tree)
 {
 	int		fd_file;
 	int		stdout_cp;
@@ -49,25 +51,23 @@ void	execute_redirec_out(t_token_tree *tree, int pid)
 	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
-			ft_close(NULL, tree->head, tree), exit(3));
+			ft_close(NULL, tree->head, tree), exit(1), -1);
 	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
 	if (fd_file == -1)
 	{
 		print_err("open() failed!!\n", NULL, NULL);
-		ft_close(NULL, tree->head, tree);
-		exit(1);
+		return (-1);
 	}
 	safe_dup2(tree, fd_file, 1);
 	safe_close(fd_file, tree);
 	if (tree->left->token[0] != '\0')
-		execute_tree(tree->left, tree->head, pid);
+		execute_tree(tree->left, tree->head, 1);
 	safe_dup2(tree, stdout_cp, 1);
 	safe_close(stdout_cp, tree);
-	ft_close(NULL, tree->head, tree);
-	exit(0);
+	return (0);
 }
 
-void	execute_redirec_append(t_token_tree *tree, int pid)
+int	execute_redirec_append(t_token_tree *tree)
 {
 	int		stdout_cp;
 	int		fd_file;
@@ -78,20 +78,18 @@ void	execute_redirec_append(t_token_tree *tree, int pid)
 	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
-			ft_close(NULL, tree->head, tree), exit(3));
+			ft_close(NULL, tree->head, tree), exit(1), -1);
 	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_APPEND, 00700);
 	if (fd_file == -1)
 	{
 		print_err("open() failed!!\n", NULL, NULL);
-		ft_close(NULL, tree->head, tree);
-		exit(1);
+		return (-1);
 	}
 	safe_dup2(tree, fd_file, 1);
 	safe_close(fd_file, tree);
 	if (tree->left->token[0] != 0)
-		execute_tree(tree->left, tree->head, pid);
+		execute_tree(tree->left, tree->head, 1);
 	safe_dup2(tree, stdout_cp, 1);
 	safe_close(stdout_cp, tree);
-	ft_close(NULL, tree->head, tree);
-	exit(0);
+	return (0);
 }

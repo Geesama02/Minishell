@@ -6,22 +6,22 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:33:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 09:36:15 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 18:11:07 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int	delete_env(t_env_vars **head, char *cmd, t_token_tree *tree, char **cmds)
+int	delete_env(char *cmd, t_token_tree *tree, char **cmds)
 {
 	t_env_vars	*tmp;
 
-	tmp = *head;
-	if (!ft_isalpha(cmd[0]))
+	tmp = *tree->head;
+	if (!ft_isalpha_quotes(cmd[0]) || !is_string(cmd))
 		return (print_err("minishell: unset: `", cmd,
 				"': is not a valid identifier\n"), -1);
 	else if (tmp && !ft_strcmp(tmp->env_name, cmd))
-		delete_env_head(tmp, head);
+		delete_env_head(tmp, tree->head);
 	else
 		delete_env_inside(tmp, cmd, cmds, tree);
 	return (0);
@@ -61,6 +61,9 @@ void	replace_nodes_content(t_env_vars *node1, t_env_vars *node2,
 	if (!node1->env_name)
 		return (ft_close(cmds, tree->head, tree), exit(1));
 	node1->env_val = ft_strdup(node2->env_val);
+	if (!node1->env_val)
+		return (free(node1->env_name),
+			ft_close(cmds, tree->head, tree), exit(1));
 	node1->next = node2->next;
 	free(node2->env_name);
 	free(node2->env_val);
