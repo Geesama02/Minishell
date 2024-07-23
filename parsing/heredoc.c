@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 12:07:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/19 10:21:13 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/23 11:02:04 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,29 +50,13 @@ int	count_str_len(char *str)
 	{
 		if (str[i] == '\'')
 		{
-			if (str[i])
-				i++;
-			while(str[i] != '\'' && str[i])
-			{
-				count++;
-				i++;
-			}
-			if (str[i])
-				i++;
-			continue;
+			check_between_quotes(str, &i, &count, '\'');
+			continue ;
 		}
 		else if (str[i] == '\"')
 		{
-			if (str[i])
-				i++;
-			while(str[i] != '\"' && str[i])
-			{
-				count++;
-				i++;
-			}
-			if (str[i])
-				i++;
-			continue;
+			check_between_quotes(str, &i, &count, '\"');
+			continue ;
 		}
 		else
 			count++;
@@ -82,7 +66,7 @@ int	count_str_len(char *str)
 	return (count);
 }
 
-void skip_quotes(char *str_original, char *new)
+void	skip_quotes(char *str_original, char *new)
 {
 	int	i;
 	int	j;
@@ -113,8 +97,8 @@ void skip_quotes(char *str_original, char *new)
 
 char	*ignore_quotes(char **str)
 {
-	int	len;
-	char *tmp;
+	int		len;
+	char	*tmp;
 
 	if (!*str)
 		return (NULL);
@@ -131,41 +115,4 @@ char	*ignore_quotes(char **str)
 	free(*str);
 	*str = tmp;
 	return (*str);
-}
-
-char	*ft_split_first(char *str)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	
-	while (str[i] && (str[i] != ' ' || (str[i] == ' ' && is_inside_quotes(str, i))))
-		i++;
-	str[i] = '\0';
-	tmp = ft_strdup(str + i + 1);
-	return (tmp);
-}
-
-char	*handle_extra_cmd(t_token_array *token_array, char **holder,
-	int *check, int i)
-{
-	char	*tmp;
-	char	*first_cmd;
-	char	*second_cmd;
-
-	if (has_more_cmds(holder[i - 1]) && has_more_cmds(holder[i + 1]))
-	{
-		first_cmd = ft_split_first(token_array[i - 1].token);
-		second_cmd = ft_split_first(holder[i + 1]);
-		tmp = ft_strjoin(first_cmd, second_cmd);
-		free(first_cmd);
-		free(second_cmd);
-	}
-	else if (has_more_cmds(holder[i - 1]))
-		tmp = ft_split_first(token_array[i - 1].token);
-	else
-		tmp = ft_split_first(holder[i + 1]);
-	*check = 1;
-	return (tmp);
 }

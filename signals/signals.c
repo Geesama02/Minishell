@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:49:24 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/17 13:09:07 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 10:23:36 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	handle_new_prompt(int signum)
 {
 	if (signum == SIGINT)
 	{
-		is_heredoc[1] = 1;
-		if (is_heredoc[0] == 1)
+		g_is_heredoc[1] = 1;
+		if (g_is_heredoc[0] == 1)
 		{
 			close(0);
 			return ;
@@ -30,7 +30,7 @@ void	handle_new_prompt(int signum)
 	}
 }
 
-void	define_signals()
+void	define_signals(void)
 {
 	struct sigaction	sa1;
 	sigset_t			set;

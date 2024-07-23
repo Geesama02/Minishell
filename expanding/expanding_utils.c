@@ -6,13 +6,14 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/19 16:30:35 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:21:49 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int	append_env_var(char *env_name, char *to_append, char **cmds, t_token_tree *tree)
+int	append_env_var(char *env_name, char *to_append, char **cmds,
+		t_token_tree *tree)
 {
 	t_env_vars	*tmp;
 	char		*new_env_val;
@@ -23,7 +24,7 @@ int	append_env_var(char *env_name, char *to_append, char **cmds, t_token_tree *t
 		tmp = tmp->next;
 	if (tmp)
 	{
-		new_env_val = ft_strjoin(tmp->env_val, to_append); //leaks
+		new_env_val = ft_strjoin(tmp->env_val, to_append);
 		if (!new_env_val && errno == ENOMEM)
 			return (free(env_name), ft_close(cmds, tree->head, tree),
 				exit(1), -1);
@@ -34,13 +35,16 @@ int	append_env_var(char *env_name, char *to_append, char **cmds, t_token_tree *t
 
 t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name)
 {
-	t_env_vars  *current;
+	t_env_vars	*current;
 
-	current = *head;
-	while (current && ft_strcmp(current->env_name, env_name))
-		current = current->next;
-	if (current)
-		return (current);
+	if (head)
+	{
+		current = *head;
+		while (current && ft_strcmp(current->env_name, env_name))
+			current = current->next;
+		if (current)
+			return (current);
+	}
 	return (NULL);
 }
 
@@ -56,7 +60,7 @@ void	null_terminating(char *str, char c)
 
 int	is_string(char *str)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (str[i])
@@ -75,8 +79,6 @@ void	ft_lstadd(t_env_vars **lst, t_env_vars *new)
 {
 	t_env_vars	*current;
 
-	if (!lst || !new)
-		return ;
 	if (*lst == NULL || new == NULL)
 	{
 		*lst = new;
@@ -86,16 +88,4 @@ void	ft_lstadd(t_env_vars **lst, t_env_vars *new)
 	while (current && current->next != 0)
 		current = current->next;
 	current->next = new;
-}
-
-void	null_terminating_rev(char *string)
-{
-	int	len;
-
-	len = ft_strlen(string);
-	while (len >= 0 && string[len - 1] == ' ')
-	{
-		string[len - 1] = '\0';
-		len--;
-	}
 }

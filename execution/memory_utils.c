@@ -6,13 +6,13 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 20:16:25 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/17 16:47:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 13:44:10 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void    free_envs(t_env_vars **head)
+void	free_envs(t_env_vars **head)
 {
 	t_env_vars	*tmp;
 
@@ -30,7 +30,8 @@ void    free_envs(t_env_vars **head)
 void	ft_close(char **cmds, t_env_vars **head, t_token_tree *tree)
 {
 	free_2d_array(cmds);
-	free_envs(head);
+	if (head)
+		free_envs(head);
 	free_tree(tree);
 }
 
@@ -39,24 +40,24 @@ int	count_2d_array_elements(char **arr)
 	int	counter;
 
 	counter = 0;
-	while (*arr)
-	{	
+	while (arr && *arr)
+	{
 		counter++;
 		arr++;
 	}
 	return (counter);
 }
 
-void    free_node(t_env_vars *node)
+void	free_node(t_env_vars *node)
 {
-    free(node->env_name);
-    free(node->env_val);
-    free(node);
+	free(node->env_name);
+	free(node->env_val);
+	free(node);
 }
 
 int	handle_builtins_failure(t_token_tree *tree, char **cmds)
 {
-	t_env_vars *tmp;
+	t_env_vars	*tmp;
 
 	tmp = search_for_env_var(tree->head, "?");
 	if (define_exit_status(tmp, "1") == -1)

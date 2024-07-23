@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:02:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/21 10:11:36 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:42:19 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 int	non_var_name(char *str, int i)
 {
-	return (!ft_isalpha(str[i]) && str[i] != '_' && (str[i] != '?' || ft_isalpha(str[i - 1]))
-		&& (str[i] != '-' || ft_isalpha(str[i - 1])) && (str[i] != '@' || ft_isalpha(str[i - 1])) && !ft_isdigit(str[i]) && (str[i] != '\"' || ft_isalpha(str[i - 1]))
+	return (!ft_isalpha(str[i]) && str[i] != '_'
+		&& (str[i] != '?' || ft_isalpha(str[i - 1]))
+		&& (str[i] != '-' || ft_isalpha(str[i - 1]))
+		&& (str[i] != '@' || ft_isalpha(str[i - 1]))
+		&& !ft_isdigit(str[i]) && (str[i] != '\"' || ft_isalpha(str[i - 1]))
 		&& (str[i] != '\'' || ft_isalpha(str[i - 1])));
 }
 
-char *join_var(char **words, int i, char *env_value, char *tmp)
+char	*join_var(char **words, int i, char *env_value, char *tmp)
 {
 	char	*word_tmp;
 
@@ -30,13 +33,12 @@ char *join_var(char **words, int i, char *env_value, char *tmp)
 	return (word_tmp);
 }
 
-char	*join_var_with_extras(t_env_vars *head, char **words, int i, char *extras)
+char	*join_var_with_extras(t_env_vars *head
+	, char **words, int i, char *extras)
 {
 	char	*tmp;
-	// char	*word_tmp;
 	char	*env_value;
-	
-	
+
 	tmp = ft_strdup(extras);
 	if (!tmp)
 		return (free_2d_array(words), NULL);
@@ -90,7 +92,7 @@ char	*get_extras_and_join(t_env_vars *head, char **words, int i)
 int	has_vars_no_quotes(char *str)
 {
 	int	i;
-	
+
 	i = 0;
 	while (str && str[i])
 	{
@@ -100,4 +102,3 @@ int	has_vars_no_quotes(char *str)
 	}
 	return (0);
 }
-

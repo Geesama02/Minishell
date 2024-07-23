@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 11:50:33 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/21 11:55:43 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/23 09:58:15 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static int	count_words(char const *s, char c)
 		count++;
 	while (s[i])
 	{
-		if (s[i] == c && s[i + 1] && !non_var_name((char *)s, i + 1) && s[i + 1] != c)
+		if (s[i] == c && s[i + 1]
+			&& !non_var_name((char *)s, i + 1) && s[i + 1] != c)
 			count++;
 		i++;
 	}
@@ -54,8 +55,9 @@ static void	*sec_alloc(char **bigstr, int l)
 	return (NULL);
 }
 
-static void	skip_c(char const *s, char c, int *i)
+static void	skip_c(char const *s, char c, int *i, int *n)
 {
+	*n = 0;
 	while (s[*i] == c && !non_var_name((char *)s, *i + 1))
 		(*i)++;
 }
@@ -76,12 +78,12 @@ char	**ft_env_split_no_qt(char const *s, char c)
 		return (NULL);
 	while (l < count_words(s, c))
 	{
-		n = 0;
-		skip_c(s, c, &i);
+		skip_c(s, c, &i, &n);
 		str[l] = (char *)malloc(count_word(s, c, i) + 1);
 		if (!str[l])
 			return (sec_alloc(str, l));
-		while ((s[i] != c || (s[i] == c && non_var_name((char *)s, i + 1))) && s[i])
+		while ((s[i] != c || (s[i] == c
+					&& non_var_name((char *)s, i + 1))) && s[i])
 			str[l][n++] = s[i++];
 		str[l++][n] = '\0';
 	}

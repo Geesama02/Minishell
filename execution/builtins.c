@@ -6,21 +6,21 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/17 16:52:50 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 09:37:37 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int cd_command(char *path, t_env_vars *head)
+int	cd_command(char *path, t_env_vars *head)
 {
 	if (!path || !ft_strcmp(path, "~"))
-	{	
+	{
 		if (home_case(head) == -1)
 			return (-1);
 	}
 	else if (!ft_strcmp(path, "-"))
-	{	
+	{
 		if (oldpwd_case(head) == -1)
 			return (-1);
 	}
@@ -28,7 +28,8 @@ int cd_command(char *path, t_env_vars *head)
 	{
 		chdir(path);
 		if (errno == ENOENT)
-			print_err("minishell: cd: ", path, " : No such file or directory\n");
+			print_err("minishell: cd: ", path,
+				" : No such file or directory\n");
 		else if (errno == ENOTDIR)
 			print_err("minishell: cd: ", path, " Not a directory\n");
 		else if (errno)
@@ -38,7 +39,7 @@ int cd_command(char *path, t_env_vars *head)
 	return (0);
 }
 
-int pwd_command()
+int	pwd_command(void)
 {
 	char	buff[PATH_MAX];
 
@@ -48,7 +49,7 @@ int pwd_command()
 		return (-1);
 	}
 	else
-	{    
+	{
 		write(1, buff, ft_strlen(buff));
 		write(1, "\n", 1);
 	}
@@ -71,7 +72,7 @@ int	export_command(char **cmds, t_env_vars **head, t_token_tree *tree)
 	int	nbr_envs;
 
 	if (!cmds[1])
-	{	
+	{
 		export_without_arguments(*head, cmds, tree);
 		return (0);
 	}

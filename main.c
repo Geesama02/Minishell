@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/21 13:08:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/23 11:23:33 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,16 +134,14 @@ int main(int argc, char **argv, char **envp)
 	t_token_tree		*ast_tree;
 	t_env_vars			*head;
 	char				*input;
-	int					childs[99];
 
 	(void)argc;
 	(void)argv;
-	is_heredoc[0] = 0;
-	is_heredoc[1] = 0;
+	g_is_heredoc[0] = 0;
+	g_is_heredoc[1] = 0;
 	rl_catch_signals = 0;
 	head = create_lst(envp);
 	define_signals();
-	ft_bzero(childs, 99);
 	// atexit(a);
     while (1)
     {
@@ -162,17 +160,7 @@ int main(int argc, char **argv, char **envp)
 				exit(1);
 			}
 			else
-			{
-				int	exit_s;
-				t_env_vars *tmp = search_for_env_var(&head, "?");
-				exit_s = ft_atoi(tmp->env_val);
-				rl_clear_history();
-				write(0, "exit\n", 5);
-				ft_close(NULL, &head, NULL);
-				if (is_heredoc[1] == 1)
-					exit(1);
-				exit(exit_s);
-			}
+				eof_pressed(&head);
 		}
         if (input[0] == '\0')
 		{
@@ -193,10 +181,9 @@ int main(int argc, char **argv, char **envp)
 			free(input);
 			continue;
 		}
-		if (is_heredoc[1] == 1)
+		if (g_is_heredoc[1] == 1)
 		{
 			t_env_vars	*tmp2;
-			tmp2 = head;
 			tmp2 = search_for_env_var(&head, "?");
 			define_exit_status(tmp2, "1");
 		}
@@ -216,7 +203,7 @@ int main(int argc, char **argv, char **envp)
 		// 	i++;
 		// }
 		postfix_stack = shunting_yard(token_array);
-		ast_tree = build_tree(&postfix_stack, envp, &head, childs);
+		ast_tree = build_tree(&postfix_stack, envp, &head);
 		// printf("left -> %s\n", ast_tree->left->token);
 		// printf("right -> %s\n", ast_tree->right->token);
 		// printf("========= stack =========\n");
@@ -234,8 +221,8 @@ int main(int argc, char **argv, char **envp)
 		// }
 		// print_tree(ast_tree, 0);
 		free_tree(ast_tree);
-		is_heredoc[0] = 0;
-		is_heredoc[1] = 0;
+		g_is_heredoc[0] = 0;
+		g_is_heredoc[1] = 0;
     }
     return (0);
 }

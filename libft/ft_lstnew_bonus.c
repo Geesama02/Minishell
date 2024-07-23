@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:54:57 by maglagal          #+#    #+#             */
-/*   Updated: 2023/11/10 15:49:10 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/22 10:16:12 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ t_list	*ft_lstnew(void *content)
 		newn->content = NULL;
 	else
 		newn->content = content;
-	newn->next = (0); 
+	newn->next = (0);
 	return (newn);
 }

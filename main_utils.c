@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/04 12:57:29 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 10:16:31 by maglagal         ###   ########.fr       */
+/*   Created: 2024/07/22 10:46:53 by maglagal          #+#    #+#             */
+/*   Updated: 2024/07/22 14:00:21 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "parse_header.h"
 
-size_t	ft_strlcpy(char *dst, const char *src,
-			size_t dstsize)
+void    eof_pressed(t_env_vars **head)
 {
-	size_t	i;
-	char	*dest;
-	char	*sr;
+	t_env_vars	*tmp;
+	int			exit_s;
 
-	i = 0;
-	dest = (char *)dst;
-	sr = (char *)src;
-	while (i < dstsize - 1 && sr[i] && dstsize != 0)
-	{
-		dest[i] = sr[i];
-		i++;
-	}
-	if (dstsize != 0)
-		dest[i] = '\0';
-	i = 0;
-	while (sr[i])
-		i++;
-	return (i);
+	exit_s = 0;
+	tmp = search_for_env_var(head, "?");
+	if (tmp)
+		exit_s = ft_atoi(tmp->env_val);
+	rl_clear_history();
+	write(0, "exit\n", 5);
+	ft_close(NULL, head, NULL);
+	if (g_is_heredoc[1] == 1)
+		exit(1);
+	exit(exit_s);
 }
