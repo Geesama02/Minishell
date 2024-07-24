@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/24 11:03:58 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/24 11:38:43 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,7 @@ char			**ft_split(char const *s, char c);
 int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strjoin(const char *s1, const char *s2);
-int				len(char **s);
-int				check_cmd(char *str);
 int				cd_command(char *path, t_env_vars *head);
-char			*remove__quotes(char *str);
 void			print_tree(t_token_tree *root, int level); //delete later
 t_token_tree	*create_node(char *token, t_t_type type, char **envp,
 					t_env_vars **head);
@@ -135,9 +132,7 @@ char			**ft_split_one(char const *s, char c);
 t_t_type		set_token_type(char *token);
 void			execute_pipe(t_token_tree *tree);
 int				exec_command(t_token_tree *tree, char **cmds, int child);
-int				exec_normal_commands(t_token_tree *tree);
 int				scan_syntax(char **holder);
-int				unclosed_var(char *str, char c);
 t_t_type		set_token_type(char *token);
 void			free_tree(t_token_tree *root);
 char			*wildcard(char **str, int i, char *operator);
@@ -232,7 +227,6 @@ int				oldpwd_case(t_env_vars *head);
 int				check_minus_n(char *echo_flag);
 int				delete_env(char *cmd, t_token_tree *tree, char **cmds);
 void			print_err(char *string1, char *string2, char *string3);
-int				has_multi_redirections(t_token_array *token_array);
 void			switch_multi_redirections(t_token_array *token_array);
 int				check_redirections_extras(t_token_array *token_array);
 char			**ignore_quotes_2d_array(char **strs);
@@ -247,7 +241,6 @@ int				check_expand(t_token_tree *tree);
 int				count_wildcard(char *str);
 void			null_terminating_rev(char *string);
 int				has_quotes(char *str, char c);
-int				invalid_option_error(char **tokens, int i);
 char			**ft_env_split_no_qt(char const *s, char c);
 void			safe_close(int fd, t_token_tree *node);
 void			delete_env_head(t_env_vars *tmp, t_env_vars **head);
