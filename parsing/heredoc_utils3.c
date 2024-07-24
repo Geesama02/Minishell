@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 10:36:11 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 12:28:49 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/24 09:33:10 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	init_heredoc(char *delimiter, char **input, int *stdin_fd)
 	if (!delimiter)
 		return (0);
 	g_is_heredoc[0] = 1;
-	*stdin_fd = dup(0);
+	*stdin_fd = safe_dup(0, NULL);
 	*input = ft_strdup("");
 	if (!*input)
 		return (0);

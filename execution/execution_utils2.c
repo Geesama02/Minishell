@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/24 11:01:09 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/24 11:04:03 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,10 @@ char	*file_isdir_case(char **cmds, t_token_tree *tree, char *path)
 	if (stat(path, &buff) == -1 && errno != ENOENT)
 		return (free(path), print_err("stat failed!!\n", NULL, NULL), NULL);
 	if (S_ISDIR(buff.st_mode))
+	{
+		define_exit_status(*tree->head, "126");
 		return (print_err("minishell: ", path,
 				": is a directory\n"), free(path), NULL);
+	}
 	return (path);
 }

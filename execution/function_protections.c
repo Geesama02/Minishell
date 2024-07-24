@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 16:53:19 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 15:19:45 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/24 10:50:07 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	safe_close(int fd, t_token_tree *node)
 {
 	if (close(fd) == -1)
 	{
-		ft_close(NULL, node->head, node->tree_head_address);
+		ft_close(NULL, node->head, node);
 		print_err("close() failed!!\n", NULL, NULL);
 		exit(1);
 	}
@@ -26,10 +26,24 @@ void	safe_dup2(t_token_tree *node, int old_fd, int new_fd)
 {
 	if (dup2(old_fd, new_fd) == -1)
 	{
-		ft_close(NULL, node->head, node->tree_head_address);
+		ft_close(NULL, node->head, node);
 		print_err("dup2() failed!!\n", NULL, NULL);
 		exit(1);
 	}
+}
+
+int	safe_dup(int fd, t_token_tree *node)
+{
+	int	fd_cpy;
+
+	fd_cpy = dup(fd);
+	if (fd_cpy == -1)
+	{
+		ft_close(NULL, node->head, node);
+		print_err("dup() failed!!\n", NULL, NULL);
+		exit(1);
+	}
+	return (fd_cpy);
 }
 
 char	**ignore_quotes_2d_array(char **strs)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 10:46:53 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 17:21:06 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/24 10:51:13 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	eof_pressed(t_env_vars **head)
 	tmp = search_for_env_var(head, "?");
 	if (tmp)
 		exit_s = ft_atoi(tmp->env_val);
-	rl_clear_history();
 	write(0, "exit\n", 5);
 	ft_close(NULL, head, NULL);
 	if (g_is_heredoc[1] == 1)
@@ -75,7 +74,6 @@ void	syntax_error_message(t_env_vars *head, char *input)
 void	readline_allocation_failure(t_env_vars *head)
 {
 	print_err("readline: allocation failure!\n", NULL, NULL);
-	rl_clear_history();
 	ft_close(NULL, &head, NULL);
 	exit(1);
 }

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 13:53:16 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/24 09:30:10 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int	execute_cmds_with_operators_heredoc(t_token_tree *tree, t_env_vars **head,
 		}
 	}
 	else if (!ft_strcmp(tree->token, "|"))
-		execute_pipe(tree->left, tree->right);
+		execute_pipe(tree);
 	else if (tree->type == HEREDOC)
-		execute_heredoc(tree->left, tree->right);
+		execute_heredoc(tree);
 	return (0);
 }
 
