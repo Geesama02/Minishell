@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 10:46:53 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 17:08:45 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/24 10:51:13 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	syntax_error_message(t_env_vars *head, char *input)
 	print_err("Minishell: syntax error near unexpected token `",
 		check_syntax(input), "' \n");
 	define_exit_status(head, "258");
-	free(input);
 }
 
 void	readline_allocation_failure(t_env_vars *head)

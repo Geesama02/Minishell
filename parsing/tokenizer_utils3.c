@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:03:52 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 11:14:22 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:27:26 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	tokenize(char **input, char *input_cpy, char **holder)
 		if (**input == '\0')
 			break ;
 		if (!handle_tokens(input, input_cpy, holder, i))
-			return (0);
+			return (free_alloc(holder, i), free(*input), exit(1), 0);
 		i++;
 	}
 	holder[i] = NULL;
