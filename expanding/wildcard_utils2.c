@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:11:11 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 15:07:40 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:08:52 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	filter_files(struct dirent *dir_content
 		{
 			if (!join_strings(res, dir_content->d_name)
 				|| !join_strings(res, " "))
-				return (free_2d_array(sep_str), rl_clear_history(), exit(1), 0);
+				return (free_2d_array(sep_str), exit(1), 0);
 			break ;
 		}
 		else if (check_first_chars(dir_content, sep_str, str, i))
@@ -77,6 +77,6 @@ int	filter_files(struct dirent *dir_content
 			j++;
 	}
 	if (check_if_match(sep_str[i], res, dir_content, j))
-		return (free_2d_array(sep_str), rl_clear_history(), exit(1), 0);
+		return (free_2d_array(sep_str), exit(1), 0);
 	return (1);
 }

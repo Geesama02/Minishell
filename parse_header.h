@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 15:35:46 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/24 09:30:23 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int				unset_command(char **cmds, t_token_tree *tree);
 void			env_command(t_env_vars *env_vars);
 char			**ft_split_one(char const *s, char c);
 t_t_type		set_token_type(char *token);
-void			execute_pipe(t_token_tree *left, t_token_tree *right);
+void			execute_pipe(t_token_tree *tree);
 int				exec_command(t_token_tree *tree, char **cmds, int child);
 int				exec_normal_commands(t_token_tree *tree);
 int				scan_syntax(char **holder);
@@ -202,7 +202,7 @@ char			*get_extra_chars(char *holder);
 int				has_vars(char *str);
 int				has_vars_no_quotes(char *str);
 void			*join_all_vars(char **words, char **result);
-void			execute_heredoc(t_token_tree *cmd, t_token_tree *content);
+void			execute_heredoc(t_token_tree *tree);
 void			define_signals(void);
 int				inside_single_quotes(char *s, int i);
 int				tokenize(char **input, char *input_cpy, char **holder);
@@ -261,6 +261,7 @@ int				execute_redirec_in(t_token_tree *tree);
 int				execute_redirec_out(t_token_tree *tree);
 int				execute_redirec_append(t_token_tree *tree);
 void			safe_dup2(t_token_tree *node, int old_fd, int new_fd);
+int				safe_dup(int fd, t_token_tree *node);
 void			eof_pressed(t_env_vars **head);
 int				exit_execve(int status, t_env_vars **head, char *path);
 void			create_newenv(char **tokens, t_env_vars **head, char **cmds,

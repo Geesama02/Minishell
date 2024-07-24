@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:19:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 09:58:49 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/24 09:25:53 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int	add_space_cmd(t_token_tree *cmd)
 	return (0);
 }
 
-void	execute_heredoc_file(t_token_tree *cmd, t_token_tree *content)
+void	execute_heredoc_file(t_token_tree *tree, t_token_tree *cmd,
+	t_token_tree *content)
 {
 	char	*prev_cmd;
 
@@ -49,7 +50,7 @@ void	execute_heredoc_file(t_token_tree *cmd, t_token_tree *content)
 	cmd->token = ft_strjoin(prev_cmd, content->token);
 	free(prev_cmd);
 	if (!cmd->token)
-		return (free_tree(cmd), free_tree(content), exit(1));
+		return (ft_close(NULL, tree->head, tree), exit(1));
 	execute_tree(cmd, cmd->head, 1);
 }
 
@@ -65,34 +66,34 @@ void	write_to_pipe(t_token_tree *content)
 	}
 }
 
-void	execute_heredoc_content(t_token_tree *content, t_token_tree *cmd)
+void	execute_heredoc_content(t_token_tree *tree, t_token_tree *cmd,
+	t_token_tree *content)
 {
 	int		fds[2];
 	int		stdout_cp;
 	int		stdin_cp;
 
-	stdout_cp = dup(1);
-	stdin_cp = dup(0);
+	stdout_cp = safe_dup(1, tree);
+	stdin_cp = safe_dup(0, tree);
 	pipe(fds);
-	dup2(fds[1], 1);
-	close(fds[1]);
+	safe_dup2(tree, fds[1], 1);
+	safe_close(fds[1], tree);
 	write_to_pipe(content);
-	dup2(stdout_cp, 1);
-	close(stdout_cp);
-	dup2(fds[0], 0);
-	close(fds[0]);
+	safe_dup2(tree, stdout_cp, 1);
+	safe_close(stdout_cp, tree);
+	safe_dup2(tree, fds[0], 0);
+	safe_close(fds[0], tree);
 	execute_tree(cmd, cmd->head, 1);
-	dup2(stdin_cp, 0);
-	close(stdin_cp);
+	safe_dup2(tree, stdin_cp, 0);
+	safe_close(stdin_cp, tree);
 }
 
-void	execute_heredoc(t_token_tree *cmd, t_token_tree *content)
+void	execute_heredoc(t_token_tree *tree)
 {
-	if (add_space_cmd(cmd) == -1)
-		return (free_tree(cmd), free_tree(content),
-			free_envs(cmd->head), exit(1));
-	if (content->type == CMD_T)
-		execute_heredoc_file(cmd, content);
+	if (add_space_cmd(tree->left) == -1)
+		return (free_tree(tree), exit(1));
+	if (tree->right->type == CMD_T)
+		execute_heredoc_file(tree, tree->left, tree->right);
 	else
-		execute_heredoc_content(content, cmd);
+		execute_heredoc_content(tree, tree->left, tree->right);
 }

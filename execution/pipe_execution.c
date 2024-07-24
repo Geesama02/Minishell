@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:21:44 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 13:51:48 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/24 09:29:00 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	execute_left_pipe(t_token_tree *left, int fds[2],
 	if (execute_tree(left, left->head, 0) == -1)
 	{
 		ft_close(NULL, left->head, left);
+		safe_close(stdin_fd, left);
+		safe_close(stdout_fd, left);
 		exit(1);
 	}
 	safe_close(stdin_fd, left);
@@ -69,6 +71,8 @@ int	execute_right_pipe(t_token_tree *right, int fds[2],
 		tmp = search_for_env_var(right->head, "?");
 		exit_s = ft_atoi(tmp->env_val);
 		ft_close(NULL, right->head, right);
+		safe_close(stdin_fd, right);
+		safe_close(stdout_fd, right);
 		exit(exit_s);
 	}
 	safe_close(stdin_fd, right);
@@ -77,7 +81,7 @@ int	execute_right_pipe(t_token_tree *right, int fds[2],
 	exit(0);
 }
 
-void	execute_pipe(t_token_tree *left, t_token_tree *right)
+void	execute_pipe(t_token_tree *tree)
 {
 	pid_t			c_pid;
 	int				fds[2];
@@ -85,23 +89,23 @@ void	execute_pipe(t_token_tree *left, t_token_tree *right)
 	int				stdin_fd;
 	int				status;
 
-	stdout_fd = dup(1);
-	stdin_fd = dup(0);
+	stdout_fd = safe_dup(1, tree);
+	stdin_fd = safe_dup(0, tree);
 	if (pipe(fds) == -1)
 		return (print_err("pipe() failed!!\n", NULL, NULL),
-			ft_close(NULL, left->head, left->tree_head_address));
+			ft_close(NULL, tree->head, tree));
 	c_pid = fork();
 	if (c_pid == -1)
-		return (handle_fork_failure(left));
+		return (handle_fork_failure(tree));
 	if (!c_pid)
-		execute_left_pipe(left, fds, stdout_fd, stdin_fd);
+		execute_left_pipe(tree->left, fds, stdout_fd, stdin_fd);
 	c_pid = fork();
 	if (c_pid == -1)
-		return (handle_fork_failure(right));
+		return (handle_fork_failure(tree));
 	if (!c_pid)
-		execute_right_pipe(right, fds, stdout_fd, stdin_fd);
+		execute_right_pipe(tree->right, fds, stdout_fd, stdin_fd);
 	else
-		reset_and_close_all_fds(stdout_fd, stdin_fd, fds, left);
+		reset_and_close_all_fds(stdout_fd, stdin_fd, fds, tree);
 	wait(&status);
-	define_exit_status_pipes(right, WEXITSTATUS(status));
+	define_exit_status_pipes(tree, WEXITSTATUS(status));
 }

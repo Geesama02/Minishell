@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 10:11:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 11:45:44 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/24 10:33:01 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	execute_redirec_in(t_token_tree *tree)
 	int		fd_stdin;
 	char	*filename_wq;
 
-	fd_stdin = dup(0);
+	fd_stdin = safe_dup(0, tree);
 	expand_filenames(tree->right);
 	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
@@ -47,7 +47,7 @@ int	execute_redirec_out(t_token_tree *tree)
 	char	*filename_wq;
 
 	expand_filenames(tree->right);
-	stdout_cp = dup(1);
+	stdout_cp = safe_dup(1, tree);
 	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
@@ -74,7 +74,7 @@ int	execute_redirec_append(t_token_tree *tree)
 	char	*filename_wq;
 
 	expand_filenames(tree->right);
-	stdout_cp = dup(1);
+	stdout_cp = safe_dup(1, tree);
 	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
