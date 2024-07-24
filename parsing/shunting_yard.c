@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 17:01:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/24 09:11:35 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/24 10:56:20 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_stack	shunting_yard(t_token_array *tokens)
 	op_stack.token = malloc(sizeof(t_token_array) * count_array(tokens));
 	cmd_stack.token = malloc(sizeof(t_token_array) * (count_array(tokens) + 1));
 	if (!op_stack.token || !cmd_stack.token)
-		return (free(op_stack.token), free_token_array(tokens), exit(1), cmd_stack);
+		return (handle_stack_failure(&op_stack, tokens, &cmd_stack));
 	op_stack.head = 0;
 	cmd_stack.head = 0;
 	i = 0;

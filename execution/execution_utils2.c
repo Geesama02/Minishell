@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 14:37:57 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/24 11:01:09 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	execute_using_execve(t_token_tree *tree, char **cmds,
 		if (execve(path, cmds, envp) == -1)
 		{
 			if (errno == ENOENT)
-				exit(126);
+				exit(127);
 			exit(1);
 		}
 	}

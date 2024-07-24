@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:03:52 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 17:27:26 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/24 10:23:19 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ char	*get_extra_chars(char *holder)
 	while (holder[i])
 	{
 		if (holder[0] == '?' || holder[0] == '@'
-			|| holder[0] == '\"' || holder[0] == '\'')
+			|| holder[0] == '\"' || holder[0] == '\''
+			|| ft_isdigit(holder[0]))
 			return (holder + 1);
 		if (non_var_name(holder, i))
 			return (holder + i);

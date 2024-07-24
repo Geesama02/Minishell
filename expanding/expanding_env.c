@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:02:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 14:42:19 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/24 09:32:54 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	non_var_name(char *str, int i)
 {
-	return (!ft_isalpha(str[i]) && str[i] != '_'
+	return (i > 0 && !ft_isalpha(str[i]) && str[i] != '_'
 		&& (str[i] != '?' || ft_isalpha(str[i - 1]))
 		&& (str[i] != '-' || ft_isalpha(str[i - 1]))
 		&& (str[i] != '@' || ft_isalpha(str[i - 1]))
