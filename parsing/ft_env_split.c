@@ -24,7 +24,7 @@ static int	count_words(char const *s, char c)
 	while (s[i])
 	{
 		if (s[i] == c && s[i + 1] && !non_var_name((char *)s, i + 1)
-			&& inside_single_quotes((char *)s, i + 1) == 0 && s[i + 1] != c)
+			&& inside_single_quotes((char *)s, i) == 0 && s[i + 1] != c)
 			count++;
 		i++;
 	}
