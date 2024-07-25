@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 13:52:27 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/25 14:36:29 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	expand_filenames(t_token_tree *tree)
 
 	old_filename = ft_strdup(tree->token);
 	if (!old_filename)
-		return (print_err("malloc failed!!\n", NULL, NULL), ft_close(NULL,
+		return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,
 				tree->head, tree), free(old_filename), exit(1));
 	check_expand(tree);
 	if (has_wildcard(tree->token))
@@ -32,7 +32,7 @@ void	expand_filenames(t_token_tree *tree)
 	{
 		cmds = ft_split(tree->token, ' ');
 		if (!cmds)
-			return (print_err("malloc failed!!\n", NULL, NULL), ft_close(NULL,
+			return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,
 					tree->head, tree), exit(3));
 		if (count_2d_array_elements(cmds) > 1)
 			return (print_err("minishell: ", old_filename,
