@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 14:38:10 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:16:16 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,15 @@ int	exit_execve(int status, t_env_vars **head, char *path)
 		tmp->env_val = ft_itoa(128 + WTERMSIG(status));
 	else
 		tmp->env_val = ft_itoa(WEXITSTATUS(status));
-	if (WEXITSTATUS(status) == 126)
+	if (WEXITSTATUS(status) == 127)
 		return (print_err("minishell: ", path, " : No such file or directory\n")
 			, free(path), -1);
-	else
+	else if (WEXITSTATUS(status) == 1)
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+			write(1, "Quit: 3\n", 9);
 		return (free(path), -1);
+	}
 	if (WTERMSIG(status) == SIGQUIT)
 		write(1, "Quit: 3\n", 9);
 	free(path);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/24 11:38:43 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/24 11:55:49 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct s_tree_vars
 {
 	char		**envp;
 	t_env_vars	**head;
-	// int	*tree_offset;
 }				t_tree_vars;
 
 typedef struct s_token_vars
@@ -105,7 +104,6 @@ int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strjoin(const char *s1, const char *s2);
 int				cd_command(char *path, t_env_vars *head);
-void			print_tree(t_token_tree *root, int level); //delete later
 t_token_tree	*create_node(char *token, t_t_type type, char **envp,
 					t_env_vars **head);
 t_token_array	*tokenizer(char **input, t_env_vars *head);

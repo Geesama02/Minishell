@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_ast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:48:47 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 09:52:33 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/24 11:55:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,6 @@ void	set_address(t_token_tree *root, t_token_tree **address)
 	root->tree_head_address = *address;
 	set_address(root->left, address);
 	set_address(root->right, address);
-}
-
-void	print_tree(t_token_tree *root, int level)
-{
-	int	i;
-
-	i = 0;
-	if (!root)
-		return ;
-	while (i < level)
-	{
-		printf("------------");
-		i++;
-	}
-	printf("%s\n", root->token);
-	print_tree(root->left, level + 1);
-	print_tree(root->right, level + 1);
 }
 
 void	free_tree(t_token_tree *root)
