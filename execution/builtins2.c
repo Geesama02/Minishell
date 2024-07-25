@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 09:23:00 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/25 13:06:39 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,25 @@ void	env_command(t_env_vars *env_vars)
 	}
 }
 
-void	exit_command(char **cmds, t_env_vars **head,
-		int child, t_token_tree *tree)
+void	exit_command(char **cmds, int child, t_token_tree *tree)
 {
-	int	exit_s;
+	int			exit_s;
+	t_env_vars	*tmp;
 
 	exit_s = 0;
 	if (child)
 		write(1, "exit\n", 6);
+	tmp = search_for_env_var(tree->head, "?");
+	if (tmp)
+		exit_s = ft_atoi(tmp->env_val);
 	if (cmds[1])
+	{
 		exit_s = ft_atoi(cmds[1]);
-	ft_close(cmds, head, tree);
+		exit(exit_s);
+	}
+	if (g_is_heredoc[1] == 1)
+		exit(1);
+	ft_close(cmds, tree->head, tree);
 	exit(exit_s);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/24 11:04:03 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/25 12:59:56 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	builtins_rest(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
 	else if (!ft_strcmp(cmds[0], "env"))
 		env_command(*head);
 	else if (!ft_strcmp(cmds[0], "exit"))
-		exit_command(cmds, head, child, tree);
+		exit_command(cmds, child, tree);
 	else
 	{
 		if (execute_rest(cmds, tree) == -1)

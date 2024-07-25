@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 10:11:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/24 10:33:01 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/25 10:24:45 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ int	execute_redirec_in(t_token_tree *tree)
 		return (print_err("malloc failed!!\n", NULL, NULL),
 			ft_close(NULL, tree->head, tree), exit(1), -1);
 	fd_file = open(filename_wq, O_RDONLY, S_IRWXU);
-	if (fd_file == -1 && errno == ENOENT)
+	if (fd_file == -1)
 	{
-		print_err("minishell: ", tree->right->token,
-			": No such file or directory\n");
+		print_err("minishell: ", filename_wq, ": ");
+		print_err(strerror(errno), "\n", NULL);
 		return (-1);
 	}
 	safe_dup2(tree, fd_file, 0);
@@ -55,7 +55,8 @@ int	execute_redirec_out(t_token_tree *tree)
 	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
 	if (fd_file == -1)
 	{
-		print_err("open() failed!!\n", NULL, NULL);
+		print_err("minishell: ", filename_wq, ": ");
+		print_err(strerror(errno), "\n", NULL);
 		return (-1);
 	}
 	safe_dup2(tree, fd_file, 1);
@@ -82,7 +83,8 @@ int	execute_redirec_append(t_token_tree *tree)
 	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_APPEND, 00700);
 	if (fd_file == -1)
 	{
-		print_err("open() failed!!\n", NULL, NULL);
+		print_err("minishell: ", filename_wq, ": ");
+		print_err(strerror(errno), "\n", NULL);
 		return (-1);
 	}
 	safe_dup2(tree, fd_file, 1);

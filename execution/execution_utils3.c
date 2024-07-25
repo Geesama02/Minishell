@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/24 17:16:16 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/25 14:04:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,8 @@ int	changing_current_directory(char *path, t_env_vars *head)
 
 	if (!getcwd(current_dir, sizeof(current_dir)))
 		return (print_err(strerror(errno), NULL, NULL), -1);
-	chdir(path);
-	if (errno == ENOENT)
-		return (print_err("minishell: cd: ", path,
-				" : No such file or directory\n"), -1);
-	else if (errno == ENOTDIR)
-		return (print_err("minishell: cd: ", path, " Not a directory\n"), -1);
-	else if (errno)
-		return (print_err("chdir failed!!\n", NULL, NULL), -1);
+	if (chdir(path) == -1)
+		return (print_err("minishell: cd: ", strerror(errno), "\n"), -1);
 	oldpwd = search_for_env_var(&head, "OLDPWD");
 	free(oldpwd->env_val);
 	oldpwd->env_val = ft_strdup(current_dir);
