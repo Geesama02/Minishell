@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 13:50:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/25 13:18:40 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 
 int	exec_command(t_token_tree *tree, char **cmds, int child)
 {
-	if (define_exit_status(*tree->head, "0") == -1)
+	if (ft_strcmp("exit", cmds[0]) != 0 && define_exit_status(*tree->head, "0") == -1)
 		return (free_envs(tree->head), -1);
 	if (!ft_strcmp(cmds[0], "cd"))
 	{
