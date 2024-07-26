@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:53:25 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 10:08:41 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/26 14:19:20 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,27 +103,16 @@ int	fill_heredoc(t_token_array *token_array,
 int	handle_heredoc(t_token_array *token_array,
 	char **holder, int *i, t_token_vars *vars)
 {
+	int	has_quote;
+	
+	has_quote = 0;
 	vars->cmd_holder = set_extra_cmd(token_array, holder, *i, vars);
+	if (!has_quotes(holder[*i + 1], '\'') || !has_quotes(holder[*i + 1], '\"'))
+		has_quote = 1;
 	if (!fill_heredoc(token_array, holder, *i, vars))
 		return (0);
 	free(vars->cmd_holder);
-	if (token_array[vars->l].type == HEREDOC_TOKEN
-		&& has_vars_no_quotes(token_array[vars->l].token))
-	{
-		token_array[vars->l].token = expand_vars(token_array[vars->l].token,
-				token_array[vars->l].type, vars->head);
-		if (!token_array[vars->l].token)
-			return (free_token_holder(holder, token_array, vars->l),
-				exit(1), 0);
-	}
-	else if (has_vars(token_array[vars->l].token))
-	{
-		token_array[vars->l].token = expand_vars(token_array[vars->l].token,
-				token_array[vars->l].type, vars->head);
-		if (!token_array[vars->l].token)
-			return (free_token_holder(holder, token_array, vars->l),
-				exit(1), 0);
-	}
+	handle_heredoc_expand(token_array, holder, has_quote, vars);
 	*i += 2;
 	return (1);
 }

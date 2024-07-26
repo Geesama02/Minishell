@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/25 10:54:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/26 12:18:44 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,5 +275,7 @@ char			*check_syntax(char *input);
 char			*return_type(int dquote, int quote, int parenthesis);
 t_stack			handle_stack_failure(t_stack *op_stack,
 					t_token_array *tokens, t_stack *cmd_stack);
+int				handle_heredoc_expand(t_token_array *token_array,
+					char **holder, int has_quote, t_token_vars *vars);
 
 #endif
