@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/26 14:28:54 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/26 14:52:54 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ t_token_tree	*create_node(char *token, t_t_type type, char **envp,
 t_token_array	*tokenizer(char **input, t_env_vars *head);
 void			*free_alloc(char **bigstr, int l);
 int				is_inside_quotes(char const *s, int i);
-int				pwd_command(void);
+void			pwd_command(void);
 void			echo_command(t_token_tree *tree, char **cmds);
 int				export_command(char **tokens, t_env_vars **head,
 					t_token_tree *tree);

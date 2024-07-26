@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/25 14:11:50 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/26 14:52:38 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,7 @@ int	exec_command(t_token_tree *tree, char **cmds, int child)
 			return (handle_builtins_failure(tree, cmds));
 	}
 	else if (!ft_strcmp(cmds[0], "pwd"))
-	{
-		if (pwd_command() == -1)
-			return (handle_builtins_failure(tree, cmds));
-	}
+		pwd_command();
 	else
 		return (builtins_rest(tree, cmds, tree->head, child));
 	return (0);
