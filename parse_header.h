@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/25 10:54:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/26 11:32:53 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,7 @@ void			delete_env_inside(t_env_vars *tmp, char *cmd,
 char			*file_isdir_case(char **cmds,
 					t_token_tree *tree, char *path);
 void			handle_fork_failure(t_token_tree *tree);
-void			expand_filenames(t_token_tree *tree);
+int				expand_filenames(t_token_tree *tree);
 int				execute_redirec_in(t_token_tree *tree);
 int				execute_redirec_out(t_token_tree *tree);
 int				execute_redirec_append(t_token_tree *tree);

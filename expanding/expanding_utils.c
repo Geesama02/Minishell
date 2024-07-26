@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 15:21:49 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/26 11:44:56 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	append_env_var(char *env_name, char *to_append, char **cmds,
 {
 	t_env_vars	*tmp;
 	char		*new_env_val;
+	char		*prev_envval;
 
 	tmp = *tree->head;
 	new_env_val = NULL;
@@ -24,10 +25,12 @@ int	append_env_var(char *env_name, char *to_append, char **cmds,
 		tmp = tmp->next;
 	if (tmp)
 	{
-		new_env_val = ft_strjoin(tmp->env_val, to_append);
+		prev_envval = tmp->env_val;
+		new_env_val = ft_strjoin(prev_envval, to_append);
 		if (!new_env_val && errno == ENOMEM)
 			return (free(env_name), ft_close(cmds, tree->head, tree),
 				exit(1), -1);
+		free(prev_envval);
 		tmp->env_val = new_env_val;
 	}
 	return (0);

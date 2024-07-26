@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 10:34:18 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/26 14:27:08 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	pwd_command(void)
 
 	if (!getcwd(buff, sizeof(buff)))
 	{
-		print_err(strerror(errno), NULL, NULL);
+		print_err(strerror(errno), "\n", NULL);
 		return (-1);
 	}
 	else

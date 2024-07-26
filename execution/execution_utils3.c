@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/25 14:04:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/26 14:26:27 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,14 @@ int	exit_execve(int status, t_env_vars **head, char *path)
 	return (0);
 }
 
+
 int	changing_current_directory(char *path, t_env_vars *head)
 {
 	char		current_dir[PATH_MAX];
 	t_env_vars	*oldpwd;
 
 	if (!getcwd(current_dir, sizeof(current_dir)))
-		return (print_err(strerror(errno), NULL, NULL), -1);
+		return (print_err(strerror(errno), "\n", NULL), -1);
 	if (chdir(path) == -1)
 		return (print_err("minishell: cd: ", strerror(errno), "\n"), -1);
 	oldpwd = search_for_env_var(&head, "OLDPWD");

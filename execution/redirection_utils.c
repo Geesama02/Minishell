@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 10:11:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/25 10:24:45 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/26 11:34:40 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	execute_redirec_in(t_token_tree *tree)
 	char	*filename_wq;
 
 	fd_stdin = safe_dup(0, tree);
-	expand_filenames(tree->right);
 	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
@@ -27,6 +26,7 @@ int	execute_redirec_in(t_token_tree *tree)
 	fd_file = open(filename_wq, O_RDONLY, S_IRWXU);
 	if (fd_file == -1)
 	{
+		safe_close(fd_stdin, tree);
 		print_err("minishell: ", filename_wq, ": ");
 		print_err(strerror(errno), "\n", NULL);
 		return (-1);
@@ -46,7 +46,6 @@ int	execute_redirec_out(t_token_tree *tree)
 	int		stdout_cp;
 	char	*filename_wq;
 
-	expand_filenames(tree->right);
 	stdout_cp = safe_dup(1, tree);
 	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
@@ -55,6 +54,7 @@ int	execute_redirec_out(t_token_tree *tree)
 	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
 	if (fd_file == -1)
 	{
+		safe_close(stdout_cp, tree);
 		print_err("minishell: ", filename_wq, ": ");
 		print_err(strerror(errno), "\n", NULL);
 		return (-1);
@@ -74,7 +74,6 @@ int	execute_redirec_append(t_token_tree *tree)
 	int		fd_file;
 	char	*filename_wq;
 
-	expand_filenames(tree->right);
 	stdout_cp = safe_dup(1, tree);
 	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
@@ -83,6 +82,7 @@ int	execute_redirec_append(t_token_tree *tree)
 	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_APPEND, 00700);
 	if (fd_file == -1)
 	{
+		safe_close(stdout_cp, tree);
 		print_err("minishell: ", filename_wq, ": ");
 		print_err(strerror(errno), "\n", NULL);
 		return (-1);
