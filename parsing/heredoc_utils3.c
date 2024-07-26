@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 10:36:11 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/24 09:33:10 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/26 12:22:36 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,29 @@ char	*handle_extra_cmd(t_token_array *token_array, char **holder,
 		tmp = ft_split_first(holder[i + 1]);
 	*check = 1;
 	return (tmp);
+}
+
+int	handle_heredoc_expand(t_token_array *token_array,
+	char **holder, int has_quote, t_token_vars *vars)
+{
+	if (token_array[vars->l].type == HEREDOC_TOKEN
+		&& has_vars_no_quotes(token_array[vars->l].token)
+		&& has_quote == 0)
+	{
+		token_array[vars->l].token = expand_vars(token_array[vars->l].token,
+				token_array[vars->l].type, vars->head);
+		if (!token_array[vars->l].token)
+			return (free_token_holder(holder, token_array, vars->l),
+				exit(1), 0);
+	}
+	else if (has_vars(token_array[vars->l].token)
+		&& token_array[vars->l].type == CMD_T)
+	{
+		token_array[vars->l].token = expand_vars(token_array[vars->l].token,
+				token_array[vars->l].type, vars->head);
+		if (!token_array[vars->l].token)
+			return (free_token_holder(holder, token_array, vars->l),
+				exit(1), 0);
+	}
+	return (1);
 }
