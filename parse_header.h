@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/27 12:41:12 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 14:19:20 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,8 @@ void			set_redirections(t_token_array *token_array,
 t_token_array	*get_redirection(t_token_array *token_array,
 					t_token_array *tmp, t_t_type type, t_t_type type2);
 int				get_to_last_token(t_token_array *token_array);
-int				check_for_wildcard(t_token_array *token_array, t_env_vars *head);
+int				check_for_wildcard(t_token_array *token_array,
+					t_env_vars *head);
 void			init_token_vars(t_token_vars *vars, t_env_vars *head);
 int				changing_current_directory(char *path, t_env_vars *head);
 int				syntax_error_check(t_env_vars *head, char *input);
