@@ -6,13 +6,13 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/24 10:32:10 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 16:13:13 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void	check_exesting(t_env_vars *prev, char **cmds, char **tokens,
+void	check_existing(t_env_vars *prev, char **cmds, char **tokens,
 	t_token_tree *tree)
 {
 	free(prev->env_val);
@@ -86,7 +86,7 @@ int	add_or_append(char **cmds, t_token_tree *tree,
 	{
 		prev = search_for_env_var(tree->head, cmds[0]);
 		if (prev)
-			check_exesting(prev, cmds, tokens, tree);
+			check_existing(prev, cmds, tokens, tree);
 		else
 			lst_add_element(tokens, cmds, tree, i);
 	}

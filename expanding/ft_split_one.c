@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 10:05:45 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/25 10:47:46 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 16:03:12 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@ int	fill_rest(char const *s, char **p, int i, size_t *p_z)
 	if (s[i])
 	{
 		i++;
-		j = 0;
 		p[++(*p_z)] = (char *)malloc(word_length2(s, i) + 1);
 		if (!p[*p_z])
 			return (freeing_memory(p, *p_z), -1);
 		while (s[i] && s[i] != ';')
 			p[*p_z][j++] = s[i++];
+		p[*p_z][j] = '\0';
 	}
-	return (j);
+	return (0);
 }
 
 char	**ft_split_one(char const *s, char c)
@@ -90,10 +90,8 @@ char	**ft_split_one(char const *s, char c)
 	while (s[i] && s[i] != c)
 		p[z][j++] = s[i++];
 	p[z][j] = '\0';
-	j += fill_rest(s, p, i, &z);
-	if (!p[0])
+	if (fill_rest(s, p, i, &z) == -1)
 		return (NULL);
-	p[z][j] = '\0';
 	p[++z] = 0;
 	return (p);
 }
