@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/25 15:14:59 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 10:26:48 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void	exit_command(char **cmds, int child, t_token_tree *tree)
 		exit_s = ft_atoi(cmds[1]);
 		if (exit_s == 0)
 		{
-			print_err("minishell: exit: ", cmds[1], ": numeric argument required\n");
+			print_err("minishell: exit: ", cmds[1],
+				": numeric argument required\n");
 			exit_s = 255;
 		}
 	}

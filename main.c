@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/26 18:01:16 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 10:24:09 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,10 @@ t_env_vars	*initialize_main_variables(char **envp)
 {
 	t_env_vars	*head;
 	t_env_vars	*tmp;
-	int			shlvl;
 
 	g_is_heredoc[0] = 0;
 	g_is_heredoc[1] = 0;
 	head = create_lst(envp);
-	tmp = search_for_env_var(&head, "SHLVL");
-	if (tmp)
-	{
-		shlvl = ft_atoi(tmp->env_val);
-		free(tmp->env_val);
-		shlvl += 1;
-		tmp->env_val = ft_itoa(shlvl);
-	}
 	tmp = search_for_env_var(&head, "OLDPWD");
 	if (tmp)
 	{

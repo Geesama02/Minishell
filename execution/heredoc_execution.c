@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:19:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/24 09:25:53 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 12:22:07 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ void	execute_heredoc_content(t_token_tree *tree, t_token_tree *cmd,
 
 	stdout_cp = safe_dup(1, tree);
 	stdin_cp = safe_dup(0, tree);
-	pipe(fds);
+	if (pipe(fds) == -1)
+		return (print_err("minishell: ", strerror(errno), "\n"),
+			ft_close(NULL, tree->head, tree));
 	safe_dup2(tree, fds[1], 1);
 	safe_close(fds[1], tree);
 	write_to_pipe(content);

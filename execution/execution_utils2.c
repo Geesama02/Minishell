@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/25 12:59:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 10:25:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ int	define_exit_status(t_env_vars *head, char *exit_status)
 
 int	ft_isalpha_quotes(int c)
 {
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c == 34)
+	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c == 34
+		|| c == '_')
 		return (1);
 	else
 		return (0);

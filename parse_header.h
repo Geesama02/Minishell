@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/26 14:52:54 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 12:34:51 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,5 +277,8 @@ t_stack			handle_stack_failure(t_stack *op_stack,
 					t_token_array *tokens, t_stack *cmd_stack);
 int				handle_heredoc_expand(t_token_array *token_array,
 					char **holder, int has_quote, t_token_vars *vars);
+int				ambiguous_redirect_error(char *filename);
+int				check_ambiguous_without_quotes(char *old_filename,
+					t_token_tree *tree);
 
 #endif

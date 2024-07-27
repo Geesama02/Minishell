@@ -13,8 +13,6 @@ LIBFT = ./libft/libft.a
 LPATH = ../../.brew/opt/readline
 
 all : ${NAME}
-	make -C ./libft
-	make bonus -C ./libft
 
 ${LIBFT} :
 	make -C ./libft

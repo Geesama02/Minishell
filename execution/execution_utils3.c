@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/26 17:53:17 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 10:26:58 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	exit_execve(int status, t_env_vars **head, char *path)
 	free(path);
 	return (0);
 }
-
 
 int	changing_current_directory(char *path, t_env_vars *head)
 {
