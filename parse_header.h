@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/27 12:34:51 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 12:41:12 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ t_env_vars		*get_last_node(t_env_vars *head);
 void			lst_add_element(char **tokens, char **cmds,
 					t_token_tree *head, int i);
 int				join_strings(char **s1, char *s2);
-int				handle_wildcard(char **str, char *operator);
+int				handle_wildcard(char **str, char *operator, t_env_vars *head);
 int				free_2d_array(char **array);
 int				join_wildcard(char **sep_str, char **str, char *operator);
 int				filter_files(struct dirent *dir_content, char **sep_str,
@@ -265,7 +265,7 @@ void			set_redirections(t_token_array *token_array,
 t_token_array	*get_redirection(t_token_array *token_array,
 					t_token_array *tmp, t_t_type type, t_t_type type2);
 int				get_to_last_token(t_token_array *token_array);
-int				check_for_wildcard(t_token_array *token_array);
+int				check_for_wildcard(t_token_array *token_array, t_env_vars *head);
 void			init_token_vars(t_token_vars *vars, t_env_vars *head);
 int				changing_current_directory(char *path, t_env_vars *head);
 int				syntax_error_check(t_env_vars *head, char *input);
