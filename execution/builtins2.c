@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 10:26:48 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 13:48:56 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	exit_command(char **cmds, int child, t_token_tree *tree)
 	if (cmds[1])
 	{
 		exit_s = ft_atoi(cmds[1]);
-		if (exit_s == 0)
+		if (exit_s == 0 || exit_s == -1)
 		{
 			print_err("minishell: exit: ", cmds[1],
 				": numeric argument required\n");
@@ -57,7 +57,7 @@ int	home_case(t_env_vars *head)
 	if (home_path)
 	{
 		if (chdir(home_path->env_val) != 0)
-			return (print_err(strerror(errno), NULL, NULL), exit(1), -1);
+			return (print_err(strerror(errno), "\n", NULL), exit(1), -1);
 	}
 	else
 	{
@@ -75,7 +75,7 @@ int	oldpwd_case(t_env_vars *head)
 	if (oldpwd && oldpwd->env_val)
 	{
 		if (chdir(oldpwd->env_val) != 0)
-			return (print_err(strerror(errno), NULL, NULL), exit(1), -1);
+			return (print_err(strerror(errno), "\n", NULL), exit(1), -1);
 		printf("%s\n", oldpwd->env_val);
 	}
 	else

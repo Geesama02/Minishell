@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 09:51:37 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/27 13:34:42 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	pwd_command(void)
 	char	buff[PATH_MAX];
 
 	if (!getcwd(buff, sizeof(buff)) && errno != ENOENT)
-		return (print_err(strerror(errno), NULL, NULL));
+		return (print_err(strerror(errno), "\n", NULL));
 	ft_putstr_fd(buff, 1);
 	write(1, "\n", 1);
 }
