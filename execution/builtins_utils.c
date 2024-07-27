@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:33:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 18:11:07 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 14:30:28 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int	print_echo_content(char **cmds, int i, int new_line)
 	new_line = 1;
 	while (cmds[i])
 	{
-		while (cmds[i] && cmds[i][0] == '-' && check_minus_n(cmds[i]) == 0)
+		while (i == 1 && cmds[i] && cmds[i][0] == '-'
+			&& check_minus_n(cmds[i]) == 0)
 		{
 			new_line = 0;
 			i++;
