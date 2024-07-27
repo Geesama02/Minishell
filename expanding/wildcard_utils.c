@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 14:59:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 14:57:29 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/27 11:58:31 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,17 @@ char	*wildcard(char **str, int i, char *operator)
 	res = ft_strdup("");
 	sep_str = ft_split_qt(str[i], '*');
 	if (!sep_str)
-		return (free(res), exit(1), NULL);
+		return (free(res), NULL);
 	dir = opendir(".");
 	if (!dir)
-		return (free_2d_array(sep_str), free(res), exit(1), NULL);
+		return (free_2d_array(sep_str), free(res), NULL);
 	dir_content = readdir(dir);
 	while (dir_content != NULL)
 	{
 		if (handle_hidden_files(dir, &dir_content, sep_str, str[i]))
 			continue ;
-		filter_files(dir_content, sep_str, str[i], &res);
+		if (!filter_files(dir_content, sep_str, str[i], &res))
+			return (closedir(dir), NULL);
 		dir_content = readdir(dir);
 	}
 	free_2d_array(sep_str);
@@ -102,13 +103,13 @@ int	join_wildcard(char **sep_str, char **str, char *operator)
 				return (free(wildcard_holder), free_2d_array(sep_str));
 			if (!wildcard_holder || !join_strings(str, wildcard_holder)
 				|| !join_strings(str, " "))
-				return (free_2d_array(sep_str), exit(1), 0);
+				return (free_2d_array(sep_str), 0);
 			free(wildcard_holder);
 		}
 		else
 		{
 			if (!join_strings(str, sep_str[i]) || !join_strings(str, " "))
-				return (free_2d_array(sep_str), exit(1), 0);
+				return (free_2d_array(sep_str), 0);
 		}
 		i++;
 	}

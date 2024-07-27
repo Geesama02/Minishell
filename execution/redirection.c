@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/26 11:35:00 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 11:25:22 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	expand_filenames(t_token_tree *tree)
 				tree->head, tree), free(old_filename), exit(1), -1);
 	check_expand(tree);
 	if (has_wildcard(tree->token))
-		handle_wildcard(&tree->token, "");
+		handle_wildcard(&tree->token, "", *tree->head);
 	if (tree->token[0] == 0)
 		return (print_err("minishell: ", old_filename, ": ambiguous redirect\n"
 			), free(old_filename), -1);

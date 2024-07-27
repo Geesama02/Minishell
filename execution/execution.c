@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/26 11:10:07 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/27 11:25:15 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	execute_one_command(t_token_tree *tree, int child)
 	cmds = NULL;
 	check_expand(tree);
 	if (has_wildcard(tree->token))
-		handle_wildcard(&tree->token, "");
+		handle_wildcard(&tree->token, "", *tree->head);
 	cmds = ft_split_qt(tree->token, ' ');
 	if (!cmds && errno == ENOMEM)
 		return (ft_close(NULL, tree->head, tree), exit(1), -1);

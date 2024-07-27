@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils7.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 11:19:34 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 15:35:34 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 11:53:34 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	get_to_last_token(t_token_array *token_array)
 	return (i);
 }
 
-int	check_for_wildcard(t_token_array *token_array)
+int	check_for_wildcard(t_token_array *token_array, t_env_vars *head)
 {
 	int	i;
 
@@ -43,10 +43,18 @@ int	check_for_wildcard(t_token_array *token_array)
 		if (has_wildcard(token_array[i].token))
 		{
 			if (i > 0 && handle_wildcard(&token_array[i].token,
-					token_array[i - 1].token) == 0)
+					token_array[i - 1].token, head) == 0)
+			{
+				if (errno == ENOMEM)
+					return (free_token_array(token_array), exit(1), 0);
 				return (free_token_array(token_array), 0);
-			else if (i == 0 && handle_wildcard(&token_array[i].token, "") == 0)
+			}
+			else if (i == 0 && handle_wildcard(&token_array[i].token, "", head) == 0)
+			{
+				if (errno == ENOMEM)
+					return (free_token_array(token_array), exit(1), 0);
 				return (free_token_array(token_array), 0);
+			}
 		}
 		i++;
 	}
