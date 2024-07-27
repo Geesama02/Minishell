@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 11:19:34 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/27 11:53:34 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/27 14:18:53 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int	check_for_wildcard(t_token_array *token_array, t_env_vars *head)
 					return (free_token_array(token_array), exit(1), 0);
 				return (free_token_array(token_array), 0);
 			}
-			else if (i == 0 && handle_wildcard(&token_array[i].token, "", head) == 0)
+			else if (i == 0
+				&& handle_wildcard(&token_array[i].token, "", head) == 0)
 			{
 				if (errno == ENOMEM)
 					return (free_token_array(token_array), exit(1), 0);

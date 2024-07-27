@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:43:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 12:16:16 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/27 14:18:19 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	must_reorder(char **holder)
 	while (holder[i])
 	{
 		if (is_redirection_heredoc(holder[i])
-			&& (i == 0 || set_token_type(holder[i - 1]) == OPERATOR_T))
+			&& (i == 0 || set_token_type(holder[i - 1]) == OPERATOR_T
+				|| set_token_type(holder[i - 1]) == PARETHESIS_O))
 			return (1);
 		i++;
 	}
@@ -88,7 +89,8 @@ int	reorder_tokens(char ***holder)
 	while (new_holder[i])
 	{
 		if (is_redirection_heredoc(new_holder[i])
-			&& (i == 0 || set_token_type(new_holder[i - 1]) == OPERATOR_T))
+			&& (i == 0 || set_token_type(new_holder[i - 1]) == OPERATOR_T
+				|| set_token_type(new_holder[i - 1]) == PARETHESIS_O))
 		{
 			tmp_holder = ft_split_first(new_holder[i + 1]);
 			if (!tmp_holder)
