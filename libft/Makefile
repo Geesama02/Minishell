@@ -5,7 +5,7 @@ OBJBO_FILES = ${SRCS_BO:.c=.o}
 NAME = libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
 %.o: %.c libft.h
 	$(CC) $(CFLAGS) -c $< -o $@

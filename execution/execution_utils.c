@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/26 14:52:38 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 17:33:26 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	exec_command(t_token_tree *tree, char **cmds, int child)
 		return (free_envs(tree->head), -1);
 	if (!ft_strcmp(cmds[0], "cd"))
 	{
-		if (cd_command(cmds[1], *tree->head) == -1)
+		if (cd_command(cmds, cmds[1], tree) == -1)
 			return (handle_builtins_failure(tree, cmds));
 	}
 	else if (!ft_strcmp(cmds[0], "pwd"))

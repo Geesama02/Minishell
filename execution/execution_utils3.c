@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 10:26:58 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 17:37:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,23 @@ int	exit_execve(int status, t_env_vars **head, char *path)
 	return (0);
 }
 
-int	changing_current_directory(char *path, t_env_vars *head)
+void	update_oldpwd(char *current_dir, char **cmds, t_token_tree *tree)
+{
+	t_env_vars	*oldpwd;
+
+	oldpwd = search_for_env_var(tree->head, "OLDPWD");
+	if (oldpwd)
+	{
+		free(oldpwd->env_val);
+		oldpwd->env_val = ft_strdup(current_dir);
+		if (!oldpwd->env_val && errno == ENOMEM)
+			return (ft_close(cmds, tree->head, tree), exit(1));
+	}
+}
+
+int	changing_current_directory(char **cmds, char *path, t_token_tree *tree)
 {
 	char		current_dir[PATH_MAX];
-	t_env_vars	*oldpwd;
 	char		*err_oldpwd;
 
 	if (!getcwd(current_dir, sizeof(current_dir)))
@@ -57,11 +70,6 @@ int	changing_current_directory(char *path, t_env_vars *head)
 	}
 	if (chdir(path) == -1)
 		return (print_err("minishell: cd: ", strerror(errno), "\n"), -1);
-	oldpwd = search_for_env_var(&head, "OLDPWD");
-	if (oldpwd)
-	{
-		free(oldpwd->env_val);
-		oldpwd->env_val = ft_strdup(current_dir);
-	}
+	update_oldpwd(current_dir, cmds, tree);
 	return (0);
 }

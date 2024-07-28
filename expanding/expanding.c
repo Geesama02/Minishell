@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 16:13:13 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/28 16:08:14 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ void	export_without_arguments(t_env_vars *p_head, char **tokens,
 void	create_newenv(char **tokens, t_env_vars **head, char **cmds,
 	t_env_vars *new_env)
 {
-	new_env->env_name = ft_strdup(cmds[0]);
+	char	*envname;
+
+	envname = ft_strtrim(cmds[0], "+");
+	new_env->env_name = ft_strdup(envname);
+	free(envname);
 	if (!new_env->env_name && errno == ENOMEM)
 		return (ft_close(tokens, head, NULL), free_2d_array(cmds), exit(1));
 	if (ft_strchr(cmds[1], '$'))
@@ -67,29 +71,12 @@ void	create_newenv(char **tokens, t_env_vars **head, char **cmds,
 }
 
 int	add_or_append(char **cmds, t_token_tree *tree,
-	char **tokens, int i)
+	char **tokens)
 {
-	char		*env_name;
-	t_env_vars	*prev;
-
-	prev = NULL;
-	if (cmds[0][0] != '+' && ft_strchr(cmds[0], '+'))
-	{
-		env_name = ft_strtrim(cmds[0], "+");
-		if (!env_name && errno == ENOMEM)
-			return (free_2d_array(cmds), ft_close(tokens, tree->head, tree),
-				exit(1), -1);
-		append_env_var(env_name, cmds[1], cmds, tree);
-		free(env_name);
-	}
+	if (!check_plus_op(cmds[0]) && search_for_env_var(tree->head, cmds[0]))
+		append_element_to_envs(tree, cmds, tokens);
 	else if (ft_isalpha_quotes(cmds[0][0]) && is_string(cmds[0]))
-	{
-		prev = search_for_env_var(tree->head, cmds[0]);
-		if (prev)
-			check_existing(prev, cmds, tokens, tree);
-		else
-			lst_add_element(tokens, cmds, tree, i);
-	}
+		add_element_to_envs(tree, cmds, tokens);
 	else
 		return (-1);
 	return (0);
@@ -108,7 +95,7 @@ int	add_env_var(char **tokens, int nbr_envs, t_env_vars **head,
 		cmds = ft_split_one(tokens[i], '=');
 		if (!cmds && errno == ENOMEM)
 			return (ft_close(tokens, head, tree), exit(1), -1);
-		if (add_or_append(cmds, tree, tokens, i) == -1)
+		if (add_or_append(cmds, tree, tokens) == -1)
 		{
 			define_exit_status(*head, "1");
 			return (print_err("export: `", tokens[i],

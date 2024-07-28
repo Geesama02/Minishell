@@ -6,26 +6,26 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 15:17:13 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/28 15:12:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int	cd_command(char *path, t_env_vars *head)
+int	cd_command(char **cmds, char *path, t_token_tree *tree)
 {
 	if (!path || !ft_strcmp(path, "~"))
 	{
-		if (home_case(head) == -1)
+		if (home_case(cmds, tree, *tree->head) == -1)
 			return (-1);
 	}
 	else if (!ft_strcmp(path, "-"))
 	{
-		if (oldpwd_case(head) == -1)
+		if (oldpwd_case(cmds, tree, *tree->head) == -1)
 			return (-1);
 	}
 	else
-		return (changing_current_directory(path, head));
+		return (changing_current_directory(cmds, path, tree));
 	return (0);
 }
 

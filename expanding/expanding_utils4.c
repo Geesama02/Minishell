@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_utils4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 11:57:37 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 14:38:48 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/28 15:11:09 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,20 @@ void	null_terminating_rev(char *string)
 	}
 }
 
-void	lst_add_element(char **tokens, char **cmds, t_token_tree *tree,
-	int i)
+void	lst_add_element(char **tokens, char **cmds, t_token_tree *tree)
 {
 	t_env_vars	*new_env;
-	t_env_vars	*prev;
+	t_env_vars	*lastnode;
 
 	if (*tree->head)
-		prev = get_last_node(*tree->head);
+		lastnode = get_last_node(*tree->head);
 	new_env = malloc(sizeof(t_env_vars));
 	if (!new_env && errno == ENOMEM)
 		return (ft_close(tokens, tree->head, tree),
 			free_2d_array(cmds), exit(1));
-	if (prev)
-		prev->next = new_env;
-	else if (!prev && i == 1)
+	if (lastnode)
+		lastnode->next = new_env;
+	else if (!lastnode)
 		*tree->head = new_env;
 	create_newenv(tokens, tree->head, cmds, new_env);
 }

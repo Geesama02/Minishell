@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:57:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 15:22:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/28 11:01:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,14 @@ t_env_vars	*create_lst(char **envp)
 
 int	count_env_vars(char **tokens)
 {
+	int	i;
 	int	counter;
 
+	i = 1;
 	counter = 0;
-	tokens++;
-	while (*tokens)
+	while (tokens[i])
 	{
-		tokens++;
+		i++;
 		counter++;
 	}
 	return (counter);

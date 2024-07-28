@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 13:48:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/27 17:31:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	exit_command(char **cmds, int child, t_token_tree *tree)
 	exit(exit_s);
 }
 
-int	home_case(t_env_vars *head)
+int	home_case(char **cmds, t_token_tree *tree, t_env_vars *head)
 {
 	t_env_vars	*home_path;
 
@@ -57,7 +57,8 @@ int	home_case(t_env_vars *head)
 	if (home_path)
 	{
 		if (chdir(home_path->env_val) != 0)
-			return (print_err(strerror(errno), "\n", NULL), exit(1), -1);
+			return (print_err(strerror(errno), "\n", NULL),
+				ft_close(cmds, &head, tree), exit(1), -1);
 	}
 	else
 	{
@@ -67,7 +68,7 @@ int	home_case(t_env_vars *head)
 	return (0);
 }
 
-int	oldpwd_case(t_env_vars *head)
+int	oldpwd_case(char **cmds, t_token_tree *tree, t_env_vars *head)
 {
 	t_env_vars	*oldpwd;
 
@@ -75,7 +76,8 @@ int	oldpwd_case(t_env_vars *head)
 	if (oldpwd && oldpwd->env_val)
 	{
 		if (chdir(oldpwd->env_val) != 0)
-			return (print_err(strerror(errno), "\n", NULL), exit(1), -1);
+			return (print_err(strerror(errno), "\n", NULL),
+				ft_close(cmds, &head, tree), exit(1), -1);
 		printf("%s\n", oldpwd->env_val);
 	}
 	else

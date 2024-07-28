@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 09:29:37 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/22 10:14:37 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/28 10:06:19 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,55 @@ void	delete_env_inside(t_env_vars *tmp, char *cmd,
 		free_node(tmp->next);
 		tmp->next = NULL;
 	}
+}
+
+void	switch_tabs_to_spaces(char *string)
+{
+	int	i;
+
+	i = 0;
+	while (string[i])
+	{
+		if (string[i] == '\t')
+			string[i] = ' ';
+		i++;
+	}
+}
+
+int	init_wildcard(char **str, int i, char **res, char ***sep_str)
+{
+	*res = ft_strdup("");
+	if (!*res)
+		return (0);
+	*sep_str = ft_split_qt(str[i], '*');
+	if (!*sep_str)
+		return (free(*res), 0);
+	return (1);
+}
+
+int	find_in_string(char *string, char *to_find)
+{
+	size_t	i;
+	size_t	j;
+
+	j = 0;
+	i = 0;
+	while (string[i])
+	{
+		if (i != 0 && string[i] == to_find[j])
+		{
+			while (string[i] && to_find[j]
+				&& string[i] == to_find[j])
+			{
+				i++;
+				j++;
+			}
+			if (j == ft_strlen(to_find))
+				return (0);
+			else
+				return (-1);
+		}
+		i++;
+	}
+	return (-1);
 }

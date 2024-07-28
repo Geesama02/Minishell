@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 15:54:32 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/28 15:10:13 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ int	append_env_var(char *env_name, char *to_append, char **cmds,
 	char		*new_env_val;
 	char		*prev_envval;
 
-	tmp = *tree->head;
-	new_env_val = NULL;
-	while (tmp && ft_strcmp(tmp->env_name, env_name))
-		tmp = tmp->next;
+	tmp = search_for_env_var(tree->head, env_name);
 	if (tmp)
 	{
 		prev_envval = tmp->env_val;
@@ -69,8 +66,13 @@ int	is_string(char *str)
 	while (str[i])
 	{
 		if (str[i] == '\"' || str[i] == '\''
-			|| str[i] == ';' || str[i] == ':'
-			|| str[i] == '|' || str[i] == '-')
+			|| str[i] == ';' || str[i] == ':' || str[i] == '^'
+			|| str[i] == '|' || str[i] == '-' || str[i] == '$'
+			|| (str[i] == '+' && str[i + 1] == '+')
+			|| str[i] == '/' || str[i] == ']' || str[i] == '['
+			|| str[i] == '#' || str[i] == '@' || str[i] == '~'
+			|| str[i] == '!' || str[i] == ',' || str[i] == '.'
+			|| str[i] == '?' || str[i] == '&' || str[i] == '*')
 			return (0);
 		else
 			i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 14:59:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/27 11:58:31 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/27 17:55:30 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,8 @@ char	*wildcard(char **str, int i, char *operator)
 	char			**sep_str;
 	char			*res;
 
-	res = ft_strdup("");
-	sep_str = ft_split_qt(str[i], '*');
-	if (!sep_str)
-		return (free(res), NULL);
+	if (!init_wildcard(str, i, &res, &sep_str))
+		return (NULL);
 	dir = opendir(".");
 	if (!dir)
 		return (free_2d_array(sep_str), free(res), NULL);
