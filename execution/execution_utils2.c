@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/28 15:01:52 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/29 10:50:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ int	builtins_rest(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
 {
 	if (!ft_strcmp(cmds[0], "echo"))
 		echo_command(tree, cmds);
-	else if (!ft_strcmp(cmds[0], "export")
-		|| !find_in_string(cmds[0], "+="))
+	else if (!ft_strcmp(cmds[0], "export"))
 	{
 		if (export_command(cmds, head, tree) == -1)
 			return (handle_builtins_failure(tree, cmds));
