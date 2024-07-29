@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/29 10:01:04 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/29 10:17:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <string.h>
 # include <limits.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -287,8 +286,6 @@ int				init_wildcard(char **str, int i,
 					char **res, char ***sep_str);
 int				find_in_string(char *string, char *to_find);
 int				check_plus_op(char *string);
-void			append_element_to_envs(t_token_tree *tree, char **cmds,
-					char *env_name);
 void			add_element_to_envs(t_token_tree *tree, char **cmds,
 					char **tokens);
 void			check_existing(t_env_vars *prev, char **cmds, char **tokens,
