@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/28 14:38:52 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/29 10:01:04 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,7 +288,7 @@ int				init_wildcard(char **str, int i,
 int				find_in_string(char *string, char *to_find);
 int				check_plus_op(char *string);
 void			append_element_to_envs(t_token_tree *tree, char **cmds,
-					char **tokens);
+					char *env_name);
 void			add_element_to_envs(t_token_tree *tree, char **cmds,
 					char **tokens);
 void			check_existing(t_env_vars *prev, char **cmds, char **tokens,

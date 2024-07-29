@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/29 09:44:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/29 10:15:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	add_or_append(char **cmds, t_token_tree *tree,
 
 	envname = ft_strtrim(cmds[0], "+");
 	if (!check_plus_op(cmds[0]) && search_for_env_var(tree->head, envname))
-		append_element_to_envs(tree, cmds, tokens);
+		append_env_var(envname, cmds[1], cmds, tree);
 	else if (ft_isalpha_quotes(cmds[0][0]) && is_string(cmds[0]))
 		add_element_to_envs(tree, cmds, tokens);
 	else

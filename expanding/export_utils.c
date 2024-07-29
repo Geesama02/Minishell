@@ -6,22 +6,15 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:14:02 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/28 15:16:55 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/29 10:03:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void	append_element_to_envs(t_token_tree *tree, char **cmds, char **tokens)
+void	append_element_to_envs(t_token_tree *tree, char **cmds, char *env_name)
 {
-	char	*env_name;
-
-	env_name = ft_strtrim(cmds[0], "+");
-	if (!env_name && errno == ENOMEM)
-		return (free_2d_array(cmds), ft_close(tokens, tree->head, tree),
-			exit(1));
 	append_env_var(env_name, cmds[1], cmds, tree);
-	free(env_name);
 }
 
 void	add_element_to_envs(t_token_tree *tree, char **cmds, char **tokens)
