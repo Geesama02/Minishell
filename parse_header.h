@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/29 10:52:45 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/29 10:59:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,6 +284,7 @@ int				check_ambiguous_without_quotes(char *old_filename,
 void			switch_tabs_to_spaces(char *string);
 int				init_wildcard(char **str, int i,
 					char **res, char ***sep_str);
+int				find_in_string(char *string, char *to_find);
 int				check_plus_op(char *string);
 void			add_element_to_envs(t_token_tree *tree, char **cmds,
 					char **tokens);
