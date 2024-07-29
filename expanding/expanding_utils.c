@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/29 10:23:19 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/29 11:30:01 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,21 @@ void	null_terminating(char *str, char c)
 int	is_string(char *str)
 {
 	int	i;
+	int	j;
 
 	i = 1;
+	j = ft_strlen(str) - 1;
 	while (str[i])
 	{
 		if (str[i] == '\"' || str[i] == '\''
 			|| str[i] == ';' || str[i] == ':' || str[i] == '^'
 			|| str[i] == '|' || str[i] == '-' || str[i] == '$'
-			|| (str[i] == '+' && str[i + 1] == '+') || str[i] == '+'
+			|| (str[i] == '+' && str[i + 1] == '+') || (str[i] == '+' && j != i)
 			|| str[i] == '/' || str[i] == ']' || str[i] == '['
 			|| str[i] == '#' || str[i] == '@' || str[i] == '~'
 			|| str[i] == '!' || str[i] == ',' || str[i] == '.'
-			|| str[i] == '?' || str[i] == '&' || str[i] == '*')
+			|| str[i] == '?' || str[i] == '&' || str[i] == '*' || str[i] == '%'
+			)
 			return (0);
 		else
 			i++;
