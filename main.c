@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/27 10:24:09 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/30 14:40:42 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	main(int argc, char **argv, char **envp)
 			null_input(head);
 		if (input[0] == '\0' || syntax_error_check(head, input) == -1)
 		{
-			add_history(input);
 			free(input);
 			continue ;
 		}

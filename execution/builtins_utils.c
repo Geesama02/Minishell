@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:33:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/28 16:06:47 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/30 09:58:24 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,12 @@
 int	delete_env(char *cmd, t_token_tree *tree, char **cmds)
 {
 	t_env_vars	*tmp;
+	int			last_index;
 
+	last_index = ft_strlen(cmd) - 1;
 	tmp = *tree->head;
-	if (!ft_isalpha_quotes(cmd[0]) || !is_string(cmd))
+	if (!ft_isalpha_quotes(cmd[0]) || !is_string(cmd)
+		|| cmd[last_index] == '=')
 		return (print_err("minishell: unset: `", cmd,
 				"': is not a valid identifier\n"), -1);
 	else if (tmp && !ft_strcmp(tmp->env_name, cmd))

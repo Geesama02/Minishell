@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 10:46:53 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 11:59:40 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/30 10:26:24 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 void	eof_pressed(t_env_vars **head)
 {
 	t_env_vars	*tmp;
-	int			exit_s;
+	long		exit_s;
 
 	exit_s = 0;
 	tmp = search_for_env_var(head, "?");
 	if (tmp)
-		exit_s = ft_atoi(tmp->env_val);
+		exit_s = ft_atoi_long(tmp->env_val);
 	write(0, "exit\n", 5);
 	ft_close(NULL, head, NULL);
 	if (g_is_heredoc[1] == 1)

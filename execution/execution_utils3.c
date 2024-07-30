@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 17:37:44 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/29 12:21:14 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ int	changing_current_directory(char **cmds, char *path, t_token_tree *tree)
 		return (print_err(strerror(errno), "\n", NULL), -1);
 	}
 	if (chdir(path) == -1)
-		return (print_err("minishell: cd: ", strerror(errno), "\n"), -1);
+	{
+		print_err("minishell: cd: ", path, ": ");
+		return (print_err(strerror(errno), "\n", NULL), -1);
+	}
 	update_oldpwd(current_dir, cmds, tree);
 	return (0);
 }

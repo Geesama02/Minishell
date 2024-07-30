@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/29 11:26:42 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/30 12:57:20 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,9 @@ int	add_env_var(char **tokens, int nbr_envs, t_env_vars **head,
 {
 	int			i;
 	char		**cmds;
+	int			cmd_status;
 
+	cmd_status = 0;
 	i = 1;
 	cmds = NULL;
 	while (i <= nbr_envs)
@@ -104,12 +106,13 @@ int	add_env_var(char **tokens, int nbr_envs, t_env_vars **head,
 			return (ft_close(tokens, head, tree), exit(1), -1);
 		if (add_or_append(cmds, tree, tokens) == -1)
 		{
+			cmd_status = -1;
 			define_exit_status(*head, "1");
-			return (print_err("export: `", tokens[i],
-					"': not a valid identifier\n"), free_2d_array(cmds), -1);
+			print_err("minishell: export: `", tokens[i],
+				"': not a valid identifier\n");
 		}
 		free_2d_array(cmds);
 		i++;
 	}
-	return (0);
+	return (cmd_status);
 }

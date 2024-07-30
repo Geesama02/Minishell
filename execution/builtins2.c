@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 17:31:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/30 12:14:56 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,21 @@ void	env_command(t_env_vars *env_vars)
 
 void	exit_command(char **cmds, int child, t_token_tree *tree)
 {
-	int			exit_s;
+	long		exit_s;
 	t_env_vars	*tmp;
 
-	exit_s = 0;
 	if (child)
 		write(1, "exit\n", 6);
 	tmp = search_for_env_var(tree->head, "?");
 	if (tmp)
-		exit_s = ft_atoi(tmp->env_val);
+		exit_s = ft_atoi_long(tmp->env_val);
 	if (g_is_heredoc[1] == 1)
 		exit_s = 1;
 	if (cmds[1])
 	{
-		exit_s = ft_atoi(cmds[1]);
-		if (exit_s == 0 || exit_s == -1)
-		{
-			print_err("minishell: exit: ", cmds[1],
-				": numeric argument required\n");
-			exit_s = 255;
-		}
+		exit_s = ft_atoi_long(cmds[1]);
+		if (check_overflow_multiple_arguments(exit_s, cmds) == -1)
+			return ;
 	}
 	ft_close(cmds, tree->head, tree);
 	exit(exit_s);

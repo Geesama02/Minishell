@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/29 11:23:57 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/30 10:24:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int	g_is_heredoc[2];
 void			ft_putchar_fd(char c, int fd);
 void			ft_bzero(void *s, size_t n);
 void			ft_putstr_fd(char *s, int fd);
-int				ft_atoi(const char *str);
 int				ft_isalpha_quotes(int c);
 char			*ft_strtrim(char const *s1, char const *set);
 char			*ft_itoa(int n);
@@ -289,5 +288,10 @@ void			add_element_to_envs(t_token_tree *tree, char **cmds,
 					char **tokens);
 void			check_existing(t_env_vars *prev, char **cmds, char **tokens,
 					t_token_tree *tree);
+int				check_exit_argument(char *arg);
+int				check_overflow_multiple_arguments(long exit_s
+					, char **cmds);
+int				check_zeros(char *number);
+long			ft_atoi_long(const char *str);
 
 #endif
