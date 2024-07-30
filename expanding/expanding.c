@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/30 12:57:20 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:19:46 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	create_newenv(char **tokens, t_env_vars **head, char **cmds,
 int	add_or_append(char **cmds, t_token_tree *tree,
 	char **tokens)
 {
-	char *envname;
+	char	*envname;
 
 	envname = ft_strtrim(cmds[0], "+");
 	if (!check_plus_op(cmds[0]) && search_for_env_var(tree->head, envname))

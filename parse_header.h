@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/30 10:24:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:19:36 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,8 +289,8 @@ void			add_element_to_envs(t_token_tree *tree, char **cmds,
 void			check_existing(t_env_vars *prev, char **cmds, char **tokens,
 					t_token_tree *tree);
 int				check_exit_argument(char *arg);
-int				check_overflow_multiple_arguments(long exit_s
-					, char **cmds);
+int				check_overflow_multiple_arguments(long exit_s,
+					char **cmds);
 int				check_zeros(char *number);
 long			ft_atoi_long(const char *str);
 

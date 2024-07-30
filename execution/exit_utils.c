@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 14:48:41 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/30 12:17:53 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:20:58 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_overflow_multiple_arguments(long exit_s, char **cmds)
 	if (cmds[1][0] && !check_zeros(cmds[1]))
 		exit(0);
 	if (((exit_s == 0 || exit_s == -1)
-		&& (ft_strcmp(cmds[1], "0")))
+			&& (ft_strcmp(cmds[1], "0")))
 		|| (check_exit_argument(cmds[1]) == -1))
 	{
 		print_err("minishell: exit: ", cmds[1],
@@ -44,7 +44,7 @@ int	check_overflow_multiple_arguments(long exit_s, char **cmds)
 	else if (!check_exit_argument(cmds[1])
 		&& count_2d_array_elements(cmds) > 2)
 		return (print_err("minishell: exit: ",
-			"too many arguments\n", NULL), -1);
+				"too many arguments\n", NULL), -1);
 	return (0);
 }
 
