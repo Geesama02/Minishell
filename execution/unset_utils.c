@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 09:29:37 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/31 15:24:00 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:37:26 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,11 @@ char	**linkedlist_to_2d_array(t_env_vars *head)
 		i++;
 	}
 	envs_arr[i] = NULL;
-	int j = 0;
-	while (envs_arr[j])
-	{
-		printf("env -> %s\n", envs_arr[j]);
-		j++;
-	}
+	// int j = 0;
+	// while (envs_arr[j])
+	// {
+	// 	printf("env -> %s\n", envs_arr[j]);
+	// 	j++;
+	// }
 	return (envs_arr);
 }
