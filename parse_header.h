@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/30 18:19:36 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/31 14:24:20 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ t_env_vars		*display_envs_sorted(t_env_vars *head, char **tokens,
 void			exit_command(char **cmds, int child, t_token_tree *tree);
 void			null_terminating(char *str, char c);
 int				execute_using_execve(t_token_tree *tree, char **cmds,
-					char *path, char **envp);
+					char *path);
 int				define_exit_status(t_env_vars *head, char *exit_status);
 int				execute_rest(char **cmds, t_token_tree *tree);
 int				builtins_rest(t_token_tree *tree, char **cmds,
@@ -293,5 +293,7 @@ int				check_overflow_multiple_arguments(long exit_s,
 					char **cmds);
 int				check_zeros(char *number);
 long			ft_atoi_long(const char *str);
+char			**linkedlist_to_2d_array(t_env_vars *head);
+int				count_linkedlist_size(t_env_vars *lst);
 
 #endif

@@ -6,31 +6,38 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/29 11:21:46 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:23:10 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
 int	execute_using_execve(t_token_tree *tree, char **cmds,
-	char *path, char **envp)
+	char *path)
 {
 	pid_t		pid;
 	int			status;
+	char		**envs;
 
+	envs = linkedlist_to_2d_array(*tree->head);
 	pid = fork();
 	if (pid == -1)
 		return (handle_fork_failure(tree), -1);
 	if (pid == 0)
 	{
-		if (execve(path, cmds, envp) == -1)
+		if (execve(path, cmds, envs) == -1)
 		{
+			free_2d_array(envs);
+			print_err("minishell: ", strerror(errno), "\n");
 			if (errno == ENOENT)
 				exit(127);
+			else if (errno == EACCES)
+				exit(126);
 			exit(1);
 		}
 	}
 	wait(&status);
+	free_2d_array(envs);
 	return (exit_execve(status, tree->head, path));
 }
 

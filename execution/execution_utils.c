@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 17:33:26 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:36:23 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 	}
 	if (path)
 	{
-		if (execute_using_execve(tree, cmds, path, tree->envp) == -1)
+		if (execute_using_execve(tree, cmds, path) == -1)
 			return (-1);
 	}
 	else

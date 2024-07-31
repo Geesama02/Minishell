@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:01:23 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/28 14:59:01 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/31 14:51:11 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ void	sort_matched_envs(t_env_vars *head, int nbr_matched, int ascii_nbr)
 		tmp_head = head;
 		while (tmp_head && tmp_head->next)
 		{
-			while (tmp_head->env_name[index] == tmp_head->next->env_name[index])
+			while (tmp_head->env_name[index]
+				&& tmp_head->next->env_name[index]
+				&& tmp_head->env_name[index] == tmp_head->next->env_name[index])
 				index++;
 			if (tmp_head->env_name[index] > tmp_head->next->env_name[index])
 				swap_nodes_content(tmp_head, tmp_head->next);

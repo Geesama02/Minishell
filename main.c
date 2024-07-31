@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/30 14:40:42 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:14:24 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ t_env_vars	*initialize_main_variables(char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_env_vars	*head;
-	char		*input;
+	t_env_vars			*head;
+	char				*input;
 
 	(void)argc;
 	(void)argv;
