@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:29:02 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 12:08:56 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:05:31 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,6 @@ char	*handle_null(char *input, t_token_array *token_array,
 		g_is_heredoc[1] = 0;
 		g_is_heredoc[0] = 0;
 		free(input);
-		return (NULL);
-		while (token_array[i].token)
-		{
-			free(token_array[i].token);
-			i++;
-		}
 		return (NULL);
 	}
 	else if (!g_is_heredoc[1] && errno == ENOMEM)
