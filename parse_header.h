@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/01 12:14:13 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:21:03 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,5 +299,6 @@ char			**linkedlist_to_2d_array(t_env_vars *head);
 int				count_linkedlist_size(t_env_vars *lst);
 void			handle_shlvl(t_env_vars *head);
 void			check_path_and_create(t_env_vars *head);
+void			handle_oldpwd(t_env_vars *head);
 
 #endif

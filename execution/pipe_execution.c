@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:21:44 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 12:03:24 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:37:29 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	define_exit_status_pipes(t_token_tree *node, int status)
 {
-	char		*exit_status;
+	char	*exit_status;
 
 	exit_status = ft_itoa(status);
 	define_exit_status(*node->head, exit_status);
@@ -101,6 +101,6 @@ void	execute_pipe(t_token_tree *tree)
 		execute_right_pipe(tree->right, fds, stdout_fd, stdin_fd);
 	else
 		reset_and_close_all_fds(stdout_fd, stdin_fd, fds, tree);
-	wait(&status);
+	waitpid(c_pid, &status, 0);
 	define_exit_status_pipes(tree, WEXITSTATUS(status));
 }

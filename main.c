@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/01 11:59:54 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:46:54 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,27 +54,12 @@ int	tokenize_and_build_execute_tree(char *input, t_env_vars **head,
 t_env_vars	*initialize_main_variables(char **envp)
 {
 	t_env_vars	*head;
-	t_env_vars	*oldpwd;
 
 	g_is_heredoc[0] = 0;
 	g_is_heredoc[1] = 0;
 	head = create_lst(envp);
 	handle_shlvl(head);
-	oldpwd = search_for_env_var(&head, "OLDPWD");
-	if (oldpwd)
-	{
-		free(oldpwd->env_val);
-		oldpwd->env_val = NULL;
-	}
-	else
-	{
-		oldpwd = malloc(sizeof(t_env_vars));
-		oldpwd->env_name = ft_strdup("OLDPWD");
-		oldpwd->env_val = NULL;
-		oldpwd->visible = 1;
-		oldpwd->next = NULL;
-		ft_lstadd(&head, oldpwd);
-	}
+	handle_oldpwd(head);
 	define_signals();
 	return (head);
 }
@@ -93,12 +78,13 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("Minishell$ ");
 		if (input == NULL)
 			null_input(head);
+		if (input[0] != '\0')
+			add_history(input);
 		if (input[0] == '\0' || syntax_error_check(head, input) == -1)
 		{
 			free(input);
 			continue ;
 		}
-		add_history(input);
 		if (g_is_heredoc[1] == 1)
 			define_exit_status(head, "1");
 		if (tokenize_and_build_execute_tree(input, &head, envp) == -1)

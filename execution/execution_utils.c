@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/31 12:36:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 15:14:57 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*find_path(char **paths, char *cmd, char **cmds, t_token_tree *tree)
 		if (!path)
 			return (free_2d_array(paths), free(paths),
 				ft_close(cmds, tree->head, tree), exit(1), NULL);
-		if (!stat(path, &buffer))
+		if (!stat(path, &buffer) && S_ISREG(buffer.st_mode))
 			return (path);
 		else
 		{
@@ -118,6 +118,12 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 
 int	exec_command(t_token_tree *tree, char **cmds, int child)
 {
+	if (ft_strlen(cmds[0]) == 1 && !ft_strcmp(cmds[0], "."))
+	{
+		print_err("minishell: .: filename argument required\n"
+				, ".: usage: . filename [arguments]\n", NULL);
+		return (define_exit_status(*tree->head, "2") , -1);
+	}
 	if (ft_strcmp(cmds[0], "exit")
 		&& define_exit_status(*tree->head, "0") == -1)
 		return (free_envs(tree->head), -1);
