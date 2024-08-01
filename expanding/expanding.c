@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/30 18:19:46 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 10:59:50 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ void	export_without_arguments(t_env_vars *p_head, char **tokens,
 	{
 		if (s_head->env_name[0] != '?')
 		{
-			if (s_head->env_val)
+			if (s_head->env_val && s_head->visible == 1)
 				printf("declare -x %s=\"%s\"\n", s_head->env_name,
 					s_head->env_val);
-			else
+			else if (s_head->visible == 1)
 				printf("declare -x %s\n", s_head->env_name);
 		}
 		s_head = s_head->next;
@@ -66,6 +66,7 @@ void	create_newenv(char **tokens, t_env_vars **head, char **cmds,
 	else
 		new_env->env_val = NULL;
 	new_env->next = NULL;
+	new_env->visible = 1;
 	ignore_quotes(&new_env->env_name);
 	ignore_quotes(&new_env->env_val);
 }

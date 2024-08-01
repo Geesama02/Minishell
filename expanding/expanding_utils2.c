@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:57:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/28 11:01:59 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:16:26 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	create_exit_status(t_env_vars *head)
 	if (!newnode->env_val && errno == ENOMEM)
 		return (free(head), free(newnode), free(newnode->env_name),
 			exit(1));
+	newnode->visible = 0;
 	newnode->next = NULL;
 	ft_lstadd(&head, newnode);
 }
@@ -61,6 +62,7 @@ t_env_vars	*create_lst(char **envp)
 			return (free_envs(&head), exit(1), NULL);
 		envp++;
 	}
+	check_path_and_create(head);
 	return (head);
 }
 

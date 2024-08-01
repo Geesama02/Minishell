@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 09:29:37 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/31 15:24:00 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:23:14 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,24 +70,19 @@ char	**linkedlist_to_2d_array(t_env_vars *head)
 	tmp = NULL;
 	i = 0;
 	tmp = head;
-	envs_arr = (char **)malloc(sizeof(char *) * (count_linkedlist_size(head) + 1));
+	envs_arr = malloc(sizeof(char *) * (count_linkedlist_size(head) + 1));
 	while (tmp)
 	{
-		with_equal = ft_strjoin("=", tmp->env_val);
-		str_to_add = ft_strjoin(tmp->env_name, with_equal);
-		free(with_equal);
-		// printf("string > %s\n", str_to_add);
-		envs_arr[i] = str_to_add;
-		// printf("i > %d\n", i);
+		if (tmp->env_val && tmp->visible == 1)
+		{
+			with_equal = ft_strjoin("=", tmp->env_val);
+			str_to_add = ft_strjoin(tmp->env_name, with_equal);
+			free(with_equal);
+			envs_arr[i] = str_to_add;
+			i++;
+		}
 		tmp = tmp->next;
-		i++;
 	}
 	envs_arr[i] = NULL;
-	int j = 0;
-	while (envs_arr[j])
-	{
-		printf("env -> %s\n", envs_arr[j]);
-		j++;
-	}
 	return (envs_arr);
 }

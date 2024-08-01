@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/31 14:24:20 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:15:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_env_vars
 	char				*env_name;
 	char				*env_val;
 	struct s_env_vars	*next;
+	int					visible;
 }				t_env_vars;
 
 typedef struct s_tree_vars
@@ -93,6 +94,7 @@ void			ft_putstr_fd(char *s, int fd);
 int				ft_isalpha_quotes(int c);
 char			*ft_strtrim(char const *s1, char const *set);
 char			*ft_itoa(int n);
+int				ft_atoi(const char *str);
 char			*ft_strdup(const char *s1);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t			ft_strlen(const char *s);
@@ -295,5 +297,7 @@ int				check_zeros(char *number);
 long			ft_atoi_long(const char *str);
 char			**linkedlist_to_2d_array(t_env_vars *head);
 int				count_linkedlist_size(t_env_vars *lst);
+void			handle_shlvl(t_env_vars *head);
+void			check_path_and_create(t_env_vars *head);
 
 #endif

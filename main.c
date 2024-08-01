@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/31 15:14:24 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 10:48:10 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,17 @@ int	tokenize_and_build_execute_tree(char *input, t_env_vars **head,
 t_env_vars	*initialize_main_variables(char **envp)
 {
 	t_env_vars	*head;
-	t_env_vars	*tmp;
+	t_env_vars	*oldpwd;
 
 	g_is_heredoc[0] = 0;
 	g_is_heredoc[1] = 0;
 	head = create_lst(envp);
-	tmp = search_for_env_var(&head, "OLDPWD");
-	if (tmp)
+	handle_shlvl(head);
+	oldpwd = search_for_env_var(&head, "OLDPWD");
+	if (oldpwd)
 	{
-		free(tmp->env_val);
-		tmp->env_val = NULL;
+		free(oldpwd->env_val);
+		oldpwd->env_val = NULL;
 	}
 	define_signals();
 	return (head);

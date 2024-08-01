@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:01:23 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/31 14:51:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 10:58:10 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	create_sorted_lst(t_env_vars *node, t_env_vars **head,
 	if (!newnode->env_val && errno == ENOMEM)
 		return (free(newnode), free(newnode->env_name),
 			ft_close(tokens, head, tree), exit(1));
+	newnode->visible = node->visible;
 	newnode->next = NULL;
 }
 
@@ -121,6 +122,7 @@ int	create_env(t_env_vars *node, t_env_vars *head, char *env)
 	node->env_val = ft_strdup(envs[1]);
 	if (!node->env_val && errno == ENOMEM)
 		return (free_2d_array(envs), free(node->env_name), free(node), -1);
+	node->visible = 1;
 	node->next = NULL;
 	free_2d_array(envs);
 	ft_lstadd(&head, node);

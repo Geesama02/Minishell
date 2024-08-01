@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/31 15:23:10 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:26:15 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,17 @@ int	execute_using_execve(t_token_tree *tree, char **cmds,
 	int			status;
 	char		**envs;
 
-	envs = linkedlist_to_2d_array(*tree->head);
 	pid = fork();
 	if (pid == -1)
 		return (handle_fork_failure(tree), -1);
 	if (pid == 0)
 	{
+		envs = linkedlist_to_2d_array(*tree->head);
 		if (execve(path, cmds, envs) == -1)
 		{
+			print_err("minishell: ", path, ": ");
+			print_err(strerror(errno), "\n", NULL);
 			free_2d_array(envs);
-			print_err("minishell: ", strerror(errno), "\n");
 			if (errno == ENOENT)
 				exit(127);
 			else if (errno == EACCES)
@@ -37,7 +38,6 @@ int	execute_using_execve(t_token_tree *tree, char **cmds,
 		}
 	}
 	wait(&status);
-	free_2d_array(envs);
 	return (exit_execve(status, tree->head, path));
 }
 
