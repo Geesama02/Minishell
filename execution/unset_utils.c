@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 09:29:37 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 11:34:09 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 15:15:11 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ int	init_wildcard(char **str, int i, char **res, char ***sep_str)
 	if (!*res)
 		return (0);
 	*sep_str = ft_split_qt(str[i], '*');
+	if (!*sep_str)
+		return (free(*res), 0);
+	*sep_str = ignore_quotes_2d_array(*sep_str);
 	if (!*sep_str)
 		return (free(*res), 0);
 	return (1);

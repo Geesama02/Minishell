@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execution.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:21:44 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/31 15:39:59 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:20:37 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ void	define_exit_status_pipes(t_token_tree *node, int status)
 
 	if (node->id == node->cmd_count)
 	{
-		printf("heree!\n");
-		exit_status = ft_itoa(status);
+		exit_status = ft_itoa(status); // handle leak
 		define_exit_status(*node->head, exit_status);
 		free(exit_status);
 	}

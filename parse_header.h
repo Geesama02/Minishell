@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/01 11:15:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:18:44 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/stat.h>
 # include <errno.h>
 # include <signal.h>
+# include <termios.h>
 
 typedef enum e_t_type
 {
@@ -299,5 +300,7 @@ char			**linkedlist_to_2d_array(t_env_vars *head);
 int				count_linkedlist_size(t_env_vars *lst);
 void			handle_shlvl(t_env_vars *head);
 void			check_path_and_create(t_env_vars *head);
+void			reset_terminal(struct termios *old_term, t_env_vars **head);
+int				handle_bad_wildcard(t_token_array *token_array);
 
 #endif
