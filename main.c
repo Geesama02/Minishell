@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/01 10:48:10 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:59:54 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,15 @@ t_env_vars	*initialize_main_variables(char **envp)
 	{
 		free(oldpwd->env_val);
 		oldpwd->env_val = NULL;
+	}
+	else
+	{
+		oldpwd = malloc(sizeof(t_env_vars));
+		oldpwd->env_name = ft_strdup("OLDPWD");
+		oldpwd->env_val = NULL;
+		oldpwd->visible = 1;
+		oldpwd->next = NULL;
+		ft_lstadd(&head, oldpwd);
 	}
 	define_signals();
 	return (head);

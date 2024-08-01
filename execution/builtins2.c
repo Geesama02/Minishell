@@ -6,19 +6,29 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/30 12:14:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:14:42 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void	env_command(t_env_vars *env_vars)
+void	env_command(t_token_tree *tree, char **cmds, t_env_vars *head)
 {
-	while (env_vars)
+	if (search_for_env_var(&head, "PATH"))
 	{
-		if (env_vars->env_val && env_vars->env_name[0] != '?')
-			printf("%s=%s\n", env_vars->env_name, env_vars->env_val);
-		env_vars = env_vars->next;
+		while (head)
+		{
+			if (head->env_val && head->env_name[0] != '?'
+				&& head->visible == 1)
+				printf("%s=%s\n", head->env_name, head->env_val);
+			head = head->next;
+		}
+	}
+	else
+	{
+		print_err("minishell: env: No such file or directory\n", NULL, NULL);
+		if (define_exit_status(head, "127") == -1)
+			return (ft_close(cmds, tree->head, tree), exit(1));
 	}
 }
 
