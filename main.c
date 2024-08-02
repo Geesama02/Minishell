@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/01 16:58:19 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/02 16:51:24 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int	main(int argc, char **argv, char **envp)
 	head = initialize_main_variables(envp, &old_term);
 	while (1)
 	{
-		reset_terminal(&old_term, &head);
 		input = readline("Minishell$ ");
 		if (input == NULL)
 			null_input(head);
@@ -93,6 +92,7 @@ int	main(int argc, char **argv, char **envp)
 			define_exit_status(head, "1");
 		if (tokenize_and_build_execute_tree(input, &head, envp) == -1)
 			continue ;
+		reset_terminal(&old_term, &head);
 	}
 	return (0);
 }

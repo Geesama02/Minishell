@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 14:02:58 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:30:32 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	*file_isdir_case(char **cmds, t_token_tree *tree, char *path)
 	if (!path && errno == ENOMEM)
 		return (ft_close(cmds, tree->head, tree), NULL);
 	if (stat(path, &buff) == -1 && errno != ENOENT)
-		return (free(path), print_err("stat failed!!\n", NULL, NULL), NULL);
+		return (free(path), print_err(strerror(errno), NULL, NULL), NULL);
 	if (S_ISDIR(buff.st_mode))
 	{
 		define_exit_status(*tree->head, "126");

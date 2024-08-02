@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 15:38:47 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:46:28 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	execute_one_command(t_token_tree *tree, int child)
 
 int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 {
+	// printf("token -> |%s|\n", tree->token);
 	if (tree->type == REDIRECTION_I || tree->type == REDIRECTION_O
 		|| tree->type == REDIRECTION_A)
 	{

@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 11:19:34 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/01 16:16:15 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/02 20:03:47 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void	set_redirections(t_token_array *token_array
 			REDIRECTION_I, REDIRECTION_I);
 }
 
-int	get_to_last_token(t_token_array *token_array)
+int	get_to_last_token(char **holder)
 {
 	int	i;
 
 	i = 0;
-	while (token_array[i].token)
+	while (holder[i])
 		i++;
 	if (i > 0)
 		i--;

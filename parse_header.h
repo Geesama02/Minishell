@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/02 12:43:40 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/02 20:39:21 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ int				check_minus_n(char *echo_flag);
 int				delete_env(char *cmd, t_token_tree *tree, char **cmds);
 void			print_err(char *string1, char *string2, char *string3);
 void			switch_multi_redirections(t_token_array *token_array);
-int				check_redirections_extras(t_token_array *token_array);
+int				check_redirections_extras(char **holder);
 char			**ignore_quotes_2d_array(char **strs);
 int				is_redirection(t_t_type type);
 int				is_redirection_heredoc(char *str);
@@ -266,7 +266,7 @@ void			set_redirections(t_token_array *token_array,
 					t_token_array **tmp_a_o, t_token_array **tmp_i);
 t_token_array	*get_redirection(t_token_array *token_array,
 					t_token_array *tmp, t_t_type type, t_t_type type2);
-int				get_to_last_token(t_token_array *token_array);
+int				get_to_last_token(char **holder);
 int				check_for_wildcard(t_token_array *token_array,
 					t_env_vars *head);
 void			init_token_vars(t_token_vars *vars, t_env_vars *head);
@@ -306,5 +306,7 @@ void			reset_terminal(struct termios *old_term, t_env_vars **head);
 int				handle_bad_wildcard(t_token_array *token_array);
 void			update_pwd(char **cmds, t_token_tree *tree, char *to_set);
 void			update_oldpwd(char *current_dir, char **cmds, t_token_tree *tree);
+int				join_extra_with_redi(char **holder, int i);
+char			*get_second_cmd(char *holder);
 
 #endif
