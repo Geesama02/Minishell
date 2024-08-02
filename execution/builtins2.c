@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 12:14:42 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/02 16:14:23 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int	home_case(char **cmds, t_token_tree *tree, t_env_vars *head)
 		if (chdir(home_path->env_val) != 0)
 			return (print_err(strerror(errno), "\n", NULL),
 				ft_close(cmds, &head, tree), exit(1), -1);
+		update_oldpwd(search_for_env_var(&head, "PWD")->env_val, cmds, tree);
+		update_pwd(cmds, tree, home_path->env_val);
 	}
 	else
 	{
@@ -76,14 +78,19 @@ int	home_case(char **cmds, t_token_tree *tree, t_env_vars *head)
 int	oldpwd_case(char **cmds, t_token_tree *tree, t_env_vars *head)
 {
 	t_env_vars	*oldpwd;
+	char		*tmp_pwd;
 
 	oldpwd = search_for_env_var(&head, "OLDPWD");
+	tmp_pwd = ft_strdup(search_for_env_var(&head, "PWD")->env_val);
 	if (oldpwd && oldpwd->env_val)
 	{
 		if (chdir(oldpwd->env_val) != 0)
 			return (print_err(strerror(errno), "\n", NULL),
 				ft_close(cmds, &head, tree), exit(1), -1);
 		printf("%s\n", oldpwd->env_val);
+		update_pwd(cmds, tree, oldpwd->env_val);
+		update_oldpwd(tmp_pwd, cmds, tree);
+		free(tmp_pwd);
 	}
 	else
 	{

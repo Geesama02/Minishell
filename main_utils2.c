@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 09:34:15 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 13:20:48 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/02 12:03:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,19 @@ void	handle_oldpwd(t_env_vars *head)
 		oldpwd->visible = 1;
 		oldpwd->next = NULL;
 		ft_lstadd(&head, oldpwd);
+	}
+}
+
+void	update_pwd(char **cmds, t_token_tree *tree, char *to_set)
+{
+	t_env_vars	*pwd;
+
+	pwd = search_for_env_var(tree->head, "PWD");
+	if (pwd)
+	{
+		free(pwd->env_val);
+		pwd->env_val = ft_strdup(to_set);
+		if (!pwd->env_val && errno == ENOMEM)
+			return (ft_close(cmds, tree->head, tree), exit(1));	
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/01 13:21:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/02 12:43:40 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/stat.h>
 # include <errno.h>
 # include <signal.h>
+# include <termios.h>
 
 typedef enum e_t_type
 {
@@ -88,6 +89,7 @@ typedef struct s_token_tree
 
 int	g_is_heredoc[2];
 
+size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 void			ft_putchar_fd(char c, int fd);
 void			ft_bzero(void *s, size_t n);
 void			ft_putstr_fd(char *s, int fd);
@@ -109,7 +111,7 @@ t_token_tree	*create_node(char *token, t_t_type type, char **envp,
 t_token_array	*tokenizer(char **input, t_env_vars *head);
 void			*free_alloc(char **bigstr, int l);
 int				is_inside_quotes(char const *s, int i);
-void			pwd_command(void);
+void			pwd_command(t_token_tree *tree);
 void			echo_command(t_token_tree *tree, char **cmds);
 int				export_command(char **tokens, t_env_vars **head,
 					t_token_tree *tree);
@@ -300,5 +302,9 @@ int				count_linkedlist_size(t_env_vars *lst);
 void			handle_shlvl(t_env_vars *head);
 void			check_path_and_create(t_env_vars *head);
 void			handle_oldpwd(t_env_vars *head);
+void			reset_terminal(struct termios *old_term, t_env_vars **head);
+int				handle_bad_wildcard(t_token_array *token_array);
+void			update_pwd(char **cmds, t_token_tree *tree, char *to_set);
+void			update_oldpwd(char *current_dir, char **cmds, t_token_tree *tree);
 
 #endif

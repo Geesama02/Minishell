@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/01 13:46:54 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:58:19 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,19 @@ int	tokenize_and_build_execute_tree(char *input, t_env_vars **head,
 	return (0);
 }
 
-t_env_vars	*initialize_main_variables(char **envp)
+t_env_vars	*initialize_main_variables(char **envp, struct termios *old_term)
 {
 	t_env_vars	*head;
 
+	if (tcgetattr(0, old_term) == -1)
+		exit(1);
 	g_is_heredoc[0] = 0;
 	g_is_heredoc[1] = 0;
 	head = create_lst(envp);
 	handle_shlvl(head);
 	handle_oldpwd(head);
 	define_signals();
+	rl_catch_signals = 0;
 	return (head);
 }
 
@@ -68,13 +71,14 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_env_vars			*head;
 	char				*input;
+	struct termios		old_term;
 
 	(void)argc;
 	(void)argv;
-	head = initialize_main_variables(envp);
-	rl_catch_signals = 0;
+	head = initialize_main_variables(envp, &old_term);
 	while (1)
 	{
+		reset_terminal(&old_term, &head);
 		input = readline("Minishell$ ");
 		if (input == NULL)
 			null_input(head);

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 11:04:13 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/02 16:11:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,26 +53,28 @@ void	update_oldpwd(char *current_dir, char **cmds, t_token_tree *tree)
 int	changing_current_directory(char **cmds, char *path, t_token_tree *tree)
 {
 	char		current_dir[PATH_MAX];
-	char		*err_oldpwd;
+	char		*n_pwd;
+	char		*pwd_value;
 
-	if (!getcwd(current_dir, sizeof(current_dir)))
-	{
-		if (errno == ENOENT)
-		{
-			err_oldpwd = getenv("OLDPWD");
-			if (!err_oldpwd)
-				chdir("/");
-			else
-				chdir(err_oldpwd);
-		}
-		return (print_err(strerror(errno), "\n", NULL), -1);
-	}
 	if (chdir(path) == -1)
 	{
 		print_err("minishell: cd: ", path, ": ");
 		return (print_err(strerror(errno), "\n", NULL), -1);
 	}
-	update_oldpwd(current_dir, cmds, tree);
+	if (!getcwd(current_dir, sizeof(current_dir)) && errno == ENOENT)
+	{
+		update_oldpwd(search_for_env_var(tree->head, "PWD")->env_val, cmds, tree);
+		pwd_value = search_for_env_var(tree->head, "PWD")->env_val;
+		n_pwd = ft_strjoin(pwd_value, "/..");
+		update_pwd(cmds, tree, n_pwd);
+		free(n_pwd);
+		return (print_err("cd: error retrieving current directory: getcwd: cannot access parent directories: ",
+			strerror(errno), "\n"), 0);
+	}
+	else if (!getcwd(current_dir, sizeof(current_dir)) && errno != ENOENT)
+		return (print_err(strerror(errno), "\n", NULL), -1);
+	update_oldpwd(search_for_env_var(tree->head, "PWD")->env_val, cmds, tree);
+	update_pwd(cmds, tree, current_dir);
 	return (0);
 }
 
