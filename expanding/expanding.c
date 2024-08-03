@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 10:59:50 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/03 15:19:19 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void	create_newenv(char **tokens, t_env_vars **head, char **cmds,
 		new_env->env_val = NULL;
 	new_env->next = NULL;
 	new_env->visible = 1;
-	ignore_quotes(&new_env->env_name);
-	ignore_quotes(&new_env->env_val);
+	ignore_quotes(&new_env->env_name, 0, 0);
+	ignore_quotes(&new_env->env_val, 0 ,0);
 }
 
 int	add_or_append(char **cmds, t_token_tree *tree,

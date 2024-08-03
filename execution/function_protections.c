@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   function_protections.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 16:53:19 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 13:35:28 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/03 15:18:58 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**ignore_quotes_2d_array(char **strs)
 	i = 0;
 	while (strs[i])
 	{
-		strs[i] = ignore_quotes(&strs[i]);
+		strs[i] = ignore_quotes(&strs[i], 0, 0);
 		i++;
 	}
 	return (strs);

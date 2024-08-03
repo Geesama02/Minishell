@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:43:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/02 19:57:04 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/03 11:00:37 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	is_bad_syntax(char **holder, int i)
 			|| (set_token_type(holder[i]) == PARETHESIS_C
 				&& !is_operand(holder[i + 1]))
 			|| (set_token_type(holder[i]) == PARETHESIS_O
+				&& set_token_type(holder[i + 1]) == PARETHESIS_C)
+			|| (is_operand(holder[i])
 				&& set_token_type(holder[i + 1]) == PARETHESIS_C)));
 }
 

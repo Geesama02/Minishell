@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/02 20:39:21 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/03 15:13:12 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ char			*continue_heredoc(char *delimiter, t_token_array *token_array,
 					char **holder, int *l);
 char			*ft_split_first(char *str);
 int				has_more_cmds(char *str);
-char			*ignore_quotes(char **str);
+char			*ignore_quotes(char **str, int quote, int dquote);
 char			*handle_extra_cmd(t_token_array *token_array, char **holder,
 					int *check, int i);
 char			*handle_multi_heredoc(t_token_array *token_array,
@@ -308,5 +308,10 @@ void			update_pwd(char **cmds, t_token_tree *tree, char *to_set);
 void			update_oldpwd(char *current_dir, char **cmds, t_token_tree *tree);
 int				join_extra_with_redi(char **holder, int i);
 char			*get_second_cmd(char *holder);
+void			swap_redirection_op(t_token_array *tmp_a_o, int i,
+					int l, t_token_array *token_array);
+t_token_array	*find_redirection_double(t_token_array *token_array,
+					int i, int l);
+void			swap_redirections(t_token_array *first, t_token_array *second);
 
 #endif

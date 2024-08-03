@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:49:36 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 12:01:16 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/03 10:05:01 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_token_array	*find_redirection(t_token_array *token_array
 {
 	if (token_array[i].token)
 		i++;
-	while (token_array[i].token && token_array[i].type != OPERATOR_T && i < l)
+	while (token_array[i].token && token_array[i].type != OPERATOR_T && i < l && token_array[i].type != PARETHESIS_C)
 	{
 		if (token_array[i].type == to_find)
 			return (token_array + i + 1);
@@ -29,16 +29,16 @@ t_token_array	*find_redirection(t_token_array *token_array
 t_token_array	*find_redirection_double(t_token_array *token_array
 	, int i, int l)
 {
-	if (token_array[i].token)
-		i++;
-	while (token_array[i].token && token_array[i].type != OPERATOR_T && i < l)
+	// if (token_array[i].token)
+	// 	i++;
+	while (token_array[i].token && token_array[i].type != OPERATOR_T && i < l && token_array[i].type != PARETHESIS_C)
 	{
 		if (token_array[i].type == REDIRECTION_A
 			|| token_array[i].type == REDIRECTION_O)
 			return (token_array + i + 1);
 		i++;
 	}
-	return (NULL);
+	return (token_array);
 }
 
 void	swap_redirections(t_token_array *first, t_token_array *second)
@@ -78,14 +78,13 @@ void	switch_multi_redirections(t_token_array *token_array)
 		l = i;
 		tmp_a_o = NULL;
 		tmp_i = NULL;
-		while (token_array[i].token && token_array[i].type != OPERATOR_T)
+		while (token_array[i].token && token_array[i].type != OPERATOR_T
+			&& token_array[i].type != PARETHESIS_C)
 		{
 			set_redirections(&token_array[i], &tmp_a_o, &tmp_i);
 			i++;
 		}
-		if (tmp_a_o && i > 0)
-			swap_redirections(tmp_a_o - 1,
-				find_redirection_double(token_array, l, i) - 1);
+		swap_redirection_op(tmp_a_o, i, l, token_array);
 		swap_redirections(tmp_a_o, find_redirection_double(token_array, l, i));
 		swap_redirections(tmp_i,
 			find_redirection(token_array, REDIRECTION_I, l, i));
