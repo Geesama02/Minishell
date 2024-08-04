@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:04:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 11:30:02 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 14:31:35 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,7 @@ char	*split_quotes(char *str, t_token_tree *tree)
 	tmp[j] = NULL;
 	if (!join_all_vars(tmp, &result))
 		return (NULL);
+	free_2d_array(tmp);
+	free(str);
 	return (result);
 }
