@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 09:34:15 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/03 11:31:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 13:41:12 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,25 @@ void	handle_shlvl(t_env_vars **head)
 	shlvl = search_for_env_var(head, "SHLVL");
 	if (shlvl)
 	{
+		if (shlvl->env_val[0] == '-')
+		{
+			free(shlvl->env_val);
+			shlvl->env_val = ft_strdup("0");
+			return ;
+		}
+		else if (!shlvl->env_val)
+		{
+			free(shlvl->env_val);
+			shlvl->env_val = ft_strdup("1");
+			return ;
+		}
 		shlvl_num = ft_atoi(shlvl->env_val);
-		if (shlvl_num < 0)
-			shlvl_num = 0;
+		if (shlvl_num >= 999)
+		{
+			free(shlvl->env_val);
+			shlvl->env_val = ft_strdup("");
+			return ;
+		}
 		else
 			shlvl_num++;
 		free(shlvl->env_val);
