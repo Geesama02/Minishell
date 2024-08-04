@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 10:36:11 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/27 12:40:18 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:49:19 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	handle_heredoc_expand(t_token_array *token_array,
 		&& has_quote == 0)
 	{
 		token_array[vars->l].token = expand_vars(token_array[vars->l].token,
-				token_array[vars->l].type, vars->head);
+				vars->head);
 		if (!token_array[vars->l].token)
 			return (free_token_holder(holder, token_array, vars->l),
 				exit(1), 0);
@@ -91,7 +91,7 @@ int	handle_heredoc_expand(t_token_array *token_array,
 		&& token_array[vars->l].type == CMD_T)
 	{
 		token_array[vars->l].token = expand_vars(token_array[vars->l].token,
-				token_array[vars->l].type, vars->head);
+				vars->head);
 		if (!token_array[vars->l].token)
 			return (free_token_holder(holder, token_array, vars->l),
 				exit(1), 0);

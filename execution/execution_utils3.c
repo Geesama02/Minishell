@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/03 14:14:35 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	exit_execve(int status, t_env_vars **head, char *path)
 {
 	t_env_vars	*tmp;
 
-	tmp = search_for_env_var(head, "?");
+	tmp = search_for_env(head, "?");
 	free(tmp->env_val);
 	if (WTERMSIG(status) > 0)
 		tmp->env_val = ft_itoa(128 + WTERMSIG(status));
@@ -40,7 +40,7 @@ void	update_oldpwd(char *current_dir, char **cmds, t_token_tree *tree)
 {
 	t_env_vars	*oldpwd;
 
-	oldpwd = search_for_env_var(tree->head, "OLDPWD");
+	oldpwd = search_for_env(tree->head, "OLDPWD");
 	if (oldpwd)
 	{
 		free(oldpwd->env_val);
@@ -58,7 +58,7 @@ void	update_oldpwd(char *current_dir, char **cmds, t_token_tree *tree)
 			return (free(oldpwd), ft_close(cmds, tree->head, tree), exit(1));
 		oldpwd->env_val = ft_strdup(current_dir);
 		if (!oldpwd->env_val && errno == ENOMEM)
-			return (free_node(oldpwd), ft_close(cmds, tree->head, tree), exit(1));
+			return (free_n(oldpwd), ft_close(cmds, tree->head, tree), exit(1));
 		oldpwd->visible = 0;
 		oldpwd->next = NULL;
 		ft_lstadd(tree->head, oldpwd);
@@ -77,7 +77,7 @@ int	changing_current_directory(char **cmds, char *path, t_token_tree *tree)
 			getcwd(current_dir, sizeof(current_dir));
 			update_pwd(cmds, tree, current_dir);
 		}
-		else if (!search_for_env_var(tree->head, "PWD"))
+		else if (!search_for_env(tree->head, "PWD"))
 		{
 			getcwd(current_dir, sizeof(current_dir));
 			update_pwd(cmds, tree, current_dir);
@@ -89,8 +89,8 @@ int	changing_current_directory(char **cmds, char *path, t_token_tree *tree)
 		return (caseof_long_error(tree, cmds, path), -1);
 	else if (!getcwd(current_dir, sizeof(current_dir)) && errno != ENOENT)
 		return (print_err(strerror(errno), "\n", NULL), -1);
-	if (search_for_env_var(tree->head, "PWD"))
-		update_oldpwd(search_for_env_var(tree->head, "PWD")->env_val, cmds, tree);
+	if (search_for_env(tree->head, "PWD"))
+		update_oldpwd(search_for_env(tree->head, "PWD")->env_val, cmds, tree);
 	return (update_pwd(cmds, tree, current_dir), 0);
 }
 

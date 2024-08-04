@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 12:27:03 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:48:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,10 +180,10 @@ int				print_echo_content(char **cmds, int i, int new_line);
 void			replace_nodes_content(t_env_vars *node1, t_env_vars *node2,
 					t_token_tree *tree, char **cmds);
 t_env_vars		*create_lst(char **envp);
-t_env_vars		*search_for_env_var(t_env_vars **head, char *env_name);
+t_env_vars		*search_for_env(t_env_vars **head, char *env_name);
 int				append_env_var(char *env_name, char *to_append, char **cmds,
 					t_token_tree *tree);
-char			*expand_vars(char *holder, t_t_type type, t_env_vars *head);
+char			*expand_vars(char *holder, t_env_vars *head);
 int				ft_isalpha(int c);
 char			**ft_env_split(char const *s, char c);
 int				ft_isdigit(int c);
@@ -220,7 +220,7 @@ int				define_exit_status(t_env_vars *head, char *exit_status);
 int				execute_rest(char **cmds, t_token_tree *tree);
 int				builtins_rest(t_token_tree *tree, char **cmds,
 					t_env_vars **head, int child);
-void			free_node(t_env_vars *node);
+void			free_n(t_env_vars *node);
 int				home_case(char **cmds, t_token_tree *tree, t_env_vars *head);
 int				oldpwd_case(char **cmds, t_token_tree *tree, t_env_vars *head);
 int				check_minus_n(char *echo_flag);
@@ -305,7 +305,8 @@ void			handle_oldpwd(t_env_vars **head);
 void			reset_terminal(struct termios *old_term, t_env_vars **head);
 int				handle_bad_wildcard(t_token_array *token_array);
 void			update_pwd(char **cmds, t_token_tree *tree, char *to_set);
-void			update_oldpwd(char *current_dir, char **cmds, t_token_tree *tree);
+void			update_oldpwd(char *current_dir, char **cmds,
+					t_token_tree *tree);
 void			handle_pwd(t_env_vars **head);
 void			create_exit_status(t_env_vars **head);
 void			caseof_long_error(t_token_tree *tree, char **cmds, char *path);
@@ -319,11 +320,13 @@ t_token_array	*find_redirection_double(t_token_array *token_array,
 					int i, int l);
 void			swap_redirections(t_token_array *first, t_token_array *second);
 char			*split_quotes(char *str, t_token_tree *tree);
-int				alloc_str_no_qt(int j, t_token_tree *tree, char **tmp, char nxt);
-char 			*alloc_new_str(char *str, int *i);
+int				alloc_str_no_qt(int j, t_token_tree *tree,
+					char **tmp, char nxt);
+char			*alloc_new_str(char *str, int *i);
 void			remove_empty_space(char *str);
 int				count_str_len_qt(char *str, int i);
 int				if_must_add(int j, char **tmp, char nxt);
-
+void			shlvl_cases(t_env_vars *shlvl, t_env_vars **head);
+void			long_error(void);
 
 #endif

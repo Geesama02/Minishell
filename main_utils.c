@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 10:46:53 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/03 10:12:59 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	eof_pressed(t_env_vars **head)
 	long		exit_s;
 
 	exit_s = 0;
-	tmp = search_for_env_var(head, "?");
+	tmp = search_for_env(head, "?");
 	if (tmp)
 		exit_s = ft_atoi_long(tmp->env_val);
 	write(0, "exit\n", 5);

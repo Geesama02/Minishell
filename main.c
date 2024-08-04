@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 12:26:59 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:27:12 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_env_vars	*initialize_main_variables(char **envp, struct termios *old_term)
 	if (count_2d_array_elements(envp) > 0)
 		head = create_lst(envp);
 	else
-	{	
+	{
 		create_exit_status(&head);
 		check_path_and_create(head);
 	}
@@ -89,13 +89,12 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("Minishell$ ");
 		if (input == NULL)
 			null_input(head);
-		if (input[0] != '\0')
-			add_history(input);
 		if (input[0] == '\0' || syntax_error_check(head, input) == -1)
 		{
 			free(input);
 			continue ;
 		}
+		add_history(input);
 		if (g_is_heredoc[1] == 1)
 			define_exit_status(head, "1");
 		if (tokenize_and_build_execute_tree(input, &head, envp) == -1)

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:21:44 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 17:04:18 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	execute_right_pipe(t_token_tree *right, int fds[2],
 		safe_dup2(right, stdout_fd, 1);
 	if (execute_tree(right, right->head, 0) == -1)
 	{
-		tmp = search_for_env_var(right->head, "?");
+		tmp = search_for_env(right->head, "?");
 		exit_s = ft_atoi_long(tmp->env_val);
 		free_tree(right);
 		safe_close(stdin_fd, right);

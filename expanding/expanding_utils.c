@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/02 20:19:32 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	append_env_var(char *env_name, char *to_append, char **cmds,
 	t_env_vars	*tmp;
 	char		*prev_envval;
 
-	tmp = search_for_env_var(tree->head, env_name);
+	tmp = search_for_env(tree->head, env_name);
 	if (tmp)
 	{
 		if (tmp->env_val)
@@ -36,7 +36,7 @@ int	append_env_var(char *env_name, char *to_append, char **cmds,
 	return (0);
 }
 
-t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name)
+t_env_vars	*search_for_env(t_env_vars **head, char *env_name)
 {
 	t_env_vars	*current;
 

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 13:47:13 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	define_exit_status(t_env_vars *head, char *exit_status)
 {
 	t_env_vars	*tmp;
 
-	tmp = search_for_env_var(&head, "?");
+	tmp = search_for_env(&head, "?");
 	if (tmp)
 	{
 		free(tmp->env_val);

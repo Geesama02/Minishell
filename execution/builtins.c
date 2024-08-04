@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/03 09:20:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	pwd_command(t_token_tree *tree)
 	char	buff[PATH_MAX];
 
 	current_dir = NULL;
-	if (search_for_env_var(tree->head, "PWD"))
-	{	
-		current_dir = search_for_env_var(tree->head, "PWD")->env_val;
+	if (search_for_env(tree->head, "PWD"))
+	{
+		current_dir = search_for_env(tree->head, "PWD")->env_val;
 		ft_putstr_fd(current_dir, 1);
 		write(1, "\n", 1);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 12:07:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 09:48:54 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:52:01 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,17 +97,10 @@ void	skip_quotes(char *str_original, char *new)
 
 char	*ignore_quotes(char **str)
 {
-	// int		len;
 	char	*tmp;
 
 	if (!*str)
 		return (NULL);
-	// len = ft_strlen(*str) - 1;
-	// while (len >= 0 && *(*str + len) == ' ')
-	// {
-	// 	*(*str + len) = '\0';
-	// 	len--;
-	// }
 	tmp = malloc(count_str_len(*str) + 1);
 	if (!tmp)
 		return (NULL);

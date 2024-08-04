@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:14:02 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/29 10:03:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	add_element_to_envs(t_token_tree *tree, char **cmds, char **tokens)
 {
 	t_env_vars	*prev;
 
-	prev = search_for_env_var(tree->head, cmds[0]);
+	prev = search_for_env(tree->head, cmds[0]);
 	if (prev)
 	{
 		if (cmds[1])

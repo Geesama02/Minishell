@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/02 16:14:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 16:09:49 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	env_command(t_token_tree *tree, char **cmds, t_env_vars *head)
 {
-	if (search_for_env_var(&head, "PATH"))
+	if (search_for_env(&head, "PATH"))
 	{
 		while (head)
 		{
@@ -39,7 +39,7 @@ void	exit_command(char **cmds, int child, t_token_tree *tree)
 
 	if (child)
 		write(1, "exit\n", 6);
-	tmp = search_for_env_var(tree->head, "?");
+	tmp = search_for_env(tree->head, "?");
 	if (tmp)
 		exit_s = ft_atoi_long(tmp->env_val);
 	if (g_is_heredoc[1] == 1)
@@ -58,13 +58,13 @@ int	home_case(char **cmds, t_token_tree *tree, t_env_vars *head)
 {
 	t_env_vars	*home_path;
 
-	home_path = search_for_env_var(&head, "HOME");
+	home_path = search_for_env(&head, "HOME");
 	if (home_path)
 	{
 		if (chdir(home_path->env_val) != 0)
 			return (print_err(strerror(errno), "\n", NULL),
 				ft_close(cmds, &head, tree), exit(1), -1);
-		update_oldpwd(search_for_env_var(&head, "PWD")->env_val, cmds, tree);
+		update_oldpwd(search_for_env(&head, "PWD")->env_val, cmds, tree);
 		update_pwd(cmds, tree, home_path->env_val);
 	}
 	else
@@ -80,8 +80,10 @@ int	oldpwd_case(char **cmds, t_token_tree *tree, t_env_vars *head)
 	t_env_vars	*oldpwd;
 	char		*tmp_pwd;
 
-	oldpwd = search_for_env_var(&head, "OLDPWD");
-	tmp_pwd = ft_strdup(search_for_env_var(&head, "PWD")->env_val);
+	oldpwd = search_for_env(&head, "OLDPWD");
+	tmp_pwd = ft_strdup(search_for_env(&head, "PWD")->env_val);
+	if (!tmp_pwd && errno == ENOMEM)
+		return (ft_close(cmds, tree->head, tree), exit(1), -1);
 	if (oldpwd && oldpwd->env_val)
 	{
 		if (chdir(oldpwd->env_val) != 0)
@@ -94,6 +96,7 @@ int	oldpwd_case(char **cmds, t_token_tree *tree, t_env_vars *head)
 	}
 	else
 	{
+		free(tmp_pwd);
 		print_err("minishell: cd: OLDPWD not set\n", NULL, NULL);
 		return (-1);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 12:27:27 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:47:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,17 @@ int	execute_redirection(t_token_tree *tree)
 	if (expand_filenames(tree->right) == -1)
 		return (define_exit_status(*tree->head, "1"), -1);
 	if (tree->type == REDIRECTION_O)
-	{	
+	{
 		if (execute_redirection_out(tree) == -1)
 			return (-1);
 	}
 	else if (tree->type == REDIRECTION_I)
-	{	
+	{
 		if (execute_redirection_in(tree) == -1)
 			return (-1);
 	}
 	else if (tree->type == REDIRECTION_A)
-	{	
+	{
 		if (execute_redirection_append(tree) == -1)
 			return (-1);
 	}

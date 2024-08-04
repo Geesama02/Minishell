@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils5.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 09:44:22 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/02 20:45:00 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:56:19 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	has_redirection_extras(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i + 1] && str[i] == ' ' && str[i + 1] != ' ' && is_inside_quotes(str, i) == 0)
+		if (str[i + 1] && str[i] == ' ' && str[i + 1] != ' '
+			&& is_inside_quotes(str, i) == 0)
 			return (1);
 		i++;
 	}
@@ -55,7 +56,8 @@ void	free_token_array(t_token_array *token_array)
 
 int	check_redirections_extras(char **holder)
 {
-	int		i;
+	int	i;
+
 	i = get_to_last_token(holder);
 	while (i >= 0)
 	{
@@ -64,8 +66,8 @@ int	check_redirections_extras(char **holder)
 		{
 			if (holder[i - 1] && holder[i - 1][0] == ')')
 			{
-				print_err("Minishell: syntax error near unexpected token `"
-					, get_second_cmd(holder[i + 1]), "' \n");
+				print_err("Minishell: syntax error near unexpected token `",
+					get_second_cmd(holder[i + 1]), "' \n");
 				return (0);
 			}
 			join_extra_with_redi(holder, i);

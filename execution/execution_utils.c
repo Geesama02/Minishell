@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/02 20:47:23 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*find_correct_path(char **cmds, t_token_tree *tree)
 	char		*path;
 
 	paths_w = NULL;
-	path_env = search_for_env_var(tree->head, "PATH");
+	path_env = search_for_env(tree->head, "PATH");
 	if (path_env)
 		paths_w = ft_split(path_env->env_val, ':');
 	if (!paths_w && errno == ENOMEM)
@@ -94,7 +94,7 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 	char		*path;
 
 	path = NULL;
-	if (!ft_strchr(cmds[0], '/') && search_for_env_var(tree->head, "PATH"))
+	if (!ft_strchr(cmds[0], '/') && search_for_env(tree->head, "PATH"))
 		path = find_correct_path(cmds, tree);
 	else
 	{
@@ -120,9 +120,9 @@ int	exec_command(t_token_tree *tree, char **cmds, int child)
 {
 	if (ft_strlen(cmds[0]) == 1 && !ft_strcmp(cmds[0], "."))
 	{
-		print_err("minishell: .: filename argument required\n"
-				, ".: usage: . filename [arguments]\n", NULL);
-		return (define_exit_status(*tree->head, "2") , -1);
+		print_err("minishell: .: filename argument required\n",
+			".: usage: . filename [arguments]\n", NULL);
+		return (define_exit_status(*tree->head, "2"), -1);
 	}
 	if (ft_strcmp(cmds[0], "exit")
 		&& define_exit_status(*tree->head, "0") == -1)

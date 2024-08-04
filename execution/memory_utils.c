@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 20:16:25 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/23 13:51:16 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:42:29 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	count_2d_array_elements(char **arr)
 	return (counter);
 }
 
-void	free_node(t_env_vars *node)
+void	free_n(t_env_vars *node)
 {
 	free(node->env_name);
 	free(node->env_val);

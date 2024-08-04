@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 12:27:10 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:37:06 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ int	execute_cmds_with_operators_heredoc(t_token_tree *tree, t_env_vars **head,
 int	execute_one_command(t_token_tree *tree, int child)
 {
 	char	**cmds;
-	int n = 0;
+	int		n;
 
+	n = 0;
 	cmds = NULL;
 	cmds = ft_split_qt(tree->token, ' ');
 	if (!cmds && errno == ENOMEM)
@@ -77,10 +78,6 @@ int	execute_one_command(t_token_tree *tree, int child)
 		}
 		n++;
 	}
-
-	// cmds = ignore_quotes_2d_array(cmds);
-	// if (!cmds && errno == ENOMEM)
-	// 	return (ft_close(NULL, tree->head, tree), exit(1), -1);
 	if (cmds && exec_command(tree, cmds, child) == -1)
 		return (free_2d_array(cmds), -1);
 	free_2d_array(cmds);

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 09:29:37 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 12:22:52 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:42:52 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	delete_env_head(t_env_vars *tmp, t_env_vars **head)
 		*head = tmp->next;
 	else
 		*head = NULL;
-	free_node(tmp);
+	free_n(tmp);
 }
 
 void	delete_env_inside(t_env_vars *tmp, char *cmd,
@@ -30,7 +30,7 @@ void	delete_env_inside(t_env_vars *tmp, char *cmd,
 		replace_nodes_content(tmp->next, tmp->next->next, tree, cmds);
 	else if (tmp && tmp->next && !tmp->next->next)
 	{
-		free_node(tmp->next);
+		free_n(tmp->next);
 		tmp->next = NULL;
 	}
 }

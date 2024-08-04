@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_utils6.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 10:22:25 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 12:20:22 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:53:30 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	count_inside_quote(char *str, int i, int *count, char quote)
 {
 	i++;
 	(*count)++;
-	while((str[i] != quote) && (str[i]))
+	while ((str[i] != quote) && (str[i]))
 	{
 		(*count)++;
 		i++;
@@ -26,11 +26,10 @@ void	count_inside_quote(char *str, int i, int *count, char quote)
 	(*count)++;
 }
 
-
 int	count_str_len_qt(char *str, int i)
 {
 	int	count;
-	
+
 	count = 0;
 	if (str[i] == '\'')
 	{
@@ -51,12 +50,13 @@ int	count_str_len_qt(char *str, int i)
 	return (count);
 }
 
-char *alloc_new_str(char *str, int *i)
+char	*alloc_new_str(char *str, int *i)
 {
 	char	*tmp;
-	int		len = 0;
-	int 	j;
-	
+	int		len;
+	int		j;
+
+	len = 0;
 	j = 0;
 	len = count_str_len_qt(str, *i);
 	tmp = malloc(sizeof(char) * (len + 1));
@@ -74,7 +74,7 @@ char *alloc_new_str(char *str, int *i)
 
 int	if_must_add(int j, char **tmp, char nxt)
 {
-	char *tmp2;
+	char	*tmp2;
 
 	if (tmp[j][ft_strlen(tmp[j]) - 1] == '$' && (nxt == '\'' || nxt == '\"'))
 	{
@@ -90,4 +90,9 @@ int	if_must_add(int j, char **tmp, char nxt)
 	return (1);
 }
 
-
+void	long_error(void)
+{
+	print_err("cd: error retrieving current",
+		" directory: getcwd: cannot access parent directories: ", NULL);
+	print_err(strerror(errno), "\n", NULL);
+}
