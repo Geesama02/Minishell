@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 10:46:53 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 13:59:05 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/03 10:12:59 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char	*check_syntax(char *input)
 
 int	syntax_error_check(t_env_vars *head, char *input)
 {
+	switch_tabs_to_spaces(input);
 	if (check_syntax(input))
 		return (add_history(input), syntax_error_message(head, input), -1);
 	return (1);

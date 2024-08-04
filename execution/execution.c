@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 11:17:35 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 12:21:39 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	execute_one_command(t_token_tree *tree, int child)
 	char	**cmds;
 
 	cmds = NULL;
-	switch_tabs_to_spaces(tree->token);
 	check_expand(tree);
 	if (has_wildcard(tree->token))
 	{
@@ -63,23 +62,22 @@ int	execute_one_command(t_token_tree *tree, int child)
 			&& errno == ENOMEM)
 			return (ft_close(NULL, tree->head, tree), exit(1), -1);
 	}
-	if (check_space_only(tree->token) == -1)
-	{
-		cmds = ft_split_qt(tree->token, ' ');
-		if (!cmds && errno == ENOMEM)
-			return (ft_close(NULL, tree->head, tree), exit(1), -1);
-		cmds = ignore_quotes_2d_array(cmds);
-		if (!cmds && errno == ENOMEM)
-			return (ft_close(NULL, tree->head, tree), exit(1), -1);
-		if (cmds && exec_command(tree, cmds, child) == -1)
-			return (free_2d_array(cmds), -1);
-		free_2d_array(cmds);
-	}
+	
+	cmds = ft_split_qt(tree->token, ' ');
+	if (!cmds && errno == ENOMEM)
+		return (ft_close(NULL, tree->head, tree), exit(1), -1);
+	cmds = ignore_quotes_2d_array(cmds);
+	if (!cmds && errno == ENOMEM)
+		return (ft_close(NULL, tree->head, tree), exit(1), -1);
+	if (cmds && exec_command(tree, cmds, child) == -1)
+		return (free_2d_array(cmds), -1);
+	free_2d_array(cmds);
 	return (0);
 }
 
 int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 {
+	// printf("token -> |%s|\n", tree->token);
 	if (tree->type == REDIRECTION_I || tree->type == REDIRECTION_O
 		|| tree->type == REDIRECTION_A)
 	{

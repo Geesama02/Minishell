@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 12:07:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 11:02:04 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:00:57 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	has_more_cmds(char *str)
 	return (0);
 }
 
-int	count_str_len(char *str)
+int	count_str_len(char *str, int quote, int dquote)
 {
 	int	i;
 	int	count;
@@ -48,13 +48,19 @@ int	count_str_len(char *str)
 	count = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'')
+		if (str[i] == '\'' || quote)
 		{
+			if (quote)
+				count++;
+			quote = 0;
 			check_between_quotes(str, &i, &count, '\'');
 			continue ;
 		}
-		else if (str[i] == '\"')
+		else if (str[i] == '\"' || dquote)
 		{
+			if (dquote)
+				count++;
+			dquote = 0;
 			check_between_quotes(str, &i, &count, '\"');
 			continue ;
 		}
@@ -66,7 +72,7 @@ int	count_str_len(char *str)
 	return (count);
 }
 
-void	skip_quotes(char *str_original, char *new)
+void	skip_quotes(char *str_original, char *new, int quote, int dquote)
 {
 	int	i;
 	int	j;
@@ -75,15 +81,18 @@ void	skip_quotes(char *str_original, char *new)
 	j = 0;
 	while (str_original[i])
 	{
-		if (str_original[i] == '\'')
+		if (str_original[i] == '\'' || quote)
 		{
-			i++;
+			if (quote == 0)
+				i++;
 			while (str_original[i] && str_original[i] != '\'')
 				new[j++] = str_original[i++];
 		}
-		else if (str_original[i] == '\"')
+		else if (str_original[i] == '\"' || dquote)
 		{
-			i++;
+			if (dquote == 0)
+				i++;
+			dquote = 0;
 			while (str_original[i] && str_original[i] != '\"')
 				new[j++] = str_original[i++];
 		}
@@ -95,7 +104,7 @@ void	skip_quotes(char *str_original, char *new)
 	new[j] = '\0';
 }
 
-char	*ignore_quotes(char **str)
+char	*ignore_quotes(char **str, int quote, int dquote)
 {
 	int		len;
 	char	*tmp;
@@ -108,10 +117,10 @@ char	*ignore_quotes(char **str)
 		*(*str + len) = '\0';
 		len--;
 	}
-	tmp = malloc(count_str_len(*str) + 1);
+	tmp = malloc(count_str_len(*str, quote, dquote) + 1);
 	if (!tmp)
 		return (NULL);
-	skip_quotes(*str, tmp);
+	skip_quotes(*str, tmp, quote, dquote);
 	free(*str);
 	*str = tmp;
 	return (*str);

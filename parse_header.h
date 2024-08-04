@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 11:41:22 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 12:19:21 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ char			*continue_heredoc(char *delimiter, t_token_array *token_array,
 					char **holder, int *l);
 char			*ft_split_first(char *str);
 int				has_more_cmds(char *str);
-char			*ignore_quotes(char **str);
+char			*ignore_quotes(char **str, int quote, int dquote);
 char			*handle_extra_cmd(t_token_array *token_array, char **holder,
 					int *check, int i);
 char			*handle_multi_heredoc(t_token_array *token_array,
@@ -227,7 +227,7 @@ int				check_minus_n(char *echo_flag);
 int				delete_env(char *cmd, t_token_tree *tree, char **cmds);
 void			print_err(char *string1, char *string2, char *string3);
 void			switch_multi_redirections(t_token_array *token_array);
-int				check_redirections_extras(t_token_array *token_array);
+int				check_redirections_extras(char **holder);
 char			**ignore_quotes_2d_array(char **strs);
 int				is_redirection(t_t_type type);
 int				is_redirection_heredoc(char *str);
@@ -266,7 +266,7 @@ void			set_redirections(t_token_array *token_array,
 					t_token_array **tmp_a_o, t_token_array **tmp_i);
 t_token_array	*get_redirection(t_token_array *token_array,
 					t_token_array *tmp, t_t_type type, t_t_type type2);
-int				get_to_last_token(t_token_array *token_array);
+int				get_to_last_token(char **holder);
 int				check_for_wildcard(t_token_array *token_array,
 					t_env_vars *head);
 void			init_token_vars(t_token_vars *vars, t_env_vars *head);
@@ -311,5 +311,12 @@ void			create_exit_status(t_env_vars **head);
 void			caseof_long_error(t_token_tree *tree, char **cmds, char *path);
 int				check_space_only(char *token);
 char			*ignore_first_last_quotes(char *string);
+int				join_extra_with_redi(char **holder, int i);
+char			*get_second_cmd(char *holder);
+void			swap_redirection_op(t_token_array *tmp_a_o, int i,
+					int l, t_token_array *token_array);
+t_token_array	*find_redirection_double(t_token_array *token_array,
+					int i, int l);
+void			swap_redirections(t_token_array *first, t_token_array *second);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_execution.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:19:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 15:18:27 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/03 10:50:09 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,15 @@ void	execute_heredoc_content(t_token_tree *tree, t_token_tree *cmd,
 	safe_close(stdout_cp, tree);
 	safe_dup2(tree, fds[0], 0);
 	safe_close(fds[0], tree);
-	execute_tree(cmd, cmd->head, 1);
+	if (cmd->token[0])
+		execute_tree(cmd, cmd->head, 1);
 	safe_dup2(tree, stdin_cp, 0);
 	safe_close(stdin_cp, tree);
 }
 
 void	execute_heredoc(t_token_tree *tree)
 {
-	if (add_space_cmd(tree->left) == -1)
+	if (tree->left->token[0] && add_space_cmd(tree->left) == -1)
 		return (free_tree(tree), exit(1));
 	if (tree->right->type == CMD_T)
 		execute_heredoc_file(tree, tree->left, tree->right);

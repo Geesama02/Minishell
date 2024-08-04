@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 09:44:22 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 12:12:32 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/02 20:45:00 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	has_redirection_extras(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i + 1] && str[i] == ' ' && str[i + 1] != ' ')
+		if (str[i + 1] && str[i] == ' ' && str[i + 1] != ' ' && is_inside_quotes(str, i) == 0)
 			return (1);
 		i++;
 	}
@@ -53,30 +53,24 @@ void	free_token_array(t_token_array *token_array)
 	free(token_array);
 }
 
-int	check_redirections_extras(t_token_array *token_array)
+int	check_redirections_extras(char **holder)
 {
 	int		i;
-	char	*extra;
-	char	*tmp;
-
-	i = get_to_last_token(token_array);
+	i = get_to_last_token(holder);
 	while (i >= 0)
 	{
-		if (i > 0 && is_redirection(token_array[i].type)
-			&& has_redirection_extras(token_array[i + 1].token))
+		if (i > 0 && is_redirection(set_token_type(holder[i]))
+			&& has_redirection_extras(holder[i + 1]))
 		{
-			extra = ft_split_first(token_array[i + 1].token);
-			if (!extra)
-				return (free_token_array(token_array), exit(1), 0);
-			tmp = token_array[i - 1].token;
-			token_array[i - 1].token = ft_strjoin(tmp, extra);
-			if (!token_array[i - 1].token)
-				return (free(tmp), free(extra),
-					free_token_array(token_array), exit(1), 0);
-			free(tmp);
-			free(extra);
+			if (holder[i - 1] && holder[i - 1][0] == ')')
+			{
+				print_err("Minishell: syntax error near unexpected token `"
+					, get_second_cmd(holder[i + 1]), "' \n");
+				return (0);
+			}
+			join_extra_with_redi(holder, i);
 		}
 		i--;
 	}
-	return (0);
+	return (1);
 }
