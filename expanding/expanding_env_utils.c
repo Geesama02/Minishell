@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 16:33:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/03 17:26:19 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 09:49:42 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,14 @@ char	*expand_vars(char *holder, t_t_type type, t_env_vars *head)
 	char	*result;
 
 	i = 0;
+	(void)type;
 	result = ft_strdup("");
 	if (!result)
 		return (free(holder), NULL);
-	if (type == HEREDOC_TOKEN)
-		words = ft_env_split_no_qt(holder, '$');
-	else
-		words = ft_env_split(holder, '$');
+	// if (type == HEREDOC_TOKEN)
+	words = ft_env_split_no_qt(holder, '$');
+	// else
+	// 	words = ft_env_split(holder, '$');
 	if (!words)
 		return (free(holder), free(result), NULL);
 	if (!words[0])

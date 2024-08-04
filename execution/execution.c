@@ -6,21 +6,28 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/03 17:26:54 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 12:24:31 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int	check_expand(t_token_tree *tree)
+int	check_expand(t_token_tree *tree, char **str)
 {
-	if (has_vars(tree->token))
+	if (has_vars(*str))
 	{
-		tree->token = expand_vars(tree->token, tree->type, *tree->head);
-		if (!tree->token)
+		*str = split_quotes(*str, tree);
+		if (!*str)
 			return (ft_close(NULL, tree->head, tree),
 				exit(1), -1);
 		return (0);
+	}
+	else
+	{
+		*str = ignore_quotes(str);
+		if (!*str)
+			return (ft_close(NULL, tree->head, tree),
+				exit(1), -1);
 	}
 	return (1);
 }
@@ -53,22 +60,27 @@ int	execute_cmds_with_operators_heredoc(t_token_tree *tree, t_env_vars **head,
 int	execute_one_command(t_token_tree *tree, int child)
 {
 	char	**cmds;
+	int n = 0;
 
 	cmds = NULL;
-	check_expand(tree);
-	if (has_wildcard(tree->token))
-	{
-		if (handle_wildcard(&tree->token, "", *tree->head) == 0
-			&& errno == ENOMEM)
-			return (ft_close(NULL, tree->head, tree), exit(1), -1);
-	}
-	
 	cmds = ft_split_qt(tree->token, ' ');
 	if (!cmds && errno == ENOMEM)
 		return (ft_close(NULL, tree->head, tree), exit(1), -1);
-	cmds = ignore_quotes_2d_array(cmds);
-	if (!cmds && errno == ENOMEM)
-		return (ft_close(NULL, tree->head, tree), exit(1), -1);
+	while (cmds[n])
+	{
+		check_expand(tree, &cmds[n]);
+		if (has_wildcard(cmds[n]))
+		{
+			if (handle_wildcard(&cmds[n], "", *tree->head) == 0
+				&& errno == ENOMEM)
+				return (ft_close(NULL, tree->head, tree), exit(1), -1);
+		}
+		n++;
+	}
+
+	// cmds = ignore_quotes_2d_array(cmds);
+	// if (!cmds && errno == ENOMEM)
+	// 	return (ft_close(NULL, tree->head, tree), exit(1), -1);
 	if (cmds && exec_command(tree, cmds, child) == -1)
 		return (free_2d_array(cmds), -1);
 	free_2d_array(cmds);
@@ -77,7 +89,6 @@ int	execute_one_command(t_token_tree *tree, int child)
 
 int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 {
-	// printf("token -> |%s|\n", tree->token);
 	if (tree->type == REDIRECTION_I || tree->type == REDIRECTION_O
 		|| tree->type == REDIRECTION_A)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 12:43:32 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 12:07:53 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	expand_filenames(t_token_tree *tree)
 	if (!old_filename)
 		return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,
 				tree->head, tree), free(old_filename), exit(1), -1);
-	check_expand(tree);
+	check_expand(tree, &tree->token);
 	if (has_wildcard(tree->token))
 	{
 		if (!handle_wildcard(&tree->token, "", *tree->head) && errno == ENOMEM)

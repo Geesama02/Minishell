@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 16:53:19 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/03 15:18:58 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:28:41 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**ignore_quotes_2d_array(char **strs)
 	i = 0;
 	while (strs[i])
 	{
-		strs[i] = ignore_quotes(&strs[i], 0, 0);
+		strs[i] = ignore_quotes(&strs[i]);
 		i++;
 	}
 	return (strs);

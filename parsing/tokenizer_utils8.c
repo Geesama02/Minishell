@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 19:49:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/03 10:04:17 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 12:19:41 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,40 @@ void	swap_redirection_op(t_token_array *tmp_a_o, int i, int l, t_token_array *to
 	if (tmp_a_o && i > 0)
 		swap_redirections(tmp_a_o - 1,
 			find_redirection_double(token_array, l, i) - 1);
+}
+
+int	alloc_str_no_qt(int j, t_token_tree *tree, char **tmp, char nxt)
+{
+	if (!tmp[j])
+		return (0);
+	if (has_vars(tmp[j]))
+	{
+		tmp[j] = ignore_quotes(&tmp[j]);
+		if (!tmp[j])
+			return (0);
+		if (!if_must_add(j, tmp, nxt))
+			return (0);
+		tmp[j] = expand_vars(tmp[j], CMD_T, *tree->head);
+		if (!tmp[j])
+			return (0);
+	}
+	else
+	{
+		tmp[j] = ignore_quotes(&tmp[j]);
+		if (!tmp[j])
+			return (0);
+	}
+	return (1);
+}
+
+void	remove_empty_space(char *str)
+{
+	int	len;
+
+	len = ft_strlen(str) - 1;
+	while (len >= 0 && *(str + len) == ' ')
+	{
+		*(str + len) = '\0';
+		len--;
+	}
 }

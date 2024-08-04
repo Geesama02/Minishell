@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/03 10:36:25 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 12:24:16 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,5 @@ t_token_array	*tokenizer(char **input, t_env_vars *head)
 	if (copy_to_array(token_array, holder, head) == 0)
 		return (NULL);
 	switch_multi_redirections(token_array);
-	// int j = 0;
-	// while(token_array[j].token)
-	// {
-	// 	printf("token_array -> |%s|\n", token_array[j].token);
-	// 	j++;
-	// }
 	return (token_array);
 }

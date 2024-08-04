@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/03 15:13:12 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 12:18:48 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ char			*continue_heredoc(char *delimiter, t_token_array *token_array,
 					char **holder, int *l);
 char			*ft_split_first(char *str);
 int				has_more_cmds(char *str);
-char			*ignore_quotes(char **str, int quote, int dquote);
+char			*ignore_quotes(char **str);
 char			*handle_extra_cmd(t_token_array *token_array, char **holder,
 					int *check, int i);
 char			*handle_multi_heredoc(t_token_array *token_array,
@@ -236,7 +236,7 @@ int				reorder_tokens(char ***holder);
 void			free_token_array(t_token_array *token_array);
 int				count_len(char **holder);
 int				handle_builtins_failure(t_token_tree *tree, char **cmds);
-int				check_expand(t_token_tree *tree);
+int				check_expand(t_token_tree *tree, char **str);
 int				count_wildcard(char *str);
 void			null_terminating_rev(char *string);
 int				has_quotes(char *str, char c);
@@ -313,5 +313,12 @@ void			swap_redirection_op(t_token_array *tmp_a_o, int i,
 t_token_array	*find_redirection_double(t_token_array *token_array,
 					int i, int l);
 void			swap_redirections(t_token_array *first, t_token_array *second);
+char			*split_quotes(char *str, t_token_tree *tree);
+int				alloc_str_no_qt(int j, t_token_tree *tree, char **tmp, char nxt);
+char 			*alloc_new_str(char *str, int *i);
+void			remove_empty_space(char *str);
+int				count_str_len_qt(char *str, int i);
+int				if_must_add(int j, char **tmp, char nxt);
+
 
 #endif

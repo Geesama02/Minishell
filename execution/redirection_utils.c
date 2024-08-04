@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 10:11:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/03 15:18:46 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:29:10 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	execute_redirec_in(t_token_tree *tree)
 	char	*filename_wq;
 
 	fd_stdin = safe_dup(0, tree);
-	filename_wq = ignore_quotes(&tree->right->token, 0, 0);
+	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
 			ft_close(NULL, tree->head, tree), exit(1), -1);
@@ -47,7 +47,7 @@ int	execute_redirec_out(t_token_tree *tree)
 	char	*filename_wq;
 
 	stdout_cp = safe_dup(1, tree);
-	filename_wq = ignore_quotes(&tree->right->token, 0 , 0);
+	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
 			ft_close(NULL, tree->head, tree), exit(1), -1);
@@ -75,7 +75,7 @@ int	execute_redirec_append(t_token_tree *tree)
 	char	*filename_wq;
 
 	stdout_cp = safe_dup(1, tree);
-	filename_wq = ignore_quotes(&tree->right->token, 0, 0);
+	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
 			ft_close(NULL, tree->head, tree), exit(1), -1);
