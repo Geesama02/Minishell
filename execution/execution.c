@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 15:38:47 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 11:17:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,18 @@ int	execute_one_command(t_token_tree *tree, int child)
 			&& errno == ENOMEM)
 			return (ft_close(NULL, tree->head, tree), exit(1), -1);
 	}
-	cmds = ft_split_qt(tree->token, ' ');
-	if (!cmds && errno == ENOMEM)
-		return (ft_close(NULL, tree->head, tree), exit(1), -1);
-	cmds = ignore_quotes_2d_array(cmds);
-	if (!cmds && errno == ENOMEM)
-		return (ft_close(NULL, tree->head, tree), exit(1), -1);
-	if (cmds && exec_command(tree, cmds, child) == -1)
-		return (free_2d_array(cmds), -1);
-	free_2d_array(cmds);
+	if (check_space_only(tree->token) == -1)
+	{
+		cmds = ft_split_qt(tree->token, ' ');
+		if (!cmds && errno == ENOMEM)
+			return (ft_close(NULL, tree->head, tree), exit(1), -1);
+		cmds = ignore_quotes_2d_array(cmds);
+		if (!cmds && errno == ENOMEM)
+			return (ft_close(NULL, tree->head, tree), exit(1), -1);
+		if (cmds && exec_command(tree, cmds, child) == -1)
+			return (free_2d_array(cmds), -1);
+		free_2d_array(cmds);
+	}
 	return (0);
 }
 

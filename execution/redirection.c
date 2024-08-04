@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 12:43:32 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/02 20:49:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,25 @@ int	expand_filenames(t_token_tree *tree)
 	return (0);
 }
 
-void	execute_redirection_in(t_token_tree *tree)
+int	execute_redirection_in(t_token_tree *tree)
 {
 	if (execute_redirec_in(tree) == -1)
-		define_exit_status(*tree->head, "1");
+		return (define_exit_status(*tree->head, "1"), -1);
+	return (0);
 }
 
-void	execute_redirection_out(t_token_tree *tree)
+int	execute_redirection_out(t_token_tree *tree)
 {
 	if (execute_redirec_out(tree) == -1)
-		define_exit_status(*tree->head, "1");
+		return (define_exit_status(*tree->head, "1"), -1);
+	return (0);
 }
 
-void	execute_redirection_append(t_token_tree *tree)
+int	execute_redirection_append(t_token_tree *tree)
 {
 	if (execute_redirec_append(tree) == -1)
-		define_exit_status(*tree->head, "1");
+		return (define_exit_status(*tree->head, "1"), -1);
+	return (0);
 }
 
 int	execute_redirection(t_token_tree *tree)
@@ -58,10 +61,19 @@ int	execute_redirection(t_token_tree *tree)
 	if (expand_filenames(tree->right) == -1)
 		return (define_exit_status(*tree->head, "1"), -1);
 	if (tree->type == REDIRECTION_O)
-		execute_redirection_out(tree);
+	{	
+		if (execute_redirection_out(tree) == -1)
+			return (-1);
+	}
 	else if (tree->type == REDIRECTION_I)
-		execute_redirection_in(tree);
+	{	
+		if (execute_redirection_in(tree) == -1)
+			return (-1);
+	}
 	else if (tree->type == REDIRECTION_A)
-		execute_redirection_append(tree);
+	{	
+		if (execute_redirection_append(tree) == -1)
+			return (-1);
+	}
 	return (0);
 }

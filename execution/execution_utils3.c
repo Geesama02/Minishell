@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/02 16:11:35 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/03 14:14:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,34 +48,50 @@ void	update_oldpwd(char *current_dir, char **cmds, t_token_tree *tree)
 		if (!oldpwd->env_val && errno == ENOMEM)
 			return (ft_close(cmds, tree->head, tree), exit(1));
 	}
+	else
+	{
+		oldpwd = malloc(sizeof(t_env_vars));
+		if (!oldpwd && errno == ENOMEM)
+			return (ft_close(cmds, tree->head, tree), exit(1));
+		oldpwd->env_name = ft_strdup("OLDPWD");
+		if (!oldpwd->env_name && errno == ENOMEM)
+			return (free(oldpwd), ft_close(cmds, tree->head, tree), exit(1));
+		oldpwd->env_val = ft_strdup(current_dir);
+		if (!oldpwd->env_val && errno == ENOMEM)
+			return (free_node(oldpwd), ft_close(cmds, tree->head, tree), exit(1));
+		oldpwd->visible = 0;
+		oldpwd->next = NULL;
+		ft_lstadd(tree->head, oldpwd);
+	}
 }
 
 int	changing_current_directory(char **cmds, char *path, t_token_tree *tree)
 {
 	char		current_dir[PATH_MAX];
-	char		*n_pwd;
-	char		*pwd_value;
 
 	if (chdir(path) == -1)
 	{
+		if (!getcwd(current_dir, sizeof(current_dir)) && errno != ENOENT)
+		{
+			chdir("/");
+			getcwd(current_dir, sizeof(current_dir));
+			update_pwd(cmds, tree, current_dir);
+		}
+		else if (!search_for_env_var(tree->head, "PWD"))
+		{
+			getcwd(current_dir, sizeof(current_dir));
+			update_pwd(cmds, tree, current_dir);
+		}
 		print_err("minishell: cd: ", path, ": ");
 		return (print_err(strerror(errno), "\n", NULL), -1);
 	}
 	if (!getcwd(current_dir, sizeof(current_dir)) && errno == ENOENT)
-	{
-		update_oldpwd(search_for_env_var(tree->head, "PWD")->env_val, cmds, tree);
-		pwd_value = search_for_env_var(tree->head, "PWD")->env_val;
-		n_pwd = ft_strjoin(pwd_value, "/..");
-		update_pwd(cmds, tree, n_pwd);
-		free(n_pwd);
-		return (print_err("cd: error retrieving current directory: getcwd: cannot access parent directories: ",
-			strerror(errno), "\n"), 0);
-	}
+		return (caseof_long_error(tree, cmds, path), -1);
 	else if (!getcwd(current_dir, sizeof(current_dir)) && errno != ENOENT)
 		return (print_err(strerror(errno), "\n", NULL), -1);
-	update_oldpwd(search_for_env_var(tree->head, "PWD")->env_val, cmds, tree);
-	update_pwd(cmds, tree, current_dir);
-	return (0);
+	if (search_for_env_var(tree->head, "PWD"))
+		update_oldpwd(search_for_env_var(tree->head, "PWD")->env_val, cmds, tree);
+	return (update_pwd(cmds, tree, current_dir), 0);
 }
 
 int	count_linkedlist_size(t_env_vars *lst)

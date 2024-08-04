@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:01:23 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 11:56:07 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/03 09:46:08 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,17 @@ void	swap_nodes_content(t_env_vars *env1, t_env_vars *env2)
 {
 	char	*tmpname;
 	char	*tmpval;
+	int		tmp_visible;
 
+	tmp_visible = env2->visible;
 	tmpname = env2->env_name;
 	tmpval = env2->env_val;
 	env2->env_name = env1->env_name;
 	env2->env_val = env1->env_val;
 	env1->env_name = tmpname;
 	env1->env_val = tmpval;
+	env2->visible = env1->visible;
+	env1->visible = tmp_visible;
 }
 
 void	sort_matched_envs(t_env_vars *head, int nbr_matched, int ascii_nbr)

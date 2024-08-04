@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/01 16:58:19 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/03 14:13:06 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,21 @@ t_env_vars	*initialize_main_variables(char **envp, struct termios *old_term)
 {
 	t_env_vars	*head;
 
+	head = NULL;
 	if (tcgetattr(0, old_term) == -1)
 		exit(1);
 	g_is_heredoc[0] = 0;
 	g_is_heredoc[1] = 0;
-	head = create_lst(envp);
-	handle_shlvl(head);
-	handle_oldpwd(head);
+	if (count_2d_array_elements(envp) > 0)
+		head = create_lst(envp);
+	else
+	{	
+		create_exit_status(&head);
+		check_path_and_create(head);
+	}
+	handle_shlvl(&head);
+	handle_oldpwd(&head);
+	handle_pwd(&head);
 	define_signals();
 	rl_catch_signals = 0;
 	return (head);
@@ -78,7 +86,6 @@ int	main(int argc, char **argv, char **envp)
 	head = initialize_main_variables(envp, &old_term);
 	while (1)
 	{
-		reset_terminal(&old_term, &head);
 		input = readline("Minishell$ ");
 		if (input == NULL)
 			null_input(head);
@@ -93,6 +100,7 @@ int	main(int argc, char **argv, char **envp)
 			define_exit_status(head, "1");
 		if (tokenize_and_build_execute_tree(input, &head, envp) == -1)
 			continue ;
+		reset_terminal(&old_term, &head);
 	}
 	return (0);
 }
