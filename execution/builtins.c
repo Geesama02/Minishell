@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/02 12:36:42 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/03 09:20:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,21 @@ int	cd_command(char **cmds, char *path, t_token_tree *tree)
 void	pwd_command(t_token_tree *tree)
 {
 	char	*current_dir;
+	char	buff[PATH_MAX];
 
-	current_dir = search_for_env_var(tree->head, "PWD")->env_val;
-	ft_putstr_fd(current_dir, 1);
-	write(1, "\n", 1);
+	current_dir = NULL;
+	if (search_for_env_var(tree->head, "PWD"))
+	{	
+		current_dir = search_for_env_var(tree->head, "PWD")->env_val;
+		ft_putstr_fd(current_dir, 1);
+		write(1, "\n", 1);
+	}
+	else
+	{
+		getcwd(buff, sizeof(buff));
+		ft_putstr_fd(buff, 1);
+		write(1, "\n", 1);
+	}
 }
 
 void	echo_command(t_token_tree *tree, char **cmds)

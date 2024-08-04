@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 12:24:43 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 12:26:59 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,21 @@ t_env_vars	*initialize_main_variables(char **envp, struct termios *old_term)
 {
 	t_env_vars	*head;
 
+	head = NULL;
 	if (tcgetattr(0, old_term) == -1)
 		exit(1);
 	g_is_heredoc[0] = 0;
 	g_is_heredoc[1] = 0;
-	head = create_lst(envp);
-	handle_shlvl(head);
-	handle_oldpwd(head);
+	if (count_2d_array_elements(envp) > 0)
+		head = create_lst(envp);
+	else
+	{	
+		create_exit_status(&head);
+		check_path_and_create(head);
+	}
+	handle_shlvl(&head);
+	handle_oldpwd(&head);
+	handle_pwd(&head);
 	define_signals();
 	rl_catch_signals = 0;
 	return (head);

@@ -6,35 +6,36 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 09:34:15 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/02 12:03:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/03 11:31:03 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./parse_header.h"
 
-void	handle_shlvl(t_env_vars *head)
+void	handle_shlvl(t_env_vars **head)
 {
-	t_env_vars	*lastnode;
 	t_env_vars	*shlvl;
 	int			shlvl_num;
 
-	shlvl = search_for_env_var(&head, "SHLVL");
+	shlvl = search_for_env_var(head, "SHLVL");
 	if (shlvl)
 	{
 		shlvl_num = ft_atoi(shlvl->env_val);
-		shlvl_num++;
+		if (shlvl_num < 0)
+			shlvl_num = 0;
+		else
+			shlvl_num++;
 		free(shlvl->env_val);
 		shlvl->env_val = ft_itoa(shlvl_num);
 	}
 	else
 	{
-		lastnode = get_last_node(head);
 		shlvl = malloc(sizeof(t_env_vars));
-		lastnode->next = shlvl;
 		shlvl->env_name = ft_strdup("SHLVL");
 		shlvl->env_val = ft_strdup("1");
 		shlvl->visible = 1;
 		shlvl->next = NULL;
+		ft_lstadd(head, shlvl);
 	}
 }
 
@@ -55,11 +56,11 @@ void	check_path_and_create(t_env_vars *head)
 	}
 }
 
-void	handle_oldpwd(t_env_vars *head)
+void	handle_oldpwd(t_env_vars **head)
 {
 	t_env_vars	*oldpwd;
 
-	oldpwd = search_for_env_var(&head, "OLDPWD");
+	oldpwd = search_for_env_var(head, "OLDPWD");
 	if (oldpwd)
 	{
 		free(oldpwd->env_val);
@@ -72,7 +73,7 @@ void	handle_oldpwd(t_env_vars *head)
 		oldpwd->env_val = NULL;
 		oldpwd->visible = 1;
 		oldpwd->next = NULL;
-		ft_lstadd(&head, oldpwd);
+		ft_lstadd(head, oldpwd);
 	}
 }
 
@@ -86,6 +87,39 @@ void	update_pwd(char **cmds, t_token_tree *tree, char *to_set)
 		free(pwd->env_val);
 		pwd->env_val = ft_strdup(to_set);
 		if (!pwd->env_val && errno == ENOMEM)
-			return (ft_close(cmds, tree->head, tree), exit(1));	
+			return (ft_close(cmds, tree->head, tree), exit(1));
+	}
+	else
+	{
+		pwd = malloc(sizeof(t_env_vars));
+		if (!pwd && errno == ENOMEM)
+			return (ft_close(cmds, tree->head, tree), exit(1));
+		pwd->env_name = ft_strdup("PWD");
+		if (!pwd->env_name && errno == ENOMEM)
+			return (free(pwd), ft_close(cmds, tree->head, tree), exit(1));
+		pwd->env_val = ft_strdup(to_set);
+		if (!pwd->env_val && errno == ENOMEM)
+			return (free_node(pwd), ft_close(cmds, tree->head, tree), exit(1));
+		pwd->visible = 0;
+		pwd->next = NULL;
+		ft_lstadd(tree->head, pwd);
+	}
+}
+
+void	handle_pwd(t_env_vars **head)
+{
+	char		buffer[PATH_MAX];
+	t_env_vars	*pwd;
+
+	pwd = search_for_env_var(head, "PWD");
+	if (!pwd)
+	{
+		pwd = malloc(sizeof(t_env_vars));
+		pwd->env_name = ft_strdup("PWD");
+		getcwd(buffer, sizeof(buffer));
+		pwd->env_val = ft_strdup(buffer);
+		pwd->next = NULL;
+		pwd->visible = 1;
+		ft_lstadd(head, pwd);
 	}
 }

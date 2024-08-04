@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:57:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/01 11:16:26 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/02 20:27:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_env_vars	*create_head(char **envp)
 	return (head);
 }
 
-void	create_exit_status(t_env_vars *head)
+void	create_exit_status(t_env_vars **head)
 {
 	t_env_vars	*newnode;
 
@@ -40,7 +40,7 @@ void	create_exit_status(t_env_vars *head)
 			exit(1));
 	newnode->visible = 0;
 	newnode->next = NULL;
-	ft_lstadd(&head, newnode);
+	ft_lstadd(head, newnode);
 }
 
 t_env_vars	*create_lst(char **envp)
@@ -51,7 +51,7 @@ t_env_vars	*create_lst(char **envp)
 	if (!envp[0])
 		envp++;
 	head = create_head(envp);
-	create_exit_status(head);
+	create_exit_status(&head);
 	envp++;
 	while (*envp)
 	{

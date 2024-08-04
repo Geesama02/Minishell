@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 12:18:48 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 12:27:03 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,13 +299,18 @@ int				check_zeros(char *number);
 long			ft_atoi_long(const char *str);
 char			**linkedlist_to_2d_array(t_env_vars *head);
 int				count_linkedlist_size(t_env_vars *lst);
-void			handle_shlvl(t_env_vars *head);
+void			handle_shlvl(t_env_vars **head);
 void			check_path_and_create(t_env_vars *head);
-void			handle_oldpwd(t_env_vars *head);
+void			handle_oldpwd(t_env_vars **head);
 void			reset_terminal(struct termios *old_term, t_env_vars **head);
 int				handle_bad_wildcard(t_token_array *token_array);
 void			update_pwd(char **cmds, t_token_tree *tree, char *to_set);
 void			update_oldpwd(char *current_dir, char **cmds, t_token_tree *tree);
+void			handle_pwd(t_env_vars **head);
+void			create_exit_status(t_env_vars **head);
+void			caseof_long_error(t_token_tree *tree, char **cmds, char *path);
+int				check_space_only(char *token);
+char			*ignore_first_last_quotes(char *string);
 int				join_extra_with_redi(char **holder, int i);
 char			*get_second_cmd(char *holder);
 void			swap_redirection_op(t_token_array *tmp_a_o, int i,

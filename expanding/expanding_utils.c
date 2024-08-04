@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/30 18:30:18 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/02 20:19:32 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_env_vars	*search_for_env_var(t_env_vars **head, char *env_name)
 {
 	t_env_vars	*current;
 
-	if (head)
+	if (*head)
 	{
 		current = *head;
 		while (current && ft_strcmp(current->env_name, env_name))
