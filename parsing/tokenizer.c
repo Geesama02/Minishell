@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 15:53:50 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 17:14:05 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	free_token_holder(char **holder, t_token_array *token_array, int i)
 	free(holder);
 	if (i > 0)
 		i--;
-	while (i >= 0 && token_array[i].token)
+	while (token_array && i >= 0 && token_array[i].token)
 	{
 		free(token_array[i].token);
 		i--;

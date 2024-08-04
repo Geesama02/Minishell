@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 17:38:20 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,29 @@ int	count_linkedlist_size(t_env_vars *lst)
 		current = current->next;
 	}
 	return (counter);
+}
+
+void	open_heredoc_tmp(char **holder, int i)
+{
+	int		j;
+	char	*tmp;
+
+	j = 0;
+	while (j < i)
+	{
+		if (set_token_type(holder[j]) == HEREDOC)
+		{
+			if (holder[j + 1] && set_token_type(holder[j + 1]) == CMD_T)
+			{
+				remove_empty_space(holder[j + 1]);
+				get_first_cmd(holder[j + 1]);
+				tmp = continue_heredoc(ignore_quotes(&holder[j + 1]),
+						NULL, holder, 0);
+				if (!tmp)
+					return (free_2d_array(holder), exit(1));
+				free(tmp);
+			}
+		}
+		j++;
+	}
 }

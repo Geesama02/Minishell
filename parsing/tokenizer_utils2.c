@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/02 19:56:47 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 17:36:56 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,13 @@ int	scan_syntax(char **holder)
 				, holder[0], "' \n"), 0);
 	else if (is_operand(holder[j - 1]))
 		return (print_err("Minishell: syntax error near unexpected token `"
-				, holder[j - 1], "' \n"), 0);
+				, holder[j - 1], "' \n"), open_heredoc_tmp(holder, j - 1), 0);
 	while (holder[i] != NULL)
 	{
 		if (is_bad_syntax(holder, i))
 			return (print_err("Minishell: syntax error near unexpected token `"
-					, holder[i + 1], "' \n"), 0);
+					, holder[i + 1], "' \n"),
+				open_heredoc_tmp(holder, i + 1), 0);
 		i++;
 	}
 	return (1);

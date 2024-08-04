@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 17:53:25 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/03 17:29:27 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 17:16:44 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	*handle_multi_heredoc(t_token_array *token_array,
 	if (!tmp)
 		return (NULL);
 	free(token_array[vars->x].token);
+	remove_empty_space(holder[i + 1]);
 	token = continue_heredoc(ignore_quotes(&holder[i + 1]),
 			token_array, holder, &vars->l);
 	if (!token)
@@ -45,6 +46,7 @@ void	*handle_first_heredoc(t_token_array *token_array,
 		return (NULL);
 	token_array[*l].type = HEREDOC;
 	(*l)++;
+	remove_empty_space(holder[i + 1]);
 	token_array[*l].token = continue_heredoc(ignore_quotes(&holder[i + 1]),
 			token_array, holder, l);
 	if (!token_array[*l].token)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 15:48:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 17:38:39 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,5 +328,7 @@ int				count_str_len_qt(char *str, int i);
 int				if_must_add(int j, char **tmp, char nxt);
 void			shlvl_cases(t_env_vars *shlvl, t_env_vars **head);
 void			long_error(void);
+void			open_heredoc_tmp(char **holder, int i);
+void			get_first_cmd(char *holder);
 
 #endif

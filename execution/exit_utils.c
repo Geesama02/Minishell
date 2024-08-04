@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 14:48:41 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/30 18:20:58 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 17:38:08 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,15 @@ int	check_zeros(char *number)
 		i++;
 	}
 	return (0);
+}
+
+void	get_first_cmd(char *holder)
+{
+	int	i;
+
+	i = 0;
+	while (holder[i] && (holder[i] != ' '
+			|| (holder[i] == ' ' && is_inside_quotes(holder, i))))
+		i++;
+	holder[i] = '\0';
 }
