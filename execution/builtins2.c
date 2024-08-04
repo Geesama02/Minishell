@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 16:09:49 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 18:10:09 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	env_command(t_token_tree *tree, char **cmds, t_env_vars *head)
 	}
 }
 
-void	exit_command(char **cmds, int child, t_token_tree *tree)
+int	exit_command(char **cmds, int child, t_token_tree *tree)
 {
 	long		exit_s;
 	t_env_vars	*tmp;
@@ -48,10 +48,11 @@ void	exit_command(char **cmds, int child, t_token_tree *tree)
 	{
 		exit_s = ft_atoi_long(cmds[1]);
 		if (check_overflow_multiple_arguments(exit_s, cmds) == -1)
-			return ;
+			return (-1);
 	}
 	ft_close(cmds, tree->head, tree);
 	exit(exit_s);
+	return (0);
 }
 
 int	home_case(char **cmds, t_token_tree *tree, t_env_vars *head)

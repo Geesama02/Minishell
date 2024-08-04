@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 18:09:38 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ int	builtins_rest(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
 	else if (!ft_strcmp(cmds[0], "env"))
 		env_command(tree, cmds, *head);
 	else if (!ft_strcmp(cmds[0], "exit"))
-		exit_command(cmds, child, tree);
+	{	
+		if (exit_command(cmds, child, tree) == -1)
+			return (define_exit_status(*head, "1"), -1);
+	}
 	else
 	{
 		if (execute_rest(cmds, tree) == -1)

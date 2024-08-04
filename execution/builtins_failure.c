@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:32:17 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/27 12:35:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 18:19:01 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	check_ambiguous_without_quotes(char *old_filename, t_token_tree *tree)
 	cmds = NULL;
 	if (has_quotes(tree->token, '\'') && has_quotes(tree->token, '\"'))
 	{
+		switch_tabs_to_spaces_nq(tree->token);
 		cmds = ft_split(tree->token, ' ');
 		if (!cmds)
 			return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 09:29:37 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 15:42:52 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 18:01:28 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	switch_tabs_to_spaces(char *string)
 	i = 0;
 	while (string[i])
 	{
-		if (string[i] == '\t')
+		if (string[i] == '\t' && is_inside_quotes(string, i) == 0)
 			string[i] = ' ';
 		i++;
 	}

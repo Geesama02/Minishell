@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 14:48:41 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 17:38:08 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 18:09:03 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,17 @@ void	get_first_cmd(char *holder)
 			|| (holder[i] == ' ' && is_inside_quotes(holder, i))))
 		i++;
 	holder[i] = '\0';
+}
+
+void	switch_tabs_to_spaces_nq(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\t')
+			str[i] = ' ';
+		i++;
+	}
 }

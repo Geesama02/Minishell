@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 17:38:39 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 18:10:23 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ void			free_envs(t_env_vars **head);
 int				create_env(t_env_vars *node, t_env_vars *head, char *env);
 t_env_vars		*display_envs_sorted(t_env_vars *head, char **tokens,
 					t_token_tree *tree);
-void			exit_command(char **cmds, int child, t_token_tree *tree);
+int				exit_command(char **cmds, int child, t_token_tree *tree);
 void			null_terminating(char *str, char c);
 int				execute_using_execve(t_token_tree *tree, char **cmds,
 					char *path);
@@ -330,5 +330,6 @@ void			shlvl_cases(t_env_vars *shlvl, t_env_vars **head);
 void			long_error(void);
 void			open_heredoc_tmp(char **holder, int i);
 void			get_first_cmd(char *holder);
+void			switch_tabs_to_spaces_nq(char *str);
 
 #endif
