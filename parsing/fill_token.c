@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 10:20:06 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/05 12:58:14 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/05 14:36:50 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,18 @@ void	if_must_split(char ***cmds, int n, t_token_tree *tree, int flag)
 				return (ft_close(NULL, tree->head, tree), exit(1));
 		}
 	}
+}
+
+char	*remove_space_last(char *str)
+{
+	int	i;
+
+	switch_tabs_to_spaces(str);
+	i = ft_strlen(str) - 1;
+	while (i > 0 && str[i] == ' ' && str[i - 1] == ' ')
+	{
+		str[i] = '\0';
+		i--;
+	}
+	return (str);
 }

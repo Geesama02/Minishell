@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_utils4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 11:57:37 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/29 09:46:25 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 14:34:24 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,15 @@ int	has_vars(char *str)
 char	*search_for_var(t_env_vars *head, char *env_name)
 {
 	t_env_vars	*tmp;
+	char *tmp_val;
 
 	tmp = head;
 	while (tmp && ft_strcmp(tmp->env_name, env_name) != 0)
 		tmp = tmp->next;
 	if (!tmp)
 		return (NULL);
-	return (tmp->env_val);
+	tmp_val = tmp->env_val;
+	while (tmp_val && *tmp_val == ' ' && *(tmp_val + 1) && *(tmp_val + 1) == ' ')
+		tmp_val++;
+	return (tmp_val);
 }

@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:02:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 09:46:55 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/05 14:37:39 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,16 @@ int	non_var_name(char *str, int i)
 char	*join_var(char **words, int i, char *env_value, char *tmp)
 {
 	char	*word_tmp;
+	char	*tmp2;
 
-	word_tmp = ft_strjoin(env_value, tmp);
-	if (!word_tmp)
+	tmp2 = ft_strdup(env_value);
+	if (!tmp2)
 		return (free(tmp), free_2d_array(words), NULL);
+	remove_space_last(tmp2);
+	word_tmp = ft_strjoin(tmp2, tmp);
+	if (!word_tmp)
+		return (free(tmp2), free(tmp), free_2d_array(words), NULL);
+	free(tmp2);
 	free(words[i]);
 	return (word_tmp);
 }
@@ -83,7 +89,7 @@ char	*get_extras_and_join(t_env_vars *head, char **words, int i)
 			if (!word_tmp)
 				return (free_2d_array(words), NULL);
 			free(words[i]);
-			words[i] = word_tmp;
+			words[i] = remove_space_last(word_tmp);
 		}
 		else
 			words[i][0] = '\0';
