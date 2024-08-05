@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/05 11:01:44 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 13:04:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	execute_one_command(t_token_tree *tree, int child)
 {
 	char	**cmds;
 	int		n;
+	int	flag = 0;
 
 	n = 0;
 	cmds = ft_split_qt(tree->token, ' ');
@@ -68,7 +69,13 @@ int	execute_one_command(t_token_tree *tree, int child)
 		return (ft_close(NULL, tree->head, tree), exit(1), -1);
 	while (cmds[n])
 	{
+		if (has_quotes(cmds[n], '\'') && has_quotes(cmds[n], '\"'))
+			flag = 1;
 		check_expand(tree, &cmds[n]);
+		if_must_split(&cmds, n, tree, flag);
+		flag = 0;
+		if (!cmds[n])
+			break ;
 		n++;
 	}
 	if (cmds && exec_command(tree, cmds, child) == -1)
