@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:49:24 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 15:50:15 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:44:22 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	reset_terminal(struct termios *old_term, t_env_vars **head)
 {
-	if (tcsetattr(0, TCSANOW, old_term) == -1)
+	if (tcsetattr(0, TCSANOW, old_term) == -1 && errno != ENOTTY)
 	{
 		ft_close(NULL, head, NULL);
 		print_err(strerror(errno), "\n", NULL);

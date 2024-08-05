@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 15:37:06 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:09:49 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	execute_one_command(t_token_tree *tree, int child)
 	int		n;
 
 	n = 0;
-	cmds = NULL;
 	cmds = ft_split_qt(tree->token, ' ');
 	if (!cmds && errno == ENOMEM)
 		return (ft_close(NULL, tree->head, tree), exit(1), -1);

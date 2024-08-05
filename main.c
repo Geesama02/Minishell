@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 15:27:12 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:43:49 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,11 @@ t_env_vars	*initialize_main_variables(char **envp, struct termios *old_term)
 	t_env_vars	*head;
 
 	head = NULL;
-	if (tcgetattr(0, old_term) == -1)
+	if (tcgetattr(0, old_term) == -1 && errno != ENOTTY)
+	{
+		print_err(strerror(errno), "\n", NULL);
 		exit(1);
+	}
 	g_is_heredoc[0] = 0;
 	g_is_heredoc[1] = 0;
 	if (count_2d_array_elements(envp) > 0)
