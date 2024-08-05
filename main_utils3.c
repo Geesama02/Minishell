@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 11:34:39 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 09:47:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,17 +109,23 @@ void	shlvl_cases(t_env_vars *shlvl, t_env_vars **head)
 	if (shlvl_negative_and_null_case(shlvl, head) == 1)
 		return ;
 	shlvl_num = ft_atoi(shlvl->env_val);
-	if (shlvl_num >= 999)
+	free(shlvl->env_val);
+	if (shlvl_num == 999)
 	{
-		free(shlvl->env_val);
 		shlvl->env_val = ft_strdup("");
+		if (!shlvl->env_val && errno == ENOMEM)
+			return (free_envs(head), exit(1));
+		return ;
+	}
+	else if (shlvl_num > 999)
+	{
+		shlvl->env_val = ft_strdup("1");
 		if (!shlvl->env_val && errno == ENOMEM)
 			return (free_envs(head), exit(1));
 		return ;
 	}
 	else
 		shlvl_num++;
-	free(shlvl->env_val);
 	shlvl->env_val = ft_itoa(shlvl_num);
 	if (!shlvl->env_val && errno == ENOMEM)
 		return (free_envs(head), exit(1));

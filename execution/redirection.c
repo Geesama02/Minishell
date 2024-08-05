@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 18:17:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 18:52:53 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,23 @@ int	expand_filenames(t_token_tree *tree)
 	if (!old_filename)
 		return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,
 				tree->head, tree), free(old_filename), exit(1), -1);
-	check_expand(tree, &tree->token);
-	if (has_wildcard(tree->token))
+	if (tree->token[0] != '\"')
 	{
-		if (!handle_wildcard(&tree->token, "", *tree->head) && errno == ENOMEM)
-			return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,
-					tree->head, tree), free(old_filename), exit(1), -1);
+		check_expand(tree, &tree->token);
+		if (has_wildcard(tree->token))
+		{
+			if (!handle_wildcard(&tree->token, "", *tree->head)
+				&& errno == ENOMEM)
+				return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,
+						tree->head, tree), free(old_filename), exit(1), -1);
+		}
+		if (tree->token[0] == 0)
+			return (ambiguous_redirect_error(old_filename));
+		if (check_ambiguous_without_quotes(old_filename, tree) == -1)
+			return (-1);
 	}
-	if (tree->token[0] == 0)
-		return (ambiguous_redirect_error(old_filename));
-	if (check_ambiguous_without_quotes(old_filename, tree) == -1)
-		return (-1);
+	else
+		without_quotes_redire(tree, old_filename);
 	free(old_filename);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 10:11:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/03 17:29:10 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/04 18:48:09 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,15 @@ int	execute_redirec_append(t_token_tree *tree)
 	safe_dup2(tree, stdout_cp, 1);
 	safe_close(stdout_cp, tree);
 	return (0);
+}
+
+void	without_quotes_redire(t_token_tree *tree, char *old_filename)
+{
+	check_expand(tree, &tree->token);
+	if (has_wildcard(tree->token))
+	{
+		if (!handle_wildcard(&tree->token, "", *tree->head) && errno == ENOMEM)
+			return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,
+					tree->head, tree), free(old_filename), exit(1));
+	}
 }

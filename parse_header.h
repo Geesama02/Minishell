@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 18:10:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/04 18:46:05 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -331,5 +331,6 @@ void			long_error(void);
 void			open_heredoc_tmp(char **holder, int i);
 void			get_first_cmd(char *holder);
 void			switch_tabs_to_spaces_nq(char *str);
+void			without_quotes_redire(t_token_tree *tree, char *old_filename);
 
 #endif
