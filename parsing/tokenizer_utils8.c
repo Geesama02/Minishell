@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils8.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 19:49:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 15:54:55 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:35:58 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,22 @@ void	swap_redirection_op(t_token_array *tmp_a_o, int i, int l,
 
 int	alloc_str_no_qt(int j, t_token_tree *tree, char **tmp, char nxt)
 {
+	char	*w_tmp;
+
 	if (!tmp[j])
 		return (0);
 	if (has_vars(tmp[j]))
 	{
+		w_tmp = ft_strdup(tmp[j]);
 		tmp[j] = ignore_quotes(&tmp[j]);
-		if (!tmp[j])
-			return (0);
+		if (!w_tmp || !tmp[j])
+			return (free(w_tmp), 0);
 		if (!if_must_add(j, tmp, nxt))
 			return (0);
 		tmp[j] = expand_vars(tmp[j], *tree->head);
 		if (!tmp[j])
+			return (0);
+		if (!recheck_wilcard(tmp, j, w_tmp, tree))
 			return (0);
 	}
 	else
