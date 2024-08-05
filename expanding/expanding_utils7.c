@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:25:01 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/05 10:53:20 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:18:50 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,18 @@ int	recheck_wilcard(char **tmp, int j, char *w_tmp, t_token_tree *tree)
 	else
 		free(w_tmp);
 	return (1);
+}
+
+int	has_vars_in_quotes(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' && is_inside_quotes(str, i) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
 }

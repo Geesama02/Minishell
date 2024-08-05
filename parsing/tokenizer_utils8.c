@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 19:49:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/05 10:53:07 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 16:19:34 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	alloc_str_no_qt(int j, t_token_tree *tree, char **tmp, char nxt)
 		tmp[j] = ignore_quotes(&tmp[j]);
 		if (!w_tmp || !tmp[j])
 			return (free(w_tmp), 0);
-		if (!if_must_add(j, tmp, nxt))
+		if (is_inside_quotes(w_tmp, 0) == 0 && !if_must_add(j, tmp, nxt))
 			return (free(w_tmp), 0);
 		tmp[j] = expand_vars(tmp[j], *tree->head);
 		if (!tmp[j])

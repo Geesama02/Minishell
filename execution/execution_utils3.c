@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 17:38:20 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/05 17:02:01 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	open_heredoc_tmp(char **holder, int i)
 				get_first_cmd(holder[j + 1]);
 				tmp = continue_heredoc(ignore_quotes(&holder[j + 1]),
 						NULL, holder, 0);
-				if (!tmp)
+				if (!tmp && errno == ENOMEM)
 					return (free_2d_array(holder), exit(1));
 				free(tmp);
 			}

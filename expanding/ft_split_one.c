@@ -6,12 +6,11 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 10:05:45 by maglagal          #+#    #+#             */
-/*   Updated: 2024/07/28 10:37:08 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 16:31:53 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "../parse_header.h"
 
 static size_t	word_length(char const *s, char c, size_t i)
 {

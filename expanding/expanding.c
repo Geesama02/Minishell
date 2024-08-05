@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 16:35:34 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,10 @@ void	create_newenv(char **tokens, t_env_vars **head, char **cmds,
 
 	envname = ft_strtrim(cmds[0], "+");
 	new_env->env_name = ft_strdup(envname);
-	free(envname);
 	if (!new_env->env_name && errno == ENOMEM)
-		return (ft_close(tokens, head, NULL), free_2d_array(cmds), exit(1));
+		return (free(envname), ft_close(tokens, head, NULL),
+			free_2d_array(cmds), exit(1));
+	free(envname);
 	if (ft_strchr(cmds[1], '$'))
 		null_terminating(cmds[1], '$');
 	if (cmds[1])

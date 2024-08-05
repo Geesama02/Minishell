@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 18:52:53 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:40:29 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	expand_filenames(t_token_tree *tree)
 {
 	char	*old_filename;
 
+	remove_empty_space(tree->token);
 	old_filename = ft_strdup(tree->token);
 	if (!old_filename)
 		return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,
@@ -37,8 +38,7 @@ int	expand_filenames(t_token_tree *tree)
 	}
 	else
 		without_quotes_redire(tree, old_filename);
-	free(old_filename);
-	return (0);
+	return (free(old_filename), 0);
 }
 
 int	execute_redirection_in(t_token_tree *tree)
