@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/05 10:28:25 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/05 12:58:28 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,5 +334,10 @@ void			switch_tabs_to_spaces_nq(char *str);
 void			without_quotes_redire(t_token_tree *tree, char *old_filename);
 int				recheck_wilcard(char **tmp, int j, char *w_tmp,
 					t_token_tree *tree);
+char			**realloc_tokens(char **holder, int n, char *extra);
+int				has_redirection_extras(char *str);
+char 			**remove_from_array(char **words, int i);
+void			if_must_split(char ***cmds, int n,
+					t_token_tree *tree, int flag);
 
 #endif

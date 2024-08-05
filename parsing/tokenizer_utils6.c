@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:43:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/03 11:00:37 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/05 12:51:13 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	**realloc_tokens(char **holder, int n, char *extra)
 	l = 0;
 	tmp = malloc(sizeof(char *) * (c + 2));
 	if (!tmp)
-		return (NULL);
+		return (free_2d_array(holder), NULL);
 	while (holder[i])
 	{
 		if (l == n)
