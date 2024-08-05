@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 11:01:31 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 
 int	exec_command(t_token_tree *tree, char **cmds, int child)
 {
+	
 	if (ft_strlen(cmds[0]) == 1 && !ft_strcmp(cmds[0], "."))
 	{
 		print_err("minishell: .: filename argument required\n",

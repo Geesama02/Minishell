@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/05 10:09:49 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/05 11:01:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,6 @@ int	execute_one_command(t_token_tree *tree, int child)
 	while (cmds[n])
 	{
 		check_expand(tree, &cmds[n]);
-		if (has_wildcard(cmds[n]))
-		{
-			if (handle_wildcard(&cmds[n], "", *tree->head) == 0
-				&& errno == ENOMEM)
-				return (ft_close(NULL, tree->head, tree), exit(1), -1);
-		}
 		n++;
 	}
 	if (cmds && exec_command(tree, cmds, child) == -1)
