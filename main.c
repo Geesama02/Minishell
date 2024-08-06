@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/05 10:43:49 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:41:17 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	tokenize_and_build_execute_tree(char *input, t_env_vars **head,
 	t_token_tree	*ast_tree;
 	t_stack			postfix_stack;
 
+	switch_tabs_to_spaces(input);
 	token_array = tokenizer(&input, *head);
 	if (!token_array)
 		return (-1);
