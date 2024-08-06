@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_utils7.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:25:01 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/05 15:18:50 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:11:17 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,15 @@ int	has_vars_in_quotes(char *str)
 		i++;
 	}
 	return (0);
+}
+
+int	set_flag(char **cmds, int n)
+{
+	int	flag;
+
+	flag = 0;
+	if (has_vars_in_quotes(cmds[n]) && (ft_strcmp(cmds[0], "export")
+			|| (!ft_strcmp(cmds[0], "export") && !get_not_inside_qt(cmds[n], '='))))
+		flag = 1;
+	return (flag);
 }

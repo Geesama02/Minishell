@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/05 16:29:31 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:11:49 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,16 @@ int	execute_one_command(t_token_tree *tree, int child)
 	int		n;
 	int		flag;
 
-	flag = 0;
 	n = 0;
 	cmds = ft_split_qt(tree->token, ' ');
 	if (!cmds && errno == ENOMEM)
 		return (ft_close(NULL, tree->head, tree), exit(1), -1);
 	while (cmds[n])
 	{
-		if (has_vars_in_quotes(cmds[n]))
-			flag = 1;
+		flag = set_flag(cmds, n);
 		check_expand(tree, &cmds[n]);
 		if (flag == 1)
 			if_must_split(&cmds, n, tree);
-		flag = 0;
 		if (!cmds[n])
 			break ;
 		n++;

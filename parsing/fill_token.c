@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 10:20:06 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/05 16:30:12 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/06 10:32:29 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,18 @@ char	*remove_space_last(char *str)
 		i--;
 	}
 	return (str);
+}
+
+int	get_not_inside_qt(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c && is_inside_quotes(str, i) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
 }

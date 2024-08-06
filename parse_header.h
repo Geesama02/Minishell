@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/05 16:29:54 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:11:26 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -341,5 +341,7 @@ void			if_must_split(char ***cmds, int n,
 					t_token_tree *tree);
 char			*remove_space_last(char *str);
 int				has_vars_in_quotes(char *str);
+int				get_not_inside_qt(char *str, char c);
+int				set_flag(char **cmds, int n);
 
 #endif
