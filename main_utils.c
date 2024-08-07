@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 10:46:53 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:41:07 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ char	*check_syntax(char *input)
 
 int	syntax_error_check(t_env_vars *head, char *input)
 {
-	switch_tabs_to_spaces(input);
 	if (check_syntax(input))
 		return (add_history(input), syntax_error_message(head, input), -1);
 	return (1);
