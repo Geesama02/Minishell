@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/07 10:57:48 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:17:26 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	check_existing(t_env_vars *prev, char **cmds, char **tokens,
 	if (!prev->env_val && errno == ENOMEM)
 		return (free_2d_array(cmds), ft_close(tokens, tree->head, tree),
 			exit(1));
+	update_underscore_env(prev->env_name, cmds, tree);
 }
 
 void	export_without_arguments(t_env_vars *p_head, char **tokens,

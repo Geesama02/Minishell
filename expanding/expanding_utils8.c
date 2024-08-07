@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 10:41:20 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/07 12:02:26 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:22:03 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,29 @@ void    create_name_val_env(char **cmds, char **tokens,
 
 void    handle_underscore(t_env_vars **head)
 {
-	t_env_vars	*underscore_env;
+	t_env_vars	*env;
 
-	underscore_env = search_for_env(head, "_");
-    if (!underscore_env)
+	env = search_for_env(head, "_");
+    if (!env)
     {
-        underscore_env = malloc(sizeof(t_env_vars));
-        if (!underscore_env && errno == ENOMEM)
+        env = malloc(sizeof(t_env_vars));
+        if (!env && errno == ENOMEM)
 			return (free_envs(head), exit(1));
-        underscore_env->env_name = ft_strdup("_");
-        if (!underscore_env->env_name && errno == ENOMEM)
-			return (free(underscore_env), free_envs(head), exit(1));
-        underscore_env->env_val = ft_strdup("minishell");
-         if (!underscore_env->env_val && errno == ENOMEM)
-			return (free(underscore_env), free(underscore_env->env_name),
-                free_envs(head), exit(1));
-        underscore_env->next = NULL;
-        underscore_env->visible = 1;
-        ft_lstadd(head, underscore_env);
+        env->env_name = ft_strdup("_");
+        if (!env->env_name && errno == ENOMEM)
+			return (free(env), free_envs(head), exit(1));
+        env->env_val = ft_strdup("minishell");
+         if (!env->env_val && errno == ENOMEM)
+			return (free(env), free(env->env_name), free_envs(head), exit(1));
+        env->next = NULL;
+        env->visible = 1;
+        ft_lstadd(head, env);
     }
-    else if (underscore_env && underscore_env->env_val)
+    else if (env && env->env_val)
     {
-        free(underscore_env->env_val);
-        underscore_env->env_val = ft_strdup("minishell");
+        free(env->env_val);
+        env->env_val = ft_strdup("minishell");
+        if (!env->env_val && errno == ENOMEM)
+            return (free_n(env), free_envs(head), exit(1));
     }
 }
