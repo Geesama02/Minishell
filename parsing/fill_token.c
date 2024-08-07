@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 10:20:06 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/06 10:32:29 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:07:38 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	if_must_split(char ***cmds, int n, t_token_tree *tree)
 		if (!*cmds && errno == ENOMEM)
 			return (ft_close(NULL, tree->head, tree), exit(1));
 	}
+	if (ft_strcmp((*cmds)[0], "unset") == 0 && (*cmds)[n][0] == '\0')
+		*cmds = remove_from_array(*cmds, n);
 }
 
 char	*remove_space_last(char *str)
