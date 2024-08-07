@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/06 11:11:26 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/07 11:07:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ t_token_tree	*create_node(char *token, t_t_type type, char **envp,
 t_token_array	*tokenizer(char **input, t_env_vars *head);
 void			*free_alloc(char **bigstr, int l);
 int				is_inside_quotes(char const *s, int i);
-void			pwd_command(t_token_tree *tree);
+void			pwd_command(t_token_tree *tree, char **cmds);
 void			echo_command(t_token_tree *tree, char **cmds);
 int				export_command(char **tokens, t_env_vars **head,
 					t_token_tree *tree);
@@ -255,8 +255,8 @@ int				execute_redirec_append(t_token_tree *tree);
 void			safe_dup2(t_token_tree *node, int old_fd, int new_fd);
 int				safe_dup(int fd, t_token_tree *node);
 void			eof_pressed(t_env_vars **head);
-int				exit_execve(int status, t_env_vars **head, char *path);
-void			create_newenv(char **tokens, t_env_vars **head, char **cmds,
+int				exit_execve(int status, t_token_tree *tree, char *path, char **cmds);
+void			create_newenv(char **tokens, t_token_tree *tree, char **cmds,
 					t_env_vars *new_env);
 void			set_address(t_token_tree *root, t_token_tree **address);
 int				init_heredoc(char *delimiter, char **input, int *stdin_fd);
@@ -343,5 +343,10 @@ char			*remove_space_last(char *str);
 int				has_vars_in_quotes(char *str);
 int				get_not_inside_qt(char *str, char c);
 int				set_flag(char **cmds, int n);
+void			update_underscore_env(char *to_set,
+					char **cmds, t_token_tree *tree);
+void			create_name_val_env(char **cmds, char **tokens,
+					t_token_tree *tree, t_env_vars *new_env);
+void			handle_underscore(t_env_vars **head);
 
 #endif

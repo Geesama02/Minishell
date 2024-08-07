@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/05 10:43:49 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/07 11:02:12 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ t_env_vars	*initialize_main_variables(char **envp, struct termios *old_term)
 	handle_shlvl(&head);
 	handle_oldpwd(&head);
 	handle_pwd(&head);
+	handle_underscore(&head);
 	define_signals();
 	rl_catch_signals = 0;
 	return (head);
