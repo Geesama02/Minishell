@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 11:50:33 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/07/23 09:58:15 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:11:51 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static int	count_words(char const *s, char c)
 	while (s[i])
 	{
 		if (s[i] == c && s[i + 1]
-			&& !non_var_name((char *)s, i + 1) && s[i + 1] != c)
+			&& (!non_var_name((char *)s, i + 1) || s[i + 1] == '$')
+			&& (s[i + 1] != c || (s[i + 1] == c && i == 0)))
 			count++;
 		i++;
 	}

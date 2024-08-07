@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:03:52 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 11:28:05 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:10:20 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	*get_extra_chars(char *holder)
 			return (holder + 1);
 		if (holder[0] == '\"' || holder[0] == '\'')
 			return (holder + 1);
+		if (holder[0] == '$')
+			return (holder);
 		if (non_var_name(holder, i))
 			return (holder + i);
 		i++;
