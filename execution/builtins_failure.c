@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:32:17 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 18:19:01 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/07 11:24:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,30 @@ int	ambiguous_redirect_error(char *filename)
 	print_err("minishell: ", filename, ": ambiguous redirect\n");
 	free(filename);
 	return (-1);
+}
+
+void	update_underscore_env(char *to_set, char **cmds, t_token_tree *tree)
+{
+	t_env_vars	*env;
+
+	env = search_for_env(tree->head, "_");
+	if (env && ft_strcmp(env->env_val, "-n") && to_set)
+	{
+		free(env->env_val);
+		env->env_val = ft_strdup(to_set);
+		if (!env->env_val && errno == ENOMEM)
+			return (ft_close(cmds, tree->head, tree), exit(1));
+	}
+	else if (env && ft_strcmp(env->env_val, "-n") && !to_set)
+	{
+		free(env->env_val);
+		env->env_val = ft_strdup(cmds[count_2d_array_elements(cmds) - 1]);
+		if (!env->env_val && errno == ENOMEM)
+			return (ft_close(cmds, tree->head, tree), exit(1));
+	}
+	else if (env && !ft_strcmp(env->env_val, "-n"))
+	{
+		free(env->env_val);
+		env->env_val = ft_strdup("");
+	}
 }

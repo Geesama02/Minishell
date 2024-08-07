@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 11:57:37 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/05 16:26:17 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/07 10:16:45 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	lst_add_element(char **tokens, char **cmds, t_token_tree *tree)
 		lastnode->next = new_env;
 	else if (!lastnode)
 		*tree->head = new_env;
-	create_newenv(tokens, tree->head, cmds, new_env);
+	create_newenv(tokens, tree, cmds, new_env);
 }
 
 int	has_vars(char *str)

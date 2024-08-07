@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/06 11:41:17 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/07 13:27:34 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ t_env_vars	*initialize_main_variables(char **envp, struct termios *old_term)
 	handle_shlvl(&head);
 	handle_oldpwd(&head);
 	handle_pwd(&head);
+	handle_underscore(&head);
 	define_signals();
 	rl_catch_signals = 0;
 	return (head);

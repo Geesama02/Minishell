@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 10:06:07 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/07 10:11:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	append_env_var(char *env_name, char *to_append, char **cmds,
 	t_env_vars	*tmp;
 	char		*prev_envval;
 
+	update_underscore_env(env_name, cmds, tree);
 	tmp = search_for_env(tree->head, env_name);
 	if (tmp)
 	{

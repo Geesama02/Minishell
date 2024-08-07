@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/05 09:54:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/07 11:01:34 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	execute_using_execve(t_token_tree *tree, char **cmds,
 		}
 	}
 	wait(&status);
-	return (exit_execve(status, tree->head, path));
+	return (exit_execve(status, tree, path, cmds));
 }
 
 int	builtins_rest(t_token_tree *tree, char **cmds, t_env_vars **head, int child)
@@ -100,11 +100,14 @@ char	*file_isdir_case(char **cmds, t_token_tree *tree, char *path)
 
 	path = ft_strdup(cmds[0]);
 	if (!path && errno == ENOMEM)
-		return (ft_close(cmds, tree->head, tree), NULL);
+		return (update_underscore_env(NULL, cmds, tree),
+			ft_close(cmds, tree->head, tree), NULL);
 	if (stat(path, &buff) == -1 && errno != ENOENT)
-		return (free(path), print_err(strerror(errno), "\n", NULL), NULL);
+		return (update_underscore_env(NULL, cmds, tree),
+			free(path), print_err(strerror(errno), "\n", NULL), NULL);
 	if (S_ISDIR(buff.st_mode))
 	{
+		update_underscore_env(NULL, cmds, tree);
 		define_exit_status(*tree->head, "126");
 		return (print_err("minishell: ", path,
 				": is a directory\n"), free(path), NULL);

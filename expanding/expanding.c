@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/05 16:35:34 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/07 10:57:48 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ void	export_without_arguments(t_env_vars *p_head, char **tokens,
 	{
 		if (s_head->env_name[0] != '?')
 		{
-			if (s_head->env_val && s_head->visible == 1)
+			if (s_head->env_val && s_head->visible == 1
+				&& ft_strcmp(s_head->env_name, "_"))
 			{
 				printf("declare -x %s=\"%s\"\n", s_head->env_name,
 					s_head->env_val);
 			}
-			else if (s_head->visible == 1)
+			else if (s_head->visible == 1 && ft_strcmp(s_head->env_name, "_"))
 				printf("declare -x %s\n", s_head->env_name);
 		}
 		s_head = s_head->next;
@@ -47,33 +48,17 @@ void	export_without_arguments(t_env_vars *p_head, char **tokens,
 	free_envs(&tmp_h);
 }
 
-void	create_newenv(char **tokens, t_env_vars **head, char **cmds,
+void	create_newenv(char **tokens, t_token_tree *tree, char **cmds,
 	t_env_vars *new_env)
 {
-	char	*envname;
-
-	envname = ft_strtrim(cmds[0], "+");
-	new_env->env_name = ft_strdup(envname);
-	if (!new_env->env_name && errno == ENOMEM)
-		return (free(envname), ft_close(tokens, head, NULL),
-			free_2d_array(cmds), exit(1));
-	free(envname);
-	if (ft_strchr(cmds[1], '$'))
-		null_terminating(cmds[1], '$');
-	if (cmds[1])
-	{
-		new_env->env_val = ft_strdup(cmds[1]);
-		if (!new_env->env_val && errno == ENOMEM)
-			return (ft_close(tokens, head, NULL), free_2d_array(cmds), exit(1));
-	}
-	else
-		new_env->env_val = NULL;
+	create_name_val_env(cmds, tokens, tree, new_env);
 	new_env->next = NULL;
 	new_env->visible = 1;
 	if (new_env->env_name && new_env->env_name[0] == '\"')
 		new_env->env_name = ignore_first_last_quotes(new_env->env_name);
 	if (new_env->env_val && new_env->env_val[0] == '\"')
 		new_env->env_val = ignore_first_last_quotes(new_env->env_val);
+	update_underscore_env(new_env->env_name, cmds, tree);
 }
 
 int	add_or_append(char **cmds, t_token_tree *tree,
@@ -112,6 +97,7 @@ int	add_env_var(char **tokens, int nbr_envs, t_env_vars **head,
 			return (ft_close(tokens, head, tree), exit(1), -1);
 		if (add_or_append(cmds, tree, tokens) == -1)
 		{
+			update_underscore_env(NULL, tokens, tree);
 			cmd_status = -1;
 			define_exit_status(*head, "1");
 			print_err("minishell: export: `", tokens[i],
