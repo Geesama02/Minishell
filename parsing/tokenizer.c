@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 17:14:05 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/08 09:52:21 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ t_token_array	*tokenizer(char **input, t_env_vars *head)
 		return (NULL);
 	if (!holder[0])
 		return (free_2d_array(holder), NULL);
-	if (scan_syntax(holder) == 0)
-		return (define_exit_status(head, "258"), free_2d_array(holder), NULL);
+	if (scan_syntax(holder, head) == 0)
+		return (free_2d_array(holder), NULL);
 	if (must_reorder(holder))
 		reorder_tokens(&holder);
 	if (check_redirections_extras(holder) == 0)

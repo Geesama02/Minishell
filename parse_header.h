@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/07 11:07:59 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 11:31:21 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ char			**ft_split_one(char const *s, char c);
 t_t_type		set_token_type(char *token);
 void			execute_pipe(t_token_tree *tree);
 int				exec_command(t_token_tree *tree, char **cmds, int child);
-int				scan_syntax(char **holder);
+int				scan_syntax(char **holder, t_env_vars *head);
 t_t_type		set_token_type(char *token);
 void			free_tree(t_token_tree *root);
 char			*wildcard(char **str, int i, char *operator);
@@ -328,7 +328,7 @@ int				count_str_len_qt(char *str, int i);
 int				if_must_add(int j, char **tmp, char nxt);
 void			shlvl_cases(t_env_vars *shlvl, t_env_vars **head);
 void			long_error(void);
-void			open_heredoc_tmp(char **holder, int i);
+int				open_heredoc_tmp(char **holder, int i, t_env_vars *head);
 void			get_first_cmd(char *holder);
 void			switch_tabs_to_spaces_nq(char *str);
 void			without_quotes_redire(t_token_tree *tree, char *old_filename);
