@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/08 15:17:40 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:14:04 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,18 @@ int	scan_syntax(char **holder, t_env_vars *head)
 		j++;
 	if (set_token_type(holder[0]) == OPERATOR_T)
 		return (print_err("Minishell: syntax error near unexpected token `"
-				, holder[0], "' \n"),
-				update_underscore_env(holder[0], holder, head, NULL), 0);
+				, holder[0], "' \n"), define_exit_status(head, "258"),0);
 	else if (is_operand(holder[j - 1]))
 		return (print_err("Minishell: syntax error near unexpected token `"
-				, holder[j - 1], "' \n"), update_underscore_env(holder[0]
-				, holder, head, NULL), open_heredoc_tmp(holder, j - 1, head), 0);
+				, holder[j - 1], "' \n"), define_exit_status(head, "258"),
+				open_heredoc_tmp(holder, j - 1, head), 0);
 	while (holder[i] != NULL)
 	{
 		if (is_bad_syntax(holder, i))
 			return (print_err("Minishell: syntax error near unexpected token `"
 				,holder[i + 1], "' \n"),
-				open_heredoc_tmp(holder, i + 1, head),
-				update_underscore_env(holder[0], holder, head, NULL), 0);
+				define_exit_status(head, "258"),
+				open_heredoc_tmp(holder, i + 1, head), 0);
 		i++;
 	}
 	return (1);
