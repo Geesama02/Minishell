@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/08 15:06:05 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:15:08 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	count_linkedlist_size(t_env_vars *lst)
 	return (counter);
 }
 
-void	open_heredoc_tmp(char **holder, int i)
+int	open_heredoc_tmp(char **holder, int i, t_env_vars *head)
 {
 	int		j;
 	char	*tmp;
@@ -128,11 +128,14 @@ void	open_heredoc_tmp(char **holder, int i)
 				get_first_cmd(holder[j + 1]);
 				tmp = continue_heredoc(ignore_quotes(&holder[j + 1]),
 						NULL, holder, 0);
-				if (!tmp && errno == ENOMEM)
-					return (free_2d_array(holder), exit(1));
+				if (!tmp)
+					return (define_exit_status(head, "1"), 0);
 				free(tmp);
 			}
 		}
 		j++;
 	}
+	g_is_heredoc[0] = 0;
+	g_is_heredoc[1] = 0;
+	return (1);
 }

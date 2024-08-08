@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/08 14:55:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:15:04 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,7 +328,7 @@ int				count_str_len_qt(char *str, int i);
 int				if_must_add(int j, char **tmp, char nxt);
 void			shlvl_cases(t_env_vars *shlvl, t_env_vars **head);
 void			long_error(void);
-void			open_heredoc_tmp(char **holder, int i);
+int				open_heredoc_tmp(char **holder, int i, t_env_vars *head);
 void			get_first_cmd(char *holder);
 void			switch_tabs_to_spaces_nq(char *str);
 void			without_quotes_redire(t_token_tree *tree, char *old_filename);
