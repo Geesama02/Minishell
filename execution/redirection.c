@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/05 15:40:29 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:31:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@ int	execute_redirection_append(t_token_tree *tree)
 	return (0);
 }
 
-int	execute_redirection(t_token_tree *tree)
+int	execute_redirection(t_token_tree *tree, char **cmds)
 {
+	update_underscore_env(tree->left->token, cmds, *tree->head, tree);
 	if (expand_filenames(tree->right) == -1)
 		return (define_exit_status(*tree->head, "1"), -1);
 	if (tree->type == REDIRECTION_O)

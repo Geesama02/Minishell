@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/08 15:10:05 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:51:43 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	execute_one_command(t_token_tree *tree, char **cmds, int child)
 	}
 	if (cmds && exec_command(tree, cmds, child) == -1)
 		return (free_2d_array(cmds), -1);
-	return (0);
+	return (free_2d_array(cmds), 0);
 }
 
 int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
@@ -81,18 +81,15 @@ int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 	if (tree->type == REDIRECTION_I || tree->type == REDIRECTION_O
 		|| tree->type == REDIRECTION_A)
 	{
-		if (execute_redirection(tree) == -1)
-			return (-1);
+		if (execute_redirection(tree, cmds) == -1)
+			return (free_2d_array(cmds), -1);
 	}
 	else if (!tree->right && !tree->left)
-	{
-		if (execute_one_command(tree, cmds, child) == -1)
-			return (-1);
-	}
+		return (execute_one_command(tree, cmds, child));
 	else if (tree->type == OPERATOR_T || tree->type == HEREDOC)
 	{
 		if (execute_cmds_with_operators_heredoc(tree, head, cmds, child) == -1)
-			return (-1);
+			return (free_2d_array(cmds), -1);
 	}
 	wait(NULL);
 	free_2d_array(cmds);

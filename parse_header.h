@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/08 15:15:04 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:29:35 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void			free_tree(t_token_tree *root);
 char			*wildcard(char **str, int i, char *operator);
 int				has_wildcard(char *str);
 int				execute_tree(t_token_tree *tree, t_env_vars **head, int child);
-int				execute_redirection(t_token_tree *tree);
+int				execute_redirection(t_token_tree *tree, char **cmds);
 int				is_string(char *str);
 void			export_without_arguments(t_env_vars *head, char **tokens,
 					t_token_tree *tree);
