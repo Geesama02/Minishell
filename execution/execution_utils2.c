@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/07 11:01:34 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:30:46 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,14 @@ char	*file_isdir_case(char **cmds, t_token_tree *tree, char *path)
 
 	path = ft_strdup(cmds[0]);
 	if (!path && errno == ENOMEM)
-		return (update_underscore_env(NULL, cmds, tree),
+		return (update_underscore_env(NULL, cmds, *tree->head, tree),
 			ft_close(cmds, tree->head, tree), NULL);
 	if (stat(path, &buff) == -1 && errno != ENOENT)
-		return (update_underscore_env(NULL, cmds, tree),
+		return (update_underscore_env(NULL, cmds, *tree->head, tree),
 			free(path), print_err(strerror(errno), "\n", NULL), NULL);
 	if (S_ISDIR(buff.st_mode))
 	{
-		update_underscore_env(NULL, cmds, tree);
+		update_underscore_env(NULL, cmds, *tree->head, tree);
 		define_exit_status(*tree->head, "126");
 		return (print_err("minishell: ", path,
 				": is a directory\n"), free(path), NULL);

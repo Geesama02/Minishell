@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/07 09:59:17 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:10:05 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,40 +33,29 @@ int	check_expand(t_token_tree *tree, char **str)
 }
 
 int	execute_cmds_with_operators_heredoc(t_token_tree *tree, t_env_vars **head,
-		int child)
+	char **cmds, int child)
 {
 	if (!ft_strcmp(tree->token, "&&"))
-	{
-		if (!execute_tree(tree->left, head, child))
-			execute_tree(tree->right, head, child);
-		else
-			return (-1);
-	}
+		return (execute_and(tree, head, cmds, child));
 	else if (!ft_strcmp(tree->token, "||"))
-	{
-		if (execute_tree(tree->left, head, child) == -1)
-		{
-			if (execute_tree(tree->right, head, child) == -1)
-				return (-1);
-		}
-	}
+		return (execute_or(tree, head, cmds, child));
 	else if (!ft_strcmp(tree->token, "|"))
 		execute_pipe(tree);
 	else if (tree->type == HEREDOC)
+	{
 		execute_heredoc(tree);
-	return (0);
+		return (update_underscore_env(tree->left->token, cmds,
+			*tree->head, tree), 0);
+	}
+	return (update_underscore_env("", cmds, *tree->head, tree), 0);
 }
 
-int	execute_one_command(t_token_tree *tree, int child)
+int	execute_one_command(t_token_tree *tree, char **cmds, int child)
 {
-	char	**cmds;
 	int		n;
 	int		flag;
 
 	n = 0;
-	cmds = ft_split_qt(tree->token, ' ');
-	if (!cmds && errno == ENOMEM)
-		return (ft_close(NULL, tree->head, tree), exit(1), -1);
 	while (cmds[n])
 	{
 		flag = set_flag(cmds, n);
@@ -79,12 +68,16 @@ int	execute_one_command(t_token_tree *tree, int child)
 	}
 	if (cmds && exec_command(tree, cmds, child) == -1)
 		return (free_2d_array(cmds), -1);
-	free_2d_array(cmds);
 	return (0);
 }
 
 int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 {
+	char **cmds;
+
+	cmds = ft_split_qt(tree->token, ' ');
+	if (!cmds && errno == ENOMEM)
+		return (ft_close(NULL, tree->head, tree), exit(1), -1);
 	if (tree->type == REDIRECTION_I || tree->type == REDIRECTION_O
 		|| tree->type == REDIRECTION_A)
 	{
@@ -93,14 +86,15 @@ int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 	}
 	else if (!tree->right && !tree->left)
 	{
-		if (execute_one_command(tree, child) == -1)
+		if (execute_one_command(tree, cmds, child) == -1)
 			return (-1);
 	}
 	else if (tree->type == OPERATOR_T || tree->type == HEREDOC)
 	{
-		if (execute_cmds_with_operators_heredoc(tree, head, child) == -1)
+		if (execute_cmds_with_operators_heredoc(tree, head, cmds, child) == -1)
 			return (-1);
 	}
 	wait(NULL);
+	free_2d_array(cmds);
 	return (0);
 }

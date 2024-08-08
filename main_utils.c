@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 10:46:53 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/06 11:41:07 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:27:38 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	syntax_error_message(t_env_vars *head, char *input)
 	print_err("Minishell: syntax error near unexpected token `",
 		check_syntax(input), "' \n");
 	define_exit_status(head, "258");
+	update_underscore_env(input, NULL, head, NULL);
 }
 
 void	readline_allocation_failure(t_env_vars *head)

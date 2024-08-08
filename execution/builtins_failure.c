@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:32:17 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/07 15:14:53 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:04:57 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,39 @@ int	ambiguous_redirect_error(char *filename)
 	return (-1);
 }
 
-void	update_underscore_env(char *to_set, char **cmds, t_token_tree *tree)
+void	define_when_to_set(t_env_vars *env, char *to_set,
+	char **cmds, t_token_tree *tree)
+{
+	char	**cmds_token;
+
+	cmds_token = NULL;
+	free(env->env_val);
+	if (to_set && to_set[0] == '\0')
+	{
+		env->env_val = ft_strdup(to_set);
+		if (!env->env_val && errno == ENOMEM)
+			return (ft_close(cmds, tree->head, tree),
+				exit(1));
+		return ;
+	}
+	cmds_token = ft_split(to_set, ' ');
+	if (!cmds_token && errno == ENOMEM)
+		return (ft_close(cmds, tree->head, tree), exit(1));
+	env->env_val = ft_strdup(cmds_token[count_2d_array_elements(cmds_token) - 1]);
+	if (!env->env_val && errno == ENOMEM)
+		return (ft_close(cmds, tree->head, tree),
+			free_2d_array(cmds_token), exit(1));
+	free_2d_array(cmds_token);
+}
+
+void	update_underscore_env(char *to_set, char **cmds, t_env_vars *head,
+			t_token_tree *tree)
 {
 	t_env_vars	*env;
 
-	env = search_for_env(tree->head, "_");
+	env = search_for_env(&head, "_");
 	if (env && ft_strcmp(env->env_val, "-n") && to_set)
-	{
-		free(env->env_val);
-		env->env_val = ft_strdup(to_set);
-		if (!env->env_val && errno == ENOMEM)
-			return (ft_close(cmds, tree->head, tree), exit(1));
-	}
+		define_when_to_set(env, to_set, cmds, tree);
 	else if (env && ft_strcmp(env->env_val, "-n") && !to_set)
 	{
 		free(env->env_val);

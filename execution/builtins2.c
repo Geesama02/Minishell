@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/07 10:57:07 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:30:34 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	env_command(t_token_tree *tree, char **cmds, t_env_vars *head)
 	{
 		while (head)
 		{
-			update_underscore_env("/usr/bin/env", cmds, tree);
+			update_underscore_env("/usr/bin/env", cmds, *tree->head, tree);
 			if (head->env_val && head->env_name[0] != '?'
 				&& head->visible == 1)
 				printf("%s=%s\n", head->env_name, head->env_val);
@@ -30,7 +30,7 @@ void	env_command(t_token_tree *tree, char **cmds, t_env_vars *head)
 		print_err("minishell: env: No such file or directory\n", NULL, NULL);
 		if (define_exit_status(head, "127") == -1)
 			return (ft_close(cmds, tree->head, tree), exit(1));
-		update_underscore_env(NULL, cmds, tree);
+		update_underscore_env(NULL, cmds, *tree->head, tree);
 	}
 }
 
@@ -61,7 +61,7 @@ int	home_case(char **cmds, t_token_tree *tree, t_env_vars *head)
 {
 	t_env_vars	*home_path;
 
-	update_underscore_env(NULL, cmds, tree);
+	update_underscore_env(NULL, cmds, *tree->head, tree);
 	home_path = search_for_env(&head, "HOME");
 	if (home_path)
 	{
@@ -84,7 +84,7 @@ int	oldpwd_case(char **cmds, t_token_tree *tree, t_env_vars *head)
 	t_env_vars	*oldpwd;
 	char		*tmp_pwd;
 
-	update_underscore_env(NULL, cmds, tree);
+	update_underscore_env(NULL, cmds, *tree->head, tree);
 	oldpwd = search_for_env(&head, "OLDPWD");
 	tmp_pwd = ft_strdup(search_for_env(&head, "PWD")->env_val);
 	if (!tmp_pwd && errno == ENOMEM)

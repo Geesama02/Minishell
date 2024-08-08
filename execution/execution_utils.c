@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:28:06 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/07 11:15:36 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:28:27 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	execute_rest(char **cmds, t_token_tree *tree)
 	}
 	else
 	{
-		update_underscore_env(NULL, cmds, tree);
+		update_underscore_env(NULL, cmds, *tree->head, tree);
 		print_err("minishell: ", cmds[0], ": command not found\n");
 		define_exit_status(*tree->head, "127");
 		return (-1);
@@ -123,7 +123,7 @@ int	exec_command(t_token_tree *tree, char **cmds, int child)
 	{
 		print_err("minishell: .: filename argument required\n",
 			".: usage: . filename [arguments]\n", NULL);
-		update_underscore_env(NULL, cmds, tree);
+		update_underscore_env(NULL, cmds, *tree->head, tree);
 		return (define_exit_status(*tree->head, "2"), -1);
 	}
 	if (ft_strcmp(cmds[0], "exit")

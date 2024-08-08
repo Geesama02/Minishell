@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 17:36:56 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:05:23 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	handle_tokens(char **input, char *input_cpy, char **holder, int i)
 	return (1);
 }
 
-int	scan_syntax(char **holder)
+int	scan_syntax(char **holder, t_env_vars *head)
 {
 	int	i;
 	int	j;
@@ -51,16 +51,19 @@ int	scan_syntax(char **holder)
 		j++;
 	if (set_token_type(holder[0]) == OPERATOR_T)
 		return (print_err("Minishell: syntax error near unexpected token `"
-				, holder[0], "' \n"), 0);
+				, holder[0], "' \n"),
+				update_underscore_env(holder[0], holder, head, NULL), 0);
 	else if (is_operand(holder[j - 1]))
 		return (print_err("Minishell: syntax error near unexpected token `"
-				, holder[j - 1], "' \n"), open_heredoc_tmp(holder, j - 1), 0);
+				, holder[j - 1], "' \n"), update_underscore_env(holder[0]
+				, holder, head, NULL), open_heredoc_tmp(holder, j - 1), 0);
 	while (holder[i] != NULL)
 	{
 		if (is_bad_syntax(holder, i))
 			return (print_err("Minishell: syntax error near unexpected token `"
-					, holder[i + 1], "' \n"),
-				open_heredoc_tmp(holder, i + 1), 0);
+				,holder[i + 1], "' \n"),
+				open_heredoc_tmp(holder, i + 1),
+				update_underscore_env(holder[0], holder, head, NULL), 0);
 		i++;
 	}
 	return (1);

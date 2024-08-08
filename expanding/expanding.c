@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:29:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/07 15:17:26 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:29:42 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	check_existing(t_env_vars *prev, char **cmds, char **tokens,
 	if (!prev->env_val && errno == ENOMEM)
 		return (free_2d_array(cmds), ft_close(tokens, tree->head, tree),
 			exit(1));
-	update_underscore_env(prev->env_name, cmds, tree);
+	update_underscore_env(prev->env_name, cmds, *tree->head, tree);
 }
 
 void	export_without_arguments(t_env_vars *p_head, char **tokens,
@@ -59,7 +59,7 @@ void	create_newenv(char **tokens, t_token_tree *tree, char **cmds,
 		new_env->env_name = ignore_first_last_quotes(new_env->env_name);
 	if (new_env->env_val && new_env->env_val[0] == '\"')
 		new_env->env_val = ignore_first_last_quotes(new_env->env_val);
-	update_underscore_env(new_env->env_name, cmds, tree);
+	update_underscore_env(new_env->env_name, cmds, *tree->head, tree);
 }
 
 int	add_or_append(char **cmds, t_token_tree *tree,
@@ -98,7 +98,7 @@ int	add_env_var(char **tokens, int nbr_envs, t_env_vars **head,
 			return (ft_close(tokens, head, tree), exit(1), -1);
 		if (add_or_append(cmds, tree, tokens) == -1)
 		{
-			update_underscore_env(NULL, tokens, tree);
+			update_underscore_env(NULL, tokens, *tree->head, tree);
 			cmd_status = -1;
 			define_exit_status(*head, "1");
 			print_err("minishell: export: `", tokens[i],

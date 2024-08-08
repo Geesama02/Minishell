@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/07 11:32:32 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:28:40 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	cd_command(char **cmds, char *path, t_token_tree *tree)
 			return (-1);
 	}
 	else
-		return (update_underscore_env(NULL, cmds, tree),
+		return (update_underscore_env(NULL, cmds, *tree->head, tree),
 			changing_current_directory(cmds, path, tree));
 	return (0);
 }
@@ -36,7 +36,7 @@ void	pwd_command(t_token_tree *tree, char **cmds)
 	char	buff[PATH_MAX];
 
 	current_dir = NULL;
-	update_underscore_env(NULL, cmds, tree);
+	update_underscore_env(NULL, cmds, *tree->head, tree);
 	if (search_for_env(tree->head, "PWD"))
 	{
 		current_dir = search_for_env(tree->head, "PWD")->env_val;
@@ -58,7 +58,7 @@ void	echo_command(t_token_tree *tree, char **cmds)
 
 	i = 1;
 	new_line = 1;
-	update_underscore_env(NULL, cmds, tree);
+	update_underscore_env(NULL, cmds, *tree->head, tree);
 	if (print_echo_content(cmds, i, new_line) == 0)
 		return (ft_close(cmds, tree->head, tree), exit(1));
 }
@@ -69,7 +69,7 @@ int	export_command(char **cmds, t_env_vars **head, t_token_tree *tree)
 
 	if (!cmds[1])
 	{
-		update_underscore_env(NULL, cmds, tree);
+		update_underscore_env(NULL, cmds, *tree->head, tree);
 		export_without_arguments(*head, cmds, tree);
 		return (0);
 	}
@@ -84,7 +84,7 @@ int	unset_command(char **cmds, t_token_tree *tree)
 	int	i;
 
 	i = 1;
-	update_underscore_env(NULL, cmds, tree);
+	update_underscore_env(NULL, cmds, *tree->head, tree);
 	while (cmds[i] && ft_strcmp(cmds[i], "_"))
 	{
 		if (delete_env(cmds[i], tree, cmds) == -1)

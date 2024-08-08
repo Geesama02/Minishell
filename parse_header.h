@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/07 11:07:59 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:55:11 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ char			**ft_split_one(char const *s, char c);
 t_t_type		set_token_type(char *token);
 void			execute_pipe(t_token_tree *tree);
 int				exec_command(t_token_tree *tree, char **cmds, int child);
-int				scan_syntax(char **holder);
+int				scan_syntax(char **holder, t_env_vars *head);
 t_t_type		set_token_type(char *token);
 void			free_tree(t_token_tree *root);
 char			*wildcard(char **str, int i, char *operator);
@@ -344,9 +344,13 @@ int				has_vars_in_quotes(char *str);
 int				get_not_inside_qt(char *str, char c);
 int				set_flag(char **cmds, int n);
 void			update_underscore_env(char *to_set,
-					char **cmds, t_token_tree *tree);
+					char **cmds, t_env_vars *head, t_token_tree *tree);
 void			create_name_val_env(char **cmds, char **tokens,
 					t_token_tree *tree, t_env_vars *new_env);
 void			handle_underscore(t_env_vars **head);
+int				execute_and(t_token_tree *tree, t_env_vars **head,
+					char **cmds, int child);
+int				execute_or(t_token_tree *tree, t_env_vars **head,
+    				char **cmds, int child);
 
 #endif
