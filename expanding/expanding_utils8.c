@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 10:41:20 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/09 10:11:46 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:00:07 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,31 @@ void    handle_underscore(t_env_vars **head)
         if (!env->env_val && errno == ENOMEM)
             return (free_n(env), free_envs(head), exit(1));
     }
+}
+
+int	var_in_quote(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' && is_inside_quotes(str, i)
+			&& inside_single_quotes(str, i) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	remove_empty(char ***cmds, int n, t_token_tree *tree, char *old)
+{
+	if ((n >= 0)
+		&& (*cmds)[n][0] == '\0' && (has_quotes(old, '\"') && has_quotes(old, '\'')))
+	{
+		*cmds = remove_from_array(*cmds, n);
+		if (!*cmds)
+			return (free(old), ft_close(NULL, tree->head, tree), exit(1));
+	}
+	free(old);
 }

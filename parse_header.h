@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/09 14:37:00 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:59:55 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -338,7 +338,7 @@ char			**realloc_tokens(char **holder, int n, char *extra);
 int				has_redirection_extras(char *str);
 char			**remove_from_array(char **words, int i);
 void			if_must_split(char ***cmds, int n,
-					t_token_tree *tree);
+					t_token_tree *tree, char *old);
 char			*remove_space_last(char *str);
 int				has_vars_in_quotes(char *str);
 int				get_not_inside_qt(char *str, char c);
@@ -353,5 +353,7 @@ int				execute_and(t_token_tree *tree, t_env_vars **head,
 int				execute_or(t_token_tree *tree, t_env_vars **head,
     				char **cmds, int child);
 char			*remove_space_first_last(char *str);
+int				var_in_quote(char *str);
+void			remove_empty(char ***cmds, int n, t_token_tree *tree, char *old);
 
 #endif
