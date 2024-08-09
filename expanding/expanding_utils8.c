@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 10:41:20 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/08 18:23:20 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:11:46 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	define_value_of_env(t_env_vars *env, t_env_vars **head)
 	if (!env->env_name && errno == ENOMEM)
 		return (free(env), free_envs(head), exit(1));
 	env->env_val = ft_strdup(current_dir);
-		if (!env->env_val && errno == ENOMEM)
+	if (!env->env_val && errno == ENOMEM)
 		return (free(env), free(env->env_name), free_envs(head), exit(1));
 	env->next = NULL;
 	env->visible = 1;
