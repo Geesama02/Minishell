@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:50:48 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/08 14:59:49 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:50:16 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,33 @@ int	execute_and(t_token_tree *tree, t_env_vars **head,
 			tree), -1);
 	return (update_underscore_env(tree->right->token, cmds, *tree->head,
 		tree), 0);
+}
+
+char	*remove_space_first_last(char *str)
+{
+	int		i;
+	int		len;
+	char	*alloc_str;
+
+	i = 0;
+	len = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+			len++;
+		i++;
+	}
+	alloc_str = malloc(sizeof(char) * (len + 1));
+	i = 0;
+	len = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+		{	
+			alloc_str[len] = str[i];
+			len++;
+		}
+		i++;
+	}
+	return (alloc_str[len] = '\0', alloc_str);
 }

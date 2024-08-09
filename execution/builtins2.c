@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/08 14:30:34 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:51:45 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ void	env_command(t_token_tree *tree, char **cmds, t_env_vars *head)
 
 int	exit_command(char **cmds, int child, t_token_tree *tree)
 {
+	int			i;
 	long		exit_s;
 	t_env_vars	*tmp;
 
+	i = 1;
 	if (child)
 		write(1, "exit\n", 6);
 	tmp = search_for_env(tree->head, "?");
@@ -48,13 +50,17 @@ int	exit_command(char **cmds, int child, t_token_tree *tree)
 		exit_s = 1;
 	if (cmds[1])
 	{
+		while (cmds[i])
+		{
+			free(cmds[i]);
+			cmds[i] = remove_space_first_last(cmds[i]);
+			i++;
+		}
 		exit_s = ft_atoi_long(cmds[1]);
 		if (check_overflow_multiple_arguments(exit_s, cmds) == -1)
 			return (-1);
 	}
-	ft_close(cmds, tree->head, tree);
-	exit(exit_s);
-	return (0);
+	return (ft_close(cmds, tree->head, tree), exit(exit_s), 0);
 }
 
 int	home_case(char **cmds, t_token_tree *tree, t_env_vars *head)

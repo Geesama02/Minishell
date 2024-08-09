@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/09 15:52:40 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/09 18:10:35 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,6 +352,7 @@ int				execute_and(t_token_tree *tree, t_env_vars **head,
 					char **cmds, int child);
 int				execute_or(t_token_tree *tree, t_env_vars **head,
     				char **cmds, int child);
+char			*remove_space_first_last(char *str);
 int				var_in_quote(char *str);
 void			remove_empty(char ***cmds, int n, t_token_tree *tree, char *old);
 
