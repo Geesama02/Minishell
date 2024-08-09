@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 10:41:20 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/09 11:25:06 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:23:48 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void    create_name_val_env(char **cmds, char **tokens,
 		return (free(envname), ft_close(tokens, tree->head, NULL),
 			free_2d_array(cmds), exit(1));
 	free(envname);
-	if (ft_strchr(cmds[1], '$'))
-		null_terminating(cmds[1], '$');
 	if (cmds[1])
 	{
 		new_env->env_val = ft_strdup(cmds[1]);

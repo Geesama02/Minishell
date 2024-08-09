@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 19:49:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/07 10:03:38 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:11:30 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	alloc_str_no_qt(int j, t_token_tree *tree, char **tmp, char nxt)
 			return (free(w_tmp), 0);
 		if (is_inside_quotes(w_tmp, 0) == 0 && !if_must_add(j, tmp, nxt))
 			return (free(w_tmp), 0);
-		tmp[j] = expand_vars(tmp[j], *tree->head);
+		tmp[j] = expand_vars(tmp[j], *tree->head, is_inside_quotes(w_tmp, 0));
 		if (!tmp[j])
 			return (free(w_tmp), 0);
 		if (!recheck_wilcard(tmp, j, w_tmp, tree))

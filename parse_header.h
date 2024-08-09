@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/09 11:05:20 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:52:40 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ t_env_vars		*create_lst(char **envp);
 t_env_vars		*search_for_env(t_env_vars **head, char *env_name);
 int				append_env_var(char *env_name, char *to_append, char **cmds,
 					t_token_tree *tree);
-char			*expand_vars(char *holder, t_env_vars *head);
+char			*expand_vars(char *holder, t_env_vars *head, int quoted);
 int				ft_isalpha(int c);
 char			**ft_env_split(char const *s, char c);
 int				ft_isdigit(int c);

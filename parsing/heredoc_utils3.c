@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 10:36:11 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 15:49:19 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:55:12 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,11 @@ char	*handle_extra_cmd(t_token_array *token_array, char **holder,
 	if (has_more_cmds(holder[i - 1]) && has_more_cmds(holder[i + 1]))
 	{
 		first_cmd = ft_split_first(token_array[i - 1].token);
+		if (!first_cmd)
+			return (NULL);
 		second_cmd = ft_split_first(holder[i + 1]);
+		if (!second_cmd)
+			return (NULL);
 		tmp = ft_strjoin(first_cmd, second_cmd);
 		free(first_cmd);
 		free(second_cmd);
@@ -82,7 +86,7 @@ int	handle_heredoc_expand(t_token_array *token_array,
 		&& has_quote == 0)
 	{
 		token_array[vars->l].token = expand_vars(token_array[vars->l].token,
-				vars->head);
+				vars->head, 0);
 		if (!token_array[vars->l].token)
 			return (free_token_holder(holder, token_array, vars->l),
 				exit(1), 0);
@@ -91,7 +95,7 @@ int	handle_heredoc_expand(t_token_array *token_array,
 		&& token_array[vars->l].type == CMD_T)
 	{
 		token_array[vars->l].token = expand_vars(token_array[vars->l].token,
-				vars->head);
+				vars->head, 0);
 		if (!token_array[vars->l].token)
 			return (free_token_holder(holder, token_array, vars->l),
 				exit(1), 0);

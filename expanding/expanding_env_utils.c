@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 16:33:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/07 15:11:55 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:11:20 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,20 +75,28 @@ int	get_quotes_count(char *str)
 	return (count);
 }
 
-int	start_expanding(char **words, int i, char **result, t_env_vars *head)
+int	start_expanding(char **words, int i, t_env_vars *head, int quoted)
 {
+	char *tmp;
+	
 	while (words[i])
 	{
+		if (quoted && words[i][0] == '\'')
+		{
+			tmp = words[i];
+			words[i] = ft_strjoin("$", tmp);
+			if (!words[i])
+				return (0);
+			free(tmp);
+		}
 		if (!get_extras_and_join(head, words, i))
-			return (free(*result), 0);
+			return (0);
 		i++;
 	}
-	if (!join_all_vars(words, result))
-		return (0);
 	return (1);
 }
 
-char	*expand_vars(char *holder, t_env_vars *head)
+char	*expand_vars(char *holder, t_env_vars *head, int quoted)
 {
 	int		i;
 	char	**words;
@@ -106,8 +114,10 @@ char	*expand_vars(char *holder, t_env_vars *head)
 	if (*holder != '$')
 		i++;
 	free(holder);
-	if (!start_expanding(words, i, &result, head))
-		return (NULL);
+	if (!start_expanding(words, i, head, quoted))
+		return (free(result), NULL);
+	if (!join_all_vars(words, &result))
+		return (0);
 	free_2d_array(words);
 	return (result);
 }
