@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 10:20:06 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/07 12:07:38 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:05:40 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**remove_from_array(char **words, int i)
 	return (new);
 }
 
-void	if_must_split(char ***cmds, int n, t_token_tree *tree)
+void	if_must_split(char ***cmds, int n, t_token_tree *tree, char *old)
 {
 	int		j;
 	char	**new_cmds;
@@ -63,23 +63,22 @@ void	if_must_split(char ***cmds, int n, t_token_tree *tree)
 		j = 0;
 		new_cmds = ft_split_qt((*cmds)[n], ' ');
 		if (!new_cmds && errno == ENOMEM)
-			return (free_2d_array(*cmds),
+			return (free_2d_array(*cmds), free(old),
 				ft_close(NULL, tree->head, tree), exit(1));
 		while (new_cmds[j])
 		{
 			*cmds = realloc_tokens(*cmds, n + j, new_cmds[j]);
 			if (!*cmds)
-				return (free_2d_array(new_cmds),
+				return (free_2d_array(new_cmds), free(old),
 					ft_close(NULL, tree->head, tree), exit(1));
 			j++;
 		}
 		free(new_cmds);
 		*cmds = remove_from_array(*cmds, n + j);
 		if (!*cmds && errno == ENOMEM)
-			return (ft_close(NULL, tree->head, tree), exit(1));
+			return (free(old), ft_close(NULL, tree->head, tree), exit(1));
 	}
-	if (ft_strcmp((*cmds)[0], "unset") == 0 && (*cmds)[n][0] == '\0')
-		*cmds = remove_from_array(*cmds, n);
+	remove_empty(cmds, n, tree, old);
 }
 
 char	*remove_space_last(char *str)

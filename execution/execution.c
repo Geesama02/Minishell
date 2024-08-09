@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/08 15:51:43 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:22:34 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,26 @@ int	execute_one_command(t_token_tree *tree, char **cmds, int child)
 {
 	int		n;
 	int		flag;
+	char	*old;
 
 	n = 0;
 	while (cmds[n])
 	{
+		old = ft_strdup(cmds[n]);
+		if (!old)
+			return (ft_close(cmds, tree->head, tree), exit(1), -1);
 		flag = set_flag(cmds, n);
 		check_expand(tree, &cmds[n]);
 		if (flag == 1)
-			if_must_split(&cmds, n, tree);
+			if_must_split(&cmds, n, tree, old);
+		else
+			free(old);
 		if (!cmds[n])
 			break ;
 		n++;
 	}
+	if (cmds[0] == NULL)
+		return (free_2d_array(cmds), 0);
 	if (cmds && exec_command(tree, cmds, child) == -1)
 		return (free_2d_array(cmds), -1);
 	return (free_2d_array(cmds), 0);
