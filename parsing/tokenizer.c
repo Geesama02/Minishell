@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 10:33:49 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/10 10:46:00 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/10 11:58:14 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ int	copy_to_array(t_token_array *token_array,
 	token_array[vars.l].token = NULL;
 	i = 0;
 	free_2d_array(holder);
-	if (!check_for_wildcard(token_array, head))
-		return (0);
+	// if (!check_for_wildcard(token_array, head))
+	// 	return (0);
 	return (1);
 }
 

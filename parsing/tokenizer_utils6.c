@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils6.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:43:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/10 10:52:56 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/10 11:34:47 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	is_bad_syntax(char **holder, int i)
 				&& set_token_type(holder[i + 1]) == OPERATOR_T)
 			|| (is_redirection_heredoc(holder[i]) && is_operand(holder[i + 1]))
 			|| (set_token_type(holder[i]) == PARETHESIS_O && i != 0
-				&& set_token_type(holder[i - 1]) != OPERATOR_T)
+				&& (set_token_type(holder[i - 1]) != OPERATOR_T && set_token_type(holder[i - 1]) != PARETHESIS_O))
 			|| (set_token_type(holder[i]) == PARETHESIS_C
 				&& !is_operand(holder[i + 1]))
 			|| (set_token_type(holder[i]) == PARETHESIS_O

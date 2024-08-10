@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/10 11:09:09 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/10 12:00:51 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,12 @@ int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 {
 	char **cmds;
 
+	if (has_wildcard(tree->token))
+	{
+		if (handle_wildcard(&tree->token, "", *tree->head) == 0
+			&& errno == ENOMEM)
+			return (0);
+	}
 	cmds = ft_split_qt(tree->token, ' ');
 	if (!cmds && errno == ENOMEM)
 		return (ft_close(NULL, tree->head, tree), exit(1), -1);
