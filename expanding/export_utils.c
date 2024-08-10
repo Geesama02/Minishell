@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:14:02 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/04 15:46:33 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:20:03 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	append_element_to_envs(t_token_tree *tree, char **cmds, char *env_name)
 void	add_element_to_envs(t_token_tree *tree, char **cmds, char **tokens)
 {
 	t_env_vars	*prev;
-
 	prev = search_for_env(tree->head, cmds[0]);
 	if (prev)
 	{
