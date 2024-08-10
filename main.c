@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/10 09:12:18 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/10 10:53:11 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	null_input(t_env_vars *head)
 	else
 		eof_pressed(&head);
 }
-
 int	tokenize_and_build_execute_tree(char *input, t_env_vars **head,
 	char **envp)
 {
@@ -51,6 +50,7 @@ int	tokenize_and_build_execute_tree(char *input, t_env_vars **head,
 	g_is_heredoc[1] = 0;
 	return (0);
 }
+
 
 t_env_vars	*initialize_main_variables(char **envp, struct termios *old_term)
 {

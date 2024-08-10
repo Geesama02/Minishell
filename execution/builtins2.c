@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/09 15:17:30 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/10 11:26:18 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	exit_command(char **cmds, int child, t_token_tree *tree)
 	{
 		while (cmds[i])
 		{
-			free(cmds[i]);
 			cmds[i] = remove_space_first_last(cmds[i]);
 			i++;
 		}

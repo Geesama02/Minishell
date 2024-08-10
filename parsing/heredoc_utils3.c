@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 10:36:11 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/10 09:56:48 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/10 10:52:52 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ char	*ft_split_first(char *str)
 	while (str[i] && (str[i] != ' '
 			|| (str[i] == ' ' && is_inside_quotes(str, i))))
 		i++;
+	if (str[i] == '\0')
+	{
+		tmp = ft_strdup(str + i);
+		return (tmp);
+	}
 	str[i] = '\0';
 	tmp = ft_strdup(str + i + 1);
 	return (tmp);
