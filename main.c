@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/10 09:12:18 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/10 10:46:50 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	null_input(t_env_vars *head)
 	else
 		eof_pressed(&head);
 }
-
 int	tokenize_and_build_execute_tree(char *input, t_env_vars **head,
 	char **envp)
 {
@@ -45,12 +44,14 @@ int	tokenize_and_build_execute_tree(char *input, t_env_vars **head,
 	postfix_stack = shunting_yard(token_array);
 	ast_tree = build_tree(&postfix_stack, envp, head);
 	ast_tree->head = head;
+	print_tree(ast_tree, 0);
 	execute_tree(ast_tree, ast_tree->head, 1);
 	free_tree(ast_tree);
 	g_is_heredoc[0] = 0;
 	g_is_heredoc[1] = 0;
 	return (0);
 }
+
 
 t_env_vars	*initialize_main_variables(char **envp, struct termios *old_term)
 {

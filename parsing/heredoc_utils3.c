@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 10:36:11 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/09 15:55:12 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/10 10:38:42 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ char	*ft_split_first(char *str)
 	while (str[i] && (str[i] != ' '
 			|| (str[i] == ' ' && is_inside_quotes(str, i))))
 		i++;
+	if (str[i] == '\0')
+	{
+		tmp = ft_strdup(str + i);
+		return (tmp);
+	}
 	str[i] = '\0';
 	tmp = ft_strdup(str + i + 1);
 	return (tmp);
