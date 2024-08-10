@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 10:11:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/10 09:11:51 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/10 13:07:30 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	execute_redirec_in(t_token_tree *tree)
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
 			ft_close(NULL, tree->head, tree), exit(1), -1);
-	fd_file = open(filename_wq, O_RDONLY, S_IRWXU);
+	fd_file = open(filename_wq, O_RDONLY);
 	if (fd_file == -1)
 	{
 		safe_close(fd_stdin, tree);
@@ -51,7 +51,7 @@ int	execute_redirec_out(t_token_tree *tree)
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
 			ft_close(NULL, tree->head, tree), exit(1), -1);
-	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
+	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR | S_IROTH | S_IRGRP);
 	if (fd_file == -1)
 	{
 		safe_close(stdout_cp, tree);
@@ -79,7 +79,7 @@ int	execute_redirec_append(t_token_tree *tree)
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
 			ft_close(NULL, tree->head, tree), exit(1), -1);
-	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_APPEND, 00700);
+	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR | S_IROTH | S_IRGRP);
 	if (fd_file == -1)
 	{
 		safe_close(stdout_cp, tree);
