@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 16:33:35 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/09 16:11:20 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/10 15:16:18 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ int	get_quotes_count(char *str)
 
 int	start_expanding(char **words, int i, t_env_vars *head, int quoted)
 {
-	char *tmp;
-	
+	char	*tmp;
+
 	while (words[i])
 	{
 		if (quoted && words[i][0] == '\'')

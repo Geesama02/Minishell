@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 10:11:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/10 13:07:30 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/10 15:50:54 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ int	execute_redirec_out(t_token_tree *tree)
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
 			ft_close(NULL, tree->head, tree), exit(1), -1);
-	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR | S_IROTH | S_IRGRP);
+	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_TRUNC,
+			S_IRUSR | S_IWUSR | S_IROTH | S_IRGRP);
 	if (fd_file == -1)
 	{
 		safe_close(stdout_cp, tree);
@@ -79,7 +80,8 @@ int	execute_redirec_append(t_token_tree *tree)
 	if (!filename_wq && errno == ENOMEM)
 		return (print_err("malloc failed!!\n", NULL, NULL),
 			ft_close(NULL, tree->head, tree), exit(1), -1);
-	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR | S_IROTH | S_IRGRP);
+	fd_file = open(filename_wq, O_CREAT | O_RDWR | O_APPEND,
+			S_IRUSR | S_IWUSR | S_IROTH | S_IRGRP);
 	if (fd_file == -1)
 	{
 		safe_close(stdout_cp, tree);
@@ -96,13 +98,9 @@ int	execute_redirec_append(t_token_tree *tree)
 	return (0);
 }
 
-void	without_quotes_redire(t_token_tree *tree, char *old_filename)
+void	without_quotes_wildcard(t_token_tree *tree, char *old_filename)
 {
-	check_expand(tree, &tree->token);
-	if (has_wildcard(tree->token))
-	{
-		if (!handle_wildcard(&tree->token, "", *tree->head) && errno == ENOMEM)
-			return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,
-					tree->head, tree), free(old_filename), exit(1));
-	}
+	if (!handle_wildcard(&tree->token, "", *tree->head) && errno == ENOMEM)
+		return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,
+				tree->head, tree), free(old_filename), exit(1));
 }

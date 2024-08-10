@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/10 12:54:23 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/10 14:54:18 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	execute_cmds_with_operators_heredoc(t_token_tree *tree, t_env_vars **head,
 	{
 		execute_heredoc(tree);
 		return (update_underscore_env(tree->left->token, cmds,
-			*tree->head, tree), 0);
+				*tree->head, tree), 0);
 	}
 	return (update_underscore_env("", cmds, *tree->head, tree), 0);
 }
@@ -81,30 +81,17 @@ int	execute_one_command(t_token_tree *tree, char **cmds, int child)
 
 int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 {
-	char **cmds;
+	char	**cmds;
 
-	if (has_wildcard(tree->token))
-	{
-		if (handle_wildcard(&tree->token, "", *tree->head) == 0
-			&& errno == ENOMEM)
-			return (0);
-	}
+	check_for_wildcard(tree);
 	cmds = ft_split_qt(tree->token, ' ');
 	if (!cmds && errno == ENOMEM)
 		return (ft_close(NULL, tree->head, tree), exit(1), -1);
 	if (tree->type == REDIRECTION_I || tree->type == REDIRECTION_O
 		|| tree->type == REDIRECTION_A)
 	{
-		if (count_cmd_redirections(tree) == 2 && tree->left->type
-			!= tree->type && tree->type == REDIRECTION_I)
-		{
-			if (execute_redirection(tree->left, cmds) == -1)
-				return (-1);
-			if (execute_redirection(tree, cmds) == -1)
-				return (-1);
-		}
-		else if (execute_redirection(tree, cmds) == -1)
-			return (free_2d_array(cmds), -1);
+		if (handle_redirection(tree, cmds) == -1)
+			return (-1);
 	}
 	else if (!tree->right && !tree->left)
 		return (execute_one_command(tree, cmds, child));

@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/10 12:45:51 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/10 15:53:27 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@ int	expand_filenames(t_token_tree *tree)
 		check_expand(tree, &tree->token);
 		if (has_wildcard(tree->token))
 		{
-			if (!handle_wildcard(&tree->token, "", *tree->head)
-				&& errno == ENOMEM)
-				return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,
-						tree->head, tree), free(old_filename), exit(1), -1);
+			without_quotes_wildcard(tree, old_filename);
+			remove_empty_space(tree->token);
 		}
 		if (tree->token[0] == 0)
 			return (ambiguous_redirect_error(old_filename), -1);
@@ -37,7 +35,7 @@ int	expand_filenames(t_token_tree *tree)
 			return (-1);
 	}
 	else
-		without_quotes_redire(tree, old_filename);
+		check_expand(tree, &tree->token);
 	return (free(old_filename), 0);
 }
 

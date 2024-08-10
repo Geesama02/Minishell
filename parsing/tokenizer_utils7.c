@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 11:19:34 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/02 20:03:47 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/10 14:36:47 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,13 @@ int	get_to_last_token(char **holder)
 	return (i);
 }
 
-int	check_for_wildcard(t_token_array *token_array, t_env_vars *head)
+int	check_for_wildcard(t_token_tree *tree)
 {
-	int	i;
-
-	i = 0;
-	while (token_array[i].token)
+	if (has_wildcard(tree->token))
 	{
-		if (has_wildcard(token_array[i].token)
-			&& !has_vars_no_quotes(token_array[i].token))
-		{
-			if (i > 0 && handle_wildcard(&token_array[i].token,
-					token_array[i - 1].token, head) == 0)
-				return (handle_bad_wildcard(token_array), 0);
-			else if (i == 0
-				&& handle_wildcard(&token_array[i].token, "", head) == 0)
-				return (handle_bad_wildcard(token_array), 0);
-		}
-		i++;
+		if (handle_wildcard(&tree->token, "", *tree->head) == 0
+			&& errno == ENOMEM)
+			return (0);
 	}
 	return (1);
 }

@@ -6,16 +6,16 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 10:41:20 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/09 18:10:44 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/10 15:12:43 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-void    create_name_val_env(char **cmds, char **tokens,
-    t_token_tree *tree, t_env_vars *new_env)
+void	create_name_val_env(char **cmds, char **tokens,
+			t_token_tree *tree, t_env_vars *new_env)
 {
-    char	*envname;
+	char	*envname;
 
 	envname = ft_strtrim(cmds[0], "+");
 	new_env->env_name = ft_strdup(envname);
@@ -53,22 +53,22 @@ void	define_value_of_env(t_env_vars *env, t_env_vars **head)
 	ft_lstadd(head, env);
 }
 
-void    handle_underscore(t_env_vars **head)
+void	handle_underscore(t_env_vars **head)
 {
 	char		current_dir[PATH_MAX];
 	t_env_vars	*env;
 
 	getcwd(current_dir, sizeof(current_dir));
 	env = search_for_env(head, "_");
-    if (!env)
-        define_value_of_env(env, head);
-    else if (env && env->env_val)
-    {
-        free(env->env_val);
-        env->env_val = ft_strdup(current_dir);
-        if (!env->env_val && errno == ENOMEM)
-            return (free_n(env), free_envs(head), exit(1));
-    }
+	if (!env)
+		define_value_of_env(env, head);
+	else if (env && env->env_val)
+	{
+		free(env->env_val);
+		env->env_val = ft_strdup(current_dir);
+		if (!env->env_val && errno == ENOMEM)
+			return (free_n(env), free_envs(head), exit(1));
+	}
 }
 
 int	var_in_quote(char *str)
@@ -89,7 +89,8 @@ int	var_in_quote(char *str)
 void	remove_empty(char ***cmds, int n, t_token_tree *tree, char *old)
 {
 	if ((n >= 0)
-		&& (*cmds)[n][0] == '\0' && (has_quotes(old, '\"') && has_quotes(old, '\'')))
+		&& (*cmds)[n][0] == '\0'
+		&& (has_quotes(old, '\"') && has_quotes(old, '\'')))
 	{
 		*cmds = remove_from_array(*cmds, n);
 		if (!*cmds)

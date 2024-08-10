@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_failure.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:32:17 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/09 15:40:23 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/10 14:31:10 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	define_when_to_set(t_env_vars *env, char *to_set,
 	cmds_token = ft_split(to_set, ' ');
 	if (!cmds_token && errno == ENOMEM)
 		return (ft_close(cmds, tree->head, tree), exit(1));
-	env->env_val = ft_strdup(cmds_token[count_2d_array_elements(cmds_token) - 1]);
+	env->env_val = ft_strdup(cmds_token[count_2d_array_elements(
+				cmds_token) - 1]);
 	if (!env->env_val && errno == ENOMEM)
 		return (ft_close(cmds, tree->head, tree),
 			free_2d_array(cmds_token), exit(1));

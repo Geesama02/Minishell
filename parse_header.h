@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/10 09:38:59 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/10 15:51:05 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,8 @@ int				execute_redirec_append(t_token_tree *tree);
 void			safe_dup2(t_token_tree *node, int old_fd, int new_fd);
 int				safe_dup(int fd, t_token_tree *node);
 void			eof_pressed(t_env_vars **head);
-int				exit_execve(int status, t_token_tree *tree, char *path, char **cmds);
+int				exit_execve(int status, t_token_tree *tree,
+					char *path, char **cmds);
 void			create_newenv(char **tokens, t_token_tree *tree, char **cmds,
 					t_env_vars *new_env);
 void			set_address(t_token_tree *root, t_token_tree **address);
@@ -267,8 +268,7 @@ void			set_redirections(t_token_array *token_array,
 t_token_array	*get_redirection(t_token_array *token_array,
 					t_token_array *tmp, t_t_type type, t_t_type type2);
 int				get_to_last_token(char **holder);
-int				check_for_wildcard(t_token_array *token_array,
-					t_env_vars *head);
+int				check_for_wildcard(t_token_tree *tree);
 void			init_token_vars(t_token_vars *vars, t_env_vars *head);
 int				changing_current_directory(char **cmds, char *path,
 					t_token_tree *tree);
@@ -331,7 +331,7 @@ void			long_error(void);
 int				open_heredoc_tmp(char **holder, int i, t_env_vars *head);
 void			get_first_cmd(char *holder);
 void			switch_tabs_to_spaces_nq(char *str);
-void			without_quotes_redire(t_token_tree *tree, char *old_filename);
+void			without_quotes_wildcard(t_token_tree *tree, char *old_filename);
 int				recheck_wilcard(char **tmp, int j, char *w_tmp,
 					t_token_tree *tree);
 char			**realloc_tokens(char **holder, int n, char *extra);
@@ -351,10 +351,12 @@ void			handle_underscore(t_env_vars **head);
 int				execute_and(t_token_tree *tree, t_env_vars **head,
 					char **cmds, int child);
 int				execute_or(t_token_tree *tree, t_env_vars **head,
-    				char **cmds, int child);
+					char **cmds, int child);
 char			*remove_space_first_last(char *str);
 int				var_in_quote(char *str);
-void			remove_empty(char ***cmds, int n, t_token_tree *tree, char *old);
+void			remove_empty(char ***cmds, int n,
+					t_token_tree *tree, char *old);
 int				count_cmd_redirections(t_token_tree *node);
+int				handle_redirection(t_token_tree *tree, char **cmds);
 
 #endif
