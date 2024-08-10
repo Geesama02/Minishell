@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils6.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:43:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/08 09:52:44 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/10 09:56:11 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	reorder_tokens(char ***holder)
 				|| set_token_type(new_holder[i - 1]) == PARETHESIS_O))
 		{
 			tmp_holder = ft_split_first(new_holder[i + 1]);
-			if (!tmp_holder)
+			if (!tmp_holder && errno == ENOMEM)
 				return (free_2d_array(*holder), exit(1), 0);
 			tmp = realloc_tokens(new_holder, i, tmp_holder);
 			if (!tmp)

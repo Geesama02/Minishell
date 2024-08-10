@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/09 18:10:35 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/10 09:38:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,5 +355,6 @@ int				execute_or(t_token_tree *tree, t_env_vars **head,
 char			*remove_space_first_last(char *str);
 int				var_in_quote(char *str);
 void			remove_empty(char ***cmds, int n, t_token_tree *tree, char *old);
+int				count_cmd_redirections(t_token_tree *node);
 
 #endif
