@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:21:44 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/08 10:28:29 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/09 17:59:02 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	execute_right_pipe(t_token_tree *right, int fds[2],
 	long		exit_s;
 	t_env_vars	*tmp;
 
+	exit_s = 0;
 	tmp = NULL;
 	safe_close(fds[1], right);
 	safe_dup2(right, fds[0], 0);

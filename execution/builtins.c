@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/08 14:28:40 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:18:28 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	cd_command(char **cmds, char *path, t_token_tree *tree)
 {
+	if (path && path[0] == '\0')
+		return (0);
 	if (!path || !ft_strcmp(path, "~"))
 	{
 		if (home_case(cmds, tree, *tree->head) == -1)
