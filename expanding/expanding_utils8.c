@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 10:41:20 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/10 15:12:43 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:04:25 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,16 @@ int	var_in_quote(char *str)
 	return (0);
 }
 
-void	remove_empty(char ***cmds, int n, t_token_tree *tree, char *old)
+void	remove_empty(char ***cmds, int *n, t_token_tree *tree, char *old)
 {
-	if ((n >= 0)
-		&& (*cmds)[n][0] == '\0'
+	if ((*n >= 0)
+		&& (*cmds)[*n][0] == '\0'
 		&& (has_quotes(old, '\"') && has_quotes(old, '\'')))
 	{
-		*cmds = remove_from_array(*cmds, n);
+		*cmds = remove_from_array(*cmds, *n);
 		if (!*cmds)
 			return (free(old), ft_close(NULL, tree->head, tree), exit(1));
+		(*n)--;
 	}
 	free(old);
 }

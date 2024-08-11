@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/11 11:40:24 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:03:51 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,7 +337,7 @@ int				recheck_wilcard(char **tmp, int j, char *w_tmp,
 char			**realloc_tokens(char **holder, int n, char *extra);
 int				has_redirection_extras(char *str);
 char			**remove_from_array(char **words, int i);
-void			if_must_split(char ***cmds, int n,
+void			if_must_split(char ***cmds, int *n,
 					t_token_tree *tree, char *old);
 char			*remove_space_last(char *str);
 int				has_vars_in_quotes(char *str);
@@ -354,7 +354,7 @@ int				execute_or(t_token_tree *tree, t_env_vars **head,
 					char **cmds, int child);
 char			*remove_space_first_last(char *str);
 int				var_in_quote(char *str);
-void			remove_empty(char ***cmds, int n,
+void			remove_empty(char ***cmds, int *n,
 					t_token_tree *tree, char *old);
 int				count_cmd_redirections(t_token_tree *node);
 int				handle_redirection(t_token_tree *tree, char **cmds);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 14:59:18 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/09 15:48:55 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/11 12:41:07 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char	*check_for_ambiguous(char *str, char **res, char *operator, int i)
 	if (ft_strcmp(*res, "") == 0)
 	{
 		free(*res);
+		remove_empty_space(str);
 		*res = ft_strdup(str);
 	}
 	return (*res);
