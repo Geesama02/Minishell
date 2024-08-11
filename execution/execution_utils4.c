@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:50:48 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 13:28:03 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/11 16:58:32 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,24 +80,7 @@ int	count_cmd_redirections(t_token_tree *node)
 
 int	handle_redirection(t_token_tree *tree, char **cmds)
 {
-	if (count_cmd_redirections(tree) == 2
-		&& (tree->left->type == REDIRECTION_O
-			|| tree->left->type == REDIRECTION_A)
-		&& tree->type == REDIRECTION_I)
-	{
-		if (execute_redirection(tree->left, cmds) == -1)
-			return (-1);
-		if (execute_redirection(tree, cmds) == -1)
-			return (-1);
-	}
-	else if ((count_cmd_redirections(tree) == 2)
-		&& (tree->left->type == REDIRECTION_I)
-		&& (tree->type == REDIRECTION_O || tree->type == REDIRECTION_A))
-	{
-		if (redirec_edge_case(tree, cmds) == -1)
-			return (-1);
-	}
-	else if (execute_redirection(tree, cmds) == -1)
+	if (execute_redirection(tree, cmds) == -1)
 		return (-1);
 	return (0);
 }

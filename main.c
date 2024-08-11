@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:50:42 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/11 15:21:46 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/11 17:43:27 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,23 @@ void	*free_alloc(char **bigstr, int l)
 	}
 	free(bigstr);
 	return (NULL);
+}
+
+void	print_tree(t_token_tree *root, int level)
+{
+	int	i;
+
+	i = 0;
+	if (!root)
+		return ;
+	while (i < level)
+	{
+		printf("------------");
+		i++;
+	}
+	printf("%s\n", root->token);
+	print_tree(root->left, level + 1);
+	print_tree(root->right, level + 1);
 }
 
 void	null_input(t_env_vars *head)
@@ -45,6 +62,7 @@ int	tokenize_and_build_execute_tree(char *input, t_env_vars **head,
 	postfix_stack = shunting_yard(token_array);
 	ast_tree = build_tree(&postfix_stack, envp, head);
 	ast_tree->head = head;
+	print_tree(ast_tree, 0);
 	execute_tree(ast_tree, ast_tree->head, 1);
 	free_tree(ast_tree);
 	g_is_heredoc[0] = 0;
