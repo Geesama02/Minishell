@@ -6,13 +6,13 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 12:13:07 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/11 12:53:42 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int	expand_filenames(t_token_tree *tree)
+int	expand_filenames(t_token_tree *tree, char **cmds)
 {
 	char	*old_filename;
 
@@ -30,6 +30,8 @@ int	expand_filenames(t_token_tree *tree)
 			remove_empty_space(tree->token);
 		}
 		tree->token = remove_space_first_last(tree->token);
+		if (!tree->token && errno == ENOMEM)
+			return (ft_close(cmds, tree->head, tree), exit(1), -1);
 		if (tree->token[0] == 0)
 			return (ambiguous_redirect_error(old_filename), -1);
 		if (check_ambiguous_without_quotes(old_filename, tree) == -1)
@@ -66,7 +68,7 @@ int	execute_redirection(t_token_tree *tree, char **cmds)
 	static int	failure;
 
 	update_underscore_env(tree->left->token, cmds, *tree->head, tree);
-	if (expand_filenames(tree->right) == -1)
+	if (expand_filenames(tree->right, cmds) == -1)
 		return (failure = 1, define_exit_status(*tree->head, "1"), -1);
 	if (tree->type == REDIRECTION_O)
 	{
