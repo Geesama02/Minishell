@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 10:01:17 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 16:32:32 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/11 17:31:51 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	reverse_tokens(char **holder, int i, int l, int j)
 
 	while (j < (i - 1 + j) / 2)
 	{
-		if (is_redirection(set_token_type(holder[j]))
-			&& is_redirection(set_token_type(holder[i - l - 1])))
+		if (is_redirection_heredoc(holder[j])
+			&& is_redirection_heredoc(holder[i - l - 1]))
 		{
 			tmp = holder[j];
 			tmp2 = holder[j + 1];
