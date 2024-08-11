@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:50:48 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 10:32:32 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/11 11:37:37 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,55 @@ int	execute_and(t_token_tree *tree, t_env_vars **head,
 			tree), 0);
 }
 
+// char	*remove_space_first_last(char *str)
+// {
+// 	int		i;
+// 	int		len;
+// 	int		b;
+// 	char	*alloc_str;
+
+// 	i = 0;
+// 	b = 0;
+// 	len = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] != ' ' && str[i] != '\t')
+// 			len++;
+// 		i++;
+// 	}
+// 	alloc_str = malloc(sizeof(char) * (len + 1));
+// 	if (!alloc_str)
+// 		return (NULL);
+// 	b = alloc_newstr_re(str, alloc_str);
+// 	return (free(str), alloc_str);
+// }
+
 char	*remove_space_first_last(char *str)
 {
+	int		index_f;
+	int		index_l;
+	char	*newstr;
 	int		i;
-	int		len;
-	char	*alloc_str;
 
 	i = 0;
-	len = 0;
-	while (str[i])
+	index_f = 0;
+	while (str[index_f])
 	{
-		if (str[i] != ' ' && str[i] != '\t')
-			len++;
-		i++;
+		if (str[index_f] != ' ' && str[index_f] != '\t')
+			break ;
+		index_f++;
 	}
-	alloc_str = malloc(sizeof(char) * (len + 1));
-	if (!alloc_str)
-		return (NULL);
-	alloc_newstr_re(str, alloc_str);
-	return (free(str), alloc_str);
+	index_l = ft_strlen(str);
+	index_l--;
+	while (str[index_l])
+	{
+		if (str[index_l] != ' ' && str[index_l] != '\t')
+			break ;
+		index_l--;
+	}
+	newstr = malloc(sizeof(char) * (index_l - index_f) + 2);
+	i = alloc_newstr_re(str, newstr, index_f, index_l);
+	return (newstr[i] = '\0', free(str), newstr);
 }
 
 int	count_cmd_redirections(t_token_tree *node)
@@ -84,7 +114,8 @@ int	count_cmd_redirections(t_token_tree *node)
 int	handle_redirection(t_token_tree *tree, char **cmds)
 {
 	if (count_cmd_redirections(tree) == 2
-		&& (tree->left->type == REDIRECTION_O || tree->left->type == REDIRECTION_A)
+		&& (tree->left->type == REDIRECTION_O
+			|| tree->left->type == REDIRECTION_A)
 		&& tree->type == REDIRECTION_I)
 	{
 		if (execute_redirection(tree->left, cmds) == -1)
