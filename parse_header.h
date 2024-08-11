@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/11 13:03:51 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/11 16:24:34 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,5 +361,6 @@ int				handle_redirection(t_token_tree *tree, char **cmds);
 int				alloc_newstr_re(char *str, char *new_str,
 					int index_f, int index_l);
 int				redirec_edge_case(t_token_tree *tree, char **cmds);
+int	swap_multi_redirection(char **holder, int i, int l);
 
 #endif

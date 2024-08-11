@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:50:48 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 11:53:58 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/11 15:55:32 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,24 +114,7 @@ int	count_cmd_redirections(t_token_tree *node)
 
 int	handle_redirection(t_token_tree *tree, char **cmds)
 {
-	if (count_cmd_redirections(tree) == 2
-		&& (tree->left->type == REDIRECTION_O
-			|| tree->left->type == REDIRECTION_A)
-		&& tree->type == REDIRECTION_I)
-	{
-		if (execute_redirection(tree->left, cmds) == -1)
-			return (-1);
-		if (execute_redirection(tree, cmds) == -1)
-			return (-1);
-	}
-	else if ((count_cmd_redirections(tree) == 2)
-		&& (tree->left->type == REDIRECTION_I)
-		&& (tree->type == REDIRECTION_O || tree->type == REDIRECTION_A))
-	{
-		if (redirec_edge_case(tree, cmds) == -1)
-			return (-1);
-	}
-	else if (execute_redirection(tree, cmds) == -1)
+	if (execute_redirection(tree, cmds) == -1)
 		return (-1);
 	return (0);
 }
