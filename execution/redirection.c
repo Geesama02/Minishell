@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/10 15:53:27 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/11 10:49:29 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	expand_filenames(t_token_tree *tree)
 			without_quotes_wildcard(tree, old_filename);
 			remove_empty_space(tree->token);
 		}
+		tree->token = remove_space_first_last(tree->token);
 		if (tree->token[0] == 0)
 			return (ambiguous_redirect_error(old_filename), -1);
 		if (check_ambiguous_without_quotes(old_filename, tree) == -1)

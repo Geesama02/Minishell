@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/10 14:54:18 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/11 10:09:59 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	execute_tree(t_token_tree *tree, t_env_vars **head, int child)
 		|| tree->type == REDIRECTION_A)
 	{
 		if (handle_redirection(tree, cmds) == -1)
-			return (-1);
+			return (free_2d_array(cmds), -1);
 	}
 	else if (!tree->right && !tree->left)
 		return (execute_one_command(tree, cmds, child));
