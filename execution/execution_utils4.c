@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:50:48 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 11:37:37 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/11 11:53:58 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ char	*remove_space_first_last(char *str)
 		index_f++;
 	}
 	index_l = ft_strlen(str);
-	index_l--;
+	if (index_l > 0)
+		index_l--;
 	while (str[index_l])
 	{
 		if (str[index_l] != ' ' && str[index_l] != '\t')

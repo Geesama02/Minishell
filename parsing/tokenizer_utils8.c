@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 19:49:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/10 11:50:48 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/11 12:12:53 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ int	join_extra_with_redi(char **holder, int i)
 	extra = ft_split_first(holder[i + 1]);
 	if (!extra)
 		return (free_2d_array(holder), exit(1), 0);
+	tmp = holder[i - 1];
+	holder[i - 1] = ft_strjoin(tmp, " ");
+	if (!holder[i - 1])
+		return (free(extra),
+			free_2d_array(holder), exit(1), 0);
+	free(tmp);
 	tmp = holder[i - 1];
 	holder[i - 1] = ft_strjoin(tmp, extra);
 	if (!holder[i - 1])
