@@ -6,18 +6,20 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 10:11:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 11:56:15 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/11 14:08:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
 
-int	execute_redirec_in(t_token_tree *tree)
+int	execute_redirec_in(t_token_tree *tree, int failure)
 {
 	int		fd_file;
 	int		fd_stdin;
 	char	*filename_wq;
 
+	if (!failure)
+		return (-1);
 	fd_stdin = safe_dup(0, tree);
 	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
@@ -40,12 +42,14 @@ int	execute_redirec_in(t_token_tree *tree)
 	return (0);
 }
 
-int	execute_redirec_out(t_token_tree *tree)
+int	execute_redirec_out(t_token_tree *tree, int failure)
 {
 	int		fd_file;
 	int		stdout_cp;
 	char	*filename_wq;
 
+	if (!failure)
+		return (-1);
 	stdout_cp = safe_dup(1, tree);
 	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)
@@ -69,12 +73,14 @@ int	execute_redirec_out(t_token_tree *tree)
 	return (0);
 }
 
-int	execute_redirec_append(t_token_tree *tree)
+int	execute_redirec_append(t_token_tree *tree, int failure)
 {
 	int		stdout_cp;
 	int		fd_file;
 	char	*filename_wq;
 
+	if (!failure)
+		return (-1);
 	stdout_cp = safe_dup(1, tree);
 	filename_wq = ignore_quotes(&tree->right->token);
 	if (!filename_wq && errno == ENOMEM)

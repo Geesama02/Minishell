@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 12:57:04 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:10:01 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	execute_one_command(t_token_tree *tree, char **cmds, int child)
 		flag = set_flag(cmds, n);
 		check_expand(tree, &cmds[n]);
 		if (flag == 1)
-			if_must_split(&cmds, n, tree, old);
+			if_must_split(&cmds, &n, tree, old);
 		else
 			free(old);
 		if (!cmds[n])

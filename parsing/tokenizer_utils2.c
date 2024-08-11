@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:45:28 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/10 15:15:00 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/11 12:41:55 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int	handle_wildcard(char **str, char *operator, t_env_vars *head)
 		return (free_2d_array(sep_str), 0);
 	if (!join_wildcard(sep_str, str, operator))
 		return (define_exit_status(head, "1"), 0);
+	remove_empty_space(*str);
 	free_2d_array(sep_str);
 	return (1);
 }
