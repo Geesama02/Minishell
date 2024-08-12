@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 10:11:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 17:04:58 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:05:22 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,19 @@ int	execute_redirec_in(t_token_tree *tree)
 		safe_close(fd_stdin, tree);
 		print_err("minishell: ", filename_wq, ": ");
 		print_err(strerror(errno), "\n", NULL);
-		return (-1);
+		return (define_exit_status(*tree->head, "1"), -1);
 	}
 	safe_dup2(tree, fd_file, 0);
 	safe_close(fd_file, tree);
 	if (tree->left->token[0] != '\0')
-		execute_tree(tree->left, tree->head, 1);
+	{
+		if (execute_tree(tree->left, tree->head, 1) == -1)
+		{
+			safe_dup2(tree, fd_stdin, 0);
+			safe_close(fd_stdin, tree);
+			return (-1);
+		}
+	}
 	safe_dup2(tree, fd_stdin, 0);
 	safe_close(fd_stdin, tree);
 	return (0);
@@ -58,12 +65,19 @@ int	execute_redirec_out(t_token_tree *tree)
 		safe_close(stdout_cp, tree);
 		print_err("minishell: ", filename_wq, ": ");
 		print_err(strerror(errno), "\n", NULL);
-		return (-1);
+		return (define_exit_status(*tree->head, "1"), -1);
 	}
 	safe_dup2(tree, fd_file, 1);
 	safe_close(fd_file, tree);
 	if (tree->left->token[0] != '\0')
-		execute_tree(tree->left, tree->head, 1);
+	{	
+		if (execute_tree(tree->left, tree->head, 1) == -1)
+		{
+			safe_dup2(tree, stdout_cp, 1);
+			safe_close(stdout_cp, tree);
+			return (-1);
+		}
+	}
 	safe_dup2(tree, stdout_cp, 1);
 	safe_close(stdout_cp, tree);
 	return (0);
@@ -87,12 +101,19 @@ int	execute_redirec_append(t_token_tree *tree)
 		safe_close(stdout_cp, tree);
 		print_err("minishell: ", filename_wq, ": ");
 		print_err(strerror(errno), "\n", NULL);
-		return (-1);
+		return (define_exit_status(*tree->head, "1"), -1);
 	}
 	safe_dup2(tree, fd_file, 1);
 	safe_close(fd_file, tree);
 	if (tree->left->token[0] != 0)
-		execute_tree(tree->left, tree->head, 1);
+	{	
+		if (execute_tree(tree->left, tree->head, 1) == -1)
+		{
+			safe_dup2(tree, stdout_cp, 1);
+			safe_close(stdout_cp, tree);
+			return (-1);
+		}
+	}
 	safe_dup2(tree, stdout_cp, 1);
 	safe_close(stdout_cp, tree);
 	return (0);

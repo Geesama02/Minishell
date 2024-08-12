@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 17:26:02 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:07:39 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,48 +42,25 @@ int	expand_filenames(t_token_tree *tree, char **cmds)
 	return (free(old_filename), 0);
 }
 
-int	execute_redirection_in(t_token_tree *tree)
-{
-	if (execute_redirec_in(tree) == -1)
-		return (define_exit_status(*tree->head, "1"), -1);
-	return (0);
-}
-
-int	execute_redirection_out(t_token_tree *tree)
-{
-	if (execute_redirec_out(tree) == -1)
-		return (define_exit_status(*tree->head, "1"), -1);
-	return (0);
-}
-
-int	execute_redirection_append(t_token_tree *tree)
-{
-	if (execute_redirec_append(tree) == -1)
-		return (define_exit_status(*tree->head, "1"), -1);
-	return (0);
-}
-
 int	execute_redirection(t_token_tree *tree, char **cmds)
 {
-	static int	failure;
-
 	update_underscore_env(tree->left->token, cmds, *tree->head, tree);
 	if (expand_filenames(tree->right, cmds) == -1)
-		return (failure = 1, define_exit_status(*tree->head, "1"), -1);
+		return (define_exit_status(*tree->head, "1"), -1);
 	if (tree->type == REDIRECTION_O)
 	{
-		if (execute_redirection_out(tree) == -1 || failure)
-			return (failure = 1, -1);
+		if (execute_redirec_out(tree) == -1)
+			return (-1);
 	}
 	else if (tree->type == REDIRECTION_I)
 	{
-		if (execute_redirection_in(tree) == -1 || failure)
-			return (failure = 1, -1);
+		if (execute_redirec_in(tree) == -1)
+			return (-1);
 	}
 	else if (tree->type == REDIRECTION_A)
 	{
-		if (execute_redirection_append(tree) == -1 || failure)
-			return (failure = 1, -1);
+		if (execute_redirec_append(tree) == -1)
+			return (-1);
 	}
 	return (0);
 }

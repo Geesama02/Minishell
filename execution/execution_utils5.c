@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 10:01:17 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 17:44:49 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/11 18:28:55 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,48 +75,56 @@ int	count_l_index(char *str)
 	return (index_l);
 }
 
-void	reverse_tokens(char **holder, int i, int l, int j)
+void	reverse_tokens(t_token_array *token_array, int i, int l, int j)
 {
 	char	*tmp;
+	t_t_type tmp_type;
 	char	*tmp2;
+	t_t_type tmp2_type;
 
 	while (j < (i - 1 + j) / 2)
 	{
-		if (is_redirection_heredoc(holder[j])
-			&& is_redirection_heredoc(holder[i - l - 1]))
+		if (is_redirection_heredoc(token_array[j].token)
+			&& is_redirection_heredoc(token_array[i - l - 1].token))
 		{
-			tmp = holder[j];
-			tmp2 = holder[j + 1];
-			holder[j] = holder[i - l - 1];
-			holder[j + 1] = holder[i - l];
-			holder[i - l - 1] = tmp;
-			holder[i - l] = tmp2;
+			tmp = token_array[j].token;
+			tmp_type = token_array[j].type;
+			tmp2 = token_array[j + 1].token;
+			tmp2_type = token_array[j + 1].type;
+			token_array[j].token = token_array[i - l - 1].token;
+			token_array[j].type = token_array[i - l - 1].type;
+			token_array[j + 1].token = token_array[i - l].token;
+			token_array[j + 1].type = token_array[i - l].type;
+			token_array[i - l - 1].token = tmp;
+			token_array[i - l - 1].type = tmp_type;
+			token_array[i - l].token = tmp2;
+			token_array[i - l].type = tmp2_type;
 		}
 		j++;
 		l++;
 	}
 }
 
-int	swap_multi_redirection(char **holder, int i, int l)
+int	swap_multi_redirection(t_token_array *token_array, int i, int l)
 {
 	int		j;
 
 	j = i;
-	while (holder[i])
+	while (token_array[i].token)
 	{
-		if (set_token_type(holder[i]) == OPERATOR_T
-			|| set_token_type(holder[i]) == PARETHESIS_C)
+		if (token_array[i].type == OPERATOR_T
+			|| token_array[i].type == PARETHESIS_C)
 			break;
 		i++;
 	}
-	reverse_tokens(holder, i, l, j);
-	if (holder[i] && (set_token_type(holder[i]) == OPERATOR_T
-		|| set_token_type(holder[i]) == PARETHESIS_C))
+	reverse_tokens(token_array, i, l, j);
+	if (token_array[i].token && (token_array[i].type == OPERATOR_T
+		|| token_array[i].type == PARETHESIS_C))
 	{
-		if (set_token_type(holder[i]) == PARETHESIS_C)
-			swap_multi_redirection(holder, i + 1, 1);
+		if (token_array[i].type == PARETHESIS_C)
+			swap_multi_redirection(token_array, i + 1, 1);
 		else
-			swap_multi_redirection(holder, i + 1, 0);
+			swap_multi_redirection(token_array, i + 1, 0);
 	}
 	return (0);
 }
