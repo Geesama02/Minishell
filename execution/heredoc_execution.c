@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:19:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 15:36:01 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:52:17 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void	execute_heredoc_content(t_token_tree *tree, t_token_tree *cmd,
 	safe_close(fds[0], tree);
 	if (cmd->token[0])
 		execute_tree(cmd, cmd->head, 1);
+	else
+		define_exit_status(*tree->head, "0");
 	safe_dup2(tree, stdin_cp, 0);
 	safe_close(stdin_cp, tree);
 }

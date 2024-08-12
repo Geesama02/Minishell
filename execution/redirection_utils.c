@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 10:11:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 12:06:24 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:56:52 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int	execute_redirec_in(t_token_tree *tree)
 	safe_close(fd_file, tree);
 	if (execute_left_redi_in(tree, &fd_stdin) == -1)
 		return (-1);
-	safe_dup2(tree, fd_stdin, 0);
-	safe_close(fd_stdin, tree);
-	return (0);
+	else
+		define_exit_status(*tree->head, "0");
+	return (safe_dup2(tree, fd_stdin, 0), safe_close(fd_stdin, tree), 0);
 }
 
 int	execute_redirec_out(t_token_tree *tree)
@@ -64,9 +64,9 @@ int	execute_redirec_out(t_token_tree *tree)
 	safe_close(fd_file, tree);
 	if (execute_left_redi_out(tree, &stdout_cp) == -1)
 		return (-1);
-	safe_dup2(tree, stdout_cp, 1);
-	safe_close(stdout_cp, tree);
-	return (0);
+	else
+		define_exit_status(*tree->head, "0");
+	return (safe_dup2(tree, stdout_cp, 1), safe_close(stdout_cp, tree), 0);
 }
 
 int	execute_redirec_append(t_token_tree *tree)
@@ -93,9 +93,9 @@ int	execute_redirec_append(t_token_tree *tree)
 	safe_close(fd_file, tree);
 	if (execute_left_redi_out(tree, &stdout_cp) == -1)
 		return (-1);
-	safe_dup2(tree, stdout_cp, 1);
-	safe_close(stdout_cp, tree);
-	return (0);
+	else
+		define_exit_status(*tree->head, "0");
+	return (safe_dup2(tree, stdout_cp, 1), safe_close(stdout_cp, tree), 0);
 }
 
 void	without_quotes_wildcard(t_token_tree *tree, char *old_filename)
