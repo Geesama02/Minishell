@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:50:48 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 10:32:34 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 14:53:44 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,18 @@ int	count_cmd_redirections(t_token_tree *node)
 		node = node->left;
 	}
 	return (redi);
+}
+
+int	contains_only_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+			return (-1);
+		i++;
+	}
+	return (0);
 }

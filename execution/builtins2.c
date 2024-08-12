@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 13:26:46 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:07:34 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,8 @@ int	exit_command(char **cmds, int child, t_token_tree *tree)
 		exit_s = 1;
 	if (cmds[1])
 	{
-		while (cmds[++i])
-		{
-			cmds[i] = remove_space_first_last(cmds[i]);
-			if (!cmds[i] && errno == ENOMEM)
-				return (ft_close(cmds, tree->head, tree), exit(1), -1);
-		}
+		if (exit_cases(tree, cmds) == -1)
+			return (-1);
 		exit_s = ft_atoi_long(cmds[1]);
 		if (check_overflow_multiple_arguments(exit_s, cmds) == -1)
 			return (-1);

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 13:07:36 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 14:03:48 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	exit_execve(int status, t_token_tree *tree, char *path, char **cmds)
 {
 	t_env_vars	*tmp;
-
 
 	update_underscore_env(NULL, cmds, *tree->head, tree);
 	tmp = search_for_env(tree->head, "?");

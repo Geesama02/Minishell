@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils5.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 10:01:17 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 18:28:55 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:56:19 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,7 @@ void	reverse_tokens(t_token_array *token_array, int i, int l, int j)
 
 	while (j < (i - 1 + j) / 2)
 	{
-		if (is_redirection_heredoc(token_array[j].token)
-			&& is_redirection_heredoc(token_array[i - l - 1].token))
+		if (if_must_reverse(token_array, i , l ,j))
 		{
 			tmp = token_array[j].token;
 			tmp_type = token_array[j].type;

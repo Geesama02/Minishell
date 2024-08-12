@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 17:19:21 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/08 10:28:06 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:36:01 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	execute_heredoc_file(t_token_tree *tree, t_token_tree *cmd,
 	prev_cmd = cmd->token;
 	cmd->token = ft_strjoin(prev_cmd, content->token);
 	free(prev_cmd);
-	if (!cmd->token)
+	if (!cmd->token && errno == ENOMEM)
 		return (ft_close(NULL, tree->head, tree), exit(1));
 	execute_tree(cmd, cmd->head, 1);
 }

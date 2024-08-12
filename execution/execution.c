@@ -6,11 +6,28 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:32:52 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 10:56:38 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:06:53 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
+
+int	exit_cases(t_token_tree *tree, char **cmds)
+{
+	int		i;
+
+	i = 0;
+	if (!contains_only_spaces(cmds[1]))
+		return (print_err("minishell: exit: ", cmds[1],
+			": numeric argument required\n"), exit(255), -1);
+	while (cmds[++i])
+	{
+		cmds[i] = remove_space_first_last(cmds[i]);
+		if (!cmds[i] && errno == ENOMEM)
+			return (ft_close(cmds, tree->head, tree), exit(1), -1);
+	}
+	return (0);
+}
 
 int	check_expand(t_token_tree *tree, char **str)
 {
