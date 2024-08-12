@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/12 10:32:46 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:57:16 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,6 @@ int				oldpwd_case(char **cmds, t_token_tree *tree, t_env_vars *head);
 int				check_minus_n(char *echo_flag);
 int				delete_env(char *cmd, t_token_tree *tree, char **cmds);
 void			print_err(char *string1, char *string2, char *string3);
-void			switch_multi_redirections(t_token_array *token_array);
 int				check_redirections_extras(char **holder);
 char			**ignore_quotes_2d_array(char **strs);
 int				is_redirection(t_t_type type);
@@ -263,8 +262,6 @@ void			set_address(t_token_tree *root, t_token_tree **address);
 int				init_heredoc(char *delimiter, char **input, int *stdin_fd);
 void			check_between_quotes(char *str, int *i, int *count, char quote);
 int				is_bad_syntax(char **holder, int i);
-void			set_redirections(t_token_array *token_array,
-					t_token_array **tmp_a_o, t_token_array **tmp_i);
 t_token_array	*get_redirection(t_token_array *token_array,
 					t_token_array *tmp, t_t_type type, t_t_type type2);
 int				get_to_last_token(char **holder);
@@ -314,11 +311,6 @@ int				check_space_only(char *token);
 char			*ignore_first_last_quotes(char *string);
 int				join_extra_with_redi(char **holder, int i);
 char			*get_second_cmd(char *holder);
-void			swap_redirection_op(t_token_array *tmp_a_o, int i,
-					int l, t_token_array *token_array);
-t_token_array	*find_redirection_double(t_token_array *token_array,
-					int i, int l);
-void			swap_redirections(t_token_array *first, t_token_array *second);
 char			*split_quotes(char *str, t_token_tree *tree);
 int				alloc_str_no_qt(int j, t_token_tree *tree,
 					char **tmp, char nxt);
@@ -362,6 +354,7 @@ int				alloc_newstr_re(char *str, char *new_str,
 int				redirec_edge_case(t_token_tree *tree, char **cmds);
 int				count_l_index(char *str);
 int				count_f_index(char *str);
-int	swap_multi_redirection(t_token_array *token_array, int i, int l);
+int				swap_multi_redirection(t_token_array *token_array, int i, int l);
+int				if_must_reverse(t_token_array *token_array, int i, int l, int j);
 
 #endif

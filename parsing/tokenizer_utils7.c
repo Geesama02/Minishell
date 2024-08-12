@@ -6,20 +6,11 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 11:19:34 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/10 14:36:47 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:57:11 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
-
-void	set_redirections(t_token_array *token_array
-	, t_token_array **tmp_a_o, t_token_array **tmp_i)
-{
-	*tmp_a_o = get_redirection(token_array, *tmp_a_o,
-			REDIRECTION_A, REDIRECTION_O);
-	*tmp_i = get_redirection(token_array, *tmp_i,
-			REDIRECTION_I, REDIRECTION_I);
-}
 
 int	get_to_last_token(char **holder)
 {

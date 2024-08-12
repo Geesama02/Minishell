@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 10:46:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:53:51 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	exit_execve(int status, t_token_tree *tree, char *path, char **cmds)
 {
 	t_env_vars	*tmp;
-
 
 	update_underscore_env(NULL, cmds, *tree->head, tree);
 	tmp = search_for_env(tree->head, "?");

@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 10:41:20 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 13:04:25 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:41:40 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ void	remove_empty(char ***cmds, int *n, t_token_tree *tree, char *old)
 		*cmds = remove_from_array(*cmds, *n);
 		if (!*cmds)
 			return (free(old), ft_close(NULL, tree->head, tree), exit(1));
-		(*n)--;
+		if (*n > 0)
+			(*n)--;
 	}
 	free(old);
 }

@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 10:22:25 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/09 16:11:27 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:03:36 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*alloc_new_str(char *str, int *i)
 	tmp = malloc(sizeof(char) * (len + 1));
 	if (!tmp)
 		return (NULL);
-	while (j < len)
+	while (j < len && str[*i])
 	{
 		tmp[j] = str[*i];
 		(*i)++;
