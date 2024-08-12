@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:51:08 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/12 10:32:46 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:02:01 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,6 +362,9 @@ int				alloc_newstr_re(char *str, char *new_str,
 int				redirec_edge_case(t_token_tree *tree, char **cmds);
 int				count_l_index(char *str);
 int				count_f_index(char *str);
-int	swap_multi_redirection(t_token_array *token_array, int i, int l);
+int				swap_multi_redirection(t_token_array *token_array, int i,
+					int l);
+int				execute_left_redi_in(t_token_tree *tree, int *pstdin_cp);
+int				execute_left_redi_out(t_token_tree *tree, int *pstdout_cp);
 
 #endif

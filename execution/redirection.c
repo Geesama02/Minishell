@@ -6,11 +6,52 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 11:07:39 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:00:46 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parse_header.h"
+
+int execute_left_redi_in(t_token_tree *tree, int *pstdin_cp)
+{
+	if (tree->left->token[0] != '\0')
+	{
+		if (execute_tree(tree->left, tree->head, 1) == -1)
+		{
+			safe_dup2(tree, *pstdin_cp, 0);
+			safe_close(*pstdin_cp, tree);
+			return (-1);
+		}
+	}
+	return (0);
+}
+
+int execute_left_redi_out(t_token_tree *tree, int *pstdout_cp)
+{
+	if (tree->left->token[0] != 0)
+	{	
+		if (execute_tree(tree->left, tree->head, 1) == -1)
+		{
+			safe_dup2(tree, *pstdout_cp, 1);
+			safe_close(*pstdout_cp, tree);
+			return (-1);
+		}
+	}
+	return (0);
+}
+
+int	check_ambiguous_redi(t_token_tree *tree, char *old_filename,
+	char **cmds)
+{
+	tree->token = remove_space_first_last(tree->token);
+	if (!tree->token && errno == ENOMEM)
+		return (ft_close(cmds, tree->head, tree), exit(1), -1);
+	if (tree->token[0] == 0)
+		return (ambiguous_redirect_error(old_filename), -1);
+	if (check_ambiguous_without_quotes(old_filename, tree) == -1)
+		return (-1);
+	return (0);
+}
 
 int	expand_filenames(t_token_tree *tree, char **cmds)
 {
@@ -29,12 +70,7 @@ int	expand_filenames(t_token_tree *tree, char **cmds)
 			without_quotes_wildcard(tree, old_filename);
 			remove_empty_space(tree->token);
 		}
-		tree->token = remove_space_first_last(tree->token);
-		if (!tree->token && errno == ENOMEM)
-			return (ft_close(cmds, tree->head, tree), exit(1), -1);
-		if (tree->token[0] == 0)
-			return (ambiguous_redirect_error(old_filename), -1);
-		if (check_ambiguous_without_quotes(old_filename, tree) == -1)
+		if (check_ambiguous_redi(tree, old_filename, cmds) == -1)
 			return (-1);
 	}
 	else

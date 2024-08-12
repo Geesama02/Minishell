@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 09:49:22 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:34:25 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ void	pwd_command(t_token_tree *tree, char **cmds)
 
 	current_dir = NULL;
 	update_underscore_env(NULL, cmds, *tree->head, tree);
-	if (search_for_env(tree->head, "PWD"))
+	if (search_for_env(tree->head, "PWD")
+		&& search_for_env(tree->head, "PWD")->env_val
+		&& ft_strlen(search_for_env(tree->head, "PWD")->env_val) > 0)
 	{
 		current_dir = search_for_env(tree->head, "PWD")->env_val;
 		ft_putstr_fd(current_dir, 1);
@@ -48,6 +50,7 @@ void	pwd_command(t_token_tree *tree, char **cmds)
 	else
 	{
 		getcwd(buff, sizeof(buff));
+		update_pwd(cmds, tree, buff);
 		ft_putstr_fd(buff, 1);
 		write(1, "\n", 1);
 	}

@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:44:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/11 18:22:00 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:26:46 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,7 @@ int	home_case(char **cmds, t_token_tree *tree, t_env_vars *head)
 	if (home_path)
 	{
 		if (chdir(home_path->env_val) != 0)
-			return (print_err(strerror(errno), "\n", NULL),
-				ft_close(cmds, &head, tree), exit(1), -1);
+			return (print_err("minishell : cd: ", strerror(errno), "\n"), -1);
 		update_oldpwd(search_for_env(&head, "PWD")->env_val, cmds, tree);
 		update_pwd(cmds, tree, home_path->env_val);
 	}
@@ -98,8 +97,7 @@ int	oldpwd_case(char **cmds, t_token_tree *tree, t_env_vars *head)
 	if (oldpwd && oldpwd->env_val)
 	{
 		if (chdir(oldpwd->env_val) != 0)
-			return (print_err(strerror(errno), "\n", NULL),
-				ft_close(cmds, &head, tree), exit(1), -1);
+			return (print_err("minishell: cd: ", strerror(errno), "\n"), -1);
 		printf("%s\n", oldpwd->env_val);
 		update_pwd(cmds, tree, oldpwd->env_val);
 		update_oldpwd(tmp_pwd, cmds, tree);

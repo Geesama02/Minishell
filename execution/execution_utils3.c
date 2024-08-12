@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 12:10:11 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 10:46:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:07:36 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	changing_current_directory(char **cmds, char *path, t_token_tree *tree)
 	if (search_for_env(tree->head, "PWD"))
 		update_oldpwd(search_for_env(tree->head, "PWD")->env_val, cmds, tree);
 	return (update_pwd(cmds, tree, current_dir), 0);
-}
+}	
 
 int	count_linkedlist_size(t_env_vars *lst)
 {
