@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 10:11:57 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 11:05:22 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:31:42 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	execute_redirec_in(t_token_tree *tree)
 			return (-1);
 		}
 	}
+	else
+		define_exit_status(*tree->head, "0");
 	safe_dup2(tree, fd_stdin, 0);
 	safe_close(fd_stdin, tree);
 	return (0);
@@ -78,6 +80,8 @@ int	execute_redirec_out(t_token_tree *tree)
 			return (-1);
 		}
 	}
+	else
+		define_exit_status(*tree->head, "0");
 	safe_dup2(tree, stdout_cp, 1);
 	safe_close(stdout_cp, tree);
 	return (0);
@@ -114,6 +118,8 @@ int	execute_redirec_append(t_token_tree *tree)
 			return (-1);
 		}
 	}
+	else
+		define_exit_status(*tree->head, "0");
 	safe_dup2(tree, stdout_cp, 1);
 	safe_close(stdout_cp, tree);
 	return (0);
