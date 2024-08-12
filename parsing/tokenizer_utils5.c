@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils5.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 09:44:22 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/04 15:56:19 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 16:07:27 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	check_redirections_extras(char **holder)
 	i = get_to_last_token(holder);
 	while (i >= 0)
 	{
-		if (i > 0 && is_redirection(set_token_type(holder[i]))
+		if (i > 0 && is_redirection_heredoc(holder[i])
 			&& has_redirection_extras(holder[i + 1]))
 		{
 			if (holder[i - 1] && holder[i - 1][0] == ')')
