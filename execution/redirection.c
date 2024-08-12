@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:05:49 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 12:00:46 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 16:53:15 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ int	expand_filenames(t_token_tree *tree, char **cmds)
 	if (!old_filename)
 		return (print_err(strerror(errno), "\n", NULL), ft_close(NULL,
 				tree->head, tree), free(old_filename), exit(1), -1);
-	if (tree->token[0] != '\"')
+	if (tree->token[0] != '\"'
+		&& tree->token[ft_strlen(tree->token) - 1] != '\"' &&
+		tree->token[0] != '\''
+		&& tree->token[ft_strlen(tree->token) - 1] != '\'')
 	{
 		check_expand(tree, &tree->token);
 		if (has_wildcard(tree->token))

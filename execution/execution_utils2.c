@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:09:42 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 10:49:11 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/12 17:19:14 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,9 @@ char	*file_isdir_case(char **cmds, t_token_tree *tree, char *path)
 			ft_close(cmds, tree->head, tree), NULL);
 	if (stat(path, &buff) == -1 && errno != ENOENT)
 		return (update_underscore_env(NULL, cmds, *tree->head, tree),
-			free(path), print_err(strerror(errno), "\n", NULL), NULL);
+			free(path), print_err("minishell: ", path, ": "),
+			print_err(strerror(errno), "\n", NULL),
+			define_exit_status(*tree->head, "126"), NULL);
 	if (S_ISDIR(buff.st_mode))
 	{
 		update_underscore_env(NULL, cmds, *tree->head, tree);
