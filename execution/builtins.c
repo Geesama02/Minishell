@@ -6,7 +6,7 @@
 /*   By: maglagal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:44:16 by maglagal          #+#    #+#             */
-/*   Updated: 2024/08/12 13:34:25 by maglagal         ###   ########.fr       */
+/*   Updated: 2024/08/13 10:45:01 by maglagal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,9 @@ int	export_command(char **cmds, t_env_vars **head, t_token_tree *tree)
 int	unset_command(char **cmds, t_token_tree *tree)
 {
 	int	i;
+	int	failure;
 
+	failure = 0;
 	i = 1;
 	update_underscore_env(NULL, cmds, *tree->head, tree);
 	while (cmds[i])
@@ -95,9 +97,9 @@ int	unset_command(char **cmds, t_token_tree *tree)
 		if (ft_strcmp(cmds[i], "_"))
 		{
 			if (delete_env(cmds[i], tree, cmds) == -1)
-				return (-1);	
+				failure = -1;
 		}
 		i++;
 	}
-	return (0);
+	return (failure);
 }
