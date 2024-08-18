@@ -16,7 +16,7 @@ The **Minishell** project is designed to deepen your understanding of how shells
 - Pipes (`|`)
 - Environment variable management
 - Error handling for invalid commands and syntax
-- Signal handling (Ctrl-C, Ctrl-D, and Ctrl-\)
+- Signal handling (Ctrl-C, Ctrl-D, and Ctrl-\\)
 
 ## Bonus Features
 
